@@ -37,7 +37,7 @@ config = {
     'include_package_data': True,
     'scripts': [],
     'name': 'pymbt',
-    'license': 'Apache 2.0'
+    'license': 'Copyright University of Washington'
 }
 
 if cython:
