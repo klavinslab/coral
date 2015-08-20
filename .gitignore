@@ -8,6 +8,7 @@
 *.so
 *.ipynb_checkpoints
 *.swp
+.pypirc
 build
 docs/_build
 venv/
