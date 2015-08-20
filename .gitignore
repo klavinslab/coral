@@ -9,6 +9,8 @@
 *.ipynb_checkpoints
 *.swp
 .pypirc
+*.egg-info
+dist
 build
 docs/_build
 venv/

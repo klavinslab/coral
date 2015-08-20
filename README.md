@@ -2,6 +2,12 @@
 
 PyMBT: Python molecular biology tools.
 
+## Installation:
+
+```
+pip install pymbt
+```
+
 ## Requirements:
 
 ###python (pip-compatible):
