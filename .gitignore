@@ -1,0 +1,13 @@
+~*
+*__pycache__
+*.c
+*.coverage
+*.error
+*.log
+*.pyc
+*.so
+*.ipynb_checkpoints
+*.swp
+build
+docs/_build
+venv/
