@@ -32,6 +32,7 @@ class Vienna(object):
     def free_energy_of_structure(self, temp=30.0, index=None):
         '''Calculate the free energy(ies) of sequence(s) and structure(s)
         at a given temperature.
+
         :param temp: Temperature at which to run calculations (°C).
         :type temp: float
         :param index: Index of the sequence for which to calculate mfe.
@@ -64,6 +65,7 @@ class Vienna(object):
     def mfe(self, temp=50.0, return_structure=False, index=None,
             use_constraint_structures=False):
         '''Calculate the minimum free energy.
+
         :param temp: Temperature at which to run calculations.
         :type temp: float
         :param index: Specific sequence index on which to calcualte mfe.
@@ -119,6 +121,7 @@ class Vienna(object):
     def unbound_probability(self, temp=50.0, index=None):
         '''Calculate per-pair probability of being unbound (secondary
         structure).
+
         :param temp: Temperature at which to run calculations.
         :type temp: float
         :param index: Specific sequence index on which to calcualte pairs.
@@ -161,11 +164,12 @@ class Vienna(object):
         return unbounds
 
     def hybridization_mfe(self, temp=37.0, simtype='duplex', indices=None):
-        '''Calculate the mfe of two RNA seqeunces complexing
+        '''Calculate the mfe of two RNA seqeunces complexing.
+
         :param temp: Temperature at which to run calculations.
         :type temp: float
         :param indices: list (len 2) of sequence indices on which to
-                       calculate pairs.
+                        calculate pairs.
         :type indices: list of ints
         :param simtype: Vienna simulation package to use. "duplex" dose not
                         allow self RNA interactions. "cofold" allows self RNA
