@@ -1,6 +1,6 @@
 # pymbt
 
-PyMBT: Python molecular biology tools.
+PyMBT: Python molecular biology tools. Documentation is (temporarily) available at http://128.95.179.217:8000/.
 
 ## Installation:
 

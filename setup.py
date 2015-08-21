@@ -47,5 +47,6 @@ if cython:
           include_dirs=[numpy.get_include()],
           **config)
 else:
-    setup(test_suite='nose.collector',
+    setup(ext_modules=['pymbt/analysis/_sequencing/calign.c'],
+          test_suite='nose.collector',
           **config)
