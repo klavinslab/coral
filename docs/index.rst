@@ -10,7 +10,7 @@ Welcome to pymbt
 :Source code: `github.com project <http://github.com/klavinslab/pymbt>`_
 :Issue Tracker: `github.com issues <http://github.com/klavinslab/pymbt/issues>`_
 :Generated: |today|
-:License: Apache 2.0
+:License: Academic (UW License, see LICENSE in source)
 :Version: |release|
 
 **Tutorial:**
