@@ -1,5 +1,4 @@
 '''Tests primer design module.'''
-import warnings
 from nose.tools import assert_equals, assert_not_equal, assert_raises
 from pymbt import design, DNA
 
@@ -48,12 +47,6 @@ def test_primer():
                           'TTTTTTTTTT')
     assert_raises(ValueError, design.primer, end_at_template,
                   end_gc=True, tm=72)
-    # If there's structure, should issue a warning
-    structure_template = DNA('ATGCGATCGATAGGCGA')
-    structure_template += structure_template.reverse_complement()
-    with warnings.catch_warnings(True) as w:
-        design.primer(structure_template, structure=True, tm=72)
-        assert len(w) > 0
 
 
 def test_primers():
