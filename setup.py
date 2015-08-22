@@ -1,13 +1,8 @@
 try:
-    from setuptools import setup
+    from setuptools import setup, Extension
 except ImportError:
-    from distutils.core import setup
-
-try:
-    cython = True
-    from Cython.Build import cythonize
-except ImportError:
-    cython = False
+    from distutils.core import setup, Extension
+import numpy
 
 config = {
     'description': 'pymbt',
@@ -40,13 +35,8 @@ config = {
     'license': 'Copyright University of Washington'
 }
 
-if cython:
-    import numpy
-    setup(ext_modules=cythonize(['pymbt/analysis/_sequencing/calign.pyx']),
-          test_suite='nose.collector',
-          include_dirs=[numpy.get_include()],
-          **config)
-else:
-    setup(ext_modules=['pymbt/analysis/_sequencing/calign.c'],
-          test_suite='nose.collector',
-          **config)
+setup(ext_modules=Extension('calign',
+                            ['pymbt/analysis/_sequencing/calign.c'],
+                            include_dirs=[numpy.get_include()]),
+      test_suite='nose.collector',
+      **config)
