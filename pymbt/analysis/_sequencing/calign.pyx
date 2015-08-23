@@ -1,36 +1,3 @@
-'''
-IMPORTANT: Most of the code below comes from the 'align' package written by
-Brent Pedersen and Marcin Cieslik (github.com/brentp/align) under the MIT
-license, HOWEVER it has been modified in pymbt, which falls under the
-Apache 2.0 license. If you want to create a derivative work that cannot be
-relicensed from the Apache 2.0 license, you should grab the code directly
-from brentp's github and not here.
-
-The following license applies to some, but not all of the code below, and is
-listed because the vast majority comes from github.com/brentp/align:
-
-The MIT License (MIT)
-
-Copyright (c) <2010> <Brent Pedersen, Marcin Cieslik>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.'''
-
 import numpy as np
 cimport numpy as np
 from libc.string cimport strlen
@@ -96,7 +63,7 @@ cdef object read_matrix(path):
 
     if not os.path.exists(path):
         if '/' in path:
-            raise Exception('path for matrix {} doest not exist'.format(path))
+            raise ValueError('path for matrix {} doest not exist'.format(path))
         cur_path = os.path.abspath(os.path.join(os.path.dirname(__file__)))
         fh = open(os.path.join(cur_path, 'data', path))
     else:
@@ -109,9 +76,6 @@ cdef object read_matrix(path):
         if line[0] == '#':
             continue
         # First that isn't a comment is the header
-        # TODO: Figure out why each char is being converted to unicode (ord())
-        #       It makes the matrix way bigger
-        #       Is it to change lookup from key:value to index?
         headers = [ord(x) for x in line.split(' ') if x]
     mat_size = max(headers) + 1
 
@@ -141,9 +105,8 @@ def max_index(array):
     return np.unravel_index(array.argmax(), array.shape)
 
 
-def aligner(_seqj, _seqi, \
-            DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7, DTYPE_FLOAT gap_double=-7,\
-            method='global', matrix='DNA_simple'):
+def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
+            DTYPE_FLOAT gap_double=-7, method='global', matrix='DNA_simple'):
     '''Calculates the alignment of two sequences. The global method uses
     a global Needleman-Wunsh algorithm, local does a a local
     Smith-Waterman alignment, global_cfe does a global alignment with

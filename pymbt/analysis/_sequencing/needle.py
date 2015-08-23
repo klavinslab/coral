@@ -4,8 +4,7 @@ import pymbt
 try:
     from .calign import aligner, score_alignment
 except ImportError:
-    print 'Failed to import cython aligner, so alignments will not work.'
-    pass
+    from .align import aligner, score_alignment
 
 
 def needle(reference, query, gap_open=-15, gap_extend=0, matrix='DNA_simple'):
