@@ -35,7 +35,7 @@ config = {
     'license': 'Copyright University of Washington'
 }
 
-setup(ext_modules=[Extension('calign',
+setup(ext_modules=[Extension('pymbt.analysis._sequencing.calign',
                              ['pymbt/analysis/_sequencing/calign.c'],
                              include_dirs=[numpy.get_include()])],
       test_suite='nose.collector',
