@@ -2,7 +2,7 @@
 import multiprocessing
 import pymbt
 try:
-    from calign import aligner, score_alignment
+    from .calign import aligner, score_alignment
 except ImportError:
     print 'Failed to import cython aligner, so alignments will not work.'
     pass
