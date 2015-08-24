@@ -30,6 +30,7 @@ intermine
 ```
 
 optional:
+
 | Package | Added functionality |
 | --- | --- |
 | `matplotlib` | plotting sequencing analysis |
