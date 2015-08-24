@@ -1,11 +1,22 @@
 # pymbt
+[![Build Status](https://travis-ci.org/klavinslab/pymbt.svg?branch=master)](https://travis-ci.org/klavinslab/pymbt)
+[![Documentation Status](https://readthedocs.org/projects/pymbt/badge/?version=latest)](https://readthedocs.org/projects/pymbt/?badge=latest)
 
-PyMBT: Python molecular biology tools. Read the documentation at http://pymbt.readthedocs.org.
+PyMBT: Python molecular biology tools. Read the documentation at http://pymbt.readthedocs.org. Works with PyPy so long as a PyPy-compatible numpy is installed.
 
 ## Installation:
 
+Most users:
 ```
 pip install pymbt
+```
+
+To get the latest on git:
+
+```
+git clone https://github.com/klavinslab/pymbt.git
+cd pymbt
+pip install .
 ```
 
 ## Requirements:
@@ -14,45 +25,15 @@ pip install pymbt
 
 ```
 numpy
-cython
 biopython
 intermine
 ```
 
-optional (for plotting Sanger sequencing and structural analysis):
-
-```
-matplotlib
-```
+optional:
+| `matplotlib` | plotting sequencing analysis |
+| `cython`     | 300 times faster sequencing alignment |
 
 ###system:
 
-For matplotlib
-
-```
-libpng-dev
-libfreetype-dev
-tk-dev
-tcl-dev
-```
-
-for structure analysis
-
-```
-NUPACK
-Vienna RNA
-```
-
-to build the documentation:
-```
-sphinx
-ipython
-```
-
-## Clone and install:
-
-```
-git clone https://github.com/klavinslab/pymbt.git
-cd pymbt
-pip install .
-```
+| `NuPack` | Structural analysis |
+| `ViennaRNA` | Structural analysis |

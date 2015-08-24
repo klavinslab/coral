@@ -155,8 +155,9 @@ class DNA(NucleotideSequence):
     def gc(self):
         '''Find the frequency of G and C in the current sequence.'''
 
-        return len([base for base in self if str(base) == 'C' or
+        gc_n = len([base for base in self if str(base) == 'C' or
                     str(base) == 'G'])
+        return float(gc_n) / len(self)
 
     def insert(self, sequence, index):
         inserted = super(DNA, self).insert(sequence, index)

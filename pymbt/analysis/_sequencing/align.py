@@ -55,9 +55,7 @@ def max_index(array):
     :type array: numpy.array
 
     '''
-    max_value = array.argmax()
-    idx = np.unravel_index(max_value, array.shape)
-    return idx
+    return np.unravel_index(array.argmax(), array.shape)
 
 
 def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
@@ -126,10 +124,12 @@ def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
         F[0, 1:] = gap_open + gap_extend * np.arange(0, max_j,
                                                      dtype=np.float32)
 
+    seqi_ord = [ord(base) for base in seqi]
+    seqj_ord = [ord(base) for base in seqj]
     for i in range(1, max_i + 1):
-        ci = seqi[i - 1]
+        ci = seqi_ord[i - 1]
         for j in range(1, max_j + 1):
-            cj = seqj[j - 1]
+            cj = seqj_ord[j - 1]
             # I
             I[i, j] = max(F[i, j - 1] + gap_open,
                           I[i, j - 1] + gap_extend,
@@ -139,7 +139,7 @@ def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
                           J[i - 1, j] + gap_extend,
                           I[i - 1, j] + gap_double)
             # F
-            diag_score = F[i - 1, j - 1] + amatrix[ord(ci), ord(cj)]
+            diag_score = F[i - 1, j - 1] + amatrix[ci, cj]
             left_score = I[i, j]
             up_score = J[i, j]
             max_score = max(diag_score, up_score, left_score)
