@@ -30,10 +30,14 @@ intermine
 ```
 
 optional:
+| Package | Added functionality |
+| --- | --- |
 | `matplotlib` | plotting sequencing analysis |
 | `cython`     | 300 times faster sequencing alignment |
 
 ###system:
 
+| Package | Added functionality |
+| --- | --- |
 | `NuPack` | Structural analysis |
 | `ViennaRNA` | Structural analysis |
