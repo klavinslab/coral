@@ -12,10 +12,10 @@ transactivator from McIsaac et al. 2011:
 
 .. code:: python
 
-    import pymbt as pbt
+    import coral as cor
 .. code:: python
 
-    pKL278 = pbt.seqio.read_dna('./files_for_tutorial/maps/pMODKan-HO-pACT1GEV.ape')
+    pKL278 = cor.seqio.read_dna('./files_for_tutorial/maps/pMODKan-HO-pACT1GEV.ape')
 Sequences have ``.name`` and ``.id`` attributes that are empty string by
 default. By convention, you should fill them with appropriate strings
 for your use case - the name is a human-readable name while id should be
@@ -158,4 +158,4 @@ general layout of annotations.
 
 .. code:: python
 
-    
+

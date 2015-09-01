@@ -4,13 +4,13 @@ Primer Design
 
 One of the first things anyone learns in a molecular biology lab is how
 to design primers. The exact strategies vary a lot and are sometimes
-polymerase-specific. ``pymbt`` uses the Klavins' lab approach of
+polymerase-specific. ``coral`` uses the Klavins' lab approach of
 targeting a specific melting temperature (Tm) and nothing else, with the
 exact Tm targeted being between 65°C and 72°C, the choice being personal
-preference. ``pymbt`` currently defaults to 72°C on the Phusion
+preference. ``coral`` currently defaults to 72°C on the Phusion
 (modified Breslauer 1986) Tm calculator.
 
-``pymbt.design_primer`` is a function that takes in a ``sequence.DNA``
+``coral.design_primer`` is a function that takes in a ``sequence.DNA``
 object and rapidly finds the 5' subsequence that is closest to the
 desired Tm (within a user-definable error range). If the entire sequence
 would make a primer with too low of a Tm, a descriptive error is
@@ -20,13 +20,13 @@ For this tutorial, let's design primers that will amplify the gene EYFP.
 
 .. code:: python
 
-    import pymbt as pbt
+    import coral as cor
 First we read in a plasmid from Havens et al. 2012 and isolate the EYFP
 sequence.
 
 .. code:: python
 
-    plasmid = pbt.seqio.read_dna("../files_for_tutorial/maps/pGP4G-EYFP.ape")
+    plasmid = cor.seqio.read_dna("../files_for_tutorial/maps/pGP4G-EYFP.ape")
     eyfp = plasmid.extract("EYFP")
     print len(eyfp)
     eyfp
@@ -52,15 +52,15 @@ Designing primers is straightforward - you just call
 .. code:: python
 
     # Forward and reverse, one at a time using design_primer()
-    forward = pbt.design.primer(eyfp)
-    reverse = pbt.design.primer(eyfp.reverse_complement())
+    forward = cor.design.primer(eyfp)
+    reverse = cor.design.primer(eyfp.reverse_complement())
     # Both at once using design_primers()
-    forward, reverse = pbt.design.primers(eyfp)
+    forward, reverse = cor.design.primers(eyfp)
     # design_primer has many options, including adding overhangs
-    custom_forward = pbt.design.primer(eyfp, tm=65, min_len=12, 
-                                       tm_undershoot=1, tm_overshoot=1, 
-                                       end_gc=True, tm_parameters="santalucia98", 
-                                       overhang=pbt.DNA("GGGGGATCGAT"))
+    custom_forward = cor.design.primer(eyfp, tm=65, min_len=12,
+                                       tm_undershoot=1, tm_overshoot=1,
+                                       end_gc=True, tm_parameters="santalucia98",
+                                       overhang=cor.DNA("GGGGGATCGAT"))
     print forward
     print
     print custom_forward
@@ -68,7 +68,7 @@ Designing primers is straightforward - you just call
 .. parsed-literal::
 
     ATGGTGAGCAAGGGCG
-    
+
     GGGGGATCGATATGGTGAGCAAGGGCGAGGAGCTGTTCAC
 
 
@@ -78,7 +78,7 @@ write them out to a file. The point of programming DNA is that you
 *never* copy and paste!
 
 To simulate a PCR using the rules of molecular biology, use
-``pymbt.reaction.pcr``. The output is a subsequence of the template DNA
+``coral.reaction.pcr``. The output is a subsequence of the template DNA
 - the features may not match the plasmid exactly (due to being truncated
 by the PCR), but the sequences match. If a primer would bind in multiple
 places (exact matches to the template), the pcr function will fail and
@@ -89,7 +89,7 @@ operator.
 
 .. code:: python
 
-    amplicon = pbt.reaction.pcr(plasmid, forward, reverse)
+    amplicon = cor.reaction.pcr(plasmid, forward, reverse)
     amplicon == eyfp
 
 
@@ -110,7 +110,7 @@ submitted to an oligo synthesis company.
     forward.name = "EYFP_forward"
     reverse.name = "EYFP_reverse"
     # Then we write to file - a csv (comma separated value file)
-    pbt.seqio.write_primers([forward, reverse], "./designed_primers.csv", ["Forward EYFP primer", "Reverse EYFP primer"])
+    cor.seqio.write_primers([forward, reverse], "./designed_primers.csv", ["Forward EYFP primer", "Reverse EYFP primer"])
 The csv file can then be opened in a spreadsheet application like Excel
 or processed by a downstream program. This is the format of the csv:
 
@@ -132,4 +132,4 @@ or processed by a downstream program. This is the format of the csv:
 
 .. code:: python
 
-    
+

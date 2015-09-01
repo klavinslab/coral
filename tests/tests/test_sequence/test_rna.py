@@ -3,7 +3,7 @@ Tests for the RNA sequence class.
 
 '''
 
-from pymbt import RNA
+from coral import RNA
 from nose.tools import assert_equal, assert_false, assert_true, assert_raises
 
 

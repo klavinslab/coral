@@ -4,7 +4,7 @@ Tests for RandomCodons class of analysis module.
 '''
 
 from nose.tools import assert_equal, assert_not_equal, assert_raises
-from pymbt import design, reaction, RNA
+from coral import design, reaction, RNA
 
 
 def test_randomcodons():

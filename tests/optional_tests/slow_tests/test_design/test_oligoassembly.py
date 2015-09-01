@@ -4,7 +4,7 @@ Tests for the OligoAssembly design class.
 '''
 
 from nose.tools import assert_equal, assert_raises, assert_true
-from pymbt import design, DNA
+from coral import design, DNA
 
 
 def test_oligo_assembly():

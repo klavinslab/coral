@@ -1,5 +1,5 @@
 '''Test dimers submodule of analysis module.'''
-from pymbt import analysis, DNA, Primer
+from coral import analysis, DNA, Primer
 from nose.tools import assert_equal
 
 

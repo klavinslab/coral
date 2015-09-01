@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Builds sphinx docs for pymbt."""
+"""Builds sphinx docs for coral."""
 import os
 import subprocess
 

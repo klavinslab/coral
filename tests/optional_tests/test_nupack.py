@@ -1,10 +1,10 @@
 '''
-Tests for pymbt Nupack analysis class.
+Tests for coral Nupack analysis class.
 
 '''
 
 from nose.tools import assert_equal
-from pymbt import analysis, DNA
+from coral import analysis, DNA
 
 
 def test_nupack():

@@ -1,5 +1,5 @@
 '''Tests for the DNA sequence class.'''
-from pymbt import reaction, DNA, Feature, RestrictionSite
+from coral import reaction, DNA, Feature, RestrictionSite
 from nose.tools import assert_equal, assert_false, assert_true, assert_raises
 from nose.tools import assert_not_equal
 

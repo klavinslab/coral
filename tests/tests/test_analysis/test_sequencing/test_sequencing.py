@@ -1,6 +1,6 @@
 '''Test sequencing module.'''
 import os
-from pymbt import analysis, seqio
+from coral import analysis, seqio
 from nose.tools import assert_equal
 # IDEA: unit tests for plotting?
 

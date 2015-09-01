@@ -6,11 +6,11 @@ Sequences
 ``sequence.DNA``
 ----------------
 
-``sequence.DNA`` is the core data structure of ``pymbt``. If you are
+``sequence.DNA`` is the core data structure of ``coral``. If you are
 already familiar with core python data structures, it mostly acts like a
 container similar to lists or strings, but also provides further
 object-oriented methods for DNA-specific tasks, like reverse
-complementation. Most design functions in ``pymbt`` return a
+complementation. Most design functions in ``coral`` return a
 ``sequence.DNA`` object or something that contains a ``sequence.DNA``
 object (like ``sequence.Primer``). In addition, there are related
 ``sequence.RNA`` and ``sequence.Peptide`` objects for representing RNA
@@ -20,7 +20,7 @@ To get started with ``sequence.DNA``, import the ``sequence`` module:
 
 .. code:: python
 
-    from pymbt import sequence
+    from coral import sequence
 Your first sequence
 ~~~~~~~~~~~~~~~~~~~
 

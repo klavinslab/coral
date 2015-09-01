@@ -4,7 +4,7 @@ Tests for utils submodule of the analysis module.
 '''
 
 from nose.tools import assert_equal, assert_raises
-from pymbt import analysis, DNA, RNA, Peptide
+from coral import analysis, DNA, RNA, Peptide
 
 
 def test_utils():

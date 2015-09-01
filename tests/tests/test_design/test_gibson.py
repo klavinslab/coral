@@ -1,6 +1,6 @@
 '''Test gibson design module.'''
 from nose.tools import assert_equal, assert_raises
-from pymbt import design, DNA, Primer
+from coral import design, DNA, Primer
 
 
 def test_gibson_primers():

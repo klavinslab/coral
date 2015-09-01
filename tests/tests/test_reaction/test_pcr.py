@@ -1,7 +1,7 @@
 '''Test functionality of PCR class of reaction module.'''
 
 import os
-from pymbt import design, reaction, seqio, DNA
+from coral import design, reaction, seqio, DNA
 from nose.tools import assert_equal, assert_true, assert_raises
 
 

@@ -1,2 +1,2 @@
 include requirements.txt
-include pymbt/analysis/_sequencing/data/*
+include coral/analysis/_sequencing/data/*

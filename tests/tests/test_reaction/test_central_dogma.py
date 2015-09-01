@@ -4,7 +4,7 @@ Tests for central dogma submodule of reaction module.
 '''
 
 from nose.tools import assert_equal, assert_raises
-from pymbt import reaction, DNA, Peptide, RNA
+from coral import reaction, DNA, Peptide, RNA
 
 
 def test_transcription():

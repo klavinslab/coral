@@ -4,7 +4,7 @@ Tests StructureWindows analysis class.
 '''
 
 from nose.tools import assert_equal
-from pymbt import analysis, DNA
+from coral import analysis, DNA
 
 
 def test_structure_windows():

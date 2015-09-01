@@ -6,21 +6,21 @@ Sequences
 ``sequence.DNA``
 ----------------
 
-``pymbt.DNA`` is the core data structure of ``pymbt``. If you are
+``coral.DNA`` is the core data structure of ``coral``. If you are
 already familiar with core python data structures, it mostly acts like a
 container similar to lists or strings, but also provides further
 object-oriented methods for DNA-specific tasks, like reverse
-complementation. Most design functions in ``pymbt`` return a
-``pymbt.DNA`` object or something that contains a ``pymbt.DNA`` object
-(like ``pymbt.Primer``). In addition, there are related ``pymbt.RNA``
-and ``pymbt.Peptide`` objects for representing RNA and peptide sequences
+complementation. Most design functions in ``coral`` return a
+``coral.DNA`` object or something that contains a ``coral.DNA`` object
+(like ``coral.Primer``). In addition, there are related ``coral.RNA``
+and ``coral.Peptide`` objects for representing RNA and peptide sequences
 and methods for converting between them.
 
-To get started with ``pymbt.DNA``, import ``pymbt``:
+To get started with ``coral.DNA``, import ``coral``:
 
 .. code:: python
 
-    import pymbt as pbt
+    import coral as cor
 Your first sequence
 ~~~~~~~~~~~~~~~~~~~
 
@@ -30,7 +30,7 @@ string of DNA characters.
 
 .. code:: python
 
-    example_dna = pbt.DNA('atgagtaaaggagaagaacttttcactgga')
+    example_dna = cor.DNA('atgagtaaaggagaagaacttttcactgga')
     example_dna
 
 
@@ -176,7 +176,7 @@ piece of data sequentially):
         copy_list[i][i] = 'a'
     print [str(x) for x in copy_list]
     print
-    
+
     # Incorrect way:
     copy = example_dna.copy()
     copy_list = [copy for i, x in enumerate(example_dna)]
@@ -187,7 +187,7 @@ piece of data sequentially):
 .. parsed-literal::
 
     ['ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'AAGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATAAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAATAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGAAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAAGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGAAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAAAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAAAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAAATTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACATTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTATTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTATCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTACACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTAACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCAATGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACAGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTAGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGAA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA']
-    
+
     ['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']
 
 
@@ -207,7 +207,7 @@ want to save your chance you need to assign a variable:
 .. parsed-literal::
 
     ATGAGTAAAGGAGAAGAACTTTTCACTGGA
-    
+
     TCCAGTGAAAAGTTCTTCTCCTTTACTCAT
 
 
@@ -241,7 +241,7 @@ or information about a sequence.
 
 .. code:: python
 
-    # Sequences are double stranded, or 'ds' by default. 
+    # Sequences are double stranded, or 'ds' by default.
     # This is a directly accessible attribute, not a method, so () is not required.
     example_dna.stranded
 
@@ -311,13 +311,13 @@ or information about a sequence.
 .. parsed-literal::
 
     ATGAGTAAAGGAGAAGAACTTTTCACTGGA
-    
+
     GAGTAAAGGAGAAGAACTTTTCACTGGAAT
 
 
 .. code:: python
 
-    # Sometimes you just want to rotate the sequence around - i.e. switch the top and bottom strands. 
+    # Sometimes you just want to rotate the sequence around - i.e. switch the top and bottom strands.
     # For this, use the .flip() method
     example_dna.flip()
 
@@ -333,4 +333,4 @@ or information about a sequence.
 
 .. code:: python
 
-    
+

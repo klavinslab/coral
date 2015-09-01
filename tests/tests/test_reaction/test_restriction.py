@@ -1,7 +1,7 @@
 '''Test restriction reaction module.'''
 
 from nose.tools import assert_equal
-from pymbt import reaction, DNA, RestrictionSite
+from coral import reaction, DNA, RestrictionSite
 
 
 class TestDigest(object):

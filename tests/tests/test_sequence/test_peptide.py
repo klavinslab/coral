@@ -3,7 +3,7 @@ Tests for the Peptide sequence class.
 
 '''
 
-from pymbt import Peptide
+from coral import Peptide
 from nose.tools import assert_equal, assert_false, assert_true, assert_raises
 
 

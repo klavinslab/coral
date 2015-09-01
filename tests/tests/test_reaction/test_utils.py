@@ -4,7 +4,7 @@ Tests utils submodule of reaction module.
 '''
 
 from nose.tools import assert_equal, assert_raises
-from pymbt import reaction, DNA
+from coral import reaction, DNA
 
 
 def test_convert_sequence():

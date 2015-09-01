@@ -8,7 +8,7 @@ is that you receive the sequence for a short region of a template
 (usually a plasmid or PCR fragment) and need to compare it to your
 expected sequence to see if any errors were made (usualy
 mismatches/indels) or if you have confirmed a large enough part of your
-sequence (coverage). We'll go over how pymbt makes this straightforward
+sequence (coverage). We'll go over how coral makes this straightforward
 and fast with a short example.
 
 First, we'll need to analyze our sequencing using the Sanger class
@@ -16,7 +16,7 @@ First, we'll need to analyze our sequencing using the Sanger class
 
 .. code:: python
 
-    import pymbt as pbt
+    import coral as cor
 Then use seqio to read in our sequences. The Sanger class expects two
 inputs: a reference, or expected, sequence (``sequence.DNA`` object) and
 a list of the results (``list`` of ``sequence.DNA`` objects). Any way
@@ -37,15 +37,15 @@ objects.
 
 .. code:: python
 
-    reference = pbt.seqio.read_dna('../files_for_tutorial/maps/pMODKan-HO-pACT1GEV.ape')
-    results = pbt.seqio.read_sequencing('../files_for_tutorial/sequencing_files/')
+    reference = cor.seqio.read_dna('../files_for_tutorial/maps/pMODKan-HO-pACT1GEV.ape')
+    results = cor.seqio.read_sequencing('../files_for_tutorial/sequencing_files/')
 To compare the results to our expected sequence, we use the ``Sanger``
 class, which does a Needleman-Wunsch alignment and scores any
 discrepancies.
 
 .. code:: python
 
-    alignment = pbt.analysis.Sanger(reference, results)
+    alignment = cor.analysis.Sanger(reference, results)
 
 .. parsed-literal::
 
@@ -70,48 +70,48 @@ of any mismatches, insertions, or deletions.
 
 .. parsed-literal::
 
-    
-    Summary: 
+
+    Summary:
     --------
-    
+
       Mismatches: 3
       Insertions: 1
       Deletions: 0
-    
+
     ## Mismatches
       pMODKan-HO-pACT1GEV_C3-T7-EEV_D11.ab1
-    
+
         Positions 4687 to 4689:
         AGTCCAAAGGACAATTTTACG
         ||||||||||   ||||||||
         ----------CACATTTTACG
-                  ***        
-    
+                  ***
+
       pMODKan-HO-pACT1GEV_C3-M13R_E11.ab1
-    
+
         Positions 5550 to 5551:
         TTAGCTTTGTTCACTCGTGCC
         ||||||||||  |||||||||
         TTAGCTTTGTCA---------
-                  **         
-    
+                  **
+
       pMODKan-HO-pACT1GEV_C3-676_H11.ab1
-    
+
         Positions 5120 to 5121:
         GCACCGTCTTTGAATTATGAG
         ||||||||||  |||||||||
         GCACCGTCTTGA---------
-                  **         
-    
+                  **
+
     ## Insertions
       pMODKan-HO-pACT1GEV_C3-771_C12.ab1
-    
+
         Positions 7805 to 8008:
         GCCCTTTCGT------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ||||||||||                                                                                                                                                                                                            
+        ||||||||||
         GCCCTTTCGTTCGCGCGTTTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCTCCCGGAGACGGTCACAGCTTGTCTGTAAGCGGATGCCGGGAGCAGACAAGCCCGTCAGGGCGCGTCAGCGGGTGTTGGCGGGTGTCGGGGCTGGCTTAACTATGCGGCGTTTAAACTTAGCAGATGCGCGCACCTGCGTTGTTACCACAACTCTTATG
                   ************************************************************************************************************************************************************************************************************
-    
+
 
 
 The report above looks a bit scary - it expects there to be three
@@ -142,4 +142,4 @@ could investigate the ab1 files directly in another program.
 
 .. code:: python
 
-    
+

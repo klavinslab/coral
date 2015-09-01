@@ -1,8 +1,8 @@
 
-pymbt modules
+coral modules
 -------------
 
-pymbt has 7 modules: analysis, constants, database, design, reaction,
+coral has 7 modules: analysis, constants, database, design, reaction,
 seqio, and sequence.
 
 The modules have been split up by function - the activity that a user
@@ -11,19 +11,19 @@ databases is in the database module and activities related to designing
 sequences are in the design module.
 
 The modules are explicitly organized via their \_\_init\_\_.py files.
-All this means is that anything available via pymbt.module.\* is usable
+All this means is that anything available via coral.module.\* is usable
 and hopefully useful. You can explore the functions and classes defined
 for each module by reading more of the ipython documentation, sphinx
 autodoc documentation, or interactively investigating modules in the
-ipython notebook using tab completion and ? documentation. pymbt follows
+ipython notebook using tab completion and ? documentation. coral follows
 the PEP 8 style guidelines on class and function names so that you can
 differentiate between them - classes use CamelCase and functions use
 lower\_case with underscores.
 
 .. code:: python
 
-    import pymbt as pbt  # alternative you can import each module by itself e.g. from pymbt import design
-    dir(pbt)  # dir lists everything in a module/object. Ignore the double underscore items.
+    import coral as cor  # alternative you can import each module by itself e.g. from coral import design
+    dir(cor)  # dir lists everything in a module/object. Ignore the double underscore items.
 
 
 
@@ -56,30 +56,30 @@ lower\_case with underscores.
 Top-level
 ~~~~~~~~~
 
-In addition to the core modules, the top-level pymbt module provides the
-core data structures used in pymbt - DNA, RNA, and Peptide (as well as
+In addition to the core modules, the top-level coral module provides the
+core data structures used in coral - DNA, RNA, and Peptide (as well as
 specialized classes like Primer).
 
 .. code:: python
 
-    dna = pbt.DNA("ATGC")
+    dna = cor.DNA("ATGC")
     print "DNA: {}".format(dna)
     # You can also run methods on the object - in this case, check if the DNA is palindromic
     print "Palindrome?: {}".format(dna.is_palindrome())
     print
-    rna = pbt.RNA("AUGC")
+    rna = cor.RNA("AUGC")
     print "RNA: {}".format(rna)
     print
-    pep = pbt.Peptide("mlnp")
+    pep = cor.Peptide("mlnp")
     print "Peptide: {}".format(pep)
 
 .. parsed-literal::
 
     DNA: ATGC
     Palindrome?: False
-    
+
     RNA: AUGC
-    
+
     Peptide: MLNP
 
 
@@ -105,7 +105,7 @@ sequencing analysis).
 .. code:: python
 
     # Example: finding the Tm of ATGCATGCATGCATGC according to the SantaLucia98 method.
-    pbt.analysis.tm(dna * 4, parameters="santalucia98")
+    cor.analysis.tm(dna * 4, parameters="santalucia98")
 
 
 
@@ -157,4 +157,4 @@ objects to file (fasta or genbank).
 
 .. code:: python
 
-    
+

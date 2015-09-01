@@ -2,65 +2,65 @@ Source documentation:
 =====================
 
 
-:mod:`pymbt` -- Main Package
+:mod:`coral` -- Main Package
 ****************************
 
-.. automodule:: pymbt
+.. automodule:: coral
    :members:
    :imported-members:
 
 
-:mod:`pymbt.analysis` -- Sequence analysis
+:mod:`coral.analysis` -- Sequence analysis
 ------------------------------------------
 
-.. automodule:: pymbt.analysis
+.. automodule:: coral.analysis
    :members:
    :imported-members:
 
 
-:mod:`pymbt.constants` -- Data and constants
+:mod:`coral.constants` -- Data and constants
 --------------------------------------------
 
-.. automodule:: pymbt.constants
+.. automodule:: coral.constants
    :members:
    :imported-members:
 
 
-:mod:`pymbt.database` -- Scientific database access
+:mod:`coral.database` -- Scientific database access
 ---------------------------------------------------
 
-.. automodule:: pymbt.database
+.. automodule:: coral.database
    :members:
    :imported-members:
 
 
-:mod:`pymbt.design` -- Design sequences, primers, etc
+:mod:`coral.design` -- Design sequences, primers, etc
 ------------------------------------------------------
 
-.. automodule:: pymbt.design
+.. automodule:: coral.design
    :members:
    :imported-members:
 
 
-:mod:`pymbt.reaction` -- Cloning and molecular genetics reactions
+:mod:`coral.reaction` -- Cloning and molecular genetics reactions
 -----------------------------------------------------------------
 
-.. automodule:: pymbt.reaction
+.. automodule:: coral.reaction
    :members:
    :imported-members:
 
 
-:mod:`pymbt.seqio` -- Read and write sequences
+:mod:`coral.seqio` -- Read and write sequences
 ----------------------------------------------
 
-.. automodule:: pymbt.seqio
+.. automodule:: coral.seqio
    :members:
    :imported-members:
 
 
-.. :mod:`pymbt.sequence` -- DNA, RNA, and Peptide sequences
+.. :mod:`coral.sequence` -- DNA, RNA, and Peptide sequences
 .. --------------------------------------------------------
 ..
-.. .. automodule:: pymbt.sequence
+.. .. automodule:: coral.sequence
 ..    :members:
 ..    :imported-members:

@@ -4,7 +4,7 @@ Tests for RandomBases class of analysis module.
 '''
 
 from nose.tools import assert_equal
-from pymbt import design
+from coral import design
 
 
 def test_randomdna():

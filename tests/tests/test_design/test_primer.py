@@ -1,6 +1,6 @@
 '''Tests primer design module.'''
 from nose.tools import assert_equals, assert_not_equal, assert_raises
-from pymbt import design, DNA
+from coral import design, DNA
 
 
 def test_primer():

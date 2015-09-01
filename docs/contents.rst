@@ -1,5 +1,5 @@
 .. _contents:
-pymbt Documentation Contents
+coral Documentation Contents
 ============================
 
 .. toctree::

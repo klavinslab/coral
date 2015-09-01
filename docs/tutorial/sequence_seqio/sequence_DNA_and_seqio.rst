@@ -2,19 +2,19 @@
 ``sequence.DNA``
 ----------------
 
-``sequence.DNA`` is the core data structure of ``pymbt``. It contains
+``sequence.DNA`` is the core data structure of ``coral``. It contains
 DNA sequences and has methods (data-associatd functions) for their
-manipulation. Most design functions in ``pymbt`` return a
+manipulation. Most design functions in ``coral`` return a
 ``sequence.DNA`` object or something that contains a ``sequence.DNA``
 object (like ``sequence.Primer``).
 
 For this tutorial we need to read in a genbank sequence and create a new
 ``sequence.DNA`` object, so we import the ``seqio`` and ``sequence``
-modules of ``pymbt``.
+modules of ``coral``.
 
 .. code:: python
 
-    from pymbt import seqio, sequence
+    from coral import seqio, sequence
 Simple sequences - slicing
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 

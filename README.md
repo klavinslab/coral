@@ -1,21 +1,21 @@
-# pymbt
-[![Build Status](https://travis-ci.org/klavinslab/pymbt.svg?branch=master)](https://travis-ci.org/klavinslab/pymbt)
-[![Documentation Status](https://readthedocs.org/projects/pymbt/badge/?version=latest)](https://readthedocs.org/projects/pymbt/?badge=latest)
+# coral
+[![Build Status](https://travis-ci.org/klavinslab/coral.svg?branch=master)](https://travis-ci.org/klavinslab/coral)
+[![Documentation Status](https://readthedocs.org/projects/coral/badge/?version=latest)](https://readthedocs.org/projects/coral/?badge=latest)
 
-PyMBT: Python molecular biology tools. Read the documentation at http://pymbt.readthedocs.org. Works with PyPy so long as a PyPy-compatible numpy is installed.
+Coral: A synthetic DNA design library. Read the documentation at http://coral.readthedocs.org. Coral works with PyPy so long as a PyPy-compatible numpy is installed.
 
 ## Installation:
 
 Most users:
 ```
-pip install pymbt
+pip install coral
 ```
 
 To get the latest on git:
 
 ```
-git clone https://github.com/klavinslab/pymbt.git
-cd pymbt
+git clone https://github.com/klavinslab/coral.git
+cd coral
 pip install .
 ```
 
