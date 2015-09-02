@@ -1,8 +1,14 @@
 # coral
+<img align="right" height="256" src="docs/coral_256.png">
 [![Build Status](https://travis-ci.org/klavinslab/coral.svg?branch=master)](https://travis-ci.org/klavinslab/coral)
 [![Documentation Status](https://readthedocs.org/projects/coral/badge/?version=latest)](https://readthedocs.org/projects/coral/?badge=latest)
 
-Coral: A synthetic DNA design library. Read the documentation at http://coral.readthedocs.org. Coral works with PyPy so long as a PyPy-compatible numpy is installed.
+
+Coral: Core tools for synthetic DNA design. Read the documentation at http://coral.readthedocs.org.
+
+Coral encodes synthetic DNA design rules into its core sequence data types (`DNA`, `RNA`, and `Peptide`), enabling concise, dependable methods for automated DNA design.
+
+Coral works with PyPy so long as a PyPy-compatible numpy is installed.
 
 ## Installation:
 
