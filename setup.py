@@ -2,7 +2,16 @@ try:
     from setuptools import setup, Extension
 except ImportError:
     from distutils.core import setup, Extension
+
 import numpy
+# For rebuilding Cython extensions
+try:
+    from Cython.Distutils import build_ext
+    USECYTHON = True
+except ImportError:
+    USECYTHON = False
+
+
 
 config = {
     'description': 'coral',
@@ -35,8 +44,17 @@ config = {
     'license': 'Copyright University of Washington'
 }
 
-setup(ext_modules=[Extension('coral.analysis._sequencing.calign',
-                             ['coral/analysis/_sequencing/calign.c'],
-                             include_dirs=[numpy.get_include()])],
-      test_suite='nose.collector',
-      **config)
+seq_extension = Extension('coral.analysis._sequencing.calign',
+                          ['coral/analysis/_sequencing/calign.c'],
+                          include_dirs=[numpy.get_include()])
+EXTENSIONS = [seq_extension]
+
+if USECYTHON:
+    setup(cmdclass={'build_ext': build_ext},
+          ext_modules=EXTENSIONS,
+          test_suite='nose.collector',
+          **config)
+else:
+    setup(ext_modules=EXTENSIONS,
+          test_suite='nose.collector',
+          **config)
