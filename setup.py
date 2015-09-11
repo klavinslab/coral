@@ -12,14 +12,13 @@ except ImportError:
     USECYTHON = False
 
 
-
 config = {
     'description': 'coral',
     'author': 'Nick Bolten',
     'url': 'https://github.com/klavinslab/coral',
     'download_url': 'https://github.com/klavinslab/coral.git',
     'author_email': 'nbolten _at_ gmail',
-    'version': '0.0.2',
+    'version': '0.1.0',
     'install_requires': ['nose', 'numpy', 'biopython', 'intermine',
                          'requests'],
     'extras_require': {'plotting': ['matplotlib'],
