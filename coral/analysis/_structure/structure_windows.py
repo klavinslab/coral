@@ -1,8 +1,4 @@
 '''Evaluate windows of a sequence for in-context structure.'''
-try:
-    from matplotlib import pylab
-except ImportError:
-    print "Failed to import matplotlib. Plotting structures won't work."
 import coral.analysis
 
 
@@ -40,6 +36,11 @@ class StructureWindows(object):
 
     def plot(self):
         '''Plot the results of the run method.'''
+        try:
+            from matplotlib import pylab
+        except ImportError:
+            raise ImportError('Optional dependency matplotlib not installed.')
+
         if self.walked:
             fig = pylab.figure()
             ax1 = fig.add_subplot(111)

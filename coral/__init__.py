@@ -1,9 +1,4 @@
 '''Coral, core modules for synthetic DNA design.'''
-try:
-    import matplotlib
-except ImportError:
-    print "Failed to import matplotlib. Plotting sequencing won't work."
-
 from . import analysis
 from . import constants
 from . import database

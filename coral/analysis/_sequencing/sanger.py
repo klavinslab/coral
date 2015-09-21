@@ -1,11 +1,5 @@
 '''Sanger sequencing alignment tools.'''
 import coral.analysis
-try:
-    from matplotlib import pyplot
-    from matplotlib import cm
-except ImportError:
-    # Warning message is handled during library import
-    pass
 
 # FIXME: sequencing that goes past 'end' of a circular reference
 # is reported as an insertion
@@ -93,6 +87,12 @@ class Sanger(object):
         :type text: bool
 
         '''
+        try:
+            from matplotlib import pyplot
+            from matplotlib import cm
+        except ImportError:
+            raise ImportError('Optional dependency matplotlib not installed.')
+
         # Calculations
         # Reference bar information
         reference_x = 0

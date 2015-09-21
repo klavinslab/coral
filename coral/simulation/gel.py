@@ -1,9 +1,4 @@
 '''Module for gel-related simulations and data structures.'''
-try:
-    from matplotlib import pyplot
-except ImportError:
-    # Warning message is handled during library import
-    pass
 
 
 class Band(object):
@@ -68,6 +63,11 @@ class Gel(object):
 
     def plot(self):
         '''Render gel to plot.'''
+        try:
+            from matplotlib import pyplot
+        except ImportError:
+            raise ImportError('Optional dependency matplotlib not installed.')
+
         fig = pyplot.figure(figsize=(12, 9), dpi=90)
         sub1 = fig.add_subplot(111)
         max_band = max([band.length for column in self.columns for band in
