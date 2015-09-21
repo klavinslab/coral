@@ -48,3 +48,7 @@ optional:
 | --- | --- |
 | `NuPack` | Structural analysis |
 | `ViennaRNA` | Structural analysis |
+
+## License
+
+MIT
