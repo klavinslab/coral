@@ -263,16 +263,14 @@ class DNA(NucleotideSequence):
         '''
         if self.topology == 'linear' and index != 0:
             raise ValueError('Cannot rotate linear DNA')
-        if index < 0:
-            raise ValueError('Rotation index must be positive')
         else:
-            return (self[index:] + self[0:index]).circularize()
+            return (self[index:] + self[:index]).circularize()
 
-    def rotate_by_feature(self, featurename):
+    def rotate_by_feature(self, feature):
         '''Reorient the DNA based on a feature it contains (circular DNA only).
 
-        :param featurename: A uniquely-named feature.
-        :type featurename: str
+        :param feature: A feature.
+        :type feature: coral.Feature
         :returns: The current sequence reoriented at the start index of a
                   unique feature matching `featurename`.
         :rtype: coral.DNA
@@ -280,18 +278,7 @@ class DNA(NucleotideSequence):
                  more than one feature matches `featurename`.
 
         '''
-        # REFACTOR: Parts are redundant with .extract()
-        matched = []
-        for feature in self.features:
-            if feature.name == featurename:
-                matched.append(feature.copy())
-        count = len(matched)
-        if count == 1:
-            return self.rotate(matched[0].start)
-        elif count > 1:
-            raise ValueError('More than one feature has that name.')
-        else:
-            raise ValueError('No such feature in the sequence.')
+        return self.rotate(feature.start)
 
     def reverse_complement(self):
         '''Reverse complement the DNA.
@@ -516,8 +503,7 @@ class DNA(NucleotideSequence):
         return copy
 
     def __eq__(self, other):
-        '''Define equality - sequences, topology, and strandedness are the
-        same.
+        '''Define equality - sequences and strandedness are the.
 
         :returns: Whether current sequence's (Watson and Crick), topology,
                   and strandedness are equivalent to those of another sequence.
@@ -526,9 +512,8 @@ class DNA(NucleotideSequence):
         '''
         tops_equal = self._sequence == other._sequence
         bottoms_equal = self._bottom == other._bottom
-        topology_equal = self.topology == other.topology
         stranded_equal = self.stranded == other.stranded
-        if tops_equal and bottoms_equal and topology_equal and stranded_equal:
+        if tops_equal and bottoms_equal and stranded_equal:
             return True
         else:
             return False

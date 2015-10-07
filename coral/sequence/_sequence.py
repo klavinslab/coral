@@ -197,6 +197,37 @@ class BaseSequence(object):
         return [index.start() for index in
                 re.finditer(re_pattern, self._sequence)]
 
+    def select_features(self, term, by='name', fuzzy=False):
+        '''Select features from the features list based on feature name,
+           gene, or locus tag.
+
+           :param term: Search term.
+           :type term: str
+           :param by: Feature attribute to search by. Options are 'name',
+                      'gene', and 'locus_tag'.
+           :type by: str
+           :param fuzzy: If True, search becomes case-insensitive and will also
+                         find substrings - e.g. if fuzzy search is enabled, a
+                         search for 'gfp' would return a hit for a feature
+                         named 'GFP_seq'.
+           :type fuzzy: bool
+           :returns: A list of features matched by the search.
+           :rtype: list
+
+        '''
+        features = []
+        if fuzzy:
+            fuzzy_term = term.lower()
+            for feature in self.features:
+                if fuzzy_term in feature.__getattribute__(by).lower():
+                    features.append(feature)
+        else:
+            for feature in self.features:
+                if feature.__getattribute__(by) == term:
+                    features.append(feature)
+
+        return features
+
     def startswith(self, query):
         '''Report whether parent sequence starts with a query sequence.
 
@@ -506,12 +537,12 @@ class Feature(object):
         self.strand = strand
         self.gaps = gaps
 
-        allowed_types = TO_CORAL.keys()
+        allowed_types = list(sorted(TO_CORAL.keys()))
 
         if feature_type in allowed_types:
             self.feature_type = feature_type
         else:
-            msg1 = 'feature_type'
+            msg1 = 'feature_type '
             msg2 = 'must be one of the following: {}'.format(allowed_types)
             raise ValueError(msg1 + msg2)
 
