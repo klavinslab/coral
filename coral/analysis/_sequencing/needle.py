@@ -73,7 +73,9 @@ def needle_multi(references, queries, gap_open=-15, gap_extend=0,
                      zip(references, queries)]
         aligned = pool.map(run_needle, args_list)
     except KeyboardInterrupt:
+        print "Caught KeyboardInterrupt, terminating workers"
         pool.terminate()
+        pool.join()
         raise KeyboardInterrupt
 
     return aligned

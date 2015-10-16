@@ -1,5 +1,5 @@
 '''Tests for the DNA sequence class.'''
-from coral import reaction, DNA, Feature, RestrictionSite
+from coral import DNA, Feature, RestrictionSite
 from nose.tools import assert_equal, assert_false, assert_true, assert_raises
 from nose.tools import assert_not_equal
 
@@ -32,9 +32,6 @@ class TestDNA(object):
 
         ds_to_ss_to_ds = self.test_dna.to_ss().to_ds()
         assert_equal(self.test_dna, ds_to_ss_to_ds)
-
-        empty_top = reaction.three_resect(self.test_dna, 400)
-        assert_equal(empty_top.to_ds(), self.test_dna)
 
     def test_locate(self):
         assert_equal(self.test_dna.locate('a'), [[0], [2]])
@@ -104,13 +101,13 @@ class TestDNA(object):
         assert_raises(ValueError, set_gap, self.test_dna)
 
     def test_repr(self):
-        expected_repr = 'linear dsDNA:\nATGC\nTACG'
+        expected_repr = 'ATGC\nTACG'
         assert_equal(repr(self.test_dna), expected_repr)
 
-        expected_circ_repr = 'circular dsDNA:\nATGC\nTACG'
+        expected_circ_repr = 'ATGC\nTACG'
         assert_equal(repr(self.test_dna.circularize()), expected_circ_repr)
 
-        repr_1 = 'linear dsDNA:\nATGCATGCATGCATGCATGCATGCATGCATGCATGCATGC ... '
+        repr_1 = 'ATGCATGCATGCATGCATGCATGCATGCATGCATGCATGC ... '
         repr_2 = 'ATGCATGCATGCATGCATGCATGCATGCATGCATGCATGC\n'
         repr_3 = 'TACGTACGTACGTACGTACGTACGTACGTACGTACGTACG ... '
         repr_4 = 'TACGTACGTACGTACGTACGTACGTACGTACGTACGTACG'
@@ -228,7 +225,7 @@ class TestFeatures(object):
 
     def test_extract(self):
         test_utr3_feature = [feature for feature in self.dna.features if
-                            feature.name == "3'UTR Feature"][0]
+                             feature.name == "3'UTR Feature"][0]
         extracted = self.dna.extract(test_utr3_feature)
         assert_equal(str(extracted), 'TGCATGCATGCATGCATGC')
 

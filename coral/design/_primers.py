@@ -59,8 +59,9 @@ def primer(dna, tm=65, min_len=10, tm_undershoot=1, tm_overshoot=3,
     primers_tms = [(primer, melt) for primer, melt in primers_tms if
                    melt >= tm - tm_undershoot]
     if end_gc:
-        primers_tms = [(primer, melt) for primer, melt in primers_tms if
-                       primer.top().endswith(('C', 'G'))]
+        primers_tms = [pair for pair in primers_tms if
+                       pair[0][-1] == coral.DNA('C') or
+                       pair[0][-1] == coral.DNA('G')]
     if not primers_tms:
         raise ValueError('No primers could be generated using these settings')
 
