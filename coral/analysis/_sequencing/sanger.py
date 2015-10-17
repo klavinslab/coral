@@ -219,16 +219,17 @@ class Sanger(object):
         '''Align sequences using needle.'''
         # Align
         refs = [self._reference.copy() for x in self._processed]
-        if len(refs) > 1:
+        if len(self._processed) > 1:
             needle = coral.analysis.needle_multi(refs, self._processed,
                                                  gap_open=self._gap_open,
                                                  gap_extend=self._gap_extend,
                                                  matrix=self._matrix)
         else:
-            needle = coral.analysis.needle(refs, self._processed,
-                                           gap_open=self._gap_open,
-                                           gap_extend=self._gap_extend,
-                                           matrix=self._matrix)
+            needle_single = coral.analysis.needle(refs[0], self._processed[0],
+                                                  gap_open=self._gap_open,
+                                                  gap_extend=self._gap_extend,
+                                                  matrix=self._matrix)
+            needle = [needle_single]
         # Split into alignments and scores
         # TODO: use zip here to make it simpler
         alignments = [(str(ref), str(res)) for ref, res, score in
