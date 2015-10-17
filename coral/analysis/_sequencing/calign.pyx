@@ -2,7 +2,6 @@ import numpy as np
 cimport numpy as np
 from libc.string cimport strlen
 import os
-import sys
 
 
 # Access to the Python/C API
@@ -57,6 +56,7 @@ cdef object read_matrix(path):
     :type path: str.
 
     '''
+    print 'Hello!'
     cdef np.ndarray[DTYPE_INT, ndim=2] matrix
     cdef size_t i, matrix_row = 0
     cdef int v, mat_size
