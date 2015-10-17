@@ -7,6 +7,7 @@ import numpy
 # For rebuilding Cython extensions
 try:
     from Cython.Distutils import build_ext
+    from Cython.Build import cythonize
     USECYTHON = True
 except ImportError:
     USECYTHON = False
@@ -49,6 +50,8 @@ seq_extension = Extension('coral.analysis._sequencing.calign',
 EXTENSIONS = [seq_extension]
 
 if USECYTHON:
+    cython_ext = cythonize('coral/analysis/_sequencing/calign.pyx')
+    EXTENSIONS = cython_ext + EXTENSIONS
     setup(cmdclass={'build_ext': build_ext},
           ext_modules=EXTENSIONS,
           test_suite='nose.collector',
