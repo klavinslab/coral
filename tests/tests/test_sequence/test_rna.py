@@ -100,8 +100,8 @@ class TestRNA(object):
         assert_true(self.test_rna != RNA('aagc'))
 
     def test_contains(self):
-        assert_true('a' in self.test_rna)
-        assert_true('u' in self.test_rna)
-        assert_true('g' in self.test_rna)
-        assert_true('c' in self.test_rna)
-        assert_false('t' in self.test_rna)
+        assert_true(RNA('a') in self.test_rna)
+        assert_true(RNA('u') in self.test_rna)
+        assert_true(RNA('g') in self.test_rna)
+        assert_true(RNA('c') in self.test_rna)
+        assert_false(RNA('a') in RNA('ugc'))

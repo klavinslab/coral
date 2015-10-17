@@ -2,7 +2,7 @@
 import os
 from coral import analysis, seqio
 from nose.tools import assert_equal
-# IDEA: unit tests for plotting?
+# FIXME: Multiprocessing exceptions hang, don't just fail and report
 
 
 class TestSanger(object):

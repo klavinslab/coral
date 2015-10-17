@@ -56,7 +56,6 @@ cdef object read_matrix(path):
     :type path: str.
 
     '''
-    print 'Hello!'
     cdef np.ndarray[DTYPE_INT, ndim=2] matrix
     cdef size_t i, matrix_row = 0
     cdef int v, mat_size
