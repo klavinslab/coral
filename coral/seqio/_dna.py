@@ -115,7 +115,8 @@ def write_dna(dna, path):
     for feature in dna.features:
         features.append(_coral_to_seqfeature(feature))
     # Biopython doesn't like 'None' here
-    bio_id = dna.id if dna.id else ''
+    # FIXME: this is a legacy feature - remove?
+    bio_id = dna.id if hasattr(dna, 'id') else ''
     # Maximum length of name is 16
     seq = SeqRecord(Seq(str(dna), alphabet=ambiguous_dna), id=bio_id,
                     name=dna.name[0:16], features=features,
