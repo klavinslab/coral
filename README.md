@@ -6,6 +6,8 @@
 
 Coral: Core tools for synthetic DNA design. Read the documentation at http://coral.readthedocs.org.
 
+Coral is a Python library for encoding the process of designing synthetic DNA constructs. Coral mirrors the traditional design steps used in GUI-based sequence design (ApE, j5, Benchling, etc.) as operations on data structures, enables iterative design through analysis modules, and connects seamlessly to outside libraries. Through the use of Coral, you can translate your DNA design processes into concise, executable, and reusable scripts.
+
 Coral encodes synthetic DNA design rules into its core sequence data types (`DNA`, `RNA`, and `Peptide`), enabling concise, dependable methods for automated DNA design.
 
 Coral works with PyPy so long as a PyPy-compatible numpy is installed.
