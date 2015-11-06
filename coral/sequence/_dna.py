@@ -8,12 +8,14 @@ import coral.analysis
 import coral.reaction
 import coral.seqio
 from ._sequence import NucleicAcidSequence
+from ._sequence import Feature
 
 
 class DNA(object):
     '''DNA sequence.'''
     def __init__(self, dna, bottom=None, topology='linear', stranded='ds',
-                 features=None, run_checks=True, id=None, name=''):
+                 features=None, run_checks=True, id=None, name='',
+                 children=None, feature=None):
         '''
         :param dna: Input sequence (DNA).
         :type dna: str
@@ -63,6 +65,21 @@ class DNA(object):
         self.topology = topology
         self.stranded = stranded
         self.name = name
+
+        # New feature tree model
+        if children is None:
+            self.children = []
+        else:
+            self.children = children
+
+        if feature is None:
+            # Make a default feature_info object
+            self.feature = Feature('', 0, len(self), 'misc_feature')
+        else:
+            self.feature = feature
+
+    def add_child(self, child):
+        self.children.append(child)
 
     def ape(self, ape_path=None):
         '''Open in ApE if `ApE` is in your command line path.'''
@@ -156,6 +173,34 @@ class DNA(object):
         for feature in extracted.features:
             feature.move(-feature.start)
         return extracted
+
+    def get_features(self, limit_depth=None):
+        # Traverse whole tree, return flattened list
+        # breadth-first seems more intuitive - may want to query to certain
+        # depths
+        result = [self]
+        node_queue = [self]
+        depth = 0
+        while depth < limit_depth and node_queue:
+            new_queue = []
+            # go through every node in next_nodes
+            for node in node_queue:
+                children = node.children
+                if children and children is not None:
+                    # add all of its children to new queue and to result
+                    result += children
+                    new_queue += children
+            # replace next_nodes with new queue
+            node_queue = new_queue
+
+        # important - copy data and remove all tree info
+        copied_result = []
+        for feature in result:
+            copy = feature.copy()
+            copy.children = []
+            copied_result.append(copy)
+
+        return copied_result
 
     def flip(self):
         '''Flip the DNA - swap the top and bottom strands.
