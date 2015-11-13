@@ -10,6 +10,10 @@ import coral.seqio
 from ._sequence import NucleicAcidSequence
 
 
+class IPythonDisplayImportError(ImportError):
+    '''Failed to import IPython display modules - display requires IPython'''
+
+
 class DNA(object):
     '''DNA sequence.'''
     def __init__(self, dna, bottom=None, topology='linear', stranded='ds',
@@ -131,6 +135,63 @@ class DNA(object):
         copy = self.copy()
         copy.topology = 'circular'
         return copy
+
+    def display(self):
+        '''Display a visualization of the sequence in an IPython notebook.'''
+        try:
+            from IPython.display import HTML
+            import uuid
+        except ImportError:
+            raise IPythonDisplayImportError
+
+        sequence_json = self.json()
+
+        d3cdn = '//d3js.org/d3.v3.min.js'
+        div_id = 'sequence_{}'.format(uuid.uuid1())
+
+        cur_dir = os.path.abspath(os.path.dirname(__file__))
+        d3seqpath = os.path.join(cur_dir, '_seqd3.js')
+        with open(d3seqpath) as f:
+            d3seqjs = f.read()
+
+        html = '<div id={div_id}></div>'.format(div_id=div_id)
+        js_one = '''
+        <script>
+        require(["{d3_cdn}"], function(lib) {{
+            window.data = {data};'''.format(div_id=div_id, d3_cdn=d3cdn,
+                                            data=sequence_json)
+
+        js_two = '''
+            d3sequence(window.data, "{div_id}")
+        }});
+        </script>
+        '''.format(div_id=div_id)
+
+        return HTML(html + js_one + d3seqjs + js_two)
+
+    def json(self):
+        import json
+        dna_json = {}
+        dna_json['name'] = self.name
+        dna_json['material'] = 'DNA'
+        dna_json['topology'] = self.topology
+        dna_json['sequence'] = str(self.top())
+        dna_json['bottom'] = str(self.bottom())
+
+        features_json = []
+        for feature in self.features:
+            feature_json = {}
+            feature_json['start'] = feature.start
+            feature_json['stop'] = feature.stop
+            feature_json['type'] = feature.feature_type
+            feature_json['name'] = feature.name
+            if 'ApEinfo_fwdcolor' in feature.qualifiers:
+                feature_json['color'] = feature.qualifiers['ApEinfo_fwdcolor']
+
+            features_json.append(feature_json)
+        dna_json['features'] = features_json
+
+        return json.dumps(dna_json)
 
     def extract(self, feature, remove_subfeatures=False):
         '''Extract a feature from the sequence.
