@@ -19,7 +19,7 @@ config = {
     'url': 'https://github.com/klavinslab/coral',
     'download_url': 'https://github.com/klavinslab/coral.git',
     'author_email': 'nbolten _at_ gmail',
-    'version': '0.2.0',
+    'version': '0.2.1',
     'install_requires': ['numpy', 'biopython', 'intermine', 'requests'],
     'extras_require': {'plotting': ['matplotlib'],
                        'documentation': ['sphinx']},
