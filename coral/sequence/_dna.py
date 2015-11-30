@@ -150,24 +150,24 @@ class DNA(object):
         div_id = 'sequence_{}'.format(uuid.uuid1())
 
         cur_dir = os.path.abspath(os.path.dirname(__file__))
-        d3seqpath = os.path.join(cur_dir, '_seqd3.js')
-        with open(d3seqpath) as f:
-            d3seqjs = f.read()
+        d3_plasmid_path = os.path.join(cur_dir, 'd3-plasmid.js')
+        with open(d3_plasmid_path) as f:
+            d3_plasmid_js = f.read()
 
         html = '<div id={div_id}></div>'.format(div_id=div_id)
-        js_one = '''
+        js_databind = '''
         <script>
         require(["{d3_cdn}"], function(lib) {{
             window.data = {data};'''.format(div_id=div_id, d3_cdn=d3cdn,
                                             data=sequence_json)
 
-        js_two = '''
+        js_viz = '''
             d3sequence(window.data, "{div_id}")
         }});
         </script>
         '''.format(div_id=div_id)
 
-        return HTML(html + js_one + d3seqjs + js_two)
+        return HTML(html + js_databind + d3_plasmid_js + js_viz)
 
     def json(self):
         import json
