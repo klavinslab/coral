@@ -8,8 +8,37 @@ class AmbiguousPrimingError(Exception):
 class PrimerBindError(Exception):
     """Primer did not bind correctly."""
 
+def primer_binding(template, primer, min_tm=50.0, min_bases=14):
+    '''Simulates a primer binding event. Will find the maximum subset
+    of bases in the primer that binds to the template.
 
-def pcr(template, primer1, primer2):
+    :param temlate: DNA template for which to bind a primer
+    :type template: coral.DNA
+    :param primer: primer to bind to template
+    :type primer: coral.Primer
+    :param min_tm: the minimum required temperature for primer binding
+    :type min_tm: float
+    :param min_bases: minimum number of bases allowed for binding
+    :type min_bases: int
+    :returns: primer binding locations with maximum number of bases
+    :rtype: int
+    :raises: Exception if primer length is too small
+             Exception if primer does not bind
+             Exception if primer bind
+    '''
+    if len(primer) < min_bases:
+        raise Exception("Primer length does not exceed minimum number of bases")
+    for i in range(min_bases, len(primer)):
+        partial_primer = primer.anneal[i:]
+        anneal_temp = partial_primer.tm
+        p_matches = template.locate(partial)
+        if len(p_matches) > 0:
+            if anneal_temp < min_tm:
+                raise Exception("Primer binds but does not melting temperature is too low.")
+            return p_matches
+
+
+def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
     '''Simulate a PCR (no support for ambiguous PCRs).
 
     :param template: DNA template from which to PCR.
@@ -23,14 +52,16 @@ def pcr(template, primer1, primer2):
     :raises: Exception if a primer binds more than once on the template.
              Exception if primers bind in overlapping sequence of the template.
              Exception if the PCR would work on a circular version of the
+             Exception if there are no forward primers
+             Exception if there are no reverse primers
              template (implies that input was linear).
 
     '''
     # FIXME: using the wrong primers/template produces a useless error.
     # make the error useful!
     # Find match in top or bottom strands for each primer
-    p1_matches = template.locate(primer1.anneal)
-    p2_matches = template.locate(primer2.anneal)
+    p1_matches = primer_binding(template, primer1, min_tm=50.0, min_bases=14)
+    p2_matches = primer_binding(template, primer2, min_tm=50.0, min_bases=14)
 
     # HEY FIX THIS - should find an ambiguity
     # Make sure there's no ambiguities
