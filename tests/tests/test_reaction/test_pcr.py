@@ -14,7 +14,6 @@ def test_basic():
     amplicon = reaction.pcr(template, forward, reverse)
     assert_equal(amplicon, template)
 
-
 def test_over_origin():
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
@@ -37,3 +36,18 @@ def test_primer_bind_error():
 
     assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
                   template, primer1, primer2)
+
+def test_ambiguous_binding():
+    pass
+
+def test_overlap_bug():
+    pass
+
+def test_if_primers_are_in_same_direction():
+    template = seqio.read_dna("pMODKan-HO-pACT1GEV.ape")
+    p1 = design.primer(template[100:])
+    p2 = design.primer(template[150:])
+    amplicon = reaction.pcr(template, p1, p2)
+    amplicon2 = reaction.pcr(template, p2, p1)
+    return amplicon, amplicon2
+a1, a2 = test_if_primers_are_in_same_direction()

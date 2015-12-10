@@ -55,6 +55,11 @@ def pcr(template, primer1, primer2):
     # Make 'reverse' index useful for slicing
     fwds = p1_matches[0] + p2_matches[0]
     revs = p2_matches[1] + p1_matches[1]
+    if fwds == []:
+        raise Exception('No forward primers found')
+    if revs == []:
+        raise Exception('No reverse primers found')
+
     fwd = fwds[0]
     rev = len(template) - revs[0]
     # TODO: circular search will muck things up. If primers are at the very
