@@ -68,22 +68,22 @@ def test_AmbiguousPrimingError():
 
 def test_overhang():
     template = seqio.read_dna("pMODKan-HO-pACT1GEV.ape")
-    
+
     overhang = DNA("AGCGGGGGGGGGCTGGGGCTGAT")
     p1 = design.primer(template[100:])
     p1 = Primer(overhang + p1.primer(), 65) #add overhang
-    
+
     rev_overhang = DNA("GGGGGGGGGGGGGGGGGGG")
     p2 = design.primer(template[:300].reverse_complement())
     p2 = Primer(rev_overhang + p2.primer(), 65)
-    
+
     expected = overhang + template[100:300] + rev_overhang.reverse_complement()
     amplicon = reaction.pcr(template, p1, p2)
     assert_equal(str(expected), str(amplicon))
-    
+
     amplicon = reaction.pcr(template, p2, p1)
     assert_equal(str(expected), str(amplicon))
-    
+
 test_basic()
 test_overhang()
 test_over_origin()
