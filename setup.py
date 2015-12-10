@@ -55,6 +55,7 @@ if USECYTHON:
     setup(cmdclass={'build_ext': build_ext},
           ext_modules=EXTENSIONS,
           test_suite='nose.collector',
+          include_dirs=[numpy.get_include()],
           **config)
 else:
     setup(ext_modules=EXTENSIONS,
