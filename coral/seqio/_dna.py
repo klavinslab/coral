@@ -296,7 +296,7 @@ def _coral_to_seqfeature(feature):
         location = FeatureLocation(ExactPosition(feature.start),
                                    ExactPosition(feature.stop),
                                    strand=bio_strand)
-    qualifiers = feature.qualifiers.copy()
+    qualifiers = feature.qualifiers
     qualifiers['label'] = [feature.name]
     seqfeature = SeqFeature(location, type=ftype,
                             qualifiers=qualifiers,

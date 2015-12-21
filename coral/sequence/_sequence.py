@@ -274,7 +274,7 @@ def _decompose(string, n):
 class Feature(object):
     '''Represent A DNA feature - annotate and extract sequence by metadata.'''
     def __init__(self, name, start, stop, feature_type, gene='', locus_tag='',
-                 qualifiers={}, strand=0, gaps=[]):
+                 qualifiers=None, strand=0, gaps=None):
         '''
         :param name: Name of the feature. Used during feature extraction.
         :type name: str
@@ -309,9 +309,15 @@ class Feature(object):
         self.modified = False
         self.gene = gene
         self.locus_tag = locus_tag
-        self.qualifiers = qualifiers
+        if qualifiers == None:
+            self.qualifiers = {}
+        else:
+            self.qualifiers = qualifiers
         self.strand = strand
-        self.gaps = gaps
+        if gaps == None:
+            self.gaps = []
+        else:
+            self.gaps = gaps
 
         allowed_types = list(sorted(TO_CORAL.keys()))
 
