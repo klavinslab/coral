@@ -13,7 +13,7 @@ class AmbiguousGibsonError(ValueError):
     pass
 
 
-def gibson(seq_list, linear=False, homology=10, tm=63.0):
+def gibson(seq_list, linear=False, homology=10, tm=63.0, annotate_features=True):
         '''Simulate a Gibson reaction.
 
         :param seq_list: list of DNA sequences to Gibson
@@ -50,8 +50,30 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0):
         if not linear:
             # Fuse the final fragment to itself
             working_list = _fuse_last(working_list, homology, tm)
-        return working_list[0]
+        result = working_list[0]
+        if annotate_features:
+            result = _annotate_features(working_list[0], seq_list)
+        return result
 
+def _annotate_features(template, list_of_fragments):
+    annotated_features = []
+    for fragment in list_of_fragments:
+        for feature in fragment.features:
+            feature_seq = fragment.extract(feature)
+            loc = template.locate(feature_seq)
+            length = abs(feature.start - feature.stop)
+            fwd_binding_sites = loc[0]
+            rev_binding_sites = loc[1]
+            for start in fwd_binding_sites:
+                stop = start + length
+                f = (start, stop)
+                if f not in annotate_features:
+                    annotated_features.append(f)
+                    new_feature = feature.copy()
+                    new_feature.start = start
+                    new_feature.stop = stop
+                    template.features.append(new_feature)
+    return template
 
 def _find_fuse_next(working_list, homology, tm):
     '''Find the next sequence to fuse, and fuse it (or raise exception).
