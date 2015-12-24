@@ -67,7 +67,7 @@ def _annotate_features(template, list_of_fragments):
             for start in fwd_binding_sites:
                 stop = start + length
                 f = (start, stop)
-                if f not in annotate_features:
+                if f not in annotated_features:
                     annotated_features.append(f)
                     new_feature = feature.copy()
                     new_feature.start = start

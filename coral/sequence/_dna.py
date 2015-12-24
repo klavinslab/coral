@@ -46,6 +46,7 @@ class DNA(object):
 
         '''
         # TODO: accept sequences in general by running str() on it
+        dna = dna.strip()
         self._top = NucleicAcidSequence(dna, 'dna', run_checks=run_checks)
 
         if stranded == 'ss':
