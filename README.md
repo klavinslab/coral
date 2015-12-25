@@ -34,7 +34,6 @@ pip install .
 ```
 numpy
 biopython
-intermine
 ```
 
 optional:
@@ -42,7 +41,7 @@ optional:
 | Package | Added functionality |
 | --- | --- |
 | `matplotlib` | plotting sequencing analysis |
-| `cython`     | 300 times faster sequencing alignment |
+| `intermine`, `requests` | yeast database (intermine) functions |
 
 ###system:
 
@@ -50,6 +49,11 @@ optional:
 | --- | --- |
 | `NuPack` | Structural analysis |
 | `ViennaRNA` | Structural analysis |
+
+## Development:
+
+Install the extra packages in dev-requirements.txt (`Sphinx`, `cython`,
+`nose`).
 
 ## License
 
