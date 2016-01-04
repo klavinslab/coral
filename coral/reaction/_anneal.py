@@ -42,8 +42,6 @@ def anneal(template, primer, min_tm=50.0, min_bases=14):
         raise PrimerLengthError("Primer length for primer seqeunce \
             {} does not exceed minimum number of bases {}".format(primer, min_bases))
 
-    top_strand_matches = set([])
-    bottom_strand_matches = set([])
     fwd_matches = {}
     rev_matches = {}
     for i in range(len(primer)-min_bases+1)[::-1]:

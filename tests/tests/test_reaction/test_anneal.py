@@ -111,7 +111,7 @@ def test_multiple_priming():
                               "pMODKan-HO-pACT1GEV.ape"))
     seq = DNA('cgccagggttttcccagtcacgac')
     template = template.linearize()
-    template = template + seq + DNA("AGGCGTATGC") + seq[5:]
+    template = template + seq + DNA("AGGCGTATGC") + seq
     template = template + DNA("GGGGGGG") + seq.reverse_complement() + DNA("GGAAAG")
     template = template.circularize()
     primer = Primer(seq, 50.6)
