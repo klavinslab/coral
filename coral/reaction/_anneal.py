@@ -1,11 +1,12 @@
-'''DNA Annealing Event Simulation'''
+'''Primer Annealing Event Simulation'''
 
-class AmbiguousPrimingError(Exception):
-    """Primer binds to more than one place on a template."""
+import coral
 
+class PrimerLengthError(Exception):
+    """Primer does not meet minimum length requirements."""
 
-class PrimerBindError(Exception):
-    """Primer did not bind correctly."""
+class GenericAnnealError(Exception):
+    """Generic primer annealing error."""
 
 def anneal(template, primer, min_tm=50.0, min_bases=14):
     '''Simulates a primer binding event. Will find the maximum subset
@@ -22,29 +23,36 @@ def anneal(template, primer, min_tm=50.0, min_bases=14):
     :type min_tm: float
     :param min_bases: minimum number of bases allowed for binding
     :type min_bases: int
-    :returns: primer binding locations (3' end) and the overhang sequence
+    :returns: dictionary of primer binding locations for each strands \
+            {location: (3' end), annealing sequence, overhang sequence}
     :rtype: int, coral.DNA
     :raises: Exception if primer length is too small
              Exception if primer does not bind
              Exception if primer bind
     '''
+    if not type(primer) == coral.Primer:
+        raise GenericAnnealError("Primer must be of type coral.Primer")
 
+    if not type(template) == coral.DNA:
+        raise GenericAnnealError("Template must be of type coral.DNA")
+
+    ### TODO: add possibility for primer basepair mismatch
+    ### TODO: add
     if len(primer) < min_bases:
-        raise Exception("Primer length does not exceed minimum number of bases {}".format(min_bases))
-    for i in range(len(primer)-min_bases+1):
-        anneal = primer.anneal[i:]
+        raise PrimerLengthError("Primer length for primer seqeunce \
+            {} does not exceed minimum number of bases {}".format(primer, min_bases))
+
+    fwd_matches = {}
+    rev_matches = {}
+    for i in range(len(primer)-min_bases+1)[::-1]:
+        primer_dna = primer.overhang + primer.anneal
+        anneal = primer_dna[i:]
+        overhang = primer_dna[:i]
         anneal_temp = anneal.tm()
-        p_matches = template.locate(anneal)
-        p_bind = sum([len(match) for match in p_matches])
-        if p_bind > 0:
-            if anneal_temp < min_tm:
-                raise Exception("Primer binds but does not melting temperature is too low.")
-            overhang = primer.anneal[:i]
-            fwd_matches = []
-            rev_matches = []
+        if anneal_temp > min_tm:
+            p_matches = template.locate(anneal)
             for m in p_matches[0]:
-                fwd_matches.append((m + len(anneal), primer, anneal, overhang))
+                fwd_matches[m+len(anneal)] = (primer, anneal, overhang)
             for m in p_matches[1]:
-                rev_matches.append((m + len(anneal), primer, anneal, overhang))
-            return fwd_matches, rev_matches
-    return [], []
+                rev_matches[m+len(anneal)] = (primer, anneal, overhang)
+    return fwd_matches, rev_matches
