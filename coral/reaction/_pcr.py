@@ -2,6 +2,12 @@
 
 import coral
 
+class AmbiguousPrimingError(Exception):
+    """Primer binds to more than one place on a template."""
+
+class PrimerBindError(Exception):
+    """Primer did not bind correctly."""
+
 def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
     '''Simulate a PCR (no support for ambiguous PCRs).
 
@@ -11,6 +17,10 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
     :type primer1: coral.Primer
     :param primer2: First PCR primer.
     :type primer2: coral.Primer
+    :param min_tm:
+    :type min_tm: float
+    :param min_bases:
+    :type min_bases: int
     :returns: A dsDNA Amplicon.
     :rtype: coral.DNA
     :raises: Exception if a primer binds more than once on the template.

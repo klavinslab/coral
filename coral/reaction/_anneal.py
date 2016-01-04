@@ -1,11 +1,10 @@
-'''DNA Annealing Event Simulation'''
+'''Primer Annealing Event Simulation'''
 
-class AmbiguousPrimingError(Exception):
-    """Primer binds to more than one place on a template."""
+class PrimerLengthError(Exception):
+    """Primer does not meet minimum length requirements."""
 
-
-class PrimerBindError(Exception):
-    """Primer did not bind correctly."""
+class PrimerTmError(Exception):
+    """Primer annealing temperature is too low."""
 
 def anneal(template, primer, min_tm=50.0, min_bases=14):
     '''Simulates a primer binding event. Will find the maximum subset
@@ -29,16 +28,22 @@ def anneal(template, primer, min_tm=50.0, min_bases=14):
              Exception if primer bind
     '''
 
+    ### TODO: add possibility for primer basepair mismatch
     if len(primer) < min_bases:
-        raise Exception("Primer length does not exceed minimum number of bases {}".format(min_bases))
+        raise PrimerLengthError("Primer length for primer seqeunce \
+            {} does not exceed minimum number of bases {}".format(primer, min_bases))
     for i in range(len(primer)-min_bases+1):
-        anneal = primer.anneal[i:]
+        primer_dna = primer.overhang + primer.anneal
+        anneal = primer_dna[i:]
         anneal_temp = anneal.tm()
         p_matches = template.locate(anneal)
         p_bind = sum([len(match) for match in p_matches])
         if p_bind > 0:
             if anneal_temp < min_tm:
-                raise Exception("Primer binds but does not melting temperature is too low.")
+                raise PrimerTmError("Primer binds but \
+                        melting temperature is too low. \
+                        Calculated anneal tempearture \
+                        {} does not exceed {}".format(anneal_temp, min_tm))
             overhang = primer.anneal[:i]
             fwd_matches = []
             rev_matches = []

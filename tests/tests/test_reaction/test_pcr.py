@@ -37,13 +37,23 @@ def test_primer_bind_error():
                   template, primer1, primer2)
 
 def test_primer_overlap():
-    template = seqio.read_dna("pMODKan-HO-pACT1GEV.ape")
+    ''' Tests case in which primers overlap (i.e. primer
+    dimers) '''
+
+    current_path = os.path.dirname(__file__)
+    template = seqio.read_dna(os.path.join(current_path,
+                              "pMODKan-HO-pACT1GEV.ape"))
     p1 = design.primer(template[100:])
     p2 = design.primer(template[:113].reverse_complement())
     reaction.pcr(template, p1, p2, min_bases=10)
 
 def test_primers_are_in_same_direction_error():
-    template = seqio.read_dna("pMODKan-HO-pACT1GEV.ape")
+    ''' Tests case in which both forward and reverse
+        primer bind in the same direction '''
+
+    current_path = os.path.dirname(__file__)
+    template = seqio.read_dna(os.path.join(current_path,
+                              "pMODKan-HO-pACT1GEV.ape"))
     p1 = design.primer(template[100:])
     p2 = design.primer(template[150:])
     assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
@@ -58,6 +68,8 @@ def test_primers_are_in_same_direction_error():
                   template, p2, p1)
 
 def test_AmbiguousPrimingError():
+    ''' Tests case in which there are multiple primer
+        binding sites '''
     s = 'ACGTGCTGTGATGTCGTGTGA'
     s2 = 'AGGCTGGCTGGAGGTTCG'
     template = DNA(s) + DNA(s) + DNA(s2).reverse_complement()
@@ -67,7 +79,12 @@ def test_AmbiguousPrimingError():
                   template, p1, p2)
 
 def test_overhang():
-    template = seqio.read_dna("pMODKan-HO-pACT1GEV.ape")
+    ''' Tests if overhangs on primers are correctly
+        appended to pcr fragments. '''
+
+    current_path = os.path.dirname(__file__)
+    template = seqio.read_dna(os.path.join(current_path,
+                              "pMODKan-HO-pACT1GEV.ape"))
 
     overhang = DNA("AGCGGGGGGGGGCTGGGGCTGAT")
     p1 = design.primer(template[100:])
@@ -83,12 +100,3 @@ def test_overhang():
 
     amplicon = reaction.pcr(template, p2, p1)
     assert_equal(str(expected), str(amplicon))
-
-test_basic()
-test_overhang()
-test_over_origin()
-test_primer_bind_error()
-test_primers_are_in_same_direction_error()
-test_primer_overlap()
-test_AmbiguousPrimingError()
-print "_pcr.py Passes tests"
