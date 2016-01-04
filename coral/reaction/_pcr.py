@@ -1,7 +1,5 @@
 '''PCR reaction(s).'''
 
-import coral
-
 class AmbiguousPrimingError(Exception):
     """Primer binds to more than one place on a template."""
 
@@ -34,8 +32,8 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
     # FIXME: using the wrong primers/template produces a useless error.
     # make the error useful!
     # Find match in top or bottom strands for each primer
-    p1_matches = coral.reaction.anneal(template, primer1, min_tm=min_tm, min_bases=min_bases)
-    p2_matches = coral.reaction.anneal(template, primer2, min_tm=min_tm, min_bases=min_bases)
+    p1_matches = anneal(template, primer1, min_tm=min_tm, min_bases=min_bases)
+    p2_matches = anneal(template, primer2, min_tm=min_tm, min_bases=min_bases)
 
     # HEY FIX THIS - should find an ambiguity
     # Make sure there's no ambiguities
