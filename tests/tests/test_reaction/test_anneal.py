@@ -1,6 +1,6 @@
 '''Test functionality of PCR class of reaction module.'''
 import os
-from coral import reaction, seqio, DNA, Primer
+from coral import analysis, seqio, DNA, Primer
 from nose.tools import assert_true, assert_raises
 
 
@@ -11,7 +11,7 @@ def test_basic():
     # Test forward priming.
     seq = DNA('cgccagggttttcccagtcacgac')
     primer = Primer(seq, 50.6)
-    matches = reaction.anneal(template, primer)
+    matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
     loc = template.locate(seq)
     assert_true(len(fwd_matches.keys()) == len(loc[0]))
@@ -24,7 +24,7 @@ def test_basic():
     # Test reverse priming
     seq = DNA('ACAAGAGAGATTGGGAAGGAAAGGATCA')
     primer = Primer(seq, 50.6)
-    matches = reaction.anneal(template, primer)
+    matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
     loc = template.locate(seq)
     assert_true(len(fwd_matches.keys()) == len(loc[0]))
@@ -42,7 +42,7 @@ def test_near_index():
                                            "pMODKan-HO-pACT1GEV.ape"))
     seq = DNA('aggccctttcgtctcgcgcgttt')
     primer = Primer(seq, 50.6)
-    matches = reaction.anneal(template, primer)
+    matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
     loc = template.locate(seq)
     assert_true(len(fwd_matches.keys()) == len(loc[0]))
@@ -62,7 +62,7 @@ def test_overhang():
     overhang = DNA('ggggggg')
     seq2 = overhang + seq
     primer = Primer(seq2, 50.6)
-    matches = reaction.anneal(template, primer)
+    matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
     loc = template.locate(seq)
     assert_true(len(fwd_matches.keys()) == len(loc[0]))
@@ -86,7 +86,7 @@ def test_overhang():
     overhang = DNA('ggggggg')
     seq2 = overhang + seq
     primer = Primer(seq2, 50.6)
-    matches = reaction.anneal(template, primer)
+    matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
     loc = template.locate(seq)
     assert_true(len(fwd_matches.keys()) == len(loc[0]))
@@ -116,7 +116,7 @@ def test_multiple_priming():
                 DNA("GGAAAG"))
     template = template.circularize()
     primer = Primer(seq, 50.6)
-    matches = reaction.anneal(template, primer)
+    matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
     loc = template.locate(seq)
     assert_true(len(fwd_matches.keys()) == len(loc[0]))
@@ -136,7 +136,7 @@ def test_no_priming():
                                            "pMODKan-HO-pACT1GEV.ape"))
     seq = DNA('ggaggagggcggcgaggcgagcgacggaggggga')
     primer = Primer(seq, 50.6)
-    matches = reaction.anneal(template, primer)
+    matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
     loc = template.locate(seq)
     assert_true(len(fwd_matches.keys()) == len(loc[0]))
@@ -156,7 +156,7 @@ def test_min_primer_length():
     seq = DNA('cgccagggttttcccagtcacgac')
     seq = seq[:15]
     primer = Primer(seq, 50.6)
-    assert_raises(reaction._anneal.PrimerLengthError, reaction.anneal,
+    assert_raises(analysis._sequence.anneal.PrimerLengthError, analysis.anneal,
                   template, primer, min_bases=16)
 
 
@@ -168,9 +168,9 @@ def test_min_tm():
     # Test forward priming
     seq = DNA('CTTCTATCGAACAA')
     primer = Primer(seq, 40)
-    matches = reaction.anneal(template, primer, min_tm=60.0)
+    matches = analysis.anneal(template, primer, min_tm=60.0)
     assert_true(len(matches[0]) == 0)
-    matches = reaction.anneal(template, primer, min_tm=30.0)
+    matches = analysis.anneal(template, primer, min_tm=30.0)
     assert_true(len(matches[0]) > 0)
 
 
@@ -182,8 +182,8 @@ def test_primertypeerror():
     dna_seq = DNA('cgccagggttttcccagtcacgac')
     primer = Primer(dna_seq, 65.1)
 
-    assert_raises(reaction._anneal.AnnealError, reaction.anneal,
+    assert_raises(analysis._sequence.anneal.AnnealError, analysis.anneal,
                   template, dna_seq)
 
-    assert_raises(reaction._anneal.AnnealError, reaction.anneal,
+    assert_raises(analysis._sequence.anneal.AnnealError, analysis.anneal,
                   Primer(template, 50.6), primer)

@@ -31,9 +31,9 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
 
     '''
     # Find match in top or bottom strands for each primer
-    p1_matches = coral.reaction.anneal(template, primer1, min_tm=min_tm,
+    p1_matches = coral.analysis.anneal(template, primer1, min_tm=min_tm,
                                        min_bases=min_bases)
-    p2_matches = coral.reaction.anneal(template, primer2, min_tm=min_tm,
+    p2_matches = coral.analysis.anneal(template, primer2, min_tm=min_tm,
                                        min_bases=min_bases)
     p1_binding_locations = p1_matches[0].keys() + p1_matches[1].keys()
     p2_binding_locations = p2_matches[0].keys() + p2_matches[1].keys()

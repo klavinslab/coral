@@ -7,7 +7,6 @@ from ._central_dogma import reverse_transcribe
 from ._central_dogma import coding_sequence
 from ._restriction import digest
 from ._pcr import pcr
-from ._anneal import anneal
 from ._gibson import gibson
 from ._oligo_assembly import assemble_oligos
 from ._oligo_assembly import bind_unique
