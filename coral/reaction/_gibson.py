@@ -56,6 +56,13 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0, annotate_features=True)
         return result
 
 def _annotate_features(template, list_of_fragments):
+    ''' Annotate final gibson template using features
+    found in fragments
+    
+    :param template: coral.DNA template
+    :param list_of_fragments: list of coral.DNA fragments
+    :return: annotated coral.DNA sequence
+    '''
     annotated_features = []
     for fragment in list_of_fragments:
         for feature in fragment.features:
