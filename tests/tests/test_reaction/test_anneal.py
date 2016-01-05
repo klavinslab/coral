@@ -182,8 +182,8 @@ def test_primertypeerror():
     dna_seq = DNA('cgccagggttttcccagtcacgac')
     primer = Primer(dna_seq, 65.1)
 
-    assert_raises(reaction._anneal.GenericAnnealError, reaction.anneal,
+    assert_raises(reaction._anneal.AnnealError, reaction.anneal,
                   template, dna_seq)
 
-    assert_raises(reaction._anneal.GenericAnnealError, reaction.anneal,
+    assert_raises(reaction._anneal.AnnealError, reaction.anneal,
                   Primer(template, 50.6), primer)

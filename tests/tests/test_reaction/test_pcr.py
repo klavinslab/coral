@@ -35,7 +35,7 @@ def test_primer_bind_error():
     primer1, primer2 = design.primers(template)
     # Mess up the second primer so it doesn't bind
     primer2.anneal[10:] = 'AAAAAAAAAA'
-    assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
+    assert_raises(reaction._pcr.PrimingError, reaction.pcr,
                   template, primer1, primer2)
 
 
@@ -60,19 +60,19 @@ def test_primers_are_in_same_direction_error():
                                            'pMODKan-HO-pACT1GEV.ape'))
     p1 = design.primer(template[100:])
     p2 = design.primer(template[150:])
-    assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
+    assert_raises(reaction._pcr.PrimingError, reaction.pcr,
                   template, p1, p2)
-    assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
+    assert_raises(reaction._pcr.PrimingError, reaction.pcr,
                   template, p2, p1)
     p1 = design.primer(template.reverse_complement()[100:])
     p2 = design.primer(template.reverse_complement()[150:])
-    assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
+    assert_raises(reaction._pcr.PrimingError, reaction.pcr,
                   template, p1, p2)
-    assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
+    assert_raises(reaction._pcr.PrimingError, reaction.pcr,
                   template, p2, p1)
 
 
-def test_AmbiguousPrimingError():
+def test_PrimingError():
     ''' Tests case in which there are multiple primer
         binding sites '''
     s = 'ACGTGCTGTGATGTCGTGTGA'
@@ -80,7 +80,7 @@ def test_AmbiguousPrimingError():
     template = DNA(s) + DNA(s) + DNA(s2).reverse_complement()
     p1 = Primer(DNA(s), 65)
     p2 = Primer(DNA(s2).reverse_complement(), 65)
-    assert_raises(reaction._pcr.AmbiguousPrimingError, reaction.pcr,
+    assert_raises(reaction._pcr.PrimingError, reaction.pcr,
                   template, p1, p2)
 
 
