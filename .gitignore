@@ -1,5 +1,6 @@
 ~*
 *__pycache__
+
 *.coverage
 *.egg-info
 *.error
@@ -10,8 +11,10 @@
 *.so
 *.spyderworkspace
 *.swp
+
 .pypirc
-dist
+
 build
+dist
 docs/_build
-venv/
+venv

@@ -5,6 +5,7 @@ from coral import design, reaction, seqio, DNA, Primer
 from nose.tools import assert_equal, assert_true, assert_raises
 
 
+# TODO: refactor into class that shares sequence reading, etc.
 def test_basic():
     to_amplify = 'atgtctaaaggtgaagaattattcactggtgttgtcccaatgctgctggtattacc' + \
                  'catggtattgatgaattgtacaaatag'
@@ -18,8 +19,8 @@ def test_basic():
 def test_over_origin():
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
-                                           "pMODKan-HO-pACT1GEV.ape"))
-    assert_true(template.topology == "circular")
+                                           'pMODKan-HO-pACT1GEV.ape'))
+    assert_true(template.topology == 'circular')
     primer1 = design.primer(template[-200:])
     primer2 = design.primer(template.reverse_complement()[-200:])
     over_origin = reaction.pcr(template, primer1, primer2)
@@ -33,7 +34,7 @@ def test_primer_bind_error():
     template = DNA(to_amplify)
     primer1, primer2 = design.primers(template)
     # Mess up the second primer so it doesn't bind
-    primer2.anneal[10:] = "AAAAAAAAAA"
+    primer2.anneal[10:] = 'AAAAAAAAAA'
     assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
                   template, primer1, primer2)
 
@@ -44,7 +45,7 @@ def test_primer_overlap():
 
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
-                                           "pMODKan-HO-pACT1GEV.ape"))
+                                           'pMODKan-HO-pACT1GEV.ape'))
     p1 = design.primer(template[100:])
     p2 = design.primer(template[:113].reverse_complement())
     reaction.pcr(template, p1, p2, min_bases=10)
@@ -56,7 +57,7 @@ def test_primers_are_in_same_direction_error():
 
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
-                                           "pMODKan-HO-pACT1GEV.ape"))
+                                           'pMODKan-HO-pACT1GEV.ape'))
     p1 = design.primer(template[100:])
     p2 = design.primer(template[150:])
     assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
@@ -89,13 +90,13 @@ def test_overhang():
 
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
-                                           "pMODKan-HO-pACT1GEV.ape"))
+                                           'pMODKan-HO-pACT1GEV.ape'))
 
-    overhang = DNA("AGCGGGGGGGGGCTGGGGCTGAT")
+    overhang = DNA('AGCGGGGGGGGGCTGGGGCTGAT')
     p1 = design.primer(template[100:])
     p1 = Primer(overhang + p1.primer(), 65)  # add overhang
 
-    rev_overhang = DNA("GGGGGGGGGGGGGGGGGGG")
+    rev_overhang = DNA('GGGGGGGGGGGGGGGGGGG')
     p2 = design.primer(template[:300].reverse_complement())
     p2 = Primer(rev_overhang + p2.primer(), 65)
 

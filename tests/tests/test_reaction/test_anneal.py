@@ -1,5 +1,4 @@
 '''Test functionality of PCR class of reaction module.'''
-
 import os
 from coral import reaction, seqio, DNA, Primer
 from nose.tools import assert_true, assert_raises
