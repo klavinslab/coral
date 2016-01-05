@@ -1,12 +1,14 @@
 '''PCR reaction(s).'''
-
 import coral
 
+
 class AmbiguousPrimingError(Exception):
-    """Primer binds to more than one place on a template."""
+    '''Primer binds to more than one place on a template.'''
+
 
 class PrimerBindError(Exception):
-    """Primer did not bind correctly."""
+    '''Primer did not bind correctly.'''
+
 
 def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
     '''Simulate a PCR (no support for ambiguous PCRs).
@@ -34,27 +36,29 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
     # FIXME: using the wrong primers/template produces a useless error.
     # make the error useful!
     # Find match in top or bottom strands for each primer
-    p1_matches = coral.reaction.anneal(template, primer1, min_tm=min_tm, min_bases=min_bases)
-    p2_matches = coral.reaction.anneal(template, primer2, min_tm=min_tm, min_bases=min_bases)
+    p1_matches = coral.reaction.anneal(template, primer1, min_tm=min_tm,
+                                       min_bases=min_bases)
+    p2_matches = coral.reaction.anneal(template, primer2, min_tm=min_tm,
+                                       min_bases=min_bases)
     p1_binding_locations = p1_matches[0].keys() + p1_matches[1].keys()
     p2_binding_locations = p2_matches[0].keys() + p2_matches[1].keys()
     # HEY FIX THIS - should find an ambiguity
     # Make sure there's no ambiguities
 
     def msg(location):
-        return "Top strand: {}, Bottom strand: {}".format(location[0],
+        return 'Top strand: {}, Bottom strand: {}'.format(location[0],
                                                           location[1])
 
     if len(p1_binding_locations) > 1:
-        raise AmbiguousPrimingError("Primer 1, {}".format(msg(p1_matches)))
+        raise AmbiguousPrimingError('Primer 1, {}'.format(msg(p1_matches)))
     if len(p2_binding_locations) > 1:
-        raise AmbiguousPrimingError("Primer 2, {}".format(msg(p2_matches)))
+        raise AmbiguousPrimingError('Primer 2, {}'.format(msg(p2_matches)))
     if not p1_binding_locations and not p2_binding_locations:
-        raise PrimerBindError("Neither primer binds the template")
+        raise PrimerBindError('Neither primer binds the template')
     if not p1_binding_locations:
-        raise PrimerBindError("Primer 1 does not bind the template")
+        raise PrimerBindError('Primer 1 does not bind the template')
     if not p2_binding_locations:
-        raise PrimerBindError("Primer 2 does not bind the template")
+        raise PrimerBindError('Primer 2 does not bind the template')
 
     # Make 'reverse' index useful for slicing
     fwds = p1_matches[0].copy()
@@ -99,5 +103,6 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
 #        amplicon = primer1.overhang.to_ds() + amplicon
 #    if primer2.overhang:
 #        amplicon += primer2.overhang.to_ds().reverse_complement()
-    amplicon = fwd_primer.primer().to_ds() + amplicon + rev_primer.primer().reverse_complement().to_ds()
+    amplicon = (fwd_primer.primer().to_ds() + amplicon +
+                rev_primer.primer().reverse_complement().to_ds())
     return amplicon

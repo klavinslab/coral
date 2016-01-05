@@ -309,12 +309,12 @@ class Feature(object):
         self.modified = False
         self.gene = gene
         self.locus_tag = locus_tag
-        if qualifiers == None:
+        if qualifiers is None:
             self.qualifiers = {}
         else:
             self.qualifiers = qualifiers
         self.strand = strand
-        if gaps == None:
+        if gaps is None:
             self.gaps = []
         else:
             self.gaps = gaps

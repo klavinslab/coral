@@ -14,10 +14,11 @@ def test_basic():
     amplicon = reaction.pcr(template, forward, reverse)
     assert_equal(amplicon, template)
 
+
 def test_over_origin():
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
-                              "pMODKan-HO-pACT1GEV.ape"))
+                                           "pMODKan-HO-pACT1GEV.ape"))
     assert_true(template.topology == "circular")
     primer1 = design.primer(template[-200:])
     primer2 = design.primer(template.reverse_complement()[-200:])
@@ -36,16 +37,18 @@ def test_primer_bind_error():
     assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
                   template, primer1, primer2)
 
+
 def test_primer_overlap():
     ''' Tests case in which primers overlap (i.e. primer
     dimers) '''
 
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
-                              "pMODKan-HO-pACT1GEV.ape"))
+                                           "pMODKan-HO-pACT1GEV.ape"))
     p1 = design.primer(template[100:])
     p2 = design.primer(template[:113].reverse_complement())
     reaction.pcr(template, p1, p2, min_bases=10)
+
 
 def test_primers_are_in_same_direction_error():
     ''' Tests case in which both forward and reverse
@@ -53,7 +56,7 @@ def test_primers_are_in_same_direction_error():
 
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
-                              "pMODKan-HO-pACT1GEV.ape"))
+                                           "pMODKan-HO-pACT1GEV.ape"))
     p1 = design.primer(template[100:])
     p2 = design.primer(template[150:])
     assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
@@ -67,6 +70,7 @@ def test_primers_are_in_same_direction_error():
     assert_raises(reaction._pcr.PrimerBindError, reaction.pcr,
                   template, p2, p1)
 
+
 def test_AmbiguousPrimingError():
     ''' Tests case in which there are multiple primer
         binding sites '''
@@ -78,17 +82,18 @@ def test_AmbiguousPrimingError():
     assert_raises(reaction._pcr.AmbiguousPrimingError, reaction.pcr,
                   template, p1, p2)
 
+
 def test_overhang():
     ''' Tests if overhangs on primers are correctly
         appended to pcr fragments. '''
 
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
-                              "pMODKan-HO-pACT1GEV.ape"))
+                                           "pMODKan-HO-pACT1GEV.ape"))
 
     overhang = DNA("AGCGGGGGGGGGCTGGGGCTGAT")
     p1 = design.primer(template[100:])
-    p1 = Primer(overhang + p1.primer(), 65) #add overhang
+    p1 = Primer(overhang + p1.primer(), 65)  # add overhang
 
     rev_overhang = DNA("GGGGGGGGGGGGGGGGGGG")
     p2 = design.primer(template[:300].reverse_complement())

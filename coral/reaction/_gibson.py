@@ -13,52 +13,54 @@ class AmbiguousGibsonError(ValueError):
     pass
 
 
-def gibson(seq_list, linear=False, homology=10, tm=63.0, annotate_features=True):
-        '''Simulate a Gibson reaction.
+def gibson(seq_list, linear=False, homology=10, tm=63.0,
+           annotate_features=True):
+    '''Simulate a Gibson reaction.
 
-        :param seq_list: list of DNA sequences to Gibson
-        :type seq_list: list of coral.DNA
-        :param linear: Attempt to produce linear, rather than circular,
-                       fragment from input fragments.
-        :type linear: bool
-        :param homology_min: minimum bp of homology allowed
-        :type homology_min: int
-        :param tm: Minimum tm of overlaps
-        :type tm: float
-        :returns: coral.reaction.Gibson instance.
-        :raises: ValueError if any input sequences are circular DNA.
+    :param seq_list: list of DNA sequences to Gibson
+    :type seq_list: list of coral.DNA
+    :param linear: Attempt to produce linear, rather than circular,
+                   fragment from input fragments.
+    :type linear: bool
+    :param homology_min: minimum bp of homology allowed
+    :type homology_min: int
+    :param tm: Minimum tm of overlaps
+    :type tm: float
+    :returns: coral.reaction.Gibson instance.
+    :raises: ValueError if any input sequences are circular DNA.
 
-        '''
-        # FIXME: Preserve features in overlap
-        # TODO: set a max length?
-        # TODO: add 'expected' keyword argument somewhere to automate
-        # validation
+    '''
+    # FIXME: Preserve features in overlap
+    # TODO: set a max length?
+    # TODO: add 'expected' keyword argument somewhere to automate
+    # validation
 
-        # FIXME: why?
-        # Remove any redundant (identical) sequences
-        seq_list = list(set(seq_list))
+    # FIXME: why?
+    # Remove any redundant (identical) sequences
+    seq_list = list(set(seq_list))
 
-        for seq in seq_list:
-            if seq.topology == "circular":
-                raise ValueError("Input sequences must be linear.")
+    for seq in seq_list:
+        if seq.topology == "circular":
+            raise ValueError("Input sequences must be linear.")
 
-        # Copy input list
-        working_list = seq_list[:]
-        # Attempt to fuse fragments together until only one is left
-        while len(working_list) > 1:
-            working_list = _find_fuse_next(working_list, homology, tm)
-        if not linear:
-            # Fuse the final fragment to itself
-            working_list = _fuse_last(working_list, homology, tm)
-        result = working_list[0]
-        if annotate_features:
-            result = _annotate_features(working_list[0], seq_list)
-        return result
+    # Copy input list
+    working_list = seq_list[:]
+    # Attempt to fuse fragments together until only one is left
+    while len(working_list) > 1:
+        working_list = _find_fuse_next(working_list, homology, tm)
+    if not linear:
+        # Fuse the final fragment to itself
+        working_list = _fuse_last(working_list, homology, tm)
+    result = working_list[0]
+    if annotate_features:
+        result = _annotate_features(working_list[0], seq_list)
+    return result
+
 
 def _annotate_features(template, list_of_fragments):
     ''' Annotate final gibson template using features
     found in fragments
-    
+
     :param template: coral.DNA template
     :param list_of_fragments: list of coral.DNA fragments
     :return: annotated coral.DNA sequence
@@ -70,17 +72,17 @@ def _annotate_features(template, list_of_fragments):
             loc = template.locate(feature_seq)
             length = abs(feature.start - feature.stop)
             fwd_binding_sites = loc[0]
-            rev_binding_sites = loc[1]
             for start in fwd_binding_sites:
                 stop = start + length
-                f = (start, stop)
-                if f not in annotated_features:
-                    annotated_features.append(f)
+                f_range = (start, stop)
+                if f_range not in annotated_features:
+                    annotated_features.append(f_range)
                     new_feature = feature.copy()
                     new_feature.start = start
                     new_feature.stop = stop
                     template.features.append(new_feature)
     return template
+
 
 def _find_fuse_next(working_list, homology, tm):
     '''Find the next sequence to fuse, and fuse it (or raise exception).
@@ -237,6 +239,7 @@ def homology_report(seq1, seq2, strand1, strand2, cutoff=0, min_tm=63.0,
         chunks2 = [seq2_str[:(i + 1)] for i in range(min(len(seq2_str),
                                                      max_size))]
         return chunks1, chunks2
+
     seq1_chunks, seq2_chunks = gen_chunks(seq1_str, seq2_str)
 #    seq1_chunks = [seq1[-(i + 1):] for i in range(min(len(seq1_str),
 #                                                      max_size))]
