@@ -7,8 +7,8 @@ from nose.tools import assert_equal, assert_true, assert_raises
 
 # TODO: refactor into class that shares sequence reading, etc.
 def test_basic():
-    to_amplify = 'atgtctaaaggtgaagaattattcactggtgttgtcccaatgctgctggtattacc' + \
-                 'catggtattgatgaattgtacaaatag'
+    to_amplify = ('atgtctaaaggtgaagaattattcactggtgttgtcccaatgctgctggtattacc'
+                  'catggtattgatgaattgtacaaatag')
     template = DNA(to_amplify)
     forward, reverse = design.primers(template)
 
@@ -21,16 +21,19 @@ def test_over_origin():
     template = seqio.read_dna(os.path.join(current_path,
                                            'pMODKan-HO-pACT1GEV.ape'))
     assert_true(template.topology == 'circular')
-    primer1 = design.primer(template[-200:])
-    primer2 = design.primer(template.reverse_complement()[-200:])
+
+    expected = template[-50:] + template[:50]
+    primer1 = design.primer(template[-50:])
+    primer2 = design.primer(template[:50].reverse_complement())
     over_origin = reaction.pcr(template, primer1, primer2)
-    expected = template[-200:] + template[0:200]
+
+    assert_equal(len(over_origin), 100)
     assert_equal(str(over_origin), str(expected))
 
 
 def test_primer_bind_error():
-    to_amplify = 'atgtctaaaggtgaagaattattcactggtgttgtcccaatgctgctggtattacc' + \
-                 'catggtattgatgaattgtacaaatag'
+    to_amplify = ('atgtctaaaggtgaagaattattcactggtgttgtcccaatgctgctggtattacc'
+                  'catggtattgatgaattgtacaaatag')
     template = DNA(to_amplify)
     primer1, primer2 = design.primers(template)
     # Mess up the second primer so it doesn't bind
@@ -40,15 +43,14 @@ def test_primer_bind_error():
 
 
 def test_primer_overlap():
-    ''' Tests case in which primers overlap (i.e. primer
-    dimers) '''
-
+    '''Tests case in which primers overlap (i.e. primer dimers).'''
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
                                            'pMODKan-HO-pACT1GEV.ape'))
     p1 = design.primer(template[100:])
     p2 = design.primer(template[:113].reverse_complement())
-    reaction.pcr(template, p1, p2, min_bases=10)
+    assert_raises(NotImplementedError, reaction.pcr, template, p1, p2,
+                  min_bases=10)
 
 
 def test_primers_are_in_same_direction_error():

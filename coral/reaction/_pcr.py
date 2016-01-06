@@ -35,66 +35,82 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
                                        min_bases=min_bases)
     p2_matches = coral.analysis.anneal(template, primer2, min_tm=min_tm,
                                        min_bases=min_bases)
-    p1_binding_locations = p1_matches[0].keys() + p1_matches[1].keys()
-    p2_binding_locations = p2_matches[0].keys() + p2_matches[1].keys()
+    p1_binding_locations = [m[0] for strand in p1_matches for m in strand]
+    p2_binding_locations = [m[0] for strand in p2_matches for m in strand]
 
-    # FIXME: Make sure there's no ambiguities
-
+    # Ensure unique top and bottom matches
     if len(p1_binding_locations) > 1:
         primer_msg = 'Multiple primer 1 binding locations: {}'
         raise PrimingError(primer_msg.format(p1_binding_locations))
+
     if len(p2_binding_locations) > 1:
         primer_msg = 'Multiple primer 2 binding locations: {}'
         raise PrimingError(primer_msg.format(p2_binding_locations))
+
     if not p1_binding_locations and not p2_binding_locations:
         raise PrimingError('Neither primer binds the template')
+
     if not p1_binding_locations:
         raise PrimingError('Primer 1 does not bind the template')
+
     if not p2_binding_locations:
         raise PrimingError('Primer 2 does not bind the template')
 
-    # Now see if the primers bind on opposite strands of the template
-    fwds = p1_matches[0].copy()
-    fwds.update(p2_matches[0])
-    revs = p1_matches[1].copy()
-    revs.update(p2_matches[1])
-    if not fwds:
+    # Check that primers bind on opposite strands of the template
+    tops = p1_matches[0] + p2_matches[0]
+    bottoms = p1_matches[1] + p2_matches[1]
+    if not tops:
         raise PrimingError('No primers bind the template\'s top strand.')
-    if not revs:
+    if not bottoms:
         raise PrimingError('No primers bind the template\'s bottom strand.')
 
-    fwd = fwds[fwds.keys()[0]]
-    rev = revs[revs.keys()[0]]
-    fwd_loc = fwds.keys()[0]
-    rev_loc = len(template) - revs.keys()[0]
-    # TODO: circular search will muck things up. If primers are at the very
-    # beginning or end of the plasmid coordinates, things will get weird
-    # TODO: Should actually just evaluate the length of the product prior
-    # to adding primer overhangs, compare to length of anneal regions.
-    #   But would need to keep track of sign - fwd - rev != rev - fwd
-    '''
-    Notes on PCR amplification decisions:
-        If rev == fwd, primers should ampify entire plasmid
-        If rev - fwd >= max(len(rev), len(fwd)), amplify sequence normally
-        If rev - fwd < max(len(rev), len(fwd)), raise exception - who knows
-        how this construct will amplify
-    '''
-    # Note: primer 1 doesn't necessarily always correspond to being the forward
-    # primer.
-    fwd_primer = fwd[0]
-    rev_primer = rev[0]
-    if rev_loc < fwd_loc and rev_loc > fwd_loc - len(fwd_primer):
-        raise PrimingError('Primers overlap, no solution is implemented')
-
-    if rev_loc > fwd_loc:
-        amplicon = template[fwd_loc:rev_loc]
+    # Figure out which primer matches the top strand
+    if p1_matches[0]:
+        # primer1 is top
+        fwd = primer1
+        rev = primer2
     else:
-        if template.topology == 'circular':
-            amplicon = template[fwd_loc:] + template[:rev_loc]
+        # primer2 matches top strand
+        fwd = primer2
+        rev = primer1
+
+    # Now we can simulate the PCR. If primer locations are overlapping, we
+    # throw an error. If the primers won't amplify a product (e.g. a linear
+    # template with primers facing away from one another), throw a different
+    # error. Otherwise, amplify the product, including any overhangs.
+
+    fwd_loc, fwd_len = tops[0]
+    rev_loc, rev_len = bottoms[0]
+
+    # 5' locations
+    fwd_5 = fwd_loc - fwd_len
+    rev_5 = rev_loc - rev_len
+
+    # FIXME: what about searching substrings over circulate templates?
+    if (len(template) - rev_loc) - fwd_loc <= 0:
+        # The primers are either overlapping or are non-overlapping and
+        # pointing away from one another
+        if fwd_loc < rev_5 and rev_loc > fwd_5:
+            # They can overlap and amplify one another
+            msg = 'Primer dimer amplification unimplemented.'
+            raise NotImplementedError(msg)
         else:
-            raise Exception('Primers would amplify only if template were \
-                            circular.')
-    amplicon = (fwd_primer.primer().to_ds() + amplicon +
-                rev_primer.primer().reverse_complement().to_ds())
+            # They point away from each other, which can only be allowed
+            # if the template is circular.
+            if template.topology != 'circular':
+                raise PrimingError('Primer extension in opposite directions.')
+
+    # All of the checks have passed, so the amplicon can be generated!
+    if fwd_loc > (len(template) - rev_5):
+        # The primers point away from each other and the template is circular
+        # - amplify over the origin
+        # TODO: clarify code - len(template) - fwd_loc isn't obvious
+        middle_len = (len(template) - fwd_loc) + (len(template) - rev_loc)
+        middle = template.rotate(fwd_loc)[:middle_len]
+    else:
+        middle = template[fwd_loc:len(template) - rev_loc]
+
+    amplicon = (fwd.primer().to_ds() + middle +
+                rev.primer().to_ds().reverse_complement())
 
     return amplicon

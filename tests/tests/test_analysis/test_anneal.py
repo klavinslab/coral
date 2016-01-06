@@ -13,26 +13,39 @@ def test_basic():
     primer = Primer(seq, 50.6)
     matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
+    fwd_indices = [match[0] for match in fwd_matches]
+    # fwd_lens = [match[1] for match in fwd_matches]
+    rev_indices = [match[0] for match in rev_matches]
+    # rev_lens = [match[1] for match in rev_matches]
+
     loc = template.locate(seq)
-    assert_true(len(fwd_matches.keys()) == len(loc[0]))
-    assert_true(len(rev_matches.keys()) == len(loc[1]))
+
+    assert_true(len(fwd_matches) == len(loc[0]))
+    assert_true(len(rev_matches) == len(loc[1]))
+
+    # Top strand matches
     for match in loc[0]:
-        assert_true(match + len(seq) in fwd_matches)
+        assert_true(match + len(seq) in fwd_indices)
+    # Top strand matches
     for match in loc[1]:
-        assert_true(match + len(seq) in rev_matches)
+        assert_true(match + len(seq) in rev_indices)
 
     # Test reverse priming
     seq = DNA('ACAAGAGAGATTGGGAAGGAAAGGATCA')
     primer = Primer(seq, 50.6)
     matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
+    fwd_indices = [match[0] for match in fwd_matches]
+    rev_indices = [match[0] for match in rev_matches]
+
     loc = template.locate(seq)
-    assert_true(len(fwd_matches.keys()) == len(loc[0]))
-    assert_true(len(rev_matches.keys()) == len(loc[1]))
+
+    assert_true(len(fwd_indices) == len(loc[0]))
+    assert_true(len(rev_indices) == len(loc[1]))
     for match in loc[0]:
-        assert_true(match + len(seq) in fwd_matches)
+        assert_true(match + len(seq) in fwd_indices)
     for match in loc[1]:
-        assert_true(match + len(seq) in rev_matches)
+        assert_true(match + len(seq) in rev_indices)
 
 
 def test_near_index():
@@ -44,13 +57,17 @@ def test_near_index():
     primer = Primer(seq, 50.6)
     matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
+    fwd_indices = [match[0] for match in fwd_matches]
+    rev_indices = [match[0] for match in rev_matches]
+
     loc = template.locate(seq)
-    assert_true(len(fwd_matches.keys()) == len(loc[0]))
-    assert_true(len(rev_matches.keys()) == len(loc[1]))
+
+    assert_true(len(fwd_matches) == len(loc[0]))
+    assert_true(len(rev_matches) == len(loc[1]))
     for match in loc[0]:
-        assert_true(match + len(seq) in fwd_matches)
+        assert_true(match + len(seq) in fwd_indices)
     for match in loc[1]:
-        assert_true(match + len(seq) in rev_matches)
+        assert_true(match + len(seq) in rev_indices)
 
 
 def test_overhang():
@@ -64,19 +81,19 @@ def test_overhang():
     primer = Primer(seq2, 50.6)
     matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
+
+    fwd_indices = [match[0] for match in fwd_matches]
+    rev_indices = [match[0] for match in rev_matches]
+
     loc = template.locate(seq)
-    assert_true(len(fwd_matches.keys()) == len(loc[0]))
-    assert_true(len(rev_matches.keys()) == len(loc[1]))
+
+    assert_true(len(fwd_indices) == len(loc[0]))
+    assert_true(len(rev_indices) == len(loc[1]))
+    # FIXME: Add match length check for all these cases.
     for match in loc[0]:
-        assert_true(match + len(seq) in fwd_matches)
-        assert_true(fwd_matches[match + len(seq)][0] == primer)
-        assert_true(fwd_matches[match + len(seq)][1] == seq.to_ss())
-        assert_true(fwd_matches[match + len(seq)][2] == overhang.to_ss())
+        assert_true(match + len(seq) in fwd_indices)
     for match in loc[1]:
-        assert_true(match + len(seq) in rev_matches)
-        assert_true(rev_matches[match + len(seq)][0] == primer)
-        assert_true(rev_matches[match + len(seq)][1] == seq.to_ss())
-        assert_true(rev_matches[match + len(seq)][2] == overhang.to_ss())
+        assert_true(match + len(seq) in rev_indices)
 
     # Test forward priming.
     current_path = os.path.dirname(__file__)
@@ -88,19 +105,18 @@ def test_overhang():
     primer = Primer(seq2, 50.6)
     matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
+    fwd_indices = [match[0] for match in fwd_matches]
+    rev_indices = [match[0] for match in rev_matches]
+
     loc = template.locate(seq)
-    assert_true(len(fwd_matches.keys()) == len(loc[0]))
-    assert_true(len(rev_matches.keys()) == len(loc[1]))
+
+    assert_true(len(fwd_indices) == len(loc[0]))
+    assert_true(len(rev_indices) == len(loc[1]))
+
     for match in loc[0]:
-        assert_true(match + len(seq) in fwd_matches)
-        assert_true(fwd_matches[match + len(seq)][0] == primer)
-        assert_true(fwd_matches[match + len(seq)][1] == seq.to_ss())
-        assert_true(fwd_matches[match + len(seq)][2] == overhang.to_ss())
+        assert_true(match + len(seq) in fwd_indices)
     for match in loc[1]:
-        assert_true(match + len(seq) in rev_matches)
-        assert_true(rev_matches[match + len(seq)][0] == primer)
-        assert_true(rev_matches[match + len(seq)][1] == seq.to_ss())
-        assert_true(rev_matches[match + len(seq)][2] == overhang.to_ss())
+        assert_true(match + len(seq) in rev_indices)
 
 
 def test_multiple_priming():
@@ -118,13 +134,17 @@ def test_multiple_priming():
     primer = Primer(seq, 50.6)
     matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
+    fwd_indices = [match[0] for match in fwd_matches]
+    rev_indices = [match[0] for match in rev_matches]
+
     loc = template.locate(seq)
-    assert_true(len(fwd_matches.keys()) == len(loc[0]))
-    assert_true(len(rev_matches.keys()) == len(loc[1]))
+
+    assert_true(len(fwd_matches) == len(loc[0]))
+    assert_true(len(rev_matches) == len(loc[1]))
     for match in loc[0]:
-        assert_true(match + len(seq) in fwd_matches)
+        assert_true(match + len(seq) in fwd_indices)
     for match in loc[1]:
-        assert_true(match + len(seq) in rev_matches)
+        assert_true(match + len(seq) in rev_indices)
     print matches
 
 
@@ -139,8 +159,8 @@ def test_no_priming():
     matches = analysis.anneal(template, primer)
     fwd_matches, rev_matches = matches
     loc = template.locate(seq)
-    assert_true(len(fwd_matches.keys()) == len(loc[0]))
-    assert_true(len(rev_matches.keys()) == len(loc[1]))
+    assert_true(len(fwd_matches) == len(loc[0]))
+    assert_true(len(rev_matches) == len(loc[1]))
     for match in loc[0]:
         assert_true(match + len(seq) in fwd_matches)
     for match in loc[1]:
@@ -172,18 +192,3 @@ def test_min_tm():
     assert_true(len(matches[0]) == 0)
     matches = analysis.anneal(template, primer, min_tm=30.0)
     assert_true(len(matches[0]) > 0)
-
-
-def test_primertypeerror():
-    current_path = os.path.dirname(__file__)
-    template = seqio.read_dna(os.path.join(current_path,
-                                           "pMODKan-HO-pACT1GEV.ape"))
-
-    dna_seq = DNA('cgccagggttttcccagtcacgac')
-    primer = Primer(dna_seq, 65.1)
-
-    assert_raises(analysis._sequence.anneal.AnnealError, analysis.anneal,
-                  template, dna_seq)
-
-    assert_raises(analysis._sequence.anneal.AnnealError, analysis.anneal,
-                  Primer(template, 50.6), primer)

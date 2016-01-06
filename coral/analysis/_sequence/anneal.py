@@ -1,5 +1,4 @@
 '''Primer Annealing Event Simulation.'''
-import coral
 
 
 class PrimerLengthError(Exception):
@@ -26,43 +25,39 @@ def anneal(template, primer, min_tm=50.0, min_bases=14):
     :param min_bases: The cutoff for bases required for binding - a binder with
                       fewer bases will be rejected.
     :type min_bases: int
-    :returns: A 2-tuple of dictionaries representing matches on the top and
-              bottom strands. Each dictionary has keys of this format:
-              {location: (annealing sequence, overhang sequence)},
-              where location the integer indicating the location of the 3'
-              end of the primer bound to the template, the annealing sequence
-              is a primer of the annealing sequence, and the overhang sequence
-              is a coral.DNA instance.
-    :rtype: tuple
+    :returns: A length 2 list (top and bottom strands) of matches. Each
+              match is itself a 2-tuple indicating (1) the location on the
+              template of the 3' end of the primer binding site and (2) the
+              length of the match (number of bases), e.g. [[25, 15],[]] would
+              indicate a single top-strand match at template position 25 with
+              15 bases of 3' primer homology.
+    :rtype: list
     :raises: PrimerLengthError if primer length is too small.
              AnnealError if inputs are of the wrong type.
 
     '''
-    # FIXME: this violates duck typing
-    if not type(primer) == coral.Primer:
-        raise AnnealError('Primer must be of type coral.Primer')
-
-    if not type(template) == coral.DNA:
-        raise AnnealError('Template must be of type coral.DNA')
-
     # TODO: add possibility for primer basepair mismatch
     if len(primer) < min_bases:
         msg = 'Primer match length does not exceed minimum number of bases.'
         raise PrimerLengthError(msg)
 
+    # Overwriting dictionary keys ensures uniqueness
     fwd_matches = {}
     rev_matches = {}
     for i in range(len(primer) - min_bases + 1)[::-1]:
         primer_dna = primer.overhang + primer.anneal
         annealing = primer_dna[i:]
-        overhang = primer_dna[:i]
         anneal_temp = annealing.tm()
+        anneal_len = len(annealing)
         if anneal_temp > min_tm:
             p_matches = template.locate(annealing)
             for match in p_matches[0]:
-                fwd_matches[match + len(annealing)] = (primer, annealing,
-                                                       overhang)
+                fwd_matches[match + anneal_len] = anneal_len
             for match in p_matches[1]:
-                rev_matches[match + len(annealing)] = (primer, annealing,
-                                                       overhang)
-    return (fwd_matches, rev_matches)
+                rev_matches[match + anneal_len] = anneal_len
+
+    # Convert dictionaries to lists
+    fwds = [[key, val] for key, val in fwd_matches.iteritems()]
+    revs = [[key, val] for key, val in rev_matches.iteritems()]
+
+    return [fwds, revs]
