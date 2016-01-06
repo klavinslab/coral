@@ -46,6 +46,7 @@ class DNA(object):
 
         '''
         # TODO: accept sequences in general by running str() on it
+        dna = dna.strip()
         self._top = NucleicAcidSequence(dna, 'dna', run_checks=run_checks)
 
         if stranded == 'ss':
@@ -820,7 +821,7 @@ class Primer(object):
     def __repr__(self):
         '''Representation of a primer.'''
         if self.overhang:
-            return 'Primer: {} Tm: {:.2f}'.format(self.overhang.top().lower() +
+            return 'Primer: {} Tm: {:.2f}'.format(self.overhang.top() +
                                                   self.anneal.top(), self.tm)
         else:
             return 'Primer: {} Tm: {:.2f}'.format(self.anneal.top(), self.tm)
