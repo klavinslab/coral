@@ -56,3 +56,6 @@ def test_construction():
     # If there's more than one way to make the Gibson happen, should error
     #assert_raises(reaction._gibson.AmbiguousGibsonError,
     #              reaction.gibson, [f1, f2, f2[:60] + f3, f3])
+
+def test_annotations():
+    pass
