@@ -39,18 +39,15 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0):
     # TODO: add 'expected' keyword argument somewhere to automate
     # validation
 
-    # FIXME: why?
     # Remove any redundant (identical) sequences
-
     seq_list = list(set(seq_list))
     for seq in seq_list:
         if seq.topology == 'circular':
             raise ValueError('Input sequences must be linear.')
 
     # Copy input list
-    working_list = []
-    for s in seq_list:
-        working_list.append(s.copy())
+    working_list = [s.copy() for s in seq_list]
+
     # Attempt to fuse fragments together until only one is left
     while len(working_list) > 1:
         working_list = _find_fuse_next(working_list, homology, tm)
