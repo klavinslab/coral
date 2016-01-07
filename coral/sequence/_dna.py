@@ -795,9 +795,7 @@ class Primer(object):
         self.tm = tm
         self.anneal = anneal.to_ss()
         if overhang is not None:
-            overhang_seq = overhang.to_ss()
-            overhang_seq._top.seq = overhang_seq._top.seq.lower()
-            self.overhang = overhang_seq
+            self.overhang = overhang.to_ss()
         else:
             self.overhang = DNA('', stranded='ss')
         self.name = name
@@ -824,11 +822,12 @@ class Primer(object):
 
     def __repr__(self):
         '''Representation of a primer.'''
+        anneal = self.anneal.top().seq.upper()
         if self.overhang:
-            return 'Primer: {} Tm: {:.2f}'.format(self.overhang.top() +
-                                                  self.anneal.top(), self.tm)
+            overhang = self.overhang.top().seq.lower()
+            return 'Primer: {} Tm: {:.2f}'.format(overhang + anneal, self.tm)
         else:
-            return 'Primer: {} Tm: {:.2f}'.format(self.anneal.top(), self.tm)
+            return 'Primer: {} Tm: {:.2f}'.format(anneal, self.tm)
 
     def __str__(self):
         '''Coerce DNA object to string.
