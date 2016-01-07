@@ -134,7 +134,7 @@ def gibson_primers(dna1, dna2, overlap='mixed', maxlen=80, overlap_tm=65.0,
 
 
 def gibson(seq_list, circular=True, overlaps='mixed', overlap_tm=65,
-           maxlen=80, primer_kwargs=None):
+           maxlen=80, terminal_primers=True, primer_kwargs=None):
     '''Design Gibson primers given a set of sequences
 
     :param seq_list: List of DNA sequences to stitch together
@@ -152,6 +152,11 @@ def gibson(seq_list, circular=True, overlaps='mixed', overlap_tm=65,
     :type overlap_tm: float
     :param maxlen: Maximum length of each primer.
     :type maxlen: int
+    :param terminal_primers: If the output is not circular, will design
+                             non-Gibson primers for amplifying the first and
+                             last fragments sans homology. If False, there will
+                             be one less set of primers returned.
+    :type terminal_primers: bool
     :param primer_kwargs: keyword arguments to pass to design.primer
     :type primer_kwargs: dict
     :returns: Forward and reverse primers for amplifying every fragment.
@@ -192,10 +197,11 @@ def gibson(seq_list, circular=True, overlaps='mixed', overlap_tm=65,
                                            overlap_tm=overlap_tm,
                                            primer_kwargs=primer_kwargs))
     else:
-        primer_f = coral.design.primer(seq_list[0], **primer_kwargs)
-        primer_r = coral.design.primer(seq_list[-1].reverse_complement(),
-                                       **primer_kwargs)
-        primers_list.append((primer_r, primer_f))
+        if terminal_primers:
+            primer_f = coral.design.primer(seq_list[0], **primer_kwargs)
+            primer_r = coral.design.primer(seq_list[-1].reverse_complement(),
+                                           **primer_kwargs)
+            primers_list.append((primer_r, primer_f))
 
     # Primers are now in order of 'reverse for seq1, forward for seq2' config
     # Should be in 'forward and reverse primers for seq1, then seq2', etc
