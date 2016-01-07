@@ -86,6 +86,10 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
     fwd_5 = fwd_loc - fwd_len
     rev_5 = rev_loc - rev_len
 
+    # 5' overhang locations
+    fwd_overhang = fwd_loc - len(fwd)
+    rev_overhang = rev_loc - len(rev)
+
     # FIXME: what about searching substrings over circulate templates?
     if (len(template) - rev_loc) - fwd_loc <= 0:
         # The primers are either overlapping or are non-overlapping and
@@ -105,12 +109,15 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_bases=14):
         # The primers point away from each other and the template is circular
         # - amplify over the origin
         # TODO: clarify code - len(template) - fwd_loc isn't obvious
-        middle_len = (len(template) - fwd_loc) + (len(template) - rev_loc)
-        middle = template.rotate(fwd_loc)[:middle_len]
+        middle_len = (len(template) - fwd_5) + (len(template) - rev_5)
+        middle = template.rotate(fwd_5)[:middle_len]
     else:
-        middle = template[fwd_loc:len(template) - rev_loc]
-
-    amplicon = (fwd.primer().to_ds() + middle +
-                rev.primer().to_ds().reverse_complement())
+        middle = template[fwd_5:len(template) - rev_5]
+    fwd_overhang_length = len(fwd) - fwd_len
+    rev_overhang_length = len(rev) - rev_len
+    fwd_overhang = fwd.primer()[:fwd_overhang_length]
+    rev_overhang = rev.primer()[:rev_overhang_length]
+    amplicon = (fwd_overhang.to_ds() + middle +
+                rev_overhang.to_ds().reverse_complement())
 
     return amplicon
