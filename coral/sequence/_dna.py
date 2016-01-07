@@ -795,7 +795,9 @@ class Primer(object):
         self.tm = tm
         self.anneal = anneal.to_ss()
         if overhang is not None:
-            self.overhang = overhang.to_ss()
+            overhang_seq = overhang.to_ss()
+            overhang_seq._top.seq = overhang_seq._top.seq.lower()
+            self.overhang = overhang_seq
         else:
             self.overhang = DNA('', stranded='ss')
         self.name = name
