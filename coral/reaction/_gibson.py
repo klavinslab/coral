@@ -43,7 +43,6 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0):
     # Remove any redundant (identical) sequences
 
     seq_list = list(set(seq_list))
-    features = seq_list[0].features
     for seq in seq_list:
         if seq.topology == 'circular':
             raise ValueError('Input sequences must be linear.')
@@ -63,6 +62,7 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0):
     working_list[0].features = []
     return _annotate_features(working_list[0], seq_list)
 
+
 def _annotate_features(template, fragment_list):
     locations = []
     template_copy = template.copy()
@@ -70,22 +70,21 @@ def _annotate_features(template, fragment_list):
         fwd_loc, rev_loc = template_copy.locate(fragment)
         for f in fwd_loc:
             start = f
-            stop = f +  len(fragment)
+            stop = f + len(fragment)
             locations.append((start, stop, fragment, 1))
         for r in rev_loc:
             start = len(template_copy) - r - len(fragment)
             stop = len(template_copy) - r
             locations.append((start, stop, fragment, -1))
-    for start, stop, fragment, orientation in sorted(locations, key=lambda x: x[0]):
+    for start, stop, fragment, orient in sorted(locations, key=lambda x: x[0]):
         fragment = fragment.copy()
-        if orientation == -1:
+        if orient == -1:
             fragment = fragment.reverse_complement()
         for feature in fragment.features:
             feature_copy = feature.copy()
             feature_copy.move(start)
             template_copy.features.append(feature_copy)
     return template_copy
-
 
 
 def _find_fuse_next(working_list, homology, tm):

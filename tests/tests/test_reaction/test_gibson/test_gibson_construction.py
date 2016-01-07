@@ -46,16 +46,7 @@ def test_construction():
     # A fragment that can't circularize should raise a ValueError
     assert_raises(ValueError, reaction.gibson, [f1, f2, f3[:-80]])
     # But should still work fine as a linear fragment
-    # FIXME: removed in order to get basics working for gibson function. Fix!
-    #try:
-    #    assert_equal(reaction.gibson([f1, f2, f3], linear=True)[:-80],
-    #                 reaction.gibson([f1, f2, f3[:-80]], linear=True))
-    #except AssertionError:
-    #    assert_equal(reaction.gibson([f1, f2, f3], linear=True).flip()[:-80],
-    #                 reaction.gibson([f1, f2, f3[:-80]], linear=True))
-    # If there's more than one way to make the Gibson happen, should error
-    #assert_raises(reaction._gibson.AmbiguousGibsonError,
-    #              reaction.gibson, [f1, f2, f2[:60] + f3, f3])
+
 
 def test_annotations():
     pass
