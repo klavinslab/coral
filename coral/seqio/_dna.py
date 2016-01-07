@@ -119,7 +119,7 @@ def write_dna(dna, path):
     bio_id = dna.id if hasattr(dna, 'id') else ''
     # Maximum length of name is 16
     seq = SeqRecord(Seq(str(dna), alphabet=ambiguous_dna), id=bio_id,
-                    name=dna.name[0:16], features=features,
+                    name=dna.name[0:16].replace(' ', '_'), features=features,
                     description=dna.name)
     seq.annotations['data_file_division'] = dna.topology
 

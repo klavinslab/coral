@@ -18,8 +18,7 @@ class GibsonOverlapError(ValueError):
     pass
 
 
-def gibson(seq_list, linear=False, homology=10, tm=63.0,
-           annotate_features=True):
+def gibson(seq_list, linear=False, homology=10, tm=63.0):
     '''Simulate a Gibson reaction.
 
     :param seq_list: list of DNA sequences to Gibson
@@ -40,16 +39,15 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0,
     # TODO: add 'expected' keyword argument somewhere to automate
     # validation
 
-    # FIXME: why?
     # Remove any redundant (identical) sequences
     seq_list = list(set(seq_list))
-
     for seq in seq_list:
         if seq.topology == 'circular':
             raise ValueError('Input sequences must be linear.')
 
     # Copy input list
-    working_list = seq_list[:]
+    working_list = [s.copy() for s in seq_list]
+
     # Attempt to fuse fragments together until only one is left
     while len(working_list) > 1:
         working_list = _find_fuse_next(working_list, homology, tm)
@@ -57,43 +55,32 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0,
         # Fuse the final fragment to itself
         working_list = _fuse_last(working_list, homology, tm)
 
-    if annotate_features:
-        return _annotate_features(working_list[0], seq_list)
-    else:
-        return working_list[0]
+    # Clear features
+    working_list[0].features = []
+    return _annotate_features(working_list[0], seq_list)
 
 
-def _annotate_features(template, fragments_list):
-    '''Annotate final gibson template using features found in fragments.
-
-    :param template: Template sequence (DNA).
-    :type template: coral.DNA
-    :param fragments_list: List of coral.DNA fragments from which to get
-                              annotations.
-    :type fragments_list: list
-    :returns: An annotated DNA sequence (populated .features attribute).
-    :rtype: coral.DNA
-
-    '''
+def _annotate_features(template, fragment_list):
+    locations = []
     template_copy = template.copy()
-    annotated_features = []
-    for fragment in fragments_list:
+    for fragment in fragment_list:
+        fwd_loc, rev_loc = template_copy.locate(fragment)
+        for f in fwd_loc:
+            start = f
+            stop = f + len(fragment)
+            locations.append((start, stop, fragment, 1))
+        for r in rev_loc:
+            start = len(template_copy) - r - len(fragment)
+            stop = len(template_copy) - r
+            locations.append((start, stop, fragment, -1))
+    for start, stop, fragment, orient in sorted(locations, key=lambda x: x[0]):
+        fragment = fragment.copy()
+        if orient == -1:
+            fragment = fragment.reverse_complement()
         for feature in fragment.features:
-            feature_seq = fragment.extract(feature)
-            loc = template.locate(feature_seq)
-            length = abs(feature.stop - feature.start)
-            fwd_binding_sites = loc[0]
-            # FIXME: rev_binding_sites was unused, but should be used.
-            for start in fwd_binding_sites:
-                stop = start + length
-                f_range = (start, stop)
-                # FIXME: features with same start, stop will be dropped
-                if f_range not in annotated_features:
-                    annotated_features.append(f_range)
-                    new_feature = feature.copy()
-                    new_feature.start = start
-                    new_feature.stop = stop
-                    template_copy.features.append(new_feature)
+            feature_copy = feature.copy()
+            feature_copy.move(start)
+            template_copy.features.append(feature_copy)
     return template_copy
 
 
