@@ -46,6 +46,7 @@ class DNA(object):
 
         '''
         # TODO: accept sequences in general by running str() on it
+        dna = dna.strip()
         self._top = NucleicAcidSequence(dna, 'dna', run_checks=run_checks)
 
         if stranded == 'ss':
@@ -588,19 +589,21 @@ class DNA(object):
         saved_features = []
         if self.features:
             if isinstance(key, slice):
-                # If a slice, remove stuff that isn't in the slide and
+                # If a slice, remove stuff that isn't in the slice and
                 # adjust feature starts/stops
                 if key.step == 1 or key.step is None:
                     for feature in self.features:
                         if in_slice(feature):
+                            feature_copy = feature.copy()
                             if key.start:
-                                feature.move(-key.start)
-                            saved_features.append(feature.copy())
+                                feature_copy.move(-key.start)
+                            saved_features.append(feature_copy)
             else:
                 for feature in self.features:
                     if feature.start == feature.stop == key:
-                        saved_features.append(feature.copy())
-                        saved_features[-1].move(key)
+                        feature_copy = feature.copy()
+                        feature_copy.move(key)
+                        saved_features.append(feature_copy)
 
         # Run __getitem__ on top and bottom sequences
         new_top = self._top.__getitem__(key)
@@ -819,11 +822,12 @@ class Primer(object):
 
     def __repr__(self):
         '''Representation of a primer.'''
+        anneal = self.anneal.top().seq.upper()
         if self.overhang:
-            return 'Primer: {} Tm: {:.2f}'.format(self.overhang.top().lower() +
-                                                  self.anneal.top(), self.tm)
+            overhang = self.overhang.top().seq.lower()
+            return 'Primer: {} Tm: {:.2f}'.format(overhang + anneal, self.tm)
         else:
-            return 'Primer: {} Tm: {:.2f}'.format(self.anneal.top(), self.tm)
+            return 'Primer: {} Tm: {:.2f}'.format(anneal, self.tm)
 
     def __str__(self):
         '''Coerce DNA object to string.

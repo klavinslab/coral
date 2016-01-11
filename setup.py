@@ -19,9 +19,10 @@ config = {
     'url': 'https://github.com/klavinslab/coral',
     'download_url': 'https://github.com/klavinslab/coral.git',
     'author_email': 'nbolten _at_ gmail',
-    'version': '0.2.1',
-    'install_requires': ['numpy', 'biopython', 'intermine', 'requests'],
+    'version': '0.3.0',
+    'install_requires': ['numpy', 'biopython'],
     'extras_require': {'plotting': ['matplotlib'],
+                       'yeastdatabases': ['intermine', 'requests'],
                        'documentation': ['sphinx']},
     'packages': ['coral',
                  'coral.analysis',
@@ -55,6 +56,7 @@ if USECYTHON:
     setup(cmdclass={'build_ext': build_ext},
           ext_modules=EXTENSIONS,
           test_suite='nose.collector',
+          include_dirs=[numpy.get_include()],
           **config)
 else:
     setup(ext_modules=EXTENSIONS,

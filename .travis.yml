@@ -1,8 +1,13 @@
+sudo: false
 language: python
 python:
   - "2.7"
-# command to install dependencies
+# install dependencies
 install:
   - "pip install -r requirements.txt"
-# command to run tests
+# run tests
 script: nosetests --exclude optional_tests
+# speed up CI by caching dependencies
+cache:
+  pip: true
+  custom_install: true

@@ -13,44 +13,75 @@ class AmbiguousGibsonError(ValueError):
     pass
 
 
+class GibsonOverlapError(ValueError):
+    '''Exception to raise when Gibson fails due to bad overlaps.'''
+    pass
+
+
 def gibson(seq_list, linear=False, homology=10, tm=63.0):
-        '''Simulate a Gibson reaction.
+    '''Simulate a Gibson reaction.
 
-        :param seq_list: list of DNA sequences to Gibson
-        :type seq_list: list of coral.DNA
-        :param linear: Attempt to produce linear, rather than circular,
-                       fragment from input fragments.
-        :type linear: bool
-        :param homology_min: minimum bp of homology allowed
-        :type homology_min: int
-        :param tm: Minimum tm of overlaps
-        :type tm: float
-        :returns: coral.reaction.Gibson instance.
-        :raises: ValueError if any input sequences are circular DNA.
+    :param seq_list: list of DNA sequences to Gibson
+    :type seq_list: list of coral.DNA
+    :param linear: Attempt to produce linear, rather than circular,
+                   fragment from input fragments.
+    :type linear: bool
+    :param homology_min: minimum bp of homology allowed
+    :type homology_min: int
+    :param tm: Minimum tm of overlaps
+    :type tm: float
+    :returns: coral.reaction.Gibson instance.
+    :raises: ValueError if any input sequences are circular DNA.
 
-        '''
-        # FIXME: Preserve features in overlap
-        # TODO: set a max length?
-        # TODO: add 'expected' keyword argument somewhere to automate
-        # validation
+    '''
+    # FIXME: Preserve features in overlap
+    # TODO: set a max length?
+    # TODO: add 'expected' keyword argument somewhere to automate
+    # validation
 
-        # FIXME: why?
-        # Remove any redundant (identical) sequences
-        seq_list = list(set(seq_list))
+    # Remove any redundant (identical) sequences
+    seq_list = list(set(seq_list))
+    for seq in seq_list:
+        if seq.topology == 'circular':
+            raise ValueError('Input sequences must be linear.')
 
-        for seq in seq_list:
-            if seq.topology == "circular":
-                raise ValueError("Input sequences must be linear.")
+    # Copy input list
+    working_list = [s.copy() for s in seq_list]
 
-        # Copy input list
-        working_list = seq_list[:]
-        # Attempt to fuse fragments together until only one is left
-        while len(working_list) > 1:
-            working_list = _find_fuse_next(working_list, homology, tm)
-        if not linear:
-            # Fuse the final fragment to itself
-            working_list = _fuse_last(working_list, homology, tm)
-        return working_list[0]
+    # Attempt to fuse fragments together until only one is left
+    while len(working_list) > 1:
+        working_list = _find_fuse_next(working_list, homology, tm)
+    if not linear:
+        # Fuse the final fragment to itself
+        working_list = _fuse_last(working_list, homology, tm)
+
+    # Clear features
+    working_list[0].features = []
+    return _annotate_features(working_list[0], seq_list)
+
+
+def _annotate_features(template, fragment_list):
+    locations = []
+    template_copy = template.copy()
+    for fragment in fragment_list:
+        fwd_loc, rev_loc = template_copy.locate(fragment)
+        for f in fwd_loc:
+            start = f
+            stop = f + len(fragment)
+            locations.append((start, stop, fragment, 1))
+        for r in rev_loc:
+            start = len(template_copy) - r - len(fragment)
+            stop = len(template_copy) - r
+            locations.append((start, stop, fragment, -1))
+    for start, stop, fragment, orient in sorted(locations, key=lambda x: x[0]):
+        fragment = fragment.copy()
+        if orient == -1:
+            fragment = fragment.reverse_complement()
+        for feature in fragment.features:
+            feature_copy = feature.copy()
+            feature_copy.move(start)
+            template_copy.features.append(feature_copy)
+    return template_copy
 
 
 def _find_fuse_next(working_list, homology, tm):
@@ -60,6 +91,7 @@ def _find_fuse_next(working_list, homology, tm):
     :type homology: int
     :raises: AmbiguousGibsonError if there is more than one way for the
              fragment ends to combine.
+             GibsonOverlapError if no homology match can be found.
 
     '''
     # 1. Take the first sequence and find all matches
@@ -82,10 +114,10 @@ def _find_fuse_next(working_list, homology, tm):
                 graph.append((i, matchlen, strand1, strand2))
         return graph
 
-    graph_ww = graph_strands("w", "w")
-    graph_wc = graph_strands("w", "c")
-    graph_cw = graph_strands("c", "w")
-    graph_cc = graph_strands("c", "c")
+    graph_ww = graph_strands('w', 'w')
+    graph_wc = graph_strands('w', 'c')
+    graph_cw = graph_strands('c', 'w')
+    graph_cc = graph_strands('c', 'c')
     graphs_w = graph_ww + graph_wc
     graphs_c = graph_cw + graph_cc
     graphs = graphs_w + graphs_c
@@ -95,7 +127,7 @@ def _find_fuse_next(working_list, homology, tm):
     if len(graphs_w) > 1 or len(graphs_c) > 1:
         raise AmbiguousGibsonError('multiple compatible ends.')
     if len(graphs_w) == len(graphs_c) == 0:
-        raise ValueError('Failed to find compatible Gibson ends.')
+        raise GibsonOverlapError('Failed to find compatible Gibson ends.')
 
     # 3. There must be one result. Where is it?
     # If there's one result on each strand, go with the one that matches the
@@ -104,12 +136,12 @@ def _find_fuse_next(working_list, homology, tm):
 
     # 4. Combine pieces together
     # 4a. Orient pattern sequence
-    if match[2] == "c":
+    if match[2] == 'c':
         left_side = pattern.reverse_complement()
     else:
         left_side = pattern
     # 4b. Orient target sequence
-    if match[3] == "w":
+    if match[3] == 'w':
         right_side = working_list.pop(match[0] + 1).reverse_complement()
     else:
         right_side = working_list.pop(match[0] + 1)
@@ -146,13 +178,13 @@ def _fuse_last(working_list, homology, tm):
             return []
 
     # cw is redundant with wc
-    graph_ww = graph_strands("w", "w")
-    graph_wc = graph_strands("w", "c")
-    graph_cc = graph_strands("c", "c")
+    graph_ww = graph_strands('w', 'w')
+    graph_wc = graph_strands('w', 'c')
+    graph_cc = graph_strands('c', 'c')
     if graph_ww + graph_cc:
-        raise AmbiguousGibsonError("Self-self binding during circularization.")
+        raise AmbiguousGibsonError('Self-self binding during circularization.')
     if not graph_wc:
-        raise ValueError("Failed to find compatible ends for circularization.")
+        raise ValueError('Failed to find compatible ends for circularization.')
 
     working_list[0] = working_list[0][:-graph_wc[1]].circularize()
 
@@ -191,9 +223,9 @@ def homology_report(seq1, seq2, strand1, strand2, cutoff=0, min_tm=63.0,
 
     '''
     # Ensure that strand 1 is Watson and strand 2 is Crick
-    if strand1 == "c":
+    if strand1 == 'c':
         seq1 = seq1.reverse_complement()
-    if strand2 == "w":
+    if strand2 == 'w':
         seq2 = seq2.reverse_complement()
     # Generate all same-length 5' ends of seq1 and 3' ends of seq2 within
     # maximum homology length
@@ -208,10 +240,8 @@ def homology_report(seq1, seq2, strand1, strand2, cutoff=0, min_tm=63.0,
         chunks2 = [seq2_str[:(i + 1)] for i in range(min(len(seq2_str),
                                                      max_size))]
         return chunks1, chunks2
+
     seq1_chunks, seq2_chunks = gen_chunks(seq1_str, seq2_str)
-#    seq1_chunks = [seq1[-(i + 1):] for i in range(min(len(seq1_str),
-#                                                      max_size))]
-# seq2_chunks = [seq2[:(i + 1)] for i in range(min(len(seq2_str), max_size))]
 
     # Check for exact matches from terminal end to terminal end
     target_matches = []
@@ -222,14 +252,14 @@ def homology_report(seq1, seq2, strand1, strand2, cutoff=0, min_tm=63.0,
         # TODO: Go through logic here again and make sure the order of checking
         # makes sense
         if s1 == s2:
-            logger.debug("Found Match: {}".format(str(s1)))
+            logger.debug('Found Match: {}'.format(str(s1)))
             if s1len >= cutoff:
                 tm = coral.analysis.tm(seq1[-(i + 1):])
-                logger.debug("Match tm: {} C".format(tm))
+                logger.debug('Match tm: {} C'.format(tm))
                 if tm >= min_tm:
                     target_matches.append(s1len)
                 elif tm >= min_tm - 4:
-                    msg = "One overlap had a Tm of {} C.".format(tm)
+                    msg = 'One overlap had a Tm of {} C.'.format(tm)
                     warnings.warn(msg)
                     target_matches.append(s1len)
 

@@ -1,13 +1,6 @@
 """Yeast database query functions."""
-from intermine.webservice import Service
 import coral
 # TODO: Use httplib instead if we only need to do one requests-style function
-try:
-    import requests
-
-except ImportError:
-    print "requests module could not be imported, fetching sequences will " + \
-          "not work."
 
 
 def fetch_yeast_locus_sequence(locus_name, flanking_size=0):
@@ -20,6 +13,8 @@ def fetch_yeast_locus_sequence(locus_name, flanking_size=0):
     :type flanking_size: int
 
     """
+    from intermine.webservice import Service
+
     service = Service("http://yeastmine.yeastgenome.org/yeastmine/service")
 
     # Get a new query on the class (table) you will be querying:
@@ -102,6 +97,8 @@ def get_yeast_sequence(chromosome, start, end, reverse_complement=False):
     :rtype: coral.DNA
 
     """
+    import requests
+
     if start != end:
         if reverse_complement:
             rev_option = "-REV"
@@ -137,6 +134,7 @@ def get_yeast_gene_location(gene_name):
     :rtype location: list
 
     """
+    from intermine.webservice import Service
     service = Service("http://yeastmine.yeastgenome.org/yeastmine/service")
 
     # Get a new query on the class (table) you will be querying:
@@ -193,6 +191,8 @@ def get_gene_id(gene_name):
     :rtype: str
 
     """
+    from intermine.webservice import Service
+
     service = Service("http://yeastmine.yeastgenome.org/yeastmine/service")
 
     # Get a new query on the class (table) you will be querying:
@@ -229,6 +229,8 @@ def get_yeast_promoter_ypa(gene_name):
     :rtype: coral.DNA
 
     """
+    import requests
+
     loc = get_yeast_gene_location(gene_name)
     gid = get_gene_id(gene_name)
     ypa_baseurl = "http://ypa.csbb.ntu.edu.tw/do"
