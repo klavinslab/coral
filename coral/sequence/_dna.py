@@ -332,6 +332,23 @@ class DNA(object):
         mw_c = counter['c'] * 329.2
         return mw_a + mw_t + mw_g + mw_c
 
+    def pop_feature(self, feature_name):
+        '''Removes feature from circular plasmid and linearizes. Automatically
+        reorients at the base just after the feature.
+
+        :param feature_name: Name of the feature to remove (must be unique).
+        :type feature_name: str
+
+        '''
+        feature_list = self.select_features(feature_name, by='name')
+        if len(feature_list) > 1:
+            return ValueError('More than one feature matching that name.')
+        feature = feature_list[0]
+        rotated = self.rotate_by_feature(feature)
+        linearized = rotated.linearize()
+        popped = linearized[feature.stop - feature.start:]
+        return popped
+
     def rotate(self, index):
         '''Orient DNA to index (only applies to circular DNA).
 
