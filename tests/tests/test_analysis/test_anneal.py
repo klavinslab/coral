@@ -1,5 +1,6 @@
 '''Test functionality of PCR class of reaction module.'''
 import os
+import coral as cr
 from coral import analysis, seqio, DNA, Primer
 from nose.tools import assert_true, assert_raises
 
@@ -192,3 +193,13 @@ def test_min_tm():
     assert_true(len(matches[0]) == 0)
     matches = analysis.anneal(template, primer, min_tm=30.0)
     assert_true(len(matches[0]) > 0)
+
+
+def test_primer_larger_than_template():
+    template = cr.design.random_dna(50)
+    overhangs = [cr.design.random_dna(200), cr.DNA('')]
+    expected = overhangs[0] + template
+    primer1, primer2 = cr.design.primers(template, overhangs=overhangs)
+    amplicon = cr.reaction.pcr(template, primer1, primer2)
+
+    assert_true(expected == amplicon)

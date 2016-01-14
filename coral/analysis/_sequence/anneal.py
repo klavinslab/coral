@@ -38,15 +38,22 @@ def anneal(template, primer, min_tm=50.0, min_bases=14):
     '''
     # TODO: add possibility for primer basepair mismatch
     if len(primer) < min_bases:
-        msg = 'Primer match length does not exceed minimum number of bases.'
+        msg = 'Primer length is shorter than min_bases argument.'
         raise PrimerLengthError(msg)
+    if len(template) < min_bases:
+        msg = 'Template is shorter than the min_bases argument.'
+        raise AnnealError(msg)
 
     # Overwriting dictionary keys ensures uniqueness
     fwd_matches = {}
     rev_matches = {}
-    for i in range(len(primer) - min_bases + 1)[::-1]:
-        primer_dna = primer.overhang + primer.anneal
-        annealing = primer_dna[i:]
+
+    # 3' primer region lengths
+    max_len = min(len(template), len(primer))
+    primer_dna = primer.overhang + primer.anneal
+    # Find minimal (above min_len) annealing region + the primer's 3' location.
+    for i in range(1, max_len + 1)[::-1]:
+        annealing = primer_dna[-i:]
         anneal_temp = annealing.tm()
         anneal_len = len(annealing)
         if anneal_temp > min_tm:
