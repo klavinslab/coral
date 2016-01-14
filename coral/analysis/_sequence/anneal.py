@@ -38,8 +38,11 @@ def anneal(template, primer, min_tm=50.0, min_len=10):
     '''
     # TODO: add possibility for primer basepair mismatch
     if len(primer) < min_len:
-        msg = 'Primer match length does not exceed minimum number of bases.'
+        msg = 'Primer length is shorter than min_len argument.'
         raise PrimerLengthError(msg)
+    if len(template) < min_len:
+        msg = 'Template is shorter than the min_len argument.'
+        raise AnnealError(msg)
 
     # Strategy: locate all min-length matches, then extend them until they
     # no longer match. This provides an advantage over the previous strategy of
@@ -94,15 +97,17 @@ def anneal(template, primer, min_tm=50.0, min_len=10):
     else:
         update_fun = update_match_linear
 
-    annealing = primer.primer().to_ds()
+    # Maximum annealing length to test (can't exceed template length)
+    max_len = min(len(template), len(primer))
 
+    primer_dna = primer.primer().to_ds()
     anneal_len = min_len
-    anneal_seq = annealing[-anneal_len:]
+    anneal_seq = primer_dna[-anneal_len:]
     binding_data = []
     for k, strand_locs in enumerate(template.locate(anneal_seq)):
         matches = zip(strand_locs, [min_len] * len(strand_locs))
-        for i in range(anneal_len + 1, len(annealing) + 1):
-            anneal_seq = annealing[-i:]
+        for i in range(anneal_len + 1, max_len + 1):
+            anneal_seq = primer_dna[-i:]
             for j, match in enumerate(matches):
                 if k == 0:
                     matches[j] = update_fun(template.top(), match, anneal_seq)
@@ -112,9 +117,9 @@ def anneal(template, primer, min_tm=50.0, min_len=10):
         binding_data.append(matches)
 
     # Now, filter out all the matches that are too short
-    for i in reversed(range(len(annealing) + 1)):
+    for i in reversed(range(len(primer_dna) + 1)):
         min_len = i + 1
-        tm = annealing[-min_len:].tm()
+        tm = primer_dna[-min_len:].tm()
         if tm < min_tm:
             break
 
