@@ -332,22 +332,32 @@ class DNA(object):
         mw_c = counter['c'] * 329.2
         return mw_a + mw_t + mw_g + mw_c
 
-    def pop_feature(self, feature_name):
+    def pop_by_feature(self, feature):
         '''Removes feature from circular plasmid and linearizes. Automatically
-        reorients at the base just after the feature.
+        reorients at the base just after the feature. Note: this operation
+        actually modifies the current sequence, just like any pop operation
+        on an array. To get a feature's sequence without modifying the parent
+        sequence, use the .extract() method.
 
-        :param feature_name: Name of the feature to remove (must be unique).
-        :type feature_name: str
+        :param feature_name: The feature to remove.
+        :type feature_name: coral.Feature
 
         '''
-        feature_list = self.select_features(feature_name, by='name')
-        if len(feature_list) > 1:
-            return ValueError('More than one feature matching that name.')
-        feature = feature_list[0]
+        extracted = self.extract(feature)
+        # FIXME: modify .rotate method to modify current sequence, then use
+        # here.
         rotated = self.rotate_by_feature(feature)
-        linearized = rotated.linearize()
-        popped = linearized[feature.stop - feature.start:]
-        return popped
+        remaining = rotated.linearize()[len(extracted):]
+        # Update current sequence - hacky, will forget other attrs added
+        # by user.
+        self._top = remaining._top
+        self._bottom = remaining._bottom
+        self.stranded = remaining.stranded
+        self.topology = remaining.topology
+        self.features = remaining.features
+        self.name = remaining.name
+
+        return extracted
 
     def rotate(self, index):
         '''Orient DNA to index (only applies to circular DNA).

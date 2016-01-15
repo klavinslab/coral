@@ -229,6 +229,17 @@ class TestFeatures(object):
         extracted = self.dna.extract(test_utr3_feature)
         assert_equal(str(extracted), 'TGCATGCATGCATGCATGC')
 
+    def test_pop_by_feature(self):
+        copy = self.dna.copy().circularize()
+        coding_feature = copy.select_features('Coding Feature')[0]
+
+        coding_seq = copy.pop_by_feature(coding_feature)
+        rest_of_dna = (self.dna[coding_feature.stop:] +
+                       self.dna[:coding_feature.start])
+
+        assert_equal(coding_seq, self.dna.extract(coding_feature))
+        assert_equal(copy, rest_of_dna)
+
     def test_getitem(self):
         subsequence = self.dna[30:100]
         remaining_features = [Feature('Primer Feature', 11, 30, 'primer_bind'),
