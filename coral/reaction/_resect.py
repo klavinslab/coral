@@ -1,9 +1,9 @@
-"""Resection (need a new name!) - exonuclease activity."""
+'''Resection (need a new name!) - exonuclease activity.'''
 import coral
 
 
 def five_resect(dna, n_bases):
-    """Remove bases from 5' end of top strand.
+    '''Remove bases from 5' end of top strand.
 
     :param dna: Sequence to resect.
     :type dna: coral.DNA
@@ -12,7 +12,7 @@ def five_resect(dna, n_bases):
     :returns: DNA sequence resected at the 5' end by n_bases.
     :rtype: coral.DNA
 
-    """
+    '''
     new_instance = dna.copy()
     if n_bases >= len(dna):
         new_instance._top.seq = ''.join(['-' for i in range(len(dna))])
@@ -25,7 +25,7 @@ def five_resect(dna, n_bases):
 
 
 def three_resect(dna, n_bases):
-    """Remove bases from 3' end of top strand.
+    '''Remove bases from 3' end of top strand.
 
     :param dna: Sequence to resect.
     :type dna: coral.DNA
@@ -34,7 +34,7 @@ def three_resect(dna, n_bases):
     :returns: DNA sequence resected at the 3' end by n_bases.
     :rtype: coral.DNA
 
-    """
+    '''
     new_instance = dna.copy()
     if n_bases >= len(dna):
         new_instance._top.seq = ''.join(['-' for i in range(len(dna))])
@@ -47,13 +47,13 @@ def three_resect(dna, n_bases):
 
 
 def _remove_end_gaps(sequence):
-    """Removes double-stranded gaps from ends of the sequence.
+    '''Removes double-stranded gaps from ends of the sequence.
 
     :returns: The current sequence with terminal double-strand gaps ('-')
               removed.
     :rtype: coral.DNA
 
-    """
+    '''
     # Count terminal blank sequences
     def count_end_gaps(seq):
         gap = coral.DNA('-')

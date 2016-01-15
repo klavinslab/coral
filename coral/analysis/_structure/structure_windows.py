@@ -49,7 +49,7 @@ class StructureWindows(object):
             pylab.ylabel('Score - Probability of being unbound.')
             pylab.show()
         else:
-            raise Exception("Run calculate() first so there's data to plot!")
+            raise Exception('Run calculate() first so there\'s data to plot!')
 
 
 def _context_walk(dna, window_size, context_len, step):

@@ -40,7 +40,7 @@ def reverse_transcribe(rna):
 
 
 def coding_sequence(rna):
-    """Extract coding sequence from an RNA template.
+    '''Extract coding sequence from an RNA template.
 
     :param seq: Sequence from which to extract a coding sequence.
     :type seq: coral.RNA
@@ -53,7 +53,7 @@ def coding_sequence(rna):
              ValueError if rna argument has no stop codon in-frame with the
              first start codon.
 
-    """
+    '''
     if isinstance(rna, coral.DNA):
         rna = transcribe(rna)
     codons_left = len(rna) // 3

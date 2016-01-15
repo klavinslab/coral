@@ -175,11 +175,11 @@ def gibson(seq_list, circular=True, overlaps='mixed', overlap_tm=65,
         overlaps = [overlaps] * n_overlaps
     else:
         if len(overlaps) != n_overlaps:
-            raise ValueError('Incorrect number of "overlaps" entries.')
+            raise ValueError('Incorrect number of \'overlaps\' entries.')
         else:
             for overlap in overlaps:
                 if overlap not in ['left', 'right', 'mixed']:
-                    raise ValueError('Invalid "overlaps" setting.')
+                    raise ValueError('Invalid \'overlaps\' setting.')
 
     if primer_kwargs is None:
         primer_kwargs = {}

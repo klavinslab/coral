@@ -132,7 +132,7 @@ def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
                        other sequence (negative number).
     :type gap_double: float
     :param matrix: A score matrix dictionary name. Only one available now is
-                   "DNA_simple".
+                   \'DNA_simple\'.
     :type matrix: str
 
     '''

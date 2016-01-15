@@ -86,7 +86,7 @@ def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
                        other sequence (negative number).
     :type gap_double: float
     :param matrix: A score matrix dictionary name. Only one available now is
-                   "DNA_simple".
+                   \'DNA_simple\'.
     :type matrix: str
 
     '''
@@ -200,16 +200,16 @@ def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
         elif p == LEFT:
             j -= 1
             align_j.append(seqj[j])
-            align_i.append("-")
+            align_i.append('-')
         elif p == UP:
             i -= 1
-            align_j.append("-")
+            align_j.append('-')
             align_i.append(seqi[i])
         else:
             raise Exception('wtf!')
         p = pointer[i, j]
-    align_i = "".join(align_i[::-1])
-    align_j = "".join(align_j[::-1])
+    align_i = ''.join(align_i[::-1])
+    align_j = ''.join(align_j[::-1])
     # np.array(align_i.reverse())
     return ((align_i, align_j) if flip else (align_j, align_i))
 
