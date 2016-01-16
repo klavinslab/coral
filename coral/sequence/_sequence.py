@@ -51,6 +51,8 @@ class Sequence(object):
         if len(pattern) > len(self):
             raise ValueError('Pattern too long.')
         pattern = str(pattern).upper()
+        # Handle 'any-char' situation:
+        pattern = pattern.replace(self.any_char, '.')
         re_pattern = '(?=' + pattern + ')'
         return [index.start() for index in
                 re.finditer(re_pattern, self.seq)]

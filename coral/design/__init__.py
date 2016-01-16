@@ -5,3 +5,4 @@ from ._sequence_generation.random_sequences import random_codons
 from ._oligo_synthesis.oligo_assembly import OligoAssembly
 from ._gibson import gibson_primers
 from ._gibson import gibson
+from . import crispr
