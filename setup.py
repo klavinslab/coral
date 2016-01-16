@@ -4,14 +4,6 @@ except ImportError:
     from distutils.core import setup, Extension
 
 import numpy
-# For rebuilding Cython extensions
-try:
-    from Cython.Distutils import build_ext
-    from Cython.Build import cythonize
-    USECYTHON = True
-except ImportError:
-    USECYTHON = False
-
 
 config = {
     'description': 'coral',
@@ -38,8 +30,7 @@ config = {
                  'coral.reaction',
                  'coral.sequence'],
     'package_data': {'coral': ['coral/analysis/_sequencing/data/*',
-                               'coral/sequence/d3-plasmid.js',
-                               'coral/analysis/_sequencing/calign.pyx']},
+                               'coral/sequence/d3-plasmid.js']},
     'include_package_data': True,
     'scripts': [],
     'name': 'coral',
@@ -51,15 +42,6 @@ seq_extension = Extension('coral.analysis._sequencing.calign',
                           include_dirs=[numpy.get_include()])
 EXTENSIONS = [seq_extension]
 
-if USECYTHON:
-    cython_ext = cythonize('coral/analysis/_sequencing/calign.pyx')
-    EXTENSIONS = cython_ext + EXTENSIONS
-    setup(cmdclass={'build_ext': build_ext},
-          ext_modules=EXTENSIONS,
-          test_suite='nose.collector',
-          include_dirs=[numpy.get_include()],
-          **config)
-else:
-    setup(ext_modules=EXTENSIONS,
-          test_suite='nose.collector',
-          **config)
+setup(ext_modules=EXTENSIONS,
+      test_suite='nose.collector',
+      **config)
