@@ -1,6 +1,12 @@
 Changelog for Coral
 ===================
 
+### 0.3.1
+* Fixed issues with PCR simulation and annealing, can now handle all cases of
+primer directionality and overlaps, linear and circular templates.
+* Added pyx to package manifest for case where user already has cython
+installed.
+
 ### 0.3.0
 * Separated out annealing behavior into analysis function (`analysis.anneal`).
 * Functions that use annealing (e.g. `reaction.pcr`) can now accept partial

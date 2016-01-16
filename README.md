@@ -58,3 +58,7 @@ Install the extra packages in dev-requirements.txt (`Sphinx`, `cython`,
 ## License
 
 MIT
+
+## Author
+
+Contact Nick at nbolten@gmail.com with any questions about Coral.

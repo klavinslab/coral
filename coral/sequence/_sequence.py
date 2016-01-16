@@ -16,7 +16,7 @@ class Sequence(object):
         :param run_checks: Check inputs / formats (disabling increases speed):
                            alphabet check
                            case
-        :param any_char: Character representing "any", e.g. N for DNA.
+        :param any_char: Character representing \'any\', e.g. N for DNA.
         :type any_char: str
         :type run_checks: bool
         :returns: coral.sequence.Sequence instance.
@@ -352,10 +352,10 @@ class Feature(object):
     def __repr__(self):
         '''Represent a feature.'''
         if self.modified:
-            part1 = '(Modified) {} "{}" feature '.format(self.name,
-                                                         self.feature_type)
+            part1 = '(Modified) {} \'{}\' feature '.format(self.name,
+                                                           self.feature_type)
         else:
-            part1 = '{} "{}" feature '.format(self.name, self.feature_type)
+            part1 = '{} \'{}\' feature '.format(self.name, self.feature_type)
         part2 = '({0} to {1}) on strand {2}'.format(self.start, self.stop,
                                                     self.strand)
         return part1 + part2
@@ -412,7 +412,7 @@ def check_alphabet(seq, material):
     :type sequence: str
     :returns: Whether the `seq` is a valid string of `material`.
     :rtype: bool
-    :raises: ValueError if `material` isn't "dna", "rna", or "peptide".
+    :raises: ValueError if `material` isn't \'dna\', \'rna\', or \'peptide\'.
              ValueError if `seq` contains invalid characters for its
              material type.
 
@@ -422,7 +422,7 @@ def check_alphabet(seq, material):
         alphabet = ALPHABETS[material]
         err_msg = errs[material]
     else:
-        msg = 'Input material must be "dna", "rna", or "peptide".'
+        msg = 'Input material must be \'dna\', \'rna\', or \'peptide\'.'
         raise ValueError(msg)
     # This is a bottleneck when modifying sequence - hence the run_checks
     # optional parameter in sequence objects..

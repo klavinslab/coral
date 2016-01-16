@@ -419,7 +419,7 @@ def _adjust_overlap(positions_list, index, direction):
     :type direction: str
     :returns: A list of overlap positions (2-element lists)
     :rtype: list
-    :raises: ValueError if direction isn't "left" or "right".
+    :raises: ValueError if direction isn't \'left\' or \'right\'.
 
     '''
     if direction == 'left':
@@ -427,5 +427,5 @@ def _adjust_overlap(positions_list, index, direction):
     elif direction == 'right':
         positions_list[index] += 1
     else:
-        raise ValueError('direction must be "left" or "right".')
+        raise ValueError('direction must be \'left\' or \'right\'.')
     return positions_list

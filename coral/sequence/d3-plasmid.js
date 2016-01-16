@@ -267,7 +267,7 @@ function d3sequence(sequence_json, div_id) {
           return describeArc(0.97 * centerRadius, d.start, d.stop)
         })
         .attr('class', 'center-arc')
-        .attr("id", function(d, i) { return "center-arc" + i; })
+        .attr('id', function(d, i) { return 'center-arc' + i; })
         .style('stroke', 'none')
         .style('fill', 'none');
 

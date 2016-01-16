@@ -158,12 +158,12 @@ class DNA(object):
         html = '<div id={div_id}></div>'.format(div_id=div_id)
         js_databind = '''
         <script>
-        require(["{d3_cdn}"], function(lib) {{
+        require([\'{d3_cdn}\'], function(lib) {{
             window.data = {data};'''.format(div_id=div_id, d3_cdn=d3cdn,
                                             data=sequence_json)
 
         js_viz = '''
-            d3sequence(window.data, "{div_id}")
+            d3sequence(window.data, \'{div_id}\')
         }});
         </script>
         '''.format(div_id=div_id)

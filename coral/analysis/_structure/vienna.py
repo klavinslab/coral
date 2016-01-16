@@ -171,8 +171,8 @@ class Vienna(object):
         :param indices: list (len 2) of sequence indices on which to
                         calculate pairs.
         :type indices: list of ints
-        :param simtype: Vienna simulation package to use. "duplex" dose not
-                        allow self RNA interactions. "cofold" allows self RNA
+        :param simtype: Vienna simulation package to use. \'duplex\' dose not
+                        allow self RNA interactions. \'cofold\' allows self RNA
                         interactions to occur.
         :type simtype: str
         :returns: Binding energy between two given sequence
