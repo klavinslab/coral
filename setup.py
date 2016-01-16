@@ -11,7 +11,7 @@ config = {
     'url': 'https://github.com/klavinslab/coral',
     'download_url': 'https://github.com/klavinslab/coral.git',
     'author_email': 'nbolten _at_ gmail',
-    'version': '0.3.1',
+    'version': '0.3.2',
     'install_requires': ['numpy', 'biopython'],
     'extras_require': {'plotting': ['matplotlib'],
                        'yeastdatabases': ['intermine', 'requests'],
