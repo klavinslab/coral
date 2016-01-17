@@ -17,7 +17,7 @@ config = {
     'url': 'https://github.com/klavinslab/coral',
     'download_url': 'https://github.com/klavinslab/coral.git',
     'author_email': 'nbolten _at_ gmail',
-    'version': '0.3.2',
+    'version': '0.3.3',
     'install_requires': ['numpy', 'biopython'],
     'extras_require': {'plotting': ['matplotlib'],
                        'yeastdatabases': ['intermine', 'requests'],
@@ -42,7 +42,7 @@ config = {
     'name': 'coral',
     'license': 'MIT',
     'classifiers': ['Programming Language :: Python',
-                    'Programming Language :: Python 2.7',
+                    'Programming Language :: Python :: 2.7',
                     'Programming Language :: Python :: 2 :: Only']
 }
 
