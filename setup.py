@@ -1,3 +1,9 @@
+# Check python versions
+import sys
+if sys.version_info.major > 2:
+    print('Coral is currently compatible only with Python 2.')
+    sys.exit(1)
+
 try:
     from setuptools import setup, Extension
 except ImportError:
@@ -34,7 +40,10 @@ config = {
     'include_package_data': True,
     'scripts': [],
     'name': 'coral',
-    'license': 'Copyright University of Washington'
+    'license': 'MIT',
+    'classifiers': ['Programming Language :: Python',
+                    'Programming Language :: Python 2.7',
+                    'Programming Language :: Python :: 2 :: Only']
 }
 
 seq_extension = Extension('coral.analysis._sequencing.calign',
