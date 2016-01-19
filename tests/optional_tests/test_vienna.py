@@ -1,14 +1,14 @@
-'''Tests for Vienna RNA module.'''
+'''Tests for ViennaRNA RNA module.'''
 from nose.tools import assert_equal
 from coral import analysis, DNA
 
 
-class TestVienna(object):
-    '''Tests for Vienna class.'''
+class TestViennaRNA(object):
+    '''Tests for ViennaRNA class.'''
     def __init__(self):
         # M13R primer sequence
         self.dna = DNA('agcggataacaatttcacacaggaaacagctatgaccatg')
-        self.vienna = analysis.Vienna([self.dna])
+        self.vienna = analysis.ViennaRNA([self.dna])
 
     def test_mfe(self):
         mfe = self.vienna.mfe(temp=37.0)

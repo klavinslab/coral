@@ -8,6 +8,6 @@ from ._sequencing.sanger import Sanger
 from ._structure.nupack import Nupack
 from ._structure.nupack import nupack_multi
 from ._structure.dimers import dimers
-from ._structure.vienna import Vienna
+from ._structure.viennarna import ViennaRNA
 from ._structure.structure_windows import StructureWindows
 from . import utils

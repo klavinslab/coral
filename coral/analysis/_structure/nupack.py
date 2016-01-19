@@ -12,7 +12,7 @@ from coral.analysis.utils import sequence_type
 
 class Nupack(object):
     '''Run NUPACK functions on sequences.'''
-    def __init__(self, seq_list, temp=50, nupack_home=None, rna1999=False):
+    def __init__(self, seq_list, temp=37.0, nupack_home=None, rna1999=False):
         '''
         :param seq_list: Input sequence(s).
         :type seq_list: coral.DNA, coral.RNA, or list of
@@ -247,7 +247,7 @@ class Nupack(object):
 
         # Extract pair probability types and pair_probabilities. These are in
         # Nupack's raw text format
-        #types = [(int(x.split()[0]), int(x.split()[1])) for x in pairs]
+        # types = [(int(x.split()[0]), int(x.split()[1])) for x in pairs]
         pair_probabilities = [float(x.split()[2]) for x in pairs]
 
         self._close()
