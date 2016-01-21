@@ -46,6 +46,7 @@ class DNA(object):
 
         '''
         # TODO: accept sequences in general by running str() on it
+        self.material = 'dna'
         dna = dna.strip()
         self._top = NucleicAcidSequence(dna, 'dna', run_checks=run_checks)
 
@@ -635,6 +636,10 @@ class DNA(object):
             return True
         else:
             return False
+
+    def __hash__(self):
+        # Enables the use of functions like set() - hash unique attributes
+        return hash(self.top().seq + self.bottom().seq + self.topology)
 
     def __len__(self):
         return len(self._top)

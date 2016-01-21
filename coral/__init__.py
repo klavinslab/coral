@@ -6,6 +6,7 @@ from . import database
 from . import design
 from . import reaction
 from . import seqio
+from . import utils
 from .sequence import DNA
 from .sequence import RNA
 from .sequence import Peptide

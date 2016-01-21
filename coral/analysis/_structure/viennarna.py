@@ -3,22 +3,9 @@
 # Due to inconsistency of command inputs, each command is a function
 import os
 import re
-from shutil import rmtree
 from subprocess import Popen, PIPE, STDOUT
-from tempfile import mkdtemp
 import numpy as np
-
-
-def tempdir(fun):
-    def wrapper(*args, **kwargs):
-        self = args[0]
-        if self._tempdir:
-            rmtree(self._tempdir)
-        self._tempdir = mkdtemp()
-        retval = fun(*args, **kwargs)
-        rmtree(self._tempdir)
-        return retval
-    return wrapper
+from coral.utils import tempdirs
 
 
 # TODO: Generic structure object to return from ViennaRNA, NUPACK classes
@@ -26,7 +13,7 @@ class ViennaRNA(object):
     def __init__(self):
         self._tempdir = ''
 
-    @tempdir
+    @tempdirs.tempdir
     def cofold(self, strand1, strand2, temp=37.0, dangles=2, nolp=False,
                nogu=False, noclosinggu=False, constraints=None,
                canonicalbponly=False, partition=-1, pfscale=None, gquad=False):
@@ -151,7 +138,7 @@ class ViennaRNA(object):
 
         return output
 
-    @tempdir
+    @tempdirs.tempdir
     def fold(self, strand, temp=37.0, dangles=2, nolp=False, nogu=False,
              noclosinggu=False, constraints=None, canonicalbponly=False,
              partition=False, pfscale=None, imfeelinglucky=False, gquad=False):
@@ -237,7 +224,6 @@ class ViennaRNA(object):
         # Process the output
         output = {}
         lines = rnafold_output.splitlines()
-        print lines
         # Line 1 is the sequence as RNA
         lines.pop(0)
         # Line 2 is the dotbracket + mfe
