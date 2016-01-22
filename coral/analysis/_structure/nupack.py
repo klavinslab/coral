@@ -798,6 +798,125 @@ class NUPACK(object):
 
         return float(energy_stdout[-2])
 
+    @tempdirs.tempdir
+    def prob(self, strand, dotparens, temp=37.0, pseudo=False, material=None,
+             dangles='some'):
+        '''Calculate the equilibrium probability of a given secondary
+        structure. Runs the \'prob\' command.
+
+        :param strand: Strand on which to run prob. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :returns: The equilibrium probability of the sequence with the
+                  specified secondary structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'prob.in'), 'w') as f:
+            f.write(self._pfunc_file(strand)[0] + '\n' + dotparens)
+
+        # Run the command. There's no STDOUT.
+        energy_stdout = self._run('prob', 'prob', cmd_args).split('\n')
+
+        # Return the energy
+        return float(energy_stdout[-2])
+
+    @tempdirs.tempdir
+    def prob_multi(self, strands, dotparens, permutation=None, temp=37.0,
+                   pseudo=False, material=None, dangles='some'):
+        '''Calculate the equilibrium probability of a given secondary
+        structure of a complex of sequences in a given circular permutation.
+        Runs the \'prob\' command.
+
+        :param strands: Strands on which to run prob. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :returns: The free energy of the sequence with the specified secondary
+                  structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+        cmd_args.append('-multi')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'prob.in'), 'w') as f:
+            pfunc_lines = self._pfunc_file_multi(strands, permutation)
+            f.write('\n'.join(pfunc_lines + [dotparens]))
+
+        # Run the command. There's no STDOUT.
+        energy_stdout = self._run('prob', 'prob', cmd_args).split('\n')
+
+        return float(energy_stdout[-2])
+
     # Helper methods for preparing command input files
     def _pfunc_file(self, strand):
         '''Prepares lines to write to file for pfunc command input.

@@ -259,6 +259,37 @@ class TestNUPACK(object):
                                                 material='rna1999')
         assert_equal(rna99_output, 200002.43729716184109)
 
+    def test_prob(self):
+        # Test DNA
+        dna_output = self.nupack.prob(self.dnas[0], '..........')
+        assert_equal(dna_output, .9233)
+
+        # Test RNA
+        rna_output = self.nupack.prob(self.rnas[0], '..........')
+        assert_equal(rna_output, .8601)
+
+        # Test RNA 1999
+        rna99_output = self.nupack.prob(self.rnas[0], '..........',
+                                        material='rna1999')
+        assert_equal(rna99_output, .9871)
+
+    def test_prob_multi(self):
+        # Test DNA
+        dna_output = self.nupack.prob_multi(self.dnas,
+                                            '(.......((+..))...+....).')
+        assert_equal(dna_output, .04460)
+
+        # Test RNA
+        rna_output = self.nupack.prob_multi(self.rnas,
+                                            '(.......((+..))...+....).')
+        assert_equal(rna_output, .07534)
+
+        # Test RNA 1999
+        rna99_output = self.nupack.prob_multi(self.rnas,
+                                              '(.......((+..))...+....).',
+                                              material='rna1999')
+        assert_equal(rna99_output, .1927)
+
     def _process_ppairs(self, filename, dim):
         mat = np.zeros((dim, dim + 1))
         curdir = os.path.dirname(__file__)
