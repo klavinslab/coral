@@ -340,7 +340,7 @@ class NUPACK(object):
                            dictionaries associated with structures having the
                            same, minimal MFE value.
         :type degenerate: bool
-        :returns: A dictionary with keys for 'mfe' (a float), 'dotbracket'
+        :returns: A dictionary with keys for 'mfe' (a float), 'dotparens'
                   (dot-parens notation of the MFE structure), and 'pairlist'
                   (a pair list notation of the MFE structure). Note that the
                   pair list will be an empty list if the MFE is unstructured.
@@ -414,7 +414,7 @@ class NUPACK(object):
                            dictionaries associated with structures having the
                            same, minimal MFE value.
         :type degenerate: bool
-        :returns: A dictionary with keys for 'mfe' (a float), 'dotbracket'
+        :returns: A dictionary with keys for 'mfe' (a float), 'dotparens'
                   (dot-parens notation of the MFE structure), and 'pairlist'
                   (a pair list notation of the MFE structure). Note that the
                   pair list will be an empty list if the MFE is unstructured.
@@ -461,7 +461,7 @@ class NUPACK(object):
         '''Compute the suboptimal structures within a defined energy gap of the
         MFE. Runs the \'subopt\' command.
 
-        :param strand: Strand on which to run mfe. Strands must be either
+        :param strand: Strand on which to run subopt. Strands must be either
                        coral.DNA or coral.RNA).
         :type strand: coral.DNA or coral.RNA
         :param gap: Energy gap within to restrict results, e.g. 0.1.
@@ -519,7 +519,7 @@ class NUPACK(object):
         '''Compute the suboptimal structures within a defined energy gap of the
         MFE for an ordered permutation of strands. Runs the \'subopt\' command.
 
-        :param strands: Strands on which to run mfe. Strands must be either
+        :param strands: Strands on which to run subopt. Strands must be either
                        coral.DNA or coral.RNA).
         :type strands: list
         :param gap: Energy gap within to restrict results, e.g. 0.1.
@@ -621,10 +621,10 @@ class NUPACK(object):
             f.write(self._pfunc_file(strand)[0])
 
         # Run the command
-        pfunc_stdout = self._run('count', 'count', cmd_args).split('\n')
+        count_stdout = self._run('count', 'count', cmd_args).split('\n')
 
         # Return the count
-        return int(float(pfunc_stdout[-2]))
+        return int(float(count_stdout[-2]))
 
     @tempdirs.tempdir
     def count_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
@@ -633,7 +633,7 @@ class NUPACK(object):
         structural ensemble Ω(π) with an ordered permutation of strands. Runs
         the \'count\' command.
 
-        :param strands: List of strands to use as inputs to pfunc -multi.
+        :param strands: List of strands to use as inputs to count -multi.
         :type strands: list
         :param permutation: The circular permutation of strands to test in
                             complex. e.g. to test in the order that was input
@@ -676,9 +676,127 @@ class NUPACK(object):
             f.write('\n'.join(self._pfunc_file_multi(strands, permutation)))
 
         # Run the command
-        pfunc_output = self._run('count', 'count', cmd_args).split('\n')
+        count_stdout = self._run('count', 'count', cmd_args).split('\n')
 
-        return int(float(pfunc_output[-2]))
+        return int(float(count_stdout[-2]))
+
+    @tempdirs.tempdir
+    def energy(self, strand, dotparens, temp=37.0, pseudo=False, material=None,
+               dangles='some'):
+        '''Calculate the free energy of a given sequence structure. Runs the
+        \'energy\' command.
+
+        :param strand: Strand on which to run energy. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :returns: The free energy of the sequence with the specified secondary
+                  structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'energy.in'), 'w') as f:
+            f.write(self._pfunc_file(strand)[0] + '\n' + dotparens)
+
+        # Run the command. There's no STDOUT.
+        energy_stdout = self._run('energy', 'energy', cmd_args).split('\n')
+
+        # Return the energy
+        return float(energy_stdout[-2])
+
+    @tempdirs.tempdir
+    def energy_multi(self, strands, dotparens, permutation=None, temp=37.0,
+                     pseudo=False, material=None, dangles='some'):
+        '''Calculate the free energy of a given sequence structure. Runs the
+        \'energy\' command.
+
+        :param strands: Strands on which to run energy. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :returns: The free energy of the sequence with the specified secondary
+                  structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+        cmd_args.append('-multi')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'energy.in'), 'w') as f:
+            pfunc_lines = self._pfunc_file_multi(strands, permutation)
+            f.write('\n'.join(pfunc_lines + [dotparens]))
+
+        # Run the command. There's no STDOUT.
+        energy_stdout = self._run('energy', 'energy', cmd_args).split('\n')
+
+        return float(energy_stdout[-2])
 
     # Helper methods for preparing command input files
     def _pfunc_file(self, strand):
@@ -729,14 +847,14 @@ class NUPACK(object):
             # Line 2 is the MFE
             mfe = float(lines.pop(0))
             # Line 3 is the dot-bracket structure
-            dotbracket = lines.pop(0)
+            dotparens = lines.pop(0)
             # If there are any more lines, they are a pair list format
             # structure
             pairlist = []
             for line in lines:
                 pair = line.split('\t')
                 pairlist.append([int(pair[0]) - 1, int(pair[1]) - 1])
-            output.append({'mfe': mfe, 'dotbracket': dotbracket,
+            output.append({'mfe': mfe, 'dotparens': dotparens,
                            'pairlist': pairlist})
 
         return output

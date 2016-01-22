@@ -93,21 +93,21 @@ class TestNUPACK(object):
         # Test DNA
         dna_output = self.nupack.mfe(sum(self.dnas))
         assert_equal(dna_output['mfe'], -1.210)
-        assert_equal(dna_output['dotbracket'], '........((((.......))))')
+        assert_equal(dna_output['dotparens'], '........((((.......))))')
         assert_equal(dna_output['pairlist'],
                      [[8, 22], [9, 21], [10, 20], [11, 19]])
 
         # Test RNA
         rna_output = self.nupack.mfe(sum(self.rnas))
         assert_equal(rna_output['mfe'], -1.100)
-        assert_equal(rna_output['dotbracket'], '........((((.......))))')
+        assert_equal(rna_output['dotparens'], '........((((.......))))')
         assert_equal(rna_output['pairlist'],
                      [[8, 22], [9, 21], [10, 20], [11, 19]])
 
         # Test RNA 1999
         rna99_output = self.nupack.mfe(sum(self.rnas), material='rna1999')
         assert_equal(rna99_output['mfe'], -0.300)
-        assert_equal(rna99_output['dotbracket'], '........((((.......))))')
+        assert_equal(rna99_output['dotparens'], '........((((.......))))')
         assert_equal(rna99_output['pairlist'],
                      [[8, 22], [9, 21], [10, 20], [11, 19]])
 
@@ -117,12 +117,12 @@ class TestNUPACK(object):
         degenerate_output = self.nupack.mfe(degenerate_input, degenerate=True)
         # Should generate 2 degenerate equal-MFE structures
         assert_equal(degenerate_output[0]['mfe'], -1.330)
-        assert_equal(degenerate_output[0]['dotbracket'],
+        assert_equal(degenerate_output[0]['dotparens'],
                      '..............((((......))))..')
         assert_equal(degenerate_output[0]['pairlist'],
                      [[14, 27], [15, 26], [16, 25], [17, 24]])
         assert_equal(degenerate_output[1]['mfe'], -1.330)
-        assert_equal(degenerate_output[1]['dotbracket'],
+        assert_equal(degenerate_output[1]['dotparens'],
                      '....((((......))))............')
         assert_equal(degenerate_output[1]['pairlist'],
                      [[4, 17], [5, 16], [6, 15], [7, 14]])
@@ -131,21 +131,21 @@ class TestNUPACK(object):
         # Test DNA
         dna_output = self.nupack.mfe_multi(self.dnas)
         assert_equal(dna_output['mfe'], -8.773)
-        assert_equal(dna_output['dotbracket'], '.((.....((+..))...+.))...')
+        assert_equal(dna_output['dotparens'], '.((.....((+..))...+.))...')
         assert_equal(dna_output['pairlist'],
                      [[1, 19], [2, 18], [8, 13], [9, 12]])
 
         # Test RNA
         rna_output = self.nupack.mfe_multi(self.rnas)
         assert_equal(rna_output['mfe'], -3.863)
-        assert_equal(rna_output['dotbracket'], '(.......((+..))...+....).')
+        assert_equal(rna_output['dotparens'], '(.......((+..))...+....).')
         assert_equal(rna_output['pairlist'],
                      [[0, 21], [8, 13], [9, 12]])
 
         # Test RNA 1999
         rna99_output = self.nupack.mfe_multi(self.rnas, material='rna1999')
         assert_equal(rna99_output['mfe'], -4.263)
-        assert_equal(rna99_output['dotbracket'], '(.......((+..))...+....).')
+        assert_equal(rna99_output['dotparens'], '(.......((+..))...+....).')
         assert_equal(rna99_output['pairlist'],
                      [[0, 21], [8, 13], [9, 12]])
 
@@ -154,43 +154,43 @@ class TestNUPACK(object):
         dna_output = self.nupack.subopt(self.dnas[0], 2.5)
         # For DNA, 3 are found
         assert_equal(dna_output[0]['mfe'], 0.000)
-        assert_equal(dna_output[0]['dotbracket'], '..........')
+        assert_equal(dna_output[0]['dotparens'], '..........')
         assert_equal(dna_output[0]['pairlist'], [])
         assert_equal(dna_output[1]['mfe'], 1.940)
-        assert_equal(dna_output[1]['dotbracket'], '....(....)')
+        assert_equal(dna_output[1]['dotparens'], '....(....)')
         assert_equal(dna_output[1]['pairlist'], [[4, 9]])
         assert_equal(dna_output[2]['mfe'], 2.500)
-        assert_equal(dna_output[2]['dotbracket'], '.(...)....')
+        assert_equal(dna_output[2]['dotparens'], '.(...)....')
         assert_equal(dna_output[2]['pairlist'], [[1, 5]])
 
         # Test RNA
         rna_output = self.nupack.subopt(self.rnas[0], 2.5)
         assert_equal(rna_output[0]['mfe'], 0.000)
-        assert_equal(rna_output[0]['dotbracket'], '..........')
+        assert_equal(rna_output[0]['dotparens'], '..........')
         assert_equal(rna_output[0]['pairlist'], [])
         assert_equal(rna_output[1]['mfe'], 1.300)
-        assert_equal(rna_output[1]['dotbracket'], '(.......).')
+        assert_equal(rna_output[1]['dotparens'], '(.......).')
         assert_equal(rna_output[1]['pairlist'], [[0, 8]])
 
     def test_subopt_multi(self):
         # Test DNA
         dna_output = self.nupack.subopt_multi(self.dnas, 0.5)
         assert_equal(dna_output[0]['mfe'], -8.773)
-        assert_equal(dna_output[0]['dotbracket'], '.((.....((+..))...+.))...')
+        assert_equal(dna_output[0]['dotparens'], '.((.....((+..))...+.))...')
         assert_equal(dna_output[0]['pairlist'],
                      [[1, 19], [2, 18], [8, 13], [9, 12]])
         assert_equal(dna_output[1]['mfe'], -8.323)
-        assert_equal(dna_output[1]['dotbracket'], '.((...(.((+..)).).+.))...')
+        assert_equal(dna_output[1]['dotparens'], '.((...(.((+..)).).+.))...')
         assert_equal(dna_output[1]['pairlist'],
                      [[1, 19], [2, 18], [6, 15], [8, 13], [9, 12]])
 
         # Test RNA
         rna_output = self.nupack.subopt_multi(self.rnas, 0.5)
         assert_equal(rna_output[0]['mfe'], -3.863)
-        assert_equal(rna_output[0]['dotbracket'], '(.......((+..))...+....).')
+        assert_equal(rna_output[0]['dotparens'], '(.......((+..))...+....).')
         assert_equal(rna_output[0]['pairlist'], [[0, 21], [8, 13], [9, 12]])
         assert_equal(rna_output[1]['mfe'], -3.663)
-        assert_equal(rna_output[1]['dotbracket'], '.((.....((+..))...+.))...')
+        assert_equal(rna_output[1]['dotparens'], '.((.....((+..))...+.))...')
         assert_equal(rna_output[1]['pairlist'],
                      [[1, 19], [2, 18], [8, 13], [9, 12]])
 
@@ -198,7 +198,7 @@ class TestNUPACK(object):
         rna99_output = self.nupack.subopt_multi(self.rnas, 0.5,
                                                 material='rna1999')
         assert_equal(rna99_output[0]['mfe'], -4.263)
-        assert_equal(rna99_output[0]['dotbracket'],
+        assert_equal(rna99_output[0]['dotparens'],
                      '(.......((+..))...+....).')
         assert_equal(rna99_output[0]['pairlist'], [[0, 21], [8, 13], [9, 12]])
 
@@ -224,9 +224,40 @@ class TestNUPACK(object):
         rna_output = self.nupack.count_multi(self.rnas)
         assert_equal(rna_output, 7681)
 
-        # Test DNA
+        # Test RNA 1999
         rna99_output = self.nupack.count_multi(self.rnas, material='rna1999')
         assert_equal(rna99_output, 7681)
+
+    def test_energy(self):
+        # Test DNA
+        dna_output = self.nupack.energy(self.dnas[0], '..(....)..')
+        assert_equal(dna_output, 200003.05000000000000)
+
+        # Test RNA
+        rna_output = self.nupack.energy(self.rnas[0], '..(....)..')
+        assert_equal(rna_output, 200003.70000000000000)
+
+        # Test RNA 1999
+        rna99_output = self.nupack.energy(self.rnas[0], '..(....)..',
+                                          material='rna1999')
+        assert_equal(rna99_output, 200005.59999999999999)
+
+    def test_energy_multi(self):
+        # Test DNA
+        dna_output = self.nupack.energy_multi(self.dnas,
+                                              '(......(((+..))..)+....).')
+        assert_equal(dna_output, 199998.83729716184106)
+
+        # Test RNA
+        rna_output = self.nupack.energy_multi(self.rnas,
+                                              '(......(((+..))..)+....).')
+        assert_equal(rna_output, 200002.13729716184108)
+
+        # Test RNA 1999
+        rna99_output = self.nupack.energy_multi(self.rnas,
+                                                '(......(((+..))..)+....).',
+                                                material='rna1999')
+        assert_equal(rna99_output, 200002.43729716184109)
 
     def _process_ppairs(self, filename, dim):
         mat = np.zeros((dim, dim + 1))
