@@ -237,7 +237,6 @@ class NUPACK(object):
                             If set to None, defaults to the order of the
                             input strands.
         :type permutation: list
-
         :param temp: Temperature setting for the computation. Negative values
                      are not allowed.
         :type temp: float
@@ -388,6 +387,12 @@ class NUPACK(object):
         :param strands: Strands on which to run mfe. Strands must be either
                        coral.DNA or coral.RNA).
         :type strands: list
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
         :param temp: Temperature setting for the computation. Negative values
                      are not allowed.
         :type temp: float
@@ -517,6 +522,14 @@ class NUPACK(object):
         :param strands: Strands on which to run mfe. Strands must be either
                        coral.DNA or coral.RNA).
         :type strands: list
+        :param gap: Energy gap within to restrict results, e.g. 0.1.
+        :type gap: float
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
         :param temp: Temperature setting for the computation. Negative values
                      are not allowed.
         :type temp: float
@@ -568,6 +581,104 @@ class NUPACK(object):
         structures = self._process_mfe(data)
 
         return structures
+
+    @tempdirs.tempdir
+    def count(self, strand, temp=37.0, pseudo=False, material=None):
+        '''Enumerates the total number of secondary structures over the
+        structural ensemble Ω(π). Runs the \'count\' command.
+
+        :param strand: Strand on which to run count. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :returns: The count of the number of structures in the structural
+                  ensemble.
+        :rtype: int
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'count.in'), 'w') as f:
+            f.write(self._pfunc_file(strand)[0])
+
+        # Run the command
+        pfunc_stdout = self._run('count', 'count', cmd_args).split('\n')
+
+        # Return the count
+        return int(float(pfunc_stdout[-2]))
+
+    @tempdirs.tempdir
+    def count_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
+                    material=None):
+        '''Enumerates the total number of secondary structures over the
+        structural ensemble Ω(π) with an ordered permutation of strands. Runs
+        the \'count\' command.
+
+        :param strands: List of strands to use as inputs to pfunc -multi.
+        :type strands: list
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :returns: Dictionary with the following key:value pairs: 'energy':
+                  free energy, 'pfunc': partition function.
+        :rtype: dict
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args.append('-multi')
+        cmd_args += ['-T', temp]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'count.in'), 'w') as f:
+            f.write('\n'.join(self._pfunc_file_multi(strands, permutation)))
+
+        # Run the command
+        pfunc_output = self._run('count', 'count', cmd_args).split('\n')
+
+        return int(float(pfunc_output[-2]))
 
     # Helper methods for preparing command input files
     def _pfunc_file(self, strand):

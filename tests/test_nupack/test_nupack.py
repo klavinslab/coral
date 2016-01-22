@@ -202,6 +202,32 @@ class TestNUPACK(object):
                      '(.......((+..))...+....).')
         assert_equal(rna99_output[0]['pairlist'], [[0, 21], [8, 13], [9, 12]])
 
+    def test_count(self):
+        # Test DNA
+        dna_output = self.nupack.count(self.dnas[0])
+        assert_equal(dna_output, 9)
+
+        # Test RNA
+        rna_output = self.nupack.count(self.rnas[0])
+        assert_equal(rna_output, 9)
+
+        # Test DNA
+        rna99_output = self.nupack.count(self.rnas[0], material='rna1999')
+        assert_equal(rna99_output, 9)
+
+    def test_count_multi(self):
+        # Test DNA
+        dna_output = self.nupack.count_multi(self.dnas)
+        assert_equal(dna_output, 7681)
+
+        # Test RNA
+        rna_output = self.nupack.count_multi(self.rnas)
+        assert_equal(rna_output, 7681)
+
+        # Test DNA
+        rna99_output = self.nupack.count_multi(self.rnas, material='rna1999')
+        assert_equal(rna99_output, 7681)
+
     def _process_ppairs(self, filename, dim):
         mat = np.zeros((dim, dim + 1))
         curdir = os.path.dirname(__file__)
