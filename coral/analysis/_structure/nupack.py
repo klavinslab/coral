@@ -64,9 +64,8 @@ class NUPACK(object):
         :rtype: dict
 
         '''
-        # Check the inputs
-        if material is None:
-            material = strand.material
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
 
         # Set up command flags
         cmd_args = []
@@ -125,11 +124,8 @@ class NUPACK(object):
         :rtype: dict
 
         '''
-        # Check the inputs
-        self._same_material(strands)
-
-        if material is None:
-            material = strands[0].material
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
 
         if permutation is None:
             permutation = range(1, len(strands) + 1)
@@ -193,9 +189,8 @@ class NUPACK(object):
         :rtype: numpy.array
 
         '''
-        # Check the inputs
-        if material is None:
-            material = strand.material
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
 
         # Set up command flags
         cmd_args = []
@@ -271,11 +266,8 @@ class NUPACK(object):
         :rtype: list
 
         '''
-        # Check the inputs
-        self._same_material(strands)
-
-        if material is None:
-            material = strands[0].material
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
 
         if permutation is None:
             permutation = range(1, len(strands) + 1)
@@ -356,9 +348,8 @@ class NUPACK(object):
         :rtype: dict
 
         '''
-        # Check the inputs
-        if material is None:
-            material = strand.material
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
 
         # Set up command flags
         cmd_args = []
@@ -425,10 +416,8 @@ class NUPACK(object):
         :rtype: dict
 
         '''
-        # Check the inputs
-        self._same_material(strands)
-        if material is None:
-            material = strands[0].material
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
 
         if permutation is None:
             permutation = range(1, len(strands) + 1)
@@ -460,6 +449,125 @@ class NUPACK(object):
             return structures
         else:
             return structures[0]
+
+    @tempdirs.tempdir
+    def subopt(self, strand, gap, temp=37.0, pseudo=False, material=None,
+               dangles='some'):
+        '''Compute the suboptimal structures within a defined energy gap of the
+        MFE. Runs the \'subopt\' command.
+
+        :param strand: Strand on which to run mfe. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param gap: Energy gap within to restrict results, e.g. 0.1.
+        :type gap: float
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :returns: A list of dictionaries of the type returned by .mfe().
+        :rtype: list
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'subopt.in'), 'w') as f:
+            f.write(self._pfunc_file(strand)[0] + '\n' + str(gap))
+
+        # Run the command. There's no STDOUT.
+        self._run('subopt', 'subopt', cmd_args).split('\n')
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'subopt.subopt')) as g:
+            data = g.read()
+
+        structures = self._process_mfe(data)
+
+        return structures
+
+    @tempdirs.tempdir
+    def subopt_multi(self, strands, gap, permutation=None, temp=37.0,
+                     pseudo=False, material=None, dangles='some'):
+        '''Compute the suboptimal structures within a defined energy gap of the
+        MFE for an ordered permutation of strands. Runs the \'subopt\' command.
+
+        :param strands: Strands on which to run mfe. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :returns: A list of dictionaries of the type returned by .mfe().
+        :rtype: list
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+        cmd_args.append('-multi')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'subopt.in'), 'w') as f:
+            pfunc_lines = self._pfunc_file_multi(strands, permutation)
+            f.write('\n'.join(pfunc_lines + [str(gap)]))
+
+        # Run the command. There's no STDOUT.
+        self._run('subopt', 'subopt', cmd_args).split('\n')
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'subopt.subopt')) as g:
+            data = g.read()
+
+        structures = self._process_mfe(data)
+
+        return structures
 
     # Helper methods for preparing command input files
     def _pfunc_file(self, strand):
@@ -523,9 +631,20 @@ class NUPACK(object):
         return output
 
     # Helper methods for repetitive tasks
-    def _same_material(self, strands):
-        if len(set([s.material for s in strands])) > 1:
-            raise ValueError('Inputs must all be coral.DNA or all coral.RNA')
+    def _set_material(self, strand_input, material, multi=False):
+        if multi:
+            if len(set([s.material for s in strand_input])) > 1:
+                raise ValueError('Inputs must all be coral.DNA or all '
+                                 'coral.RNA')
+            if material is None:
+                return strand_input[0].material
+            else:
+                return material
+        else:
+            if material is None:
+                return strand_input.material
+            else:
+                return material
 
     def _run(self, command, prefix, cmd_args):
         arguments = [os.path.join(self._nupack_home, 'bin', command)]

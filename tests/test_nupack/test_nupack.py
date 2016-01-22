@@ -149,6 +149,59 @@ class TestNUPACK(object):
         assert_equal(rna99_output['pairlist'],
                      [[0, 21], [8, 13], [9, 12]])
 
+    def test_subopt(self):
+        # Test DNA
+        dna_output = self.nupack.subopt(self.dnas[0], 2.5)
+        # For DNA, 3 are found
+        assert_equal(dna_output[0]['mfe'], 0.000)
+        assert_equal(dna_output[0]['dotbracket'], '..........')
+        assert_equal(dna_output[0]['pairlist'], [])
+        assert_equal(dna_output[1]['mfe'], 1.940)
+        assert_equal(dna_output[1]['dotbracket'], '....(....)')
+        assert_equal(dna_output[1]['pairlist'], [[4, 9]])
+        assert_equal(dna_output[2]['mfe'], 2.500)
+        assert_equal(dna_output[2]['dotbracket'], '.(...)....')
+        assert_equal(dna_output[2]['pairlist'], [[1, 5]])
+
+        # Test RNA
+        rna_output = self.nupack.subopt(self.rnas[0], 2.5)
+        assert_equal(rna_output[0]['mfe'], 0.000)
+        assert_equal(rna_output[0]['dotbracket'], '..........')
+        assert_equal(rna_output[0]['pairlist'], [])
+        assert_equal(rna_output[1]['mfe'], 1.300)
+        assert_equal(rna_output[1]['dotbracket'], '(.......).')
+        assert_equal(rna_output[1]['pairlist'], [[0, 8]])
+
+    def test_subopt_multi(self):
+        # Test DNA
+        dna_output = self.nupack.subopt_multi(self.dnas, 0.5)
+        assert_equal(dna_output[0]['mfe'], -8.773)
+        assert_equal(dna_output[0]['dotbracket'], '.((.....((+..))...+.))...')
+        assert_equal(dna_output[0]['pairlist'],
+                     [[1, 19], [2, 18], [8, 13], [9, 12]])
+        assert_equal(dna_output[1]['mfe'], -8.323)
+        assert_equal(dna_output[1]['dotbracket'], '.((...(.((+..)).).+.))...')
+        assert_equal(dna_output[1]['pairlist'],
+                     [[1, 19], [2, 18], [6, 15], [8, 13], [9, 12]])
+
+        # Test RNA
+        rna_output = self.nupack.subopt_multi(self.rnas, 0.5)
+        assert_equal(rna_output[0]['mfe'], -3.863)
+        assert_equal(rna_output[0]['dotbracket'], '(.......((+..))...+....).')
+        assert_equal(rna_output[0]['pairlist'], [[0, 21], [8, 13], [9, 12]])
+        assert_equal(rna_output[1]['mfe'], -3.663)
+        assert_equal(rna_output[1]['dotbracket'], '.((.....((+..))...+.))...')
+        assert_equal(rna_output[1]['pairlist'],
+                     [[1, 19], [2, 18], [8, 13], [9, 12]])
+
+        # Test RNA 1999
+        rna99_output = self.nupack.subopt_multi(self.rnas, 0.5,
+                                                material='rna1999')
+        assert_equal(rna99_output[0]['mfe'], -4.263)
+        assert_equal(rna99_output[0]['dotbracket'],
+                     '(.......((+..))...+....).')
+        assert_equal(rna99_output[0]['pairlist'], [[0, 21], [8, 13], [9, 12]])
+
     def _process_ppairs(self, filename, dim):
         mat = np.zeros((dim, dim + 1))
         curdir = os.path.dirname(__file__)
