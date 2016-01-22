@@ -290,6 +290,37 @@ class TestNUPACK(object):
                                               material='rna1999')
         assert_equal(rna99_output, .1927)
 
+    def test_defect(self):
+        # Test DNA
+        dna_output = self.nupack.defect(self.dnas[0], '..(....)..')
+        assert_equal(dna_output, [2.152, .2152])
+
+        # Test RNA
+        rna_output = self.nupack.defect(self.rnas[0], '..(....)..')
+        assert_equal(rna_output, [2.274, .2274])
+
+        # Test RNA 1999
+        rna99_output = self.nupack.defect(self.rnas[0], '..(....)..',
+                                          material='rna1999')
+        assert_equal(rna99_output, [2.025, .2025])
+
+    def test_defect_multi(self):
+        # Test DNA
+        dna_output = self.nupack.defect_multi(self.dnas,
+                                              '(.......((+..))...+....).')
+        assert_equal(dna_output, [5.790, .2517])
+
+        # Test RNA
+        rna_output = self.nupack.defect_multi(self.rnas,
+                                              '(.......((+..))...+....).')
+        assert_equal(rna_output, [6.522, .2836])
+
+        # Test RNA 1999
+        rna99_output = self.nupack.defect_multi(self.rnas,
+                                                '(.......((+..))...+....).',
+                                                material='rna1999')
+        assert_equal(rna99_output, [4.733, .2058])
+
     def _process_ppairs(self, filename, dim):
         mat = np.zeros((dim, dim + 1))
         curdir = os.path.dirname(__file__)
