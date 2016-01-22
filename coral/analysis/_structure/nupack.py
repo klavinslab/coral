@@ -35,7 +35,7 @@ class NUPACK(object):
 
     @tempdirs.tempdir
     def pfunc(self, strand, temp=37.0, pseudo=False, material=None,
-              dangles='some'):
+              dangles='some', sodium=1.0, magnesium=0.0):
         '''Compute the partition function for an ordered complex of strands.
         Runs the \'pfunc\' command.
 
@@ -59,38 +59,32 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
-        :returns: Dictionary with the following key:value pairs: 'free_energy':
-                  free energy, 'pfunc': partition function.
-        :rtype: dict
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: A 2-tuple of the free energy of the ordered complex
+                  (float) and the partition function (float).
+        :rtype: tuple
 
         '''
         # Set the material (will be used to set command material flag)
         material = self._set_material(strand, material)
 
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'pfunc.in'), 'w') as f:
-            f.write(self._pfunc_file(strand)[0])
+        # Set up the input file and run the command
+        stdout = self._run('pfunc', cmd_args, [str(strand)]).split('\n')
 
-        # Run the command
-        pfunc_stdout = self._run('pfunc', 'pfunc', cmd_args).split('\n')
-
-        output = {}
-        output['free_energy'] = float(pfunc_stdout[-3])
-        output['pfunc'] = float(pfunc_stdout[-2])
-
-        return output
+        return (float(stdout[-3]), float(stdout[-2]))
 
     @tempdirs.tempdir
     def pfunc_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
-                    material=None, dangles='some'):
+                    material=None, dangles='some', sodium=1.0, magnesium=0.0):
         '''Compute the partition function for an ordered complex of strands.
         Runs the \'pfunc\' command.
 
@@ -119,42 +113,34 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
-        :returns: Dictionary with the following key:value pairs: 'energy':
-                  free energy, 'pfunc': partition function.
-        :rtype: dict
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: A 2-tuple of the free energy of the ordered complex
+                  (float) and the partition function (float).
+        :rtype: tuple
 
         '''
         # Set the material (will be used to set command material flag)
         material = self._set_material(strands, material, multi=True)
 
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+        # Set up the input file and run the command
         if permutation is None:
             permutation = range(1, len(strands) + 1)
+        lines = self._pfunc_file_multi(strands, permutation)
+        stdout = self._run('pfunc', cmd_args, lines).split('\n')
 
-        # Set up command flags
-        cmd_args = []
-        cmd_args.append('-multi')
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
-
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'pfunc.in'), 'w') as f:
-            f.write('\n'.join(self._pfunc_file_multi(strands, permutation)))
-
-        # Run the command
-        pfunc_output = self._run('pfunc', 'pfunc', cmd_args).split('\n')
-
-        output = {}
-        output['free_energy'] = float(pfunc_output[-3])
-        output['pfunc'] = float(pfunc_output[-2])
-
-        return output
+        return (float(stdout[-3]), float(stdout[-2]))
 
     @tempdirs.tempdir
     def pairs(self, strand, temp=37.0, pseudo=False, material=None,
-              dangles='some', cutoff=0.001):
+              dangles='some', sodium=1.0, magnesium=0.0, cutoff=0.001):
         '''Compute the pair probabilities for an ordered complex of strands.
         Runs the \'pairs\' command.
 
@@ -178,6 +164,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :param cutoff: Only probabilities above this cutoff appear in the
                        output.
         :type cutoff: float
@@ -193,23 +185,16 @@ class NUPACK(object):
         material = self._set_material(strand, material)
 
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'pairs.in'), 'w') as f:
-            f.write(self._pfunc_file(strand)[0])
-
-        # Run the command. There's no STDOUT.
-        self._run('pairs', 'pairs', cmd_args).split('\n')
+        # Set up the input file and run the command. Note: no STDOUT
+        lines = [str(strand)]
+        self._run('pairs', cmd_args, lines)
 
         # Read the output from file
-        with open(os.path.join(self._tempdir, 'pairs.ppairs')) as g:
-            ppairs = g.read()
+        with open(os.path.join(self._tempdir, 'pairs.ppairs')) as f:
+            ppairs = f.read()
         data = re.search('\n\n\d*\n(.*)', ppairs, flags=re.DOTALL).group(1)
         N = len(strand)
         prob_matrix = np.zeros((N, N + 1))
@@ -225,11 +210,12 @@ class NUPACK(object):
 
     @tempdirs.tempdir
     def pairs_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
-                    material=None, dangles='some', cutoff=0.001):
+                    material=None, dangles='some', sodium=1.0, magnesium=0.0,
+                    cutoff=0.001):
         '''Compute the pair probabilities for an ordered complex of strands.
-        Runs the \'pfunc\' command.
+        Runs the \'pairs\' command.
 
-        :param strands: List of strands to use as inputs to pfunc -multi.
+        :param strands: List of strands to use as inputs to pairs -multi.
         :type strands: list
         :param permutation: The circular permutation of strands to test in
                             complex. e.g. to test in the order that was input
@@ -254,6 +240,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :param cutoff: Only probabilities above this cutoff appear in the
                        output.
         :type cutoff: float
@@ -268,31 +260,22 @@ class NUPACK(object):
         # Set the material (will be used to set command material flag)
         material = self._set_material(strands, material, multi=True)
 
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+
+        # Set up the input file and run the command. Note: no STDOUT
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-
-        # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        cmd_args.append('-multi')
-        if pseudo:
-            cmd_args.append('-pseudo')
-
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'pairs.in'), 'w') as f:
-            f.write('\n'.join(self._pfunc_file_multi(strands, permutation)))
-
-        # Run the command
-        self._run('pairs', 'pairs', cmd_args).split('\n')
+        lines = self._pfunc_file_multi(strands, permutation)
+        self._run('pairs', cmd_args, lines)
 
         # Read the output from file
         N = sum([len(s) for s in strands])
         matrices = []
         for mat_type in ['ppairs', 'epairs']:
-            with open(os.path.join(self._tempdir, 'pairs.' + mat_type)) as g:
-                data = g.read()
+            with open(os.path.join(self._tempdir, 'pairs.' + mat_type)) as f:
+                data = f.read()
 
             probs = re.search('\n\n\d*\n(.*)', data, flags=re.DOTALL).group(1)
             lines = probs.split('\n')
@@ -312,7 +295,7 @@ class NUPACK(object):
 
     @tempdirs.tempdir
     def mfe(self, strand, temp=37.0, pseudo=False, material=None,
-            dangles='some', degenerate=False):
+            dangles='some', sodium=1.0, magnesium=0.0, degenerate=False):
         '''Compute the MFE for an ordered complex of strands. Runs the \'mfe\'
         command.
 
@@ -336,6 +319,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :param degenerate: Setting to True will result in returning a list of
                            dictionaries associated with structures having the
                            same, minimal MFE value.
@@ -351,27 +340,18 @@ class NUPACK(object):
         material = self._set_material(strand, material)
 
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
         if degenerate:
             cmd_args.append('-degenerate')
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'mfe.in'), 'w') as f:
-            f.write(self._pfunc_file(strand)[0])
-
-        # Run the command. There's no STDOUT.
-        self._run('mfe', 'mfe', cmd_args).split('\n')
+        # Set up the input file and run the command. Note: no STDOUT
+        lines = [str(strand)]
+        self._run('mfe', cmd_args, lines)
 
         # Read the output from file
-        with open(os.path.join(self._tempdir, 'mfe.mfe')) as g:
-            data = g.read()
-
-        structures = self._process_mfe(data)
+        with open(os.path.join(self._tempdir, 'mfe.mfe')) as f:
+            structures = self._process_mfe(f.read())
 
         if degenerate:
             return structures
@@ -380,7 +360,8 @@ class NUPACK(object):
 
     @tempdirs.tempdir
     def mfe_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
-                  material=None, dangles='some', degenerate=False):
+                  material=None, dangles='some', sodium=1.0, magnesium=0.0,
+                  degenerate=False):
         '''Compute the MFE for an ordered complex of strands. Runs the \'mfe\'
         command.
 
@@ -410,6 +391,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :param degenerate: Setting to True will result in returning a list of
                            dictionaries associated with structures having the
                            same, minimal MFE value.
@@ -424,32 +411,22 @@ class NUPACK(object):
         # Set the material (will be used to set command material flag)
         material = self._set_material(strands, material, multi=True)
 
-        if permutation is None:
-            permutation = range(1, len(strands) + 1)
-
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
         if degenerate:
             cmd_args.append('-degenerate')
-        cmd_args.append('-multi')
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'mfe.in'), 'w') as f:
-            f.write('\n'.join(self._pfunc_file_multi(strands, permutation)))
-
-        # Run the command. There's no STDOUT.
-        self._run('mfe', 'mfe', cmd_args).split('\n')
+        # Set up the input file and run the command. Note: no STDOUT
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._pfunc_file_multi(strands, permutation)
+        self._run('mfe', cmd_args, lines)
 
         # Read the output from file
-        with open(os.path.join(self._tempdir, 'mfe.mfe')) as g:
-            data = g.read()
+        with open(os.path.join(self._tempdir, 'mfe.mfe')) as f:
+            structures = self._process_mfe(f.read())
 
-        structures = self._process_mfe(data)
         if degenerate:
             return structures
         else:
@@ -457,7 +434,7 @@ class NUPACK(object):
 
     @tempdirs.tempdir
     def subopt(self, strand, gap, temp=37.0, pseudo=False, material=None,
-               dangles='some'):
+               dangles='some', sodium=1.0, magnesium=0.0):
         '''Compute the suboptimal structures within a defined energy gap of the
         MFE. Runs the \'subopt\' command.
 
@@ -483,6 +460,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :returns: A list of dictionaries of the type returned by .mfe().
         :rtype: list
 
@@ -491,31 +474,23 @@ class NUPACK(object):
         material = self._set_material(strand, material)
 
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'subopt.in'), 'w') as f:
-            f.write(self._pfunc_file(strand)[0] + '\n' + str(gap))
-
-        # Run the command. There's no STDOUT.
-        self._run('subopt', 'subopt', cmd_args).split('\n')
+        # Set up the input file and run the command. Note: no STDOUT
+        lines = [str(strand), str(gap)]
+        self._run('subopt', cmd_args, lines)
 
         # Read the output from file
-        with open(os.path.join(self._tempdir, 'subopt.subopt')) as g:
-            data = g.read()
-
-        structures = self._process_mfe(data)
+        with open(os.path.join(self._tempdir, 'subopt.subopt')) as f:
+            structures = self._process_mfe(f.read())
 
         return structures
 
     @tempdirs.tempdir
     def subopt_multi(self, strands, gap, permutation=None, temp=37.0,
-                     pseudo=False, material=None, dangles='some'):
+                     pseudo=False, material=None, dangles='some', sodium=1.0,
+                     magnesium=0.0):
         '''Compute the suboptimal structures within a defined energy gap of the
         MFE for an ordered permutation of strands. Runs the \'subopt\' command.
 
@@ -547,6 +522,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :returns: A list of dictionaries of the type returned by .mfe().
         :rtype: list
 
@@ -554,81 +535,52 @@ class NUPACK(object):
         # Set the material (will be used to set command material flag)
         material = self._set_material(strands, material, multi=True)
 
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+
+        # Set up the input file and run the command. Note: no STDOUT
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-
-        # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
-        cmd_args.append('-multi')
-
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'subopt.in'), 'w') as f:
-            pfunc_lines = self._pfunc_file_multi(strands, permutation)
-            f.write('\n'.join(pfunc_lines + [str(gap)]))
-
-        # Run the command. There's no STDOUT.
-        self._run('subopt', 'subopt', cmd_args).split('\n')
+        lines = self._pfunc_file_multi(strands, permutation)
+        lines.append(str(gap))
+        self._run('subopt', cmd_args, lines)
 
         # Read the output from file
-        with open(os.path.join(self._tempdir, 'subopt.subopt')) as g:
-            data = g.read()
-
-        structures = self._process_mfe(data)
+        with open(os.path.join(self._tempdir, 'subopt.subopt')) as f:
+            structures = self._process_mfe(f.read())
 
         return structures
 
     @tempdirs.tempdir
-    def count(self, strand, temp=37.0, pseudo=False, material=None):
+    def count(self, strand, pseudo=False):
         '''Enumerates the total number of secondary structures over the
         structural ensemble Ω(π). Runs the \'count\' command.
 
         :param strand: Strand on which to run count. Strands must be either
                        coral.DNA or coral.RNA).
         :type strand: list
-        :param temp: Temperature setting for the computation. Negative values
-                     are not allowed.
-        :type temp: float
         :param pseudo: Enable pseudoknots.
         :type pseudo: bool
-        :param material: The material setting to use in the computation. If set
-                         to None (the default), the material type is inferred
-                         from the strands. Other settings available: 'dna' for
-                         DNA parameters, 'rna' for RNA (1995) parameters, and
-                         'rna1999' for the RNA 1999 parameters.
-        :type material: str
         :returns: The count of the number of structures in the structural
                   ensemble.
         :rtype: int
 
         '''
-        # Set the material (will be used to set command material flag)
-        material = self._set_material(strand, material)
-
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-material', material]
         if pseudo:
-            cmd_args.append('-pseudo')
+            cmd_args = ['-pseudo']
+        else:
+            cmd_args = []
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'count.in'), 'w') as f:
-            f.write(self._pfunc_file(strand)[0])
-
-        # Run the command
-        count_stdout = self._run('count', 'count', cmd_args).split('\n')
+        # Set up the input file and run the command
+        stdout = self._run('count', cmd_args, [str(strand)]).split('\n')
 
         # Return the count
-        return int(float(count_stdout[-2]))
+        return int(float(stdout[-2]))
 
     @tempdirs.tempdir
-    def count_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
-                    material=None):
+    def count_multi(self, strands, permutation=None, pseudo=False):
         '''Enumerates the total number of secondary structures over the
         structural ensemble Ω(π) with an ordered permutation of strands. Runs
         the \'count\' command.
@@ -657,32 +609,22 @@ class NUPACK(object):
         :rtype: dict
 
         '''
-        # Set the material (will be used to set command material flag)
-        material = self._set_material(strands, material, multi=True)
-
-        if permutation is None:
-            permutation = range(1, len(strands) + 1)
-
         # Set up command flags
-        cmd_args = []
-        cmd_args.append('-multi')
-        cmd_args += ['-T', temp]
-        cmd_args += ['-material', material]
+        cmd_args = ['-multi']
         if pseudo:
             cmd_args.append('-pseudo')
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'count.in'), 'w') as f:
-            f.write('\n'.join(self._pfunc_file_multi(strands, permutation)))
+        # Set up the input file and run the command
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._pfunc_file_multi(strands, permutation)
+        stdout = self._run('count', cmd_args, lines).split('\n')
 
-        # Run the command
-        count_stdout = self._run('count', 'count', cmd_args).split('\n')
-
-        return int(float(count_stdout[-2]))
+        return int(float(stdout[-2]))
 
     @tempdirs.tempdir
     def energy(self, strand, dotparens, temp=37.0, pseudo=False, material=None,
-               dangles='some'):
+               dangles='some', sodium=1.0, magnesium=0.0):
         '''Calculate the free energy of a given sequence structure. Runs the
         \'energy\' command.
 
@@ -708,6 +650,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :returns: The free energy of the sequence with the specified secondary
                   structure.
         :rtype: float
@@ -717,26 +665,20 @@ class NUPACK(object):
         material = self._set_material(strand, material)
 
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'energy.in'), 'w') as f:
-            f.write(self._pfunc_file(strand)[0] + '\n' + dotparens)
-
-        # Run the command. There's no STDOUT.
-        energy_stdout = self._run('energy', 'energy', cmd_args).split('\n')
+        # Set up the input file and run the command. Note: no STDOUT
+        lines = [str(strand), dotparens]
+        stdout = self._run('energy', cmd_args, lines).split('\n')
 
         # Return the energy
-        return float(energy_stdout[-2])
+        return float(stdout[-2])
 
     @tempdirs.tempdir
     def energy_multi(self, strands, dotparens, permutation=None, temp=37.0,
-                     pseudo=False, material=None, dangles='some'):
+                     pseudo=False, material=None, dangles='some', sodium=1.0,
+                     magnesium=0.0):
         '''Calculate the free energy of a given sequence structure. Runs the
         \'energy\' command.
 
@@ -768,6 +710,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :returns: The free energy of the sequence with the specified secondary
                   structure.
         :rtype: float
@@ -776,31 +724,21 @@ class NUPACK(object):
         # Set the material (will be used to set command material flag)
         material = self._set_material(strands, material, multi=True)
 
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+        # Set up the input file and run the command
         if permutation is None:
             permutation = range(1, len(strands) + 1)
+        lines = self._pfunc_file_multi(strands, permutation)
+        lines.append(dotparens)
+        stdout = self._run('energy', cmd_args, lines).split('\n')
 
-        # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
-        cmd_args.append('-multi')
-
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'energy.in'), 'w') as f:
-            pfunc_lines = self._pfunc_file_multi(strands, permutation)
-            f.write('\n'.join(pfunc_lines + [dotparens]))
-
-        # Run the command. There's no STDOUT.
-        energy_stdout = self._run('energy', 'energy', cmd_args).split('\n')
-
-        return float(energy_stdout[-2])
+        return float(stdout[-2])
 
     @tempdirs.tempdir
     def prob(self, strand, dotparens, temp=37.0, pseudo=False, material=None,
-             dangles='some'):
+             dangles='some', sodium=1.0, magnesium=0.0):
         '''Calculate the equilibrium probability of a given secondary
         structure. Runs the \'prob\' command.
 
@@ -826,6 +764,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :returns: The equilibrium probability of the sequence with the
                   specified secondary structure.
         :rtype: float
@@ -835,26 +779,20 @@ class NUPACK(object):
         material = self._set_material(strand, material)
 
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'prob.in'), 'w') as f:
-            f.write(self._pfunc_file(strand)[0] + '\n' + dotparens)
+        # Set up the input file and run the command.
+        lines = [str(strand), dotparens]
+        stdout = self._run('prob', cmd_args, lines).split('\n')
 
-        # Run the command. There's no STDOUT.
-        energy_stdout = self._run('prob', 'prob', cmd_args).split('\n')
-
-        # Return the energy
-        return float(energy_stdout[-2])
+        # Return the probabilities
+        return float(stdout[-2])
 
     @tempdirs.tempdir
     def prob_multi(self, strands, dotparens, permutation=None, temp=37.0,
-                   pseudo=False, material=None, dangles='some'):
+                   pseudo=False, material=None, dangles='some', sodium=1.0,
+                   magnesium=0.0):
         '''Calculate the equilibrium probability of a given secondary
         structure of a complex of sequences in a given circular permutation.
         Runs the \'prob\' command.
@@ -887,6 +825,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :returns: The free energy of the sequence with the specified secondary
                   structure.
         :rtype: float
@@ -895,31 +839,21 @@ class NUPACK(object):
         # Set the material (will be used to set command material flag)
         material = self._set_material(strands, material, multi=True)
 
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+        # Set up the input file and run the command
         if permutation is None:
             permutation = range(1, len(strands) + 1)
+        lines = self._pfunc_file_multi(strands, permutation)
+        lines.append(dotparens)
+        stdout = self._run('prob', cmd_args, lines).split('\n')
 
-        # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
-        cmd_args.append('-multi')
-
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'prob.in'), 'w') as f:
-            pfunc_lines = self._pfunc_file_multi(strands, permutation)
-            f.write('\n'.join(pfunc_lines + [dotparens]))
-
-        # Run the command. There's no STDOUT.
-        energy_stdout = self._run('prob', 'prob', cmd_args).split('\n')
-
-        return float(energy_stdout[-2])
+        return float(stdout[-2])
 
     @tempdirs.tempdir
     def defect(self, strand, dotparens, temp=37.0, pseudo=False, material=None,
-               dangles='some', mfe=False):
+               dangles='some', sodium=1.0, magnesium=0.0, mfe=False):
         '''Calculate the ensemble defect for a given sequence and secondary
         structure. From the documentation, the ensemble defect is defined as
         \'the number of incorrectly paired nucleotides at equilibrium evaluated
@@ -948,6 +882,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :param mfe: Return the MFE defect (Zadeh et al., 2010) instead of the
                     ensemble defect.
         :type mfe: bool
@@ -960,28 +900,22 @@ class NUPACK(object):
         material = self._set_material(strand, material)
 
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
         if mfe:
             cmd_args.append('-mfe')
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'defect.in'), 'w') as f:
-            f.write(self._pfunc_file(strand)[0] + '\n' + dotparens)
-
-        # Run the command. There's no STDOUT.
-        defect_stdout = self._run('defect', 'defect', cmd_args).split('\n')
+        # Set up the input file and run the command.
+        lines = [str(strand), dotparens]
+        stdout = self._run('defect', cmd_args, lines).split('\n')
 
         # Return the defect [ensemble defect, ensemble defect]
-        return [float(defect_stdout[-3]), float(defect_stdout[-2])]
+        return [float(stdout[-3]), float(stdout[-2])]
 
     @tempdirs.tempdir
     def defect_multi(self, strands, dotparens, permutation=None, temp=37.0,
-                     pseudo=False, material=None, dangles='some', mfe=False):
+                     pseudo=False, material=None, dangles='some', sodium=1.0,
+                     magnesium=0.0, mfe=False):
         '''Calculate the free energy of a given sequence structure. Runs the
         \'energy\' command.
 
@@ -1013,6 +947,12 @@ class NUPACK(object):
                         each unpaired base flanking a duplex\'. For 'all': all
                         dangle energy is considered.
         :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
         :param mfe: Return the MFE defect (Zadeh et al., 2010) instead of the
                     ensemble defect.
         :type mfe: bool
@@ -1024,30 +964,21 @@ class NUPACK(object):
         # Set the material (will be used to set command material flag)
         material = self._set_material(strands, material, multi=True)
 
-        if permutation is None:
-            permutation = range(1, len(strands) + 1)
-
         # Set up command flags
-        cmd_args = []
-        cmd_args += ['-T', temp]
-        cmd_args += ['-dangles', dangles]
-        cmd_args += ['-material', material]
-        if pseudo:
-            cmd_args.append('-pseudo')
-        cmd_args.append('-multi')
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
         if mfe:
             cmd_args.append('-mfe')
 
-        # Set up the input file
-        with open(os.path.join(self._tempdir, 'defect.in'), 'w') as f:
-            pfunc_lines = self._pfunc_file_multi(strands, permutation)
-            f.write('\n'.join(pfunc_lines + [dotparens]))
-
-        # Run the command. There's no STDOUT.
-        defect_stdout = self._run('defect', 'defect', cmd_args).split('\n')
+        # Set up the input file and run the command
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._pfunc_file_multi(strands, permutation)
+        lines.append(dotparens)
+        stdout = self._run('defect', cmd_args, lines).split('\n')
 
         # Return the defect [ensemble defect, ensemble defect]
-        return [float(defect_stdout[-3]), float(defect_stdout[-2])]
+        return [float(stdout[-3]), float(stdout[-2])]
 
     # Helper methods for preparing command input files
     def _pfunc_file(self, strand):
@@ -1126,7 +1057,27 @@ class NUPACK(object):
             else:
                 return material
 
-    def _run(self, command, prefix, cmd_args):
+    def _prep_cmd_args(self, temp, dangles, material, pseudo, sodium,
+                       magnesium, multi=False):
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        cmd_args += ['-sodium', sodium]
+        cmd_args += ['-magnesium', magnesium]
+        if pseudo:
+            cmd_args.append('-pseudo')
+        if multi:
+            cmd_args.append('-multi')
+
+        return cmd_args
+
+    def _run(self, command, cmd_args, lines):
+        prefix = command
+        path = os.path.join(self._tempdir, '{}.in'.format(prefix))
+        with open(path, 'w') as f:
+            f.write('\n'.join(lines))
+
         arguments = [os.path.join(self._nupack_home, 'bin', command)]
         arguments += cmd_args
         arguments.append(prefix)
