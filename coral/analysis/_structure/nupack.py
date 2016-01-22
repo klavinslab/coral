@@ -162,7 +162,7 @@ class NUPACK(object):
         '''Compute the pair probabilities for an ordered complex of strands.
         Runs the \'pairs\' command.
 
-        :param strand: Strand on which to run pfunc. Strands must be either
+        :param strand: Strand on which to run pairs. Strands must be either
                        coral.DNA or coral.RNA).
         :type strand: list
         :param temp: Temperature setting for the computation. Negative values
@@ -319,6 +319,148 @@ class NUPACK(object):
 
         return matrices
 
+    @tempdirs.tempdir
+    def mfe(self, strand, temp=37.0, pseudo=False, material=None,
+            dangles='some', degenerate=False):
+        '''Compute the MFE for an ordered complex of strands. Runs the \'mfe\'
+        command.
+
+        :param strand: Strand on which to run mfe. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param degenerate: Setting to True will result in returning a list of
+                           dictionaries associated with structures having the
+                           same, minimal MFE value.
+        :type degenerate: bool
+        :returns: A dictionary with keys for 'mfe' (a float), 'dotbracket'
+                  (dot-parens notation of the MFE structure), and 'pairlist'
+                  (a pair list notation of the MFE structure). Note that the
+                  pair list will be an empty list if the MFE is unstructured.
+        :rtype: dict
+
+        '''
+        # Check the inputs
+        if material is None:
+            material = strand.material
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+        if degenerate:
+            cmd_args.append('-degenerate')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'mfe.in'), 'w') as f:
+            f.write(self._pfunc_file(strand)[0])
+
+        # Run the command. There's no STDOUT.
+        self._run('mfe', 'mfe', cmd_args).split('\n')
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'mfe.mfe')) as g:
+            data = g.read()
+
+        structures = self._process_mfe(data)
+
+        if degenerate:
+            return structures
+        else:
+            return structures[0]
+
+    @tempdirs.tempdir
+    def mfe_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
+                  material=None, dangles='some', degenerate=False):
+        '''Compute the MFE for an ordered complex of strands. Runs the \'mfe\'
+        command.
+
+        :param strands: Strands on which to run mfe. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param degenerate: Setting to True will result in returning a list of
+                           dictionaries associated with structures having the
+                           same, minimal MFE value.
+        :type degenerate: bool
+        :returns: A dictionary with keys for 'mfe' (a float), 'dotbracket'
+                  (dot-parens notation of the MFE structure), and 'pairlist'
+                  (a pair list notation of the MFE structure). Note that the
+                  pair list will be an empty list if the MFE is unstructured.
+        :rtype: dict
+
+        '''
+        # Check the inputs
+        self._same_material(strands)
+        if material is None:
+            material = strands[0].material
+
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+
+        # Set up command flags
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        if pseudo:
+            cmd_args.append('-pseudo')
+        if degenerate:
+            cmd_args.append('-degenerate')
+        cmd_args.append('-multi')
+
+        # Set up the input file
+        with open(os.path.join(self._tempdir, 'mfe.in'), 'w') as f:
+            f.write('\n'.join(self._pfunc_file_multi(strands, permutation)))
+
+        # Run the command. There's no STDOUT.
+        self._run('mfe', 'mfe', cmd_args).split('\n')
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'mfe.mfe')) as g:
+            data = g.read()
+
+        structures = self._process_mfe(data)
+        if degenerate:
+            return structures
+        else:
+            return structures[0]
+
     # Helper methods for preparing command input files
     def _pfunc_file(self, strand):
         '''Prepares lines to write to file for pfunc command input.
@@ -346,6 +488,39 @@ class NUPACK(object):
         lines.append(' '.join(str(p) for p in permutation))
 
         return lines
+
+    # Helper methods for processing output files
+    def _process_mfe(self, data):
+        # Parse the output data
+        # Find the text in between the large comment lines
+        commentline = '\n% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %\n'
+        # Find everything between two commentlines
+        groups = data.split(commentline)
+        # Everything before the comment line is notes about the command,
+        # the last part is just a newline
+        groups.pop(0)
+        groups.pop()
+        # The remainder is data
+        output = []
+        # Skip every other one (every 2nd match is empty lines)
+        for group in groups[::2]:
+            lines = group.split('\n')
+            # Line 1 is the strand number (ignored)
+            lines.pop(0)
+            # Line 2 is the MFE
+            mfe = float(lines.pop(0))
+            # Line 3 is the dot-bracket structure
+            dotbracket = lines.pop(0)
+            # If there are any more lines, they are a pair list format
+            # structure
+            pairlist = []
+            for line in lines:
+                pair = line.split('\t')
+                pairlist.append([int(pair[0]) - 1, int(pair[1]) - 1])
+            output.append({'mfe': mfe, 'dotbracket': dotbracket,
+                           'pairlist': pairlist})
+
+        return output
 
     # Helper methods for repetitive tasks
     def _same_material(self, strands):

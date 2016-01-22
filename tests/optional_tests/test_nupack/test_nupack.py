@@ -89,6 +89,66 @@ class TestNUPACK(object):
         for expected, output in zip(expected_mats, rna99_output):
             assert_true(np.array_equal(expected, output))
 
+    def test_mfe(self):
+        # Test DNA
+        dna_output = self.nupack.mfe(sum(self.dnas))
+        assert_equal(dna_output['mfe'], -1.210)
+        assert_equal(dna_output['dotbracket'], '........((((.......))))')
+        assert_equal(dna_output['pairlist'],
+                     [[8, 22], [9, 21], [10, 20], [11, 19]])
+
+        # Test RNA
+        rna_output = self.nupack.mfe(sum(self.rnas))
+        assert_equal(rna_output['mfe'], -1.100)
+        assert_equal(rna_output['dotbracket'], '........((((.......))))')
+        assert_equal(rna_output['pairlist'],
+                     [[8, 22], [9, 21], [10, 20], [11, 19]])
+
+        # Test RNA 1999
+        rna99_output = self.nupack.mfe(sum(self.rnas), material='rna1999')
+        assert_equal(rna99_output['mfe'], -0.300)
+        assert_equal(rna99_output['dotbracket'], '........((((.......))))')
+        assert_equal(rna99_output['pairlist'],
+                     [[8, 22], [9, 21], [10, 20], [11, 19]])
+
+    def test_mfe_degenerate(self):
+        # Test '-degenerate' flag with DNA
+        degenerate_input = self.dnas[0] + self.dnas[0] + self.dnas[0]
+        degenerate_output = self.nupack.mfe(degenerate_input, degenerate=True)
+        # Should generate 2 degenerate equal-MFE structures
+        assert_equal(degenerate_output[0]['mfe'], -1.330)
+        assert_equal(degenerate_output[0]['dotbracket'],
+                     '..............((((......))))..')
+        assert_equal(degenerate_output[0]['pairlist'],
+                     [[14, 27], [15, 26], [16, 25], [17, 24]])
+        assert_equal(degenerate_output[1]['mfe'], -1.330)
+        assert_equal(degenerate_output[1]['dotbracket'],
+                     '....((((......))))............')
+        assert_equal(degenerate_output[1]['pairlist'],
+                     [[4, 17], [5, 16], [6, 15], [7, 14]])
+
+    def test_mfe_multi(self):
+        # Test DNA
+        dna_output = self.nupack.mfe_multi(self.dnas)
+        assert_equal(dna_output['mfe'], -8.773)
+        assert_equal(dna_output['dotbracket'], '.((.....((+..))...+.))...')
+        assert_equal(dna_output['pairlist'],
+                     [[1, 19], [2, 18], [8, 13], [9, 12]])
+
+        # Test RNA
+        rna_output = self.nupack.mfe_multi(self.rnas)
+        assert_equal(rna_output['mfe'], -3.863)
+        assert_equal(rna_output['dotbracket'], '(.......((+..))...+....).')
+        assert_equal(rna_output['pairlist'],
+                     [[0, 21], [8, 13], [9, 12]])
+
+        # Test RNA 1999
+        rna99_output = self.nupack.mfe_multi(self.rnas, material='rna1999')
+        assert_equal(rna99_output['mfe'], -4.263)
+        assert_equal(rna99_output['dotbracket'], '(.......((+..))...+....).')
+        assert_equal(rna99_output['pairlist'],
+                     [[0, 21], [8, 13], [9, 12]])
+
     def _process_ppairs(self, filename, dim):
         mat = np.zeros((dim, dim + 1))
         curdir = os.path.dirname(__file__)
