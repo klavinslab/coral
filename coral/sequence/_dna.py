@@ -271,8 +271,11 @@ class DNA(object):
         if self.topology == 'linear':
             raise ValueError('Cannot relinearize linear DNA.')
         copy = self.copy()
+        # Snip at the index
+        if index:
+            return copy[index:] + copy[:index]
         copy.topology = 'linear'
-        copy = copy[index:] + copy[:index]
+
         return copy
 
     def locate(self, pattern):
@@ -346,7 +349,18 @@ class DNA(object):
         if self.topology == 'linear' and index != 0:
             raise ValueError('Cannot rotate linear DNA')
         else:
-            return (self[index:] + self[:index]).circularize()
+            # Save and restored the features (rotated)
+            rotated = self[index:] + self[:index]
+            rotated.features = []
+            for feature in self.features:
+                feature_copy = feature.copy()
+                feature_copy.move(-index)
+                # Adjust the start/stop if we move over the origin
+                feature_copy.start = feature_copy.start % len(self)
+                feature_copy.stop = feature_copy.stop % len(self)
+                rotated.features.append(feature_copy)
+
+            return rotated.circularize()
 
     def rotate_by_feature(self, feature):
         '''Reorient the DNA based on a feature it contains (circular DNA only).
@@ -577,14 +591,87 @@ class DNA(object):
         :rtype: coral.DNA
 
         '''
+        is_circular = self.topology == 'circular'
+
         # Adjust features
-        def in_slice(feature):
-            if key.start is not None and feature.start < key.start:
-                return False
-            elif key.stop is not None and feature.stop > key.stop:
-                return False
+        def in_slice(feature, key, circular=False):
+            '''Classify a coral.Feature object as within a slice or not.
+
+            :param feature: The feature to test.
+            :type feature: coral.Feature
+            :param key: A slice key.
+            :type key: slice
+            :param circular: Sets whether the parent sequence is circular.
+            :type circular: bool
+
+            '''
+            if circular:
+                # FIXME: once circular slicing w/ negative indices is
+                # implemented, need to account for that here.
+                # Decide whether a feature's location is within a slice's
+                # coordinates
+                if key.start is None:
+                    if key.stop is None:
+                        # Both are none - copying whole sequence using [:]
+                        return True
+                    else:
+                        # The slice looks like [:stop], i.e. [0:stop]
+                        if feature.stop > key.stop:
+                            # feature extends beyond key stop
+                            return False
+                        else:
+                            if feature.start > key.stop:
+                                # If feature extends over origin, remove it
+                                return False
+                            else:
+                                # Feature is between 0 and key.stop
+                                return True
+                else:
+                    if key.stop is None:
+                        # The slice looks like [start:] i.e.[start:length]
+                        key_start = key.start % len(self)
+                        if feature.start < key_start:
+                            return False
+                        else:
+                            if feature.stop < key_start:
+                                # Feature extends over origin - remove it
+                                return False
+                            else:
+                                # Feature is between key.start and end of seq
+                                return True
+                    else:
+                        # The slice looks like [key.start:key.stop]
+                        if feature.start < key.start or \
+                           feature.stop > key.stop:
+                            return False
+                        else:
+                            return True
+            if key.start is None:
+                if key.stop is None:
+                    # Copying whole sequence with [:]
+                    return True
+                else:
+                    # Slice looks like [:key.stop]
+                    if feature.stop > key.stop:
+                        # Feature ends after key.stop
+                        return False
+                    else:
+                        # Feature ends before key.stop
+                        return True
             else:
-                return True
+                if key.stop is None:
+                    # Slice looks like [key.start:]
+                    if feature.start < key.start:
+                        return False
+                    else:
+                        return True
+                else:
+                    # The slice looks like [key.start:key.stop]
+                    if feature.start < key.start or \
+                       feature.stop > key.stop:
+                        return False
+                    else:
+                        return True
 
         saved_features = []
         if self.features:
@@ -593,11 +680,15 @@ class DNA(object):
                 # adjust feature starts/stops
                 if key.step == 1 or key.step is None:
                     for feature in self.features:
-                        if in_slice(feature):
+                        if in_slice(feature, key, is_circular):
                             feature_copy = feature.copy()
                             if key.start:
-                                feature_copy.move(-key.start)
+                                feature_copy.move(-(key.start % len(self)))
                             saved_features.append(feature_copy)
+                else:
+                    # Don't copy any features - a non-1 step size should
+                    # not leave any features instace.
+                    pass
             else:
                 for feature in self.features:
                     if feature.start == feature.stop == key:
