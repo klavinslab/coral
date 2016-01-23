@@ -26,9 +26,15 @@ class NUPACK(object):
         else:
             try:
                 self._nupack_home = os.environ['NUPACKHOME']
-            except:
-                # FIXME: Test to see if it's in PATH
-                pass
+            except KeyError:
+                pfunc_paths = []
+                for path in os.environ['PATH'].split(os.pathsep):
+                    test = os.path.join(path, 'pfunc')
+                    if os.path.isfile(test) and os.access(test, os.X_OK):
+                        pfunc_paths.append(test)
+                if not pfunc_paths:
+                    raise IOError('NUPACK commands not found - see '
+                                  'documentation')
 
         # Initialize empty temp dir location
         self._tempdir = ''
@@ -133,7 +139,7 @@ class NUPACK(object):
         # Set up the input file and run the command
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-        lines = self._pfunc_file_multi(strands, permutation)
+        lines = self._multi_lines(strands, permutation)
         stdout = self._run('pfunc', cmd_args, lines).split('\n')
 
         return (float(stdout[-3]), float(stdout[-2]))
@@ -267,7 +273,7 @@ class NUPACK(object):
         # Set up the input file and run the command. Note: no STDOUT
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-        lines = self._pfunc_file_multi(strands, permutation)
+        lines = self._multi_lines(strands, permutation)
         self._run('pairs', cmd_args, lines)
 
         # Read the output from file
@@ -420,7 +426,7 @@ class NUPACK(object):
         # Set up the input file and run the command. Note: no STDOUT
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-        lines = self._pfunc_file_multi(strands, permutation)
+        lines = self._multi_lines(strands, permutation)
         self._run('mfe', cmd_args, lines)
 
         # Read the output from file
@@ -542,7 +548,7 @@ class NUPACK(object):
         # Set up the input file and run the command. Note: no STDOUT
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-        lines = self._pfunc_file_multi(strands, permutation)
+        lines = self._multi_lines(strands, permutation)
         lines.append(str(gap))
         self._run('subopt', cmd_args, lines)
 
@@ -617,7 +623,7 @@ class NUPACK(object):
         # Set up the input file and run the command
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-        lines = self._pfunc_file_multi(strands, permutation)
+        lines = self._multi_lines(strands, permutation)
         stdout = self._run('count', cmd_args, lines).split('\n')
 
         return int(float(stdout[-2]))
@@ -730,7 +736,7 @@ class NUPACK(object):
         # Set up the input file and run the command
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-        lines = self._pfunc_file_multi(strands, permutation)
+        lines = self._multi_lines(strands, permutation)
         lines.append(dotparens)
         stdout = self._run('energy', cmd_args, lines).split('\n')
 
@@ -845,7 +851,7 @@ class NUPACK(object):
         # Set up the input file and run the command
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-        lines = self._pfunc_file_multi(strands, permutation)
+        lines = self._multi_lines(strands, permutation)
         lines.append(dotparens)
         stdout = self._run('prob', cmd_args, lines).split('\n')
 
@@ -973,7 +979,7 @@ class NUPACK(object):
         # Set up the input file and run the command
         if permutation is None:
             permutation = range(1, len(strands) + 1)
-        lines = self._pfunc_file_multi(strands, permutation)
+        lines = self._multi_lines(strands, permutation)
         lines.append(dotparens)
         stdout = self._run('defect', cmd_args, lines).split('\n')
 
@@ -981,15 +987,7 @@ class NUPACK(object):
         return [float(stdout[-3]), float(stdout[-2])]
 
     # Helper methods for preparing command input files
-    def _pfunc_file(self, strand):
-        '''Prepares lines to write to file for pfunc command input.
-
-        :param strand: Strand input (cr.DNA or cr.RNA).
-        :type strand: cr.DNA or cr.DNA
-        '''
-        return [str(strand)]
-
-    def _pfunc_file_multi(self, strands, permutation):
+    def _multi_lines(self, strands, permutation):
         '''Prepares lines to write to file for pfunc command input.
 
         :param strand: Strand input (cr.DNA or cr.RNA).
