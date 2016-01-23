@@ -335,7 +335,34 @@ class DNA(object):
         mw_c = counter['c'] * 329.2
         return mw_a + mw_t + mw_g + mw_c
 
-    def rotate(self, index):
+    def rotate(self, n):
+        '''Rotate Sequence by n bases.
+
+        :param n: Number of bases to rotate.
+        :type n: int
+        :returns: The current sequence reoriented at `index`.
+        :rtype: coral.DNA
+        :raises: ValueError if applied to linear sequence or `index` is
+                 negative.
+
+        '''
+        if self.topology == 'linear' and n != 0:
+            raise ValueError('Cannot rotate linear DNA')
+        else:
+            # Save and restored the features (rotated)
+            rotated = self[n:] + self[:n]
+            rotated.features = []
+            for feature in self.features:
+                feature_copy = feature.copy()
+                feature_copy.move(n)
+                # Adjust the start/stop if we move over the origin
+                feature_copy.start = feature_copy.start % len(self)
+                feature_copy.stop = feature_copy.stop % len(self)
+                rotated.features.append(feature_copy)
+
+            return rotated.circularize()
+
+    def rotate_to(self, index):
         '''Orient DNA to index (only applies to circular DNA).
 
         :param index: DNA position at which to re-zero the DNA.
@@ -346,23 +373,9 @@ class DNA(object):
                  negative.
 
         '''
-        if self.topology == 'linear' and index != 0:
-            raise ValueError('Cannot rotate linear DNA')
-        else:
-            # Save and restored the features (rotated)
-            rotated = self[index:] + self[:index]
-            rotated.features = []
-            for feature in self.features:
-                feature_copy = feature.copy()
-                feature_copy.move(-index)
-                # Adjust the start/stop if we move over the origin
-                feature_copy.start = feature_copy.start % len(self)
-                feature_copy.stop = feature_copy.stop % len(self)
-                rotated.features.append(feature_copy)
+        self.rotate(-index)
 
-            return rotated.circularize()
-
-    def rotate_by_feature(self, feature):
+    def rotate_to_feature(self, feature):
         '''Reorient the DNA based on a feature it contains (circular DNA only).
 
         :param feature: A feature.
