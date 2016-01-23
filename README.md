@@ -19,6 +19,17 @@ Most users:
 pip install coral
 ```
 
+Windows users:
+
+Install vcpython2.7 (http://aka.ms/vcpython27) if it's not already installed,
+then
+```
+pip install coral
+```
+
+Many Windows users have a better time installing python packages, including
+coral, using [Anaconda](https://www.continuum.io/downloads).
+
 To get the latest on git:
 
 ```
@@ -58,3 +69,7 @@ Install the extra packages in dev-requirements.txt (`Sphinx`, `cython`,
 ## License
 
 MIT
+
+## Author
+
+Contact Nick at nbolten@gmail.com with any questions about Coral.

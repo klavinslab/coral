@@ -229,16 +229,15 @@ class TestFeatures(object):
         extracted = self.dna.extract(test_utr3_feature)
         assert_equal(str(extracted), 'TGCATGCATGCATGCATGC')
 
-    def test_pop_by_feature(self):
+    def test_excise(self):
         copy = self.dna.copy().circularize()
-        coding_feature = copy.select_features('Coding Feature')[0]
+        feature = copy.select_features('Coding Feature')[0]
+        rotated = copy.rotate_to(feature.start)
+        expected = rotated[feature.stop - feature.start:]
 
-        coding_seq = copy.pop_by_feature(coding_feature)
-        rest_of_dna = (self.dna[coding_feature.stop:] +
-                       self.dna[:coding_feature.start])
+        backbone = copy.excise(feature)
 
-        assert_equal(coding_seq, self.dna.extract(coding_feature))
-        assert_equal(copy, rest_of_dna)
+        assert_equal(expected, backbone)
 
     def test_getitem(self):
         subsequence = self.dna[30:100]

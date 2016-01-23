@@ -158,12 +158,12 @@ class DNA(object):
         html = '<div id={div_id}></div>'.format(div_id=div_id)
         js_databind = '''
         <script>
-        require(["{d3_cdn}"], function(lib) {{
+        require([\'{d3_cdn}\'], function(lib) {{
             window.data = {data};'''.format(div_id=div_id, d3_cdn=d3cdn,
                                             data=sequence_json)
 
         js_viz = '''
-            d3sequence(window.data, "{div_id}")
+            d3sequence(window.data, \'{div_id}\')
         }});
         </script>
         '''.format(div_id=div_id)
@@ -194,8 +194,23 @@ class DNA(object):
 
         return json.dumps(dna_json)
 
+    def excise(self, feature):
+        '''Removes feature from circular plasmid and linearizes. Automatically
+        reorients at the base just after the feature. This operation is
+        complementary to the .extract() method.
+
+        :param feature_name: The feature to remove.
+        :type feature_name: coral.Feature
+
+        '''
+        rotated = self.rotate_to_feature(feature)
+        excised = rotated[feature.stop - feature.start:]
+
+        return excised
+
     def extract(self, feature, remove_subfeatures=False):
-        '''Extract a feature from the sequence.
+        '''Extract a feature from the sequence. This operation is complementary
+        to the .excise() method.
 
         :param feature: Feature object.
         :type feature: coral.sequence.Feature
@@ -271,8 +286,11 @@ class DNA(object):
         if self.topology == 'linear':
             raise ValueError('Cannot relinearize linear DNA.')
         copy = self.copy()
+        # Snip at the index
+        if index:
+            return copy[index:] + copy[:index]
         copy.topology = 'linear'
-        copy = copy[index:] + copy[:index]
+
         return copy
 
     def locate(self, pattern):
@@ -332,34 +350,34 @@ class DNA(object):
         mw_c = counter['c'] * 329.2
         return mw_a + mw_t + mw_g + mw_c
 
-    def pop_by_feature(self, feature):
-        '''Removes feature from circular plasmid and linearizes. Automatically
-        reorients at the base just after the feature. Note: this operation
-        actually modifies the current sequence, just like any pop operation
-        on an array. To get a feature's sequence without modifying the parent
-        sequence, use the .extract() method.
+    def rotate(self, n):
+        '''Rotate Sequence by n bases.
 
-        :param feature_name: The feature to remove.
-        :type feature_name: coral.Feature
+        :param n: Number of bases to rotate.
+        :type n: int
+        :returns: The current sequence reoriented at `index`.
+        :rtype: coral.DNA
+        :raises: ValueError if applied to linear sequence or `index` is
+                 negative.
 
         '''
-        extracted = self.extract(feature)
-        # FIXME: modify .rotate method to modify current sequence, then use
-        # here.
-        rotated = self.rotate_by_feature(feature)
-        remaining = rotated.linearize()[len(extracted):]
-        # Update current sequence - hacky, will forget other attrs added
-        # by user.
-        self._top = remaining._top
-        self._bottom = remaining._bottom
-        self.stranded = remaining.stranded
-        self.topology = remaining.topology
-        self.features = remaining.features
-        self.name = remaining.name
+        if self.topology == 'linear' and n != 0:
+            raise ValueError('Cannot rotate linear DNA')
+        else:
+            # Save and restored the features (rotated)
+            rotated = self[-n:] + self[:-n]
+            rotated.features = []
+            for feature in self.features:
+                feature_copy = feature.copy()
+                feature_copy.move(n)
+                # Adjust the start/stop if we move over the origin
+                feature_copy.start = feature_copy.start % len(self)
+                feature_copy.stop = feature_copy.stop % len(self)
+                rotated.features.append(feature_copy)
 
-        return extracted
+            return rotated.circularize()
 
-    def rotate(self, index):
+    def rotate_to(self, index):
         '''Orient DNA to index (only applies to circular DNA).
 
         :param index: DNA position at which to re-zero the DNA.
@@ -370,12 +388,9 @@ class DNA(object):
                  negative.
 
         '''
-        if self.topology == 'linear' and index != 0:
-            raise ValueError('Cannot rotate linear DNA')
-        else:
-            return (self[index:] + self[:index]).circularize()
+        return self.rotate(-index)
 
-    def rotate_by_feature(self, feature):
+    def rotate_to_feature(self, feature):
         '''Reorient the DNA based on a feature it contains (circular DNA only).
 
         :param feature: A feature.
@@ -387,7 +402,7 @@ class DNA(object):
                  more than one feature matches `featurename`.
 
         '''
-        return self.rotate(feature.start)
+        return self.rotate_to(feature.start)
 
     def reverse_complement(self):
         '''Reverse complement the DNA.
@@ -604,14 +619,87 @@ class DNA(object):
         :rtype: coral.DNA
 
         '''
+        is_circular = self.topology == 'circular'
+
         # Adjust features
-        def in_slice(feature):
-            if key.start is not None and feature.start < key.start:
-                return False
-            elif key.stop is not None and feature.stop > key.stop:
-                return False
+        def in_slice(feature, key, circular=False):
+            '''Classify a coral.Feature object as within a slice or not.
+
+            :param feature: The feature to test.
+            :type feature: coral.Feature
+            :param key: A slice key.
+            :type key: slice
+            :param circular: Sets whether the parent sequence is circular.
+            :type circular: bool
+
+            '''
+            if circular:
+                # FIXME: once circular slicing w/ negative indices is
+                # implemented, need to account for that here.
+                # Decide whether a feature's location is within a slice's
+                # coordinates
+                if key.start is None:
+                    if key.stop is None:
+                        # Both are none - copying whole sequence using [:]
+                        return True
+                    else:
+                        # The slice looks like [:stop], i.e. [0:stop]
+                        if feature.stop > key.stop:
+                            # feature extends beyond key stop
+                            return False
+                        else:
+                            if feature.start > key.stop:
+                                # If feature extends over origin, remove it
+                                return False
+                            else:
+                                # Feature is between 0 and key.stop
+                                return True
+                else:
+                    if key.stop is None:
+                        # The slice looks like [start:] i.e.[start:length]
+                        key_start = key.start % len(self)
+                        if feature.start < key_start:
+                            return False
+                        else:
+                            if feature.stop < key_start:
+                                # Feature extends over origin - remove it
+                                return False
+                            else:
+                                # Feature is between key.start and end of seq
+                                return True
+                    else:
+                        # The slice looks like [key.start:key.stop]
+                        if feature.start < key.start or \
+                           feature.stop > key.stop:
+                            return False
+                        else:
+                            return True
+            if key.start is None:
+                if key.stop is None:
+                    # Copying whole sequence with [:]
+                    return True
+                else:
+                    # Slice looks like [:key.stop]
+                    if feature.stop > key.stop:
+                        # Feature ends after key.stop
+                        return False
+                    else:
+                        # Feature ends before key.stop
+                        return True
             else:
-                return True
+                if key.stop is None:
+                    # Slice looks like [key.start:]
+                    if feature.start < key.start:
+                        return False
+                    else:
+                        return True
+                else:
+                    # The slice looks like [key.start:key.stop]
+                    if feature.start < key.start or \
+                       feature.stop > key.stop:
+                        return False
+                    else:
+                        return True
 
         saved_features = []
         if self.features:
@@ -620,11 +708,15 @@ class DNA(object):
                 # adjust feature starts/stops
                 if key.step == 1 or key.step is None:
                     for feature in self.features:
-                        if in_slice(feature):
+                        if in_slice(feature, key, is_circular):
                             feature_copy = feature.copy()
                             if key.start:
-                                feature_copy.move(-key.start)
+                                feature_copy.move(-(key.start % len(self)))
                             saved_features.append(feature_copy)
+                else:
+                    # Don't copy any features - a non-1 step size should
+                    # not leave any features instace.
+                    pass
             else:
                 for feature in self.features:
                     if feature.start == feature.stop == key:

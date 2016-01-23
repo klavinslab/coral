@@ -1,5 +1,16 @@
 Changelog for Coral
 ===================
+### 0.3.3
+* Added Python 2 version check to prevent installation on Python 3
+
+### 0.3.2
+* Removed cython dependencies entirely to ease installation
+
+### 0.3.1
+* Fixed issues with PCR simulation and annealing, can now handle all cases of
+primer directionality and overlaps, linear and circular templates.
+* Added pyx to package manifest for case where user already has cython
+installed.
 
 ### 0.3.0
 * Separated out annealing behavior into analysis function (`analysis.anneal`).

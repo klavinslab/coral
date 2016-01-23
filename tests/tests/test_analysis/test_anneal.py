@@ -1,5 +1,6 @@
 '''Test functionality of PCR class of reaction module.'''
 import os
+import coral as cr
 from coral import analysis, seqio, DNA, Primer
 from nose.tools import assert_true, assert_raises
 
@@ -65,9 +66,15 @@ def test_near_index():
     assert_true(len(fwd_matches) == len(loc[0]))
     assert_true(len(rev_matches) == len(loc[1]))
     for match in loc[0]:
-        assert_true(match + len(seq) in fwd_indices)
+        expected = match + len(seq)
+        if expected > len(template):
+            expected -= len(template)
+        assert_true(expected in fwd_indices)
     for match in loc[1]:
-        assert_true(match + len(seq) in rev_indices)
+        expected = match + len(seq)
+        if expected > len(template):
+            expected -= len(template)
+        assert_true(expected in rev_indices)
 
 
 def test_overhang():
@@ -145,7 +152,6 @@ def test_multiple_priming():
         assert_true(match + len(seq) in fwd_indices)
     for match in loc[1]:
         assert_true(match + len(seq) in rev_indices)
-    print matches
 
 
 def test_no_priming():
@@ -177,7 +183,7 @@ def test_min_primer_length():
     seq = seq[:15]
     primer = Primer(seq, 50.6)
     assert_raises(analysis._sequence.anneal.PrimerLengthError, analysis.anneal,
-                  template, primer, min_bases=16)
+                  template, primer, min_len=16)
 
 
 def test_min_tm():
@@ -186,9 +192,20 @@ def test_min_tm():
                                            "pMODKan-HO-pACT1GEV.ape"))
 
     # Test forward priming
+    # Tm should be ~40 C
     seq = DNA('CTTCTATCGAACAA')
-    primer = Primer(seq, 40)
+    primer = Primer(seq, seq.tm())
     matches = analysis.anneal(template, primer, min_tm=60.0)
     assert_true(len(matches[0]) == 0)
     matches = analysis.anneal(template, primer, min_tm=30.0)
     assert_true(len(matches[0]) > 0)
+
+
+def test_primer_larger_than_template():
+    template = cr.design.random_dna(50)
+    overhangs = [cr.design.random_dna(200), cr.DNA('')]
+    expected = overhangs[0] + template
+    primer1, primer2 = cr.design.primers(template, overhangs=overhangs)
+    amplicon = cr.reaction.pcr(template, primer1, primer2)
+
+    assert_true(expected == amplicon)

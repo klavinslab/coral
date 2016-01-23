@@ -2,8 +2,8 @@
 
 TO_CORAL = {'-10_signal': '-10_signal',
             '-35_signal': '-35_signal',
-            "3'UTR": "3'UTR",
-            "5'UTR": "5'UTR",
+            '3\'UTR': '3\'UTR',
+            '5\'UTR': '5\'UTR',
             'assembly_gap': 'assembly_gap',
             'attenuator': 'attenuator',
             'C_region': 'C_region',
