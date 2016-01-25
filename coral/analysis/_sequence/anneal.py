@@ -92,7 +92,7 @@ def anneal(template, primer, min_tm=50.0, min_len=10):
         else:
             return location_length
 
-    if template.topology == 'circular':
+    if template.circular:
         update_fun = update_match_circular
     else:
         update_fun = update_match_linear

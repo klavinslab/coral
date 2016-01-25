@@ -16,7 +16,7 @@ class IPythonDisplayImportError(ImportError):
 
 class DNA(object):
     '''DNA sequence.'''
-    def __init__(self, dna, bottom=None, topology='linear', stranded='ds',
+    def __init__(self, dna, bottom=None, circular=False, ds=True,
                  features=None, run_checks=True, id=None, name=''):
         '''
         :param dna: Input sequence (DNA).
@@ -24,11 +24,12 @@ class DNA(object):
         :param bottom: Manual input of bottom-strand sequence. Enables both
                        mismatches and initializing ssDNA.
         :type bottom: str
-        :param topology: Topology of DNA - 'linear' or 'circular'.
-        :type topology: str
-        :param stranded: Strandedness of DNA - 'ss' for single-stranded or
-                         'ds' for double-stranded.
-        :type stranded: str
+        :param circular: The topology of the DNA - True for circular DNA, False
+                         for linear DNA.
+        :type circular: bool
+        :param ds: The strandedness of the DNA - True for dsDNA, False for
+                   ssDNA.
+        :type ds: bool
         :param features: List of annotated features.
         :type features: list
         :param run_checks: Check inputs / formats (disabling increases speed):
@@ -49,7 +50,7 @@ class DNA(object):
         dna = dna.strip()
         self.top = NucleicAcidSequence(dna, 'dna', run_checks=run_checks)
 
-        if stranded == 'ss':
+        if not ds:
             self.bottom = NucleicAcidSequence('-' * len(self.top), 'dna',
                                               run_checks=False)
         else:
@@ -65,8 +66,8 @@ class DNA(object):
             self.features = []
         else:
             self.features = features
-        self.topology = topology
-        self.stranded = stranded
+        self.circular = circular
+        self.ds = ds
         self.name = name
 
     def ape(self, ape_path=None):
@@ -108,7 +109,7 @@ class DNA(object):
         # Significant performance improvements by skipping alphabet check
         features_copy = [feature.copy() for feature in self.features]
         return type(self)(str(self.top), bottom=str(self.bottom),
-                          topology=self.topology, stranded=self.stranded,
+                          circular=self.circular, ds=self.ds,
                           features=features_copy, name=self.name,
                           run_checks=False)
 
@@ -125,7 +126,7 @@ class DNA(object):
             raise ValueError('Cannot circularize - termini disconnected.')
 
         copy = self.copy()
-        copy.topology = 'circular'
+        copy.circular = True
         return copy
 
     def display(self):
@@ -166,7 +167,7 @@ class DNA(object):
         dna_json = {}
         dna_json['name'] = self.name
         dna_json['material'] = 'DNA'
-        dna_json['topology'] = self.topology
+        dna_json['circular'] = self.circular
         dna_json['sequence'] = str(self.top)
         dna_json['bottom'] = str(self.bottom)
 
@@ -274,13 +275,13 @@ class DNA(object):
         :raises: ValueError if the input is linear DNA.
 
         '''
-        if self.topology == 'linear':
+        if not self.circular:
             raise ValueError('Cannot relinearize linear DNA.')
         copy = self.copy()
         # Snip at the index
         if index:
             return copy[index:] + copy[:index]
-        copy.topology = 'linear'
+        copy.circular = False
 
         return copy
 
@@ -297,7 +298,7 @@ class DNA(object):
                  sequence (for circular DNA).
 
         '''
-        if self.topology == 'circular':
+        if self.circular:
             if len(pattern) >= 2 * len(self):
                 raise ValueError('Search pattern longer than searchable ' +
                                  'sequence.')
@@ -320,7 +321,7 @@ class DNA(object):
                     index -= len(self)
             return location_indices
 
-        if self.topology == 'circular' and len(pattern) > 1:
+        if self.circular and len(pattern) > 1:
             top_matches = reindex(top_matches)
             bottom_matches = reindex(bottom_matches)
 
@@ -352,7 +353,7 @@ class DNA(object):
                  negative.
 
         '''
-        if self.topology == 'linear' and n != 0:
+        if not self.circular and n != 0:
             raise ValueError('Cannot rotate linear DNA')
         else:
             # Save and restored the features (rotated)
@@ -472,7 +473,7 @@ class DNA(object):
         copy = self.copy()
 
         # Do nothing if already single-stranded
-        if self.stranded == 'ss':
+        if not self.ds:
             return copy
 
         copy.bottom = NucleicAcidSequence('-' * len(copy), 'dna',
@@ -481,7 +482,7 @@ class DNA(object):
             if top == bottom == '-':
                 raise ValueError('Coercing to single-stranded would ' +
                                  'introduce a double stranded break.')
-        copy.stranded = 'ss'
+        copy.ds = False
 
         return copy
 
@@ -494,7 +495,7 @@ class DNA(object):
         '''
         copy = self.copy()
         # Do nothing if already set
-        if self.stranded == 'ds':
+        if self.ds:
             return copy
 
         # Find strand that's all gaps (if ss this should be the case)
@@ -503,7 +504,7 @@ class DNA(object):
             copy.top = reverse_seq.bottom
         elif all([char == '-' for char in self.bottom]):
             copy.bottom = reverse_seq.top
-        copy.stranded = 'ds'
+        copy.ds = True
 
         return copy
 
@@ -528,7 +529,7 @@ class DNA(object):
                  create a discontinuity.
 
         '''
-        if self.topology == 'circular' or other.topology == 'circular':
+        if self.circular or other.circular:
             raise Exception('Can only add linear DNA.')
 
         discontinuity = [False, False]
@@ -546,10 +547,10 @@ class DNA(object):
             msg = 'Concatenated DNA would be discontinuous.'
             raise Exception(msg)
 
-        if self.stranded == 'ds' or other.stranded == 'ds':
-            stranded = 'ds'
+        if self.ds or other.ds:
+            ds = True
         else:
-            stranded = 'ss'
+            ds = False
 
         tops = str(self.top + other.top)
         bottoms = str(other.bottom + self.bottom)
@@ -560,9 +561,8 @@ class DNA(object):
             feature.move(len(self))
         features = self_features + other_features
 
-        new_instance = DNA(tops, bottom=bottoms, topology='linear',
-                           stranded=stranded, run_checks=False,
-                           features=features)
+        new_instance = DNA(tops, bottom=bottoms, circular=False,
+                           ds=ds, run_checks=False, features=features)
 
         return new_instance
 
@@ -599,8 +599,6 @@ class DNA(object):
         :rtype: coral.DNA
 
         '''
-        is_circular = self.topology == 'circular'
-
         # Adjust features
         def in_slice(feature, key, circular=False):
             '''Classify a coral.Feature object as within a slice or not.
@@ -688,7 +686,7 @@ class DNA(object):
                 # adjust feature starts/stops
                 if key.step == 1 or key.step is None:
                     for feature in self.features:
-                        if in_slice(feature, key, is_circular):
+                        if in_slice(feature, key, self.circular):
                             feature_copy = feature.copy()
                             if key.start:
                                 feature_copy.move(-(key.start % len(self)))
@@ -711,11 +709,8 @@ class DNA(object):
         new_bottom = self.bottom[::-1][key][::-1]
 
         copy = type(self)(str(new_top), bottom=str(new_bottom),
-                          topology='linear', stranded=self.stranded,
-                          features=saved_features, name=self.name,
-                          run_checks=False)
-
-        copy.topology = 'linear'
+                          circular=False, ds=self.ds, features=saved_features,
+                          name=self.name, run_checks=False)
 
         return copy
 
@@ -729,7 +724,7 @@ class DNA(object):
         '''
         tops_equal = self.top == other.top
         bottoms_equal = self.bottom == other.bottom
-        stranded_equal = self.stranded == other.stranded
+        stranded_equal = self.ds == other.ds
         if tops_equal and bottoms_equal and stranded_equal:
             return True
         else:
@@ -744,7 +739,7 @@ class DNA(object):
         features_copy = [feature.copy() for feature in self.features]
 
         return type(self)(str(new_top), str(new_bottom),
-                          topology=self.topology, stranded=self.stranded,
+                          circular=self.circular, ds=self.ds,
                           features=features_copy, name=self.name,
                           run_checks=False)
 
@@ -896,7 +891,7 @@ class Primer(object):
         if overhang is not None:
             self.overhang = overhang.to_ss()
         else:
-            self.overhang = DNA('', stranded='ss')
+            self.overhang = DNA('', ds=False)
         self.name = name
         self.note = note
 

@@ -42,7 +42,7 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0):
     # Remove any redundant (identical) sequences
     seq_list = list(set(seq_list))
     for seq in seq_list:
-        if seq.topology == 'circular':
+        if seq.circular:
             raise ValueError('Input sequences must be linear.')
 
     # Copy input list

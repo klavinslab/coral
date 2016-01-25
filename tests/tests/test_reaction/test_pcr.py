@@ -13,7 +13,7 @@ class TestPCR(object):
                      'attaatgtgagttagctcactcattaggcaccccaggctttacacttta'
                      'tgcttccggctcgtatgttgtgtggaattgtgagcggataacaatttca'
                      'caca')
-        self.template = cr.DNA(bba_r0010, topology='linear')
+        self.template = cr.DNA(bba_r0010, circular=False)
 
     def pcr_equal(self, expected, template, primer1, primer2):
         '''Boilerplate to assert that a pcr reaction matches the expected

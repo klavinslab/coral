@@ -43,9 +43,9 @@ function d3sequence(sequence_json, div_id) {
     'titleFontSize': '25px'
   };
 
-  if (sequence_json.topology === 'linear') {
+  if (sequence_json.circular) {
     config = linearConfig;
-  } else if (sequence_json.topology === 'circular') {
+  } else if (!sequence_json.circular) {
     config = circularConfig;
   }
 
@@ -60,7 +60,7 @@ function d3sequence(sequence_json, div_id) {
 
   var center = {'x': config.width / 2, 'y': config.height / 2};
 
-  if (sequence_json.topology == 'circular') {
+  if (sequence_json.circular) {
 
     var outerRadius = Math.min(config.width, config.height) / 2 - config.padding;
     var innerRadius = outerRadius - config.backboneThickness * outerRadius;

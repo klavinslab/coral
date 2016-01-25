@@ -111,7 +111,7 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_primer_len=14):
     #       b) Primers overlap
     #           -> Extract whole sequence as linear fragment, tack on rest of
     #              'bottom' primer. May disrupt features.
-    if template.topology == 'circular':
+    if template.circular:
         # Circular template - primers always point towards one another
         if rev_3_top > fwd_3:
             # Inter-primer region doesn't go over the origin (index 0)

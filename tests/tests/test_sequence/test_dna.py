@@ -25,9 +25,9 @@ class TestDNA(object):
     def test_to_ss_ds(self):
         assert_equal(self.test_dna.to_ds(), self.test_dna)
         ss_dna = self.test_dna.to_ss()
-        assert_equal(ss_dna.stranded, 'ss')
+        assert_equal(ss_dna.ds, False)
         ds_dna = self.test_dna.to_ds()
-        assert_equal(ds_dna.stranded, 'ds')
+        assert_equal(ds_dna.ds, True)
         assert_equal(ds_dna.top, str(ss_dna))
 
         ds_to_ss_to_ds = self.test_dna.to_ss().to_ds()
@@ -172,7 +172,7 @@ class TestDNA(object):
 
 
 def test_stranded_init():
-    ss_dna = DNA('atgc', stranded='ss')
+    ss_dna = DNA('atgc', ds=False)
     assert_true(all([base == '-' for base in ss_dna.bottom]))
 
     ds_dna = DNA('atgc')
@@ -180,7 +180,7 @@ def test_stranded_init():
 
 
 def test_stranded_complemented():
-    ss_dna = DNA('atgc', stranded='ss')
+    ss_dna = DNA('atgc', ds=False)
     r_ss_dna = ss_dna.reverse_complement()
     assert_equal(r_ss_dna.top, 'GCAT')
     assert_equal(r_ss_dna.bottom, '----')
