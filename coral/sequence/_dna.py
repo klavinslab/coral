@@ -47,6 +47,7 @@ class DNA(object):
 
         '''
         # TODO: accept sequences in general by running str() on it
+        self.material = 'dna'
         dna = dna.strip()
         self.top = NucleicAcidSequence(dna, 'dna', run_checks=run_checks)
 
@@ -730,6 +731,10 @@ class DNA(object):
         else:
             return False
 
+    def __hash__(self):
+        # Enables the use of functions like set() - hash unique attributes
+        return hash(self.top.seq + self.bottom.seq + str(self.circular))
+
     def __len__(self):
         return len(self.top)
 
@@ -852,8 +857,8 @@ class RestrictionSite(object):
             bottom_right = str(bottom_right)[::-1]
             bottom_w_cut = bottom_left + cut_symbols[1] + bottom_right
         else:
-            return '\n'.join([site.top() + ' {}'.format(self.cut_site),
-                              site.bottom()])
+            return '\n'.join([site.top + ' {}'.format(self.cut_site),
+                              site.bottom])
 
         return '\n'.join([top_w_cut, bottom_w_cut])
 
@@ -916,9 +921,9 @@ class Primer(object):
 
     def __repr__(self):
         '''Representation of a primer.'''
-        anneal = self.anneal.top().seq.upper()
+        anneal = self.anneal.top.seq.upper()
         if self.overhang:
-            overhang = self.overhang.top().seq.lower()
+            overhang = self.overhang.top.seq.lower()
             return 'Primer: {} Tm: {:.2f}'.format(overhang + anneal, self.tm)
         else:
             return 'Primer: {} Tm: {:.2f}'.format(anneal, self.tm)

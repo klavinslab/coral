@@ -19,6 +19,7 @@ class RNA(object):
         '''
         self._sequence = Sequence(rna, 'rna', run_checks=run_checks,
                                   any_char='N')
+        self.material = 'rna'
         if features is None:
             self.features = []
         else:
