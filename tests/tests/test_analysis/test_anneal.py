@@ -54,6 +54,7 @@ def test_near_index():
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
                                            "pMODKan-HO-pACT1GEV.ape"))
+    template.circular = True
     seq = DNA('aggccctttcgtctcgcgcgttt')
     primer = Primer(seq, 50.6)
     matches = analysis.anneal(template, primer)
@@ -63,6 +64,8 @@ def test_near_index():
 
     loc = template.locate(seq)
 
+    print fwd_matches
+    print loc[0]
     assert_true(len(fwd_matches) == len(loc[0]))
     assert_true(len(rev_matches) == len(loc[1]))
     for match in loc[0]:
@@ -132,6 +135,7 @@ def test_multiple_priming():
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
                                            "pMODKan-HO-pACT1GEV.ape"))
+    template = template.circularize()
     seq = DNA('cgccagggttttcccagtcacgac')
     template = template.linearize()
     template = template + seq + DNA("AGGCGTATGC") + seq
@@ -205,7 +209,8 @@ def test_primer_larger_than_template():
     template = cr.design.random_dna(50)
     overhangs = [cr.design.random_dna(200), cr.DNA('')]
     expected = overhangs[0] + template
-    primer1, primer2 = cr.design.primers(template, overhangs=overhangs)
+    primer1, primer2 = cr.design.primers(template, overhangs=overhangs,
+                                         min_len=14)
     amplicon = cr.reaction.pcr(template, primer1, primer2)
 
     assert_true(expected == amplicon)
