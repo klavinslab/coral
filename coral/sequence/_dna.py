@@ -194,8 +194,23 @@ class DNA(object):
 
         return json.dumps(dna_json)
 
+    def excise(self, feature):
+        '''Removes feature from circular plasmid and linearizes. Automatically
+        reorients at the base just after the feature. This operation is
+        complementary to the .extract() method.
+
+        :param feature_name: The feature to remove.
+        :type feature_name: coral.Feature
+
+        '''
+        rotated = self.rotate_to_feature(feature)
+        excised = rotated[feature.stop - feature.start:]
+
+        return excised
+
     def extract(self, feature, remove_subfeatures=False):
-        '''Extract a feature from the sequence.
+        '''Extract a feature from the sequence. This operation is complementary
+        to the .excise() method.
 
         :param feature: Feature object.
         :type feature: coral.sequence.Feature
@@ -350,7 +365,7 @@ class DNA(object):
             raise ValueError('Cannot rotate linear DNA')
         else:
             # Save and restored the features (rotated)
-            rotated = self[n:] + self[:n]
+            rotated = self[-n:] + self[:-n]
             rotated.features = []
             for feature in self.features:
                 feature_copy = feature.copy()
@@ -373,7 +388,7 @@ class DNA(object):
                  negative.
 
         '''
-        self.rotate(-index)
+        return self.rotate(-index)
 
     def rotate_to_feature(self, feature):
         '''Reorient the DNA based on a feature it contains (circular DNA only).
@@ -387,7 +402,7 @@ class DNA(object):
                  more than one feature matches `featurename`.
 
         '''
-        return self.rotate(feature.start)
+        return self.rotate_to(feature.start)
 
     def reverse_complement(self):
         '''Reverse complement the DNA.

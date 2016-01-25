@@ -229,6 +229,16 @@ class TestFeatures(object):
         extracted = self.dna.extract(test_utr3_feature)
         assert_equal(str(extracted), 'TGCATGCATGCATGCATGC')
 
+    def test_excise(self):
+        copy = self.dna.copy().circularize()
+        feature = copy.select_features('Coding Feature')[0]
+        rotated = copy.rotate_to(feature.start)
+        expected = rotated[feature.stop - feature.start:]
+
+        backbone = copy.excise(feature)
+
+        assert_equal(expected, backbone)
+
     def test_getitem(self):
         subsequence = self.dna[30:100]
         remaining_features = [Feature('Primer Feature', 11, 30, 'primer_bind'),

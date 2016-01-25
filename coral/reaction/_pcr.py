@@ -143,7 +143,7 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_primer_len=14):
         else:
             # Inter-primer region goes over the origin (index 0)
             preamplicon_len = len(template) - fwd_5 + rev_5_top
-            preamplicon = template.rotate(fwd_5)[:preamplicon_len]
+            preamplicon = template.rotate(-fwd_5)[:preamplicon_len]
     else:
         # Linear template
         if rev_3_top < fwd_5 or fwd_3 > rev_5_top:
