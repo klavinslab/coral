@@ -34,7 +34,7 @@ doclines = __doc__.split('\n')
 
 config = {
     'name': 'coral',
-    'version': '0.4.0',
+    'version': '0.4.2',
     'description': doclines[0],
     'long_description': '\n'.join(doclines[2:]),
     'author': 'Nick Bolten',
@@ -60,7 +60,8 @@ config = {
                  'coral.design._sequence_generation',
                  'coral.seqio',
                  'coral.reaction',
-                 'coral.sequence'],
+                 'coral.sequence',
+                 'coral.utils'],
     'package_data': {'coral': ['coral/analysis/_sequencing/data/*',
                                'coral/sequence/d3-plasmid.js']},
     'include_package_data': True,

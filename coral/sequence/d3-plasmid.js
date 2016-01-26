@@ -43,9 +43,9 @@ function d3sequence(sequence_json, div_id) {
     'titleFontSize': '25px'
   };
 
-  if (sequence_json.circular) {
+  if (!sequence_json.circular) {
     config = linearConfig;
-  } else if (!sequence_json.circular) {
+  } else if (sequence_json.circular) {
     config = circularConfig;
   }
 
