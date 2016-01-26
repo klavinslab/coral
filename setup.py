@@ -34,7 +34,7 @@ doclines = __doc__.split('\n')
 
 config = {
     'name': 'coral',
-    'version': '0.3.4',
+    'version': '0.4.0',
     'description': doclines[0],
     'long_description': '\n'.join(doclines[2:]),
     'author': 'Nick Bolten',
