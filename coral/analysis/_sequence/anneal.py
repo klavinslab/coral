@@ -92,7 +92,7 @@ def anneal(template, primer, min_tm=50.0, min_len=10):
         else:
             return location_length
 
-    if template.topology == 'circular':
+    if template.circular:
         update_fun = update_match_circular
     else:
         update_fun = update_match_linear
@@ -110,9 +110,9 @@ def anneal(template, primer, min_tm=50.0, min_len=10):
             anneal_seq = primer_dna[-i:]
             for j, match in enumerate(matches):
                 if k == 0:
-                    matches[j] = update_fun(template.top(), match, anneal_seq)
+                    matches[j] = update_fun(template.top, match, anneal_seq)
                 else:
-                    matches[j] = update_fun(template.bottom(), match,
+                    matches[j] = update_fun(template.bottom, match,
                                             anneal_seq)
         binding_data.append(matches)
 

@@ -13,7 +13,7 @@ class TestPCR(object):
                      'attaatgtgagttagctcactcattaggcaccccaggctttacacttta'
                      'tgcttccggctcgtatgttgtgtggaattgtgagcggataacaatttca'
                      'caca')
-        self.template = cr.DNA(bba_r0010, topology='linear')
+        self.template = cr.DNA(bba_r0010, circular=False)
 
     def pcr_equal(self, expected, template, primer1, primer2):
         '''Boilerplate to assert that a pcr reaction matches the expected
@@ -68,7 +68,7 @@ class TestPCR(object):
     def test_circular_fwd_overlap(self):
         '''Test for when the forward primer overlaps the origin (index 0).'''
         template = self.template.circularize()
-        fwd = cr.design.primer(template.rotate(-4))
+        fwd = cr.design.primer(template.rotate(4))
         rev = cr.design.primer(template[:60].reverse_complement())
         expected = template[-4:] + template[:60]
         self.pcr_equal(expected, template, fwd, rev)
@@ -77,15 +77,15 @@ class TestPCR(object):
         '''Test for when the reverse primer overlaps the origin (index 0).'''
         template = self.template.circularize()
         fwd = cr.design.primer(template[60:])
-        rev = cr.design.primer(template.rotate(4).reverse_complement())
+        rev = cr.design.primer(template.rotate(-4).reverse_complement())
         expected = template[60:] + template[:4]
         self.pcr_equal(expected, template, fwd, rev)
 
     def test_circular_fwd_rev_overlap(self):
         '''Test for when both primers overlap the origin (index 0).'''
         template = self.template.circularize()
-        fwd = cr.design.primer(template.rotate(-4))
-        rev = cr.design.primer(template.rotate(4).reverse_complement())
+        fwd = cr.design.primer(template.rotate(4))
+        rev = cr.design.primer(template.rotate(-4).reverse_complement())
         expected = template[-4:] + template.linearize() + template[:4]
         self.pcr_equal(expected, template, fwd, rev)
 

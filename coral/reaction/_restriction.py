@@ -37,7 +37,7 @@ def digest(dna, restriction_enzyme):
         current.append(new[0])
     current.reverse()
     # Combine first and last back together if digest was circular
-    if dna.topology == 'circular':
+    if dna.circular:
         current[0] = current.pop() + current[0]
     return current
 

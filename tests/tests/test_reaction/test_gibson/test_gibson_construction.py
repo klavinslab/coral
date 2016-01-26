@@ -1,5 +1,5 @@
 import os
-from nose.tools import assert_equal, assert_raises, assert_true
+from nose.tools import assert_equal, assert_raises, assert_true, assert_false
 from coral import reaction, seqio
 
 
@@ -24,8 +24,8 @@ def test_construction():
     gibsoned_linear_length = len(gibsoned_linear)
     assert_equal(gibsoned_circular_length, expected_length)
     assert_equal(gibsoned_linear_length, expected_length)
-    assert_equal(gibsoned_circular.topology, 'circular')
-    assert_equal(gibsoned_linear.topology, 'linear')
+    assert_true(gibsoned_circular.circular)
+    assert_false(gibsoned_linear.circular)
     assert(plasmid.is_rotation(gibsoned_circular))
     try:
         assert_equal(str(plasmid), str(gibsoned_linear))

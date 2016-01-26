@@ -43,9 +43,9 @@ function d3sequence(sequence_json, div_id) {
     'titleFontSize': '25px'
   };
 
-  if (sequence_json.topology === 'linear') {
+  if (sequence_json.circular) {
     config = linearConfig;
-  } else if (sequence_json.topology === 'circular') {
+  } else if (!sequence_json.circular) {
     config = circularConfig;
   }
 
@@ -60,7 +60,7 @@ function d3sequence(sequence_json, div_id) {
 
   var center = {'x': config.width / 2, 'y': config.height / 2};
 
-  if (sequence_json.topology == 'circular') {
+  if (sequence_json.circular) {
 
     var outerRadius = Math.min(config.width, config.height) / 2 - config.padding;
     var innerRadius = outerRadius - config.backboneThickness * outerRadius;
@@ -267,7 +267,7 @@ function d3sequence(sequence_json, div_id) {
           return describeArc(0.97 * centerRadius, d.start, d.stop)
         })
         .attr('class', 'center-arc')
-        .attr('id', function(d, i) { return 'center-arc' + i; })
+        .attr('id', function(d, i) { return div_id + '-center-arc' + i; })
         .style('stroke', 'none')
         .style('fill', 'none');
 
@@ -278,7 +278,7 @@ function d3sequence(sequence_json, div_id) {
         .attr('class', 'shadow')
         .attr('startOffset', '50%')
         .attr('xlink:href', function(d, i) {
-          return '#center-arc' + i;
+          return '#' + div_id + '-center-arc' + i;
         })
         .attr('id', function(d, i) {
           return 'shadow' + i;
@@ -298,7 +298,7 @@ function d3sequence(sequence_json, div_id) {
         .attr('fill', 'white')
         .attr('startOffset', '50%')
         .attr('xlink:href', function(d, i) {
-          return '#center-arc' + i;
+          return '#' + div_id + '-center-arc' + i;
         })
         .attr('id', function(d, i) { return 'label' + i; })
         .style('text-anchor', 'middle')

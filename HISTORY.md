@@ -1,5 +1,30 @@
 Changelog for Coral
 ===================
+# 0.4 Releases
+
+### 0.4.0
+* Renamed `coral.DNA.rotate()` method to `coral.DNA.rotate_to()`
+* Created new `coral.DNA.rotate()` method that rotates a sequence
+'counter-clockwise', acting as a deque
+* Created new `coral.DNA.rotate_to_feature`, which rotates a sequence to a given
+feature's start location
+* Created new `coral.DNA.excise` feature, which removes a feature's sequence from
+a circular DNA object, generating a linear product (useful for swapping out
+features).
+* Improved `coral.DNA` `__getitem__` behavior.
+* Added .material property to all sequence types for pseudo-type checking.
+* Made `coral.DNA.top()` and `coral.DNA.bottom()` methods into properties
+(`coral.DNA.top` and `coral.DNA.bottom`) that can be overwritten and accessed
+directly
+* Replaced `coral.DNA.topology` and `coral.DNA.stranded` properties (which were
+strings) with boolean-valued `.circular` and `.ds` values, respectively
+* Re-wrote (and renamed) the `coral.analysis.NUPACK` and
+`coral.analysis.ViennaRNA` packages to be more feature-complete
+* Fixed an issue where re-running `coral.DNA.display()` in a Jupyter notebook
+resulted in non-updated text labels
+
+# O.3 Releases
+
 ### 0.3.3
 * Added Python 2 version check to prevent installation on Python 3
 
@@ -25,6 +50,8 @@ behavior (assign by reference vs. value)
 * Fixed an issue where slicing the last N bases of a sequence (e.g.
 `y =x[-4:]`) would modify the feature locations of the parent (`x`).
 
+## O.2 Releases
+
 ### 0.2.1
 * Added HISTORY.md (this file) changelog
 * Fixed version bump issue, added javascript to manifest, added dev-requirements.txt
@@ -33,6 +60,8 @@ behavior (assign by reference vs. value)
 * plasmid visualizations for iPython notebooks using `coral.DNA.display`
 * features are now searchable using `coral.DNA.select_features`.
 * `seqio.read_dna` now keeps all feature qualifiers when reading genbank files (thanks @eyu-bolthreads!)
+
+## 0.1 Releases
 
 ### 0.1.0
 

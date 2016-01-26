@@ -1,291 +1,1090 @@
 # -*- coding: utf-8
 '''Wrapper for NUPACK 3.0.'''
 import multiprocessing
+import numpy as np
+import os
+import re
+import subprocess
 import time
-from subprocess import Popen, PIPE
-from tempfile import mkdtemp
-from shutil import rmtree
-from os.path import isdir
-from os import environ
-from coral.analysis.utils import sequence_type
+from coral.utils import tempdirs
 
 
-class Nupack(object):
+class NUPACK(object):
     '''Run NUPACK functions on sequences.'''
-    def __init__(self, seq_list, temp=50, nupack_home=None, rna1999=False):
+    def __init__(self, nupack_home=None):
         '''
-        :param seq_list: Input sequence(s).
-        :type seq_list: coral.DNA, coral.RNA, or list of
-                        either.
-        :param rna1999: Use RNA 1999 settings.
-        :type rna1999: bool
-        :param temp: Temperature in C.
-        :type temp: float
-        :param nupack_home: NUPACK home dir. The script attempts to find the
-                            NUPACKHOME environment variable if this isn't set.
+        :param nupack_home: NUPACK home dir. If the NUPACK commands aren't in
+                            your path and the NUPACKHOME environment variable
+                            isn't set, you can manually specify the NUPACK
+                            directory here (the directory that contains bin/).
         :type nupack_home: str
-        :returns: Nupack instance.
-        :raises: ValueError if NUPACKHOME environment variable is not defined
-                 and nupack_home is undefined.
-                 ValueError if sequences are not all the same type (e.g. don't
-                 mix RNA and DNA).
-                 Exception if using rna1999 with a Tm other than 37C.
 
         '''
-        # Set up nupack environment variable
-        if nupack_home is None:
-            if 'NUPACKHOME' in environ:
-                nupack_home = environ['NUPACKHOME']
-            else:
-                msg1 = 'Must have NUPACKHOME environment variable set or '
-                msg2 = 'set nupack_home argument.'
-                raise ValueError(msg1 + msg2)
-        self._nupack_home = nupack_home
-
-        # If input isn't list, make it one
-        if type(seq_list) != list:
-            self._seq_list = [seq_list]
+        # Figure out where the NUPACK executables are
+        if nupack_home is not None:
+            self._nupack_home = nupack_home
         else:
-            self._seq_list = seq_list
+            try:
+                self._nupack_home = os.environ['NUPACKHOME']
+            except KeyError:
+                pfunc_paths = []
+                for path in os.environ['PATH'].split(os.pathsep):
+                    test = os.path.join(path, 'pfunc')
+                    if os.path.isfile(test) and os.access(test, os.X_OK):
+                        pfunc_paths.append(test)
+                if not pfunc_paths:
+                    raise IOError('NUPACK commands not found - see '
+                                  'documentation')
 
-        # Figure out material based on input and ensure it's consistent
-        self._material = sequence_type(self._seq_list[0])
-        if not all([sequence_type(seq) == self._material for seq in
-                   self._seq_list]):
-            raise ValueError('Sequence inputs were of mixed types.')
+        # Initialize empty temp dir location
+        self._tempdir = ''
 
-        # Convert seq object(s) to string(s)
-        self._seq_list = [str(seq) for seq in self._seq_list]
+    @tempdirs.tempdir
+    def pfunc(self, strand, temp=37.0, pseudo=False, material=None,
+              dangles='some', sodium=1.0, magnesium=0.0):
+        '''Compute the partition function for an ordered complex of strands.
+        Runs the \'pfunc\' command.
 
-        # Shared temperature input
-        self._temp = temp
-
-        # Handle rna1999 setting
-        if self._material == 'rna' and rna1999:
-            self._material = 'rna1999'
-            if self._temp != 37:
-                raise Exception('To use rna1999 settings, temp must be 37.')
-
-        # Create temp dir
-        self._tempdir = mkdtemp()
-
-        # Track whether complexes has been run to avoid redundant computation
-        self._complexes_run = False
-        self._complexes_file = None
-
-    def complexes(self, max_complexes, mfe=True):
-        '''Run `complexes` on set of input sequences.
-
-        :param max_complexes: Maximum complex size (integer).
-        :type max_complexes: int
-        :param mfe: Include mfe calculations (boolean, defaults to True).
-        :type mfe: bool
-        :returns: complex types (list of interactions) and their energies.
-        :rtype: dict
-
-        '''
-        self._temp_dir()
-
-        # Prepare input file
-        n_seqs = str(len(self._seq_list))
-        seqs = '\n'.join(self._seq_list)
-        max_complexes = str(max_complexes)
-        complexes_input = '\n'.join([n_seqs, seqs, max_complexes])
-        with open(self._tempdir + '/nupack.in', 'w') as input_handle:
-            input_handle.write(complexes_input)
-
-        # Run 'complexes'
-        args = ['-T', str(self._temp), '-material', self._material]
-        if mfe:
-            args += ['-mfe']
-        self._run_cmd('complexes', args)
-
-        # Parse the output
-        with open(self._tempdir + '/nupack.cx', 'r+') as output:
-            self._complexes_file = output.readlines()
-        complexes_results = [x.split() for x in self._complexes_file if '%'
-                             not in x]
-
-        # Remove rank entry
-        for complexes_result in complexes_results:
-            complexes_result.pop(0)
-
-        # Extract complexes
-        complexes = []
-        for result in complexes_results:
-            complex_i = []
-            for seq in self._seq_list:
-                complex_i.append(int(result.pop(0)))
-            complexes.append(complex_i)
-
-        # Extract energies
-        energies = [float(x.pop(0)) for x in complexes_results]
-
-        self._complexes_run = int(max_complexes), mfe
-
-        self._close()
-
-        return {'complexes': complexes, 'complex_energy': energies}
-
-    def concentrations(self, max_complexes, conc=[0.5e-6], mfe=True):
-        '''Run `concentrations` - get expected steady state concentrations
-        of complexes.
-
-        :param max_complexes: Maximum complex size.
-        :type max_complexes: int
-        :param conc: Oligo concentrations.
-        :type conc: list
-        :param mfe: Include mfe calculations.
-        :type mfe: bool
-        :returns: complex types, their concentrations, and their energies.
-        :rtype: dict
+        :param strand: Strand on which to run pfunc. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: A 2-tuple of the free energy of the ordered complex
+                  (float) and the partition function (float).
+        :rtype: tuple
 
         '''
-        # If complexes hasn't been run, run it
-        # TODO: save results of complexes, rewrite to file if necessary.
-        # This allows closing tmpdir at every step, makes implementation clean
-        if self._complexes_run != (max_complexes, mfe):
-            self.complexes(max_complexes=max_complexes, mfe=mfe)
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
 
-        self._temp_dir()
-        with open(self._tempdir + '/nupack.cx', 'w') as cx_file:
-            cx_file.writelines(self._complexes_file)
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
 
-        # Prepare input file
-        if len(conc) > 1:
-            input_concs = '\n'.join([str(x) for x in conc])
-        else:
-            input_concs = '\n'.join([str(conc[0]) for x in self._seq_list])
-        with open(self._tempdir + '/nupack.con', 'w') as input_handle:
-            input_handle.write(input_concs)
+        # Set up the input file and run the command
+        stdout = self._run('pfunc', cmd_args, [str(strand)]).split('\n')
 
-        args = ['-sort', str(3)]
+        return (float(stdout[-3]), float(stdout[-2]))
 
-        # Run 'concentrations'
-        self._run_cmd('concentrations', args)
+    @tempdirs.tempdir
+    def pfunc_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
+                    material=None, dangles='some', sodium=1.0, magnesium=0.0):
+        '''Compute the partition function for an ordered complex of strands.
+        Runs the \'pfunc\' command.
 
-        # Parse the output of 'complexes'
-        with open(self._tempdir + '/nupack.eq', 'r+') as output:
-            con_results = output.readlines()
-            con_results = [x.split() for x in con_results if '%' not in x]
-
-        # Format results: complex type, concentration, and energy
-        # Remove rank information
-        for concentration in con_results:
-            concentration.pop(0)
-        con_types = []
-        for result in con_results:
-            eq_cx_i = []
-            for i in range(len(self._seq_list)):
-                eq_cx_i.append(int(float(result.pop(0))))
-            con_types.append(eq_cx_i)
-
-        # Extract energies and concentrations
-        energies = [x.pop(0) for x in con_results]
-        concentrations = [float(x[0]) for x in con_results]
-
-        self._close()
-
-        return {'types': con_types,
-                'concentrations': concentrations,
-                'energy': energies}
-
-    def mfe(self, index):
-        '''Calculate the minimum free energy of a single polymer.
-
-        :param index: Index of strand to analyze.
-        :type index: int
-        :returns: Minimum Free Energy (mfe).
-        :rtype: float
+        :param strands: List of strands to use as inputs to pfunc -multi.
+        :type strands: list
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: A 2-tuple of the free energy of the ordered complex
+                  (float) and the partition function (float).
+        :rtype: tuple
 
         '''
-        self._temp_dir()
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
 
-        # Prepare input file
-        with open(self._tempdir + '/nupack.in', 'w') as input_handle:
-            input_handle.write(self._seq_list[index])
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+        # Set up the input file and run the command
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._multi_lines(strands, permutation)
+        stdout = self._run('pfunc', cmd_args, lines).split('\n')
 
-        args = ['-T', str(self._temp), '-material', self._material]
-        self._run_cmd('mfe', args)
-        # Parse the output of 'mfe'
+        return (float(stdout[-3]), float(stdout[-2]))
 
-        with open('{}/nupack.mfe'.format(self._tempdir), 'r+') as output:
-            mfe = float(output.readlines()[14].strip())
+    @tempdirs.tempdir
+    def pairs(self, strand, temp=37.0, pseudo=False, material=None,
+              dangles='some', sodium=1.0, magnesium=0.0, cutoff=0.001):
+        '''Compute the pair probabilities for an ordered complex of strands.
+        Runs the \'pairs\' command.
 
-        self._close()
+        :param strand: Strand on which to run pairs. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :param cutoff: Only probabilities above this cutoff appear in the
+                       output.
+        :type cutoff: float
+        :returns: The probability matrix, where the (i, j)th entry
+                  is the probability that base i is bound to base j. The matrix
+                  is augmented (it's N+1 by N+1, where N is the number of bases
+                  in the sequence) with an (N+1)th column containing the
+                  probability that each base is unpaired.
+        :rtype: numpy.array
 
-        return mfe
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
 
-    def pairs(self, index):
-        '''Calculate per-pair probability of being unbound for a single
-        sequence (secondary structure).
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
 
-        :param index: Index of strand to analyze.
-        :type index: int
-        :returns: Unbound pair probability for each base in the sequence.
+        # Set up the input file and run the command. Note: no STDOUT
+        lines = [str(strand)]
+        self._run('pairs', cmd_args, lines)
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'pairs.ppairs')) as f:
+            ppairs = f.read()
+        data = re.search('\n\n\d*\n(.*)', ppairs, flags=re.DOTALL).group(1)
+        N = len(strand)
+        prob_matrix = np.zeros((N, N + 1))
+        data_lines = data.split('\n')
+        # Remove the last line (empty)
+        data_lines.pop()
+        # Convert into probability matrix
+        for line in data_lines:
+            i, j, prob = line.split('\t')
+            prob_matrix[int(i) - 1, int(j) - 1] = float(prob)
+
+        return prob_matrix
+
+    @tempdirs.tempdir
+    def pairs_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
+                    material=None, dangles='some', sodium=1.0, magnesium=0.0,
+                    cutoff=0.001):
+        '''Compute the pair probabilities for an ordered complex of strands.
+        Runs the \'pairs\' command.
+
+        :param strands: List of strands to use as inputs to pairs -multi.
+        :type strands: list
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :param cutoff: Only probabilities above this cutoff appear in the
+                       output.
+        :type cutoff: float
+        :returns: Two probability matrices: The probability matrix as in the
+                  pairs method (but with a dimension equal to the sum of the
+                  lengths of the sequences in the permutation), and a similar
+                  probability matrix where strands of the same species are
+                  considered to be indistinguishable.
         :rtype: list
 
         '''
-        self._temp_dir()
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
 
-        # Sequence at the specified index
-        sequence = self._seq_list[index]
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
 
-        # Prepare input file
-        with open(self._tempdir + '/nupack.in', 'w') as input_handle:
-            input_handle.write(sequence)
+        # Set up the input file and run the command. Note: no STDOUT
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._multi_lines(strands, permutation)
+        self._run('pairs', cmd_args, lines)
 
-        # Calculate pair probabilities with 'pairs'
-        args = ['-T', str(self._temp), '-material', self._material]
-        self._run_cmd('pairs', args)
+        # Read the output from file
+        N = sum([len(s) for s in strands])
+        matrices = []
+        for mat_type in ['ppairs', 'epairs']:
+            with open(os.path.join(self._tempdir, 'pairs.' + mat_type)) as f:
+                data = f.read()
 
-        # Parse the output of 'pairs'
-        # Only look at the last n rows - unbound probabilities
-        with open(self._tempdir + '/nupack.ppairs', 'r+') as handle:
-            pairs = handle.readlines()[-len(sequence):]
-            pairs = [pair for pair in pairs if '%' not in pair]
+            probs = re.search('\n\n\d*\n(.*)', data, flags=re.DOTALL).group(1)
+            lines = probs.split('\n')
+            # Remove the last line (empty)
+            lines.pop()
+            prob_matrix = np.zeros((N, N + 1))
+            # Convert into probability matrix
+            for line in lines:
+                split = line.split('\t')
+                i = int(split[0]) - 1
+                j = int(split[1]) - 1
+                prob = float(split[2])
+                prob_matrix[i, j] = prob
+            matrices.append(prob_matrix)
 
-        # Extract pair probability types and pair_probabilities. These are in
-        # Nupack's raw text format
-        #types = [(int(x.split()[0]), int(x.split()[1])) for x in pairs]
-        pair_probabilities = [float(x.split()[2]) for x in pairs]
+        return matrices
 
-        self._close()
+    @tempdirs.tempdir
+    def mfe(self, strand, temp=37.0, pseudo=False, material=None,
+            dangles='some', sodium=1.0, magnesium=0.0, degenerate=False):
+        '''Compute the MFE for an ordered complex of strands. Runs the \'mfe\'
+        command.
 
-        return pair_probabilities
-
-    def _close(self):
-        '''Delete the temporary dir to prevent filling up /tmp.'''
-        rmtree(self._tempdir)
-
-    def _temp_dir(self):
-        '''If temporary dir doesn't exist, create it.'''
-        if not isdir(self._tempdir):
-            self._tempdir = mkdtemp()
-
-    def _run_cmd(self, cmd, cmd_args):
-        '''Run NUPACK command line programs.
-
-        :param cmd: NUPACK command line tool to run ('mfe', 'complexes',
-                    'concentrations', 'pairs').
-        :type cmd: str
-        :param cmd_args: Arguments to pass to the command line.
-        :type cmd_args: str
-        :returns: Variable - whatever `cmd` returns.
+        :param strand: Strand on which to run mfe. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :param degenerate: Setting to True will result in returning a list of
+                           dictionaries associated with structures having the
+                           same, minimal MFE value.
+        :type degenerate: bool
+        :returns: A dictionary with keys for 'mfe' (a float), 'dotparens'
+                  (dot-parens notation of the MFE structure), and 'pairlist'
+                  (a pair list notation of the MFE structure). Note that the
+                  pair list will be an empty list if the MFE is unstructured.
+        :rtype: dict
 
         '''
-        known_cmds = ['complexes', 'concentrations', 'mfe', 'pairs']
-        if cmd not in known_cmds:
-            msg = 'Command must be one of: {}'.format(known_cmds)
-            raise ValueError(msg)
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
 
-        cmd_path = '{0}/bin/{1}'.format(self._nupack_home, cmd)
-        cmd_args += ['nupack']
-        cmd_list = [cmd_path] + cmd_args
-        process = Popen(cmd_list,
-                        env={'NUPACKHOME': self._nupack_home},
-                        cwd=str(self._tempdir), stdout=PIPE)
-        process.wait()
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
+        if degenerate:
+            cmd_args.append('-degenerate')
+
+        # Set up the input file and run the command. Note: no STDOUT
+        lines = [str(strand)]
+        self._run('mfe', cmd_args, lines)
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'mfe.mfe')) as f:
+            structures = self._process_mfe(f.read())
+
+        if degenerate:
+            return structures
+        else:
+            return structures[0]
+
+    @tempdirs.tempdir
+    def mfe_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
+                  material=None, dangles='some', sodium=1.0, magnesium=0.0,
+                  degenerate=False):
+        '''Compute the MFE for an ordered complex of strands. Runs the \'mfe\'
+        command.
+
+        :param strands: Strands on which to run mfe. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :param degenerate: Setting to True will result in returning a list of
+                           dictionaries associated with structures having the
+                           same, minimal MFE value.
+        :type degenerate: bool
+        :returns: A dictionary with keys for 'mfe' (a float), 'dotparens'
+                  (dot-parens notation of the MFE structure), and 'pairlist'
+                  (a pair list notation of the MFE structure). Note that the
+                  pair list will be an empty list if the MFE is unstructured.
+        :rtype: dict
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+        if degenerate:
+            cmd_args.append('-degenerate')
+
+        # Set up the input file and run the command. Note: no STDOUT
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._multi_lines(strands, permutation)
+        self._run('mfe', cmd_args, lines)
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'mfe.mfe')) as f:
+            structures = self._process_mfe(f.read())
+
+        if degenerate:
+            return structures
+        else:
+            return structures[0]
+
+    @tempdirs.tempdir
+    def subopt(self, strand, gap, temp=37.0, pseudo=False, material=None,
+               dangles='some', sodium=1.0, magnesium=0.0):
+        '''Compute the suboptimal structures within a defined energy gap of the
+        MFE. Runs the \'subopt\' command.
+
+        :param strand: Strand on which to run subopt. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param gap: Energy gap within to restrict results, e.g. 0.1.
+        :type gap: float
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: A list of dictionaries of the type returned by .mfe().
+        :rtype: list
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
+
+        # Set up the input file and run the command. Note: no STDOUT
+        lines = [str(strand), str(gap)]
+        self._run('subopt', cmd_args, lines)
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'subopt.subopt')) as f:
+            structures = self._process_mfe(f.read())
+
+        return structures
+
+    @tempdirs.tempdir
+    def subopt_multi(self, strands, gap, permutation=None, temp=37.0,
+                     pseudo=False, material=None, dangles='some', sodium=1.0,
+                     magnesium=0.0):
+        '''Compute the suboptimal structures within a defined energy gap of the
+        MFE for an ordered permutation of strands. Runs the \'subopt\' command.
+
+        :param strands: Strands on which to run subopt. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param gap: Energy gap within to restrict results, e.g. 0.1.
+        :type gap: float
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: A list of dictionaries of the type returned by .mfe().
+        :rtype: list
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+
+        # Set up the input file and run the command. Note: no STDOUT
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._multi_lines(strands, permutation)
+        lines.append(str(gap))
+        self._run('subopt', cmd_args, lines)
+
+        # Read the output from file
+        with open(os.path.join(self._tempdir, 'subopt.subopt')) as f:
+            structures = self._process_mfe(f.read())
+
+        return structures
+
+    @tempdirs.tempdir
+    def count(self, strand, pseudo=False):
+        '''Enumerates the total number of secondary structures over the
+        structural ensemble Ω(π). Runs the \'count\' command.
+
+        :param strand: Strand on which to run count. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: list
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :returns: The count of the number of structures in the structural
+                  ensemble.
+        :rtype: int
+
+        '''
+        # Set up command flags
+        if pseudo:
+            cmd_args = ['-pseudo']
+        else:
+            cmd_args = []
+
+        # Set up the input file and run the command
+        stdout = self._run('count', cmd_args, [str(strand)]).split('\n')
+
+        # Return the count
+        return int(float(stdout[-2]))
+
+    @tempdirs.tempdir
+    def count_multi(self, strands, permutation=None, pseudo=False):
+        '''Enumerates the total number of secondary structures over the
+        structural ensemble Ω(π) with an ordered permutation of strands. Runs
+        the \'count\' command.
+
+        :param strands: List of strands to use as inputs to count -multi.
+        :type strands: list
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :returns: Dictionary with the following key:value pairs: 'energy':
+                  free energy, 'pfunc': partition function.
+        :rtype: dict
+
+        '''
+        # Set up command flags
+        cmd_args = ['-multi']
+        if pseudo:
+            cmd_args.append('-pseudo')
+
+        # Set up the input file and run the command
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._multi_lines(strands, permutation)
+        stdout = self._run('count', cmd_args, lines).split('\n')
+
+        return int(float(stdout[-2]))
+
+    @tempdirs.tempdir
+    def energy(self, strand, dotparens, temp=37.0, pseudo=False, material=None,
+               dangles='some', sodium=1.0, magnesium=0.0):
+        '''Calculate the free energy of a given sequence structure. Runs the
+        \'energy\' command.
+
+        :param strand: Strand on which to run energy. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: The free energy of the sequence with the specified secondary
+                  structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
+
+        # Set up the input file and run the command. Note: no STDOUT
+        lines = [str(strand), dotparens]
+        stdout = self._run('energy', cmd_args, lines).split('\n')
+
+        # Return the energy
+        return float(stdout[-2])
+
+    @tempdirs.tempdir
+    def energy_multi(self, strands, dotparens, permutation=None, temp=37.0,
+                     pseudo=False, material=None, dangles='some', sodium=1.0,
+                     magnesium=0.0):
+        '''Calculate the free energy of a given sequence structure. Runs the
+        \'energy\' command.
+
+        :param strands: Strands on which to run energy. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: The free energy of the sequence with the specified secondary
+                  structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+        # Set up the input file and run the command
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._multi_lines(strands, permutation)
+        lines.append(dotparens)
+        stdout = self._run('energy', cmd_args, lines).split('\n')
+
+        return float(stdout[-2])
+
+    @tempdirs.tempdir
+    def prob(self, strand, dotparens, temp=37.0, pseudo=False, material=None,
+             dangles='some', sodium=1.0, magnesium=0.0):
+        '''Calculate the equilibrium probability of a given secondary
+        structure. Runs the \'prob\' command.
+
+        :param strand: Strand on which to run prob. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: The equilibrium probability of the sequence with the
+                  specified secondary structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
+
+        # Set up the input file and run the command.
+        lines = [str(strand), dotparens]
+        stdout = self._run('prob', cmd_args, lines).split('\n')
+
+        # Return the probabilities
+        return float(stdout[-2])
+
+    @tempdirs.tempdir
+    def prob_multi(self, strands, dotparens, permutation=None, temp=37.0,
+                   pseudo=False, material=None, dangles='some', sodium=1.0,
+                   magnesium=0.0):
+        '''Calculate the equilibrium probability of a given secondary
+        structure of a complex of sequences in a given circular permutation.
+        Runs the \'prob\' command.
+
+        :param strands: Strands on which to run prob. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :returns: The free energy of the sequence with the specified secondary
+                  structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+        # Set up the input file and run the command
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._multi_lines(strands, permutation)
+        lines.append(dotparens)
+        stdout = self._run('prob', cmd_args, lines).split('\n')
+
+        return float(stdout[-2])
+
+    @tempdirs.tempdir
+    def defect(self, strand, dotparens, temp=37.0, pseudo=False, material=None,
+               dangles='some', sodium=1.0, magnesium=0.0, mfe=False):
+        '''Calculate the ensemble defect for a given sequence and secondary
+        structure. From the documentation, the ensemble defect is defined as
+        \'the number of incorrectly paired nucleotides at equilibrium evaluated
+        over the ensemble of the ordered complex.\' Runs the \'defect\'
+        command.
+
+        :param strand: Strand on which to run defect. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strand: coral.DNA or coral.RNA
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :param mfe: Return the MFE defect (Zadeh et al., 2010) instead of the
+                    ensemble defect.
+        :type mfe: bool
+        :returns: A length 2 list of the ensemble defect (float) and normalized
+                  ensemble defect (float).
+        :rtype: list
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strand, material)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=False)
+        if mfe:
+            cmd_args.append('-mfe')
+
+        # Set up the input file and run the command.
+        lines = [str(strand), dotparens]
+        stdout = self._run('defect', cmd_args, lines).split('\n')
+
+        # Return the defect [ensemble defect, ensemble defect]
+        return [float(stdout[-3]), float(stdout[-2])]
+
+    @tempdirs.tempdir
+    def defect_multi(self, strands, dotparens, permutation=None, temp=37.0,
+                     pseudo=False, material=None, dangles='some', sodium=1.0,
+                     magnesium=0.0, mfe=False):
+        '''Calculate the free energy of a given sequence structure. Runs the
+        \'energy\' command.
+
+        :param strands: Strands on which to run energy. Strands must be either
+                       coral.DNA or coral.RNA).
+        :type strands: list
+        :param dotparens: The structure in dotparens notation.
+        :type dotparens: str
+        :param permutation: The circular permutation of strands to test in
+                            complex. e.g. to test in the order that was input
+                            for 4 strands, the permutation would be [1,2,3,4].
+                            If set to None, defaults to the order of the
+                            input strands.
+        :type permutation: list
+        :param temp: Temperature setting for the computation. Negative values
+                     are not allowed.
+        :type temp: float
+        :param pseudo: Enable pseudoknots.
+        :type pseudo: bool
+        :param material: The material setting to use in the computation. If set
+                         to None (the default), the material type is inferred
+                         from the strands. Other settings available: 'dna' for
+                         DNA parameters, 'rna' for RNA (1995) parameters, and
+                         'rna1999' for the RNA 1999 parameters.
+        :type material: str
+        :param dangles: How to treat dangles in the computation. From the
+                        user guide: For \'none\': Dangle energies are ignored.
+                        For \'some\': \'A dangle energy is incorporated for
+                        each unpaired base flanking a duplex\'. For 'all': all
+                        dangle energy is considered.
+        :type dangles: str
+        :param sodium: Sodium concentration in solution (molar), only applies
+                       to DNA.
+        :type sodium: float
+        :param magnesium: Magnesium concentration in solution (molar), only
+                          applies to DNA>
+        :type magnesium: float
+        :param mfe: Return the MFE defect (Zadeh et al., 2010) instead of the
+                    ensemble defect.
+        :type mfe: bool
+        :returns: The free energy of the sequence with the specified secondary
+                  structure.
+        :rtype: float
+
+        '''
+        # Set the material (will be used to set command material flag)
+        material = self._set_material(strands, material, multi=True)
+
+        # Set up command flags
+        cmd_args = self._prep_cmd_args(temp, dangles, material, pseudo, sodium,
+                                       magnesium, multi=True)
+        if mfe:
+            cmd_args.append('-mfe')
+
+        # Set up the input file and run the command
+        if permutation is None:
+            permutation = range(1, len(strands) + 1)
+        lines = self._multi_lines(strands, permutation)
+        lines.append(dotparens)
+        stdout = self._run('defect', cmd_args, lines).split('\n')
+
+        # Return the defect [ensemble defect, ensemble defect]
+        return [float(stdout[-3]), float(stdout[-2])]
+
+    # Helper methods for preparing command input files
+    def _multi_lines(self, strands, permutation):
+        '''Prepares lines to write to file for pfunc command input.
+
+        :param strand: Strand input (cr.DNA or cr.RNA).
+        :type strand: cr.DNA or cr.DNA
+        :param permutation: Permutation (e.g. [1, 2, 3, 4]) of the type used
+                            by pfunc_multi.
+        :type permutation: list
+        '''
+        lines = []
+        # Write the total number of distinct strands
+        lines.append(str(len(strands)))
+        # Write the distinct strands
+        lines += [str(strand) for strand in strands]
+        # Write the permutation
+        lines.append(' '.join(str(p) for p in permutation))
+
+        return lines
+
+    # Helper methods for processing output files
+    def _process_mfe(self, data):
+        # Parse the output data
+        # Find the text in between the large comment lines
+        commentline = '\n% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %\n'
+        # Find everything between two commentlines
+        groups = data.split(commentline)
+        # Everything before the comment line is notes about the command,
+        # the last part is just a newline
+        groups.pop(0)
+        groups.pop()
+        # The remainder is data
+        output = []
+        # Skip every other one (every 2nd match is empty lines)
+        for group in groups[::2]:
+            lines = group.split('\n')
+            # Line 1 is the strand number (ignored)
+            lines.pop(0)
+            # Line 2 is the MFE
+            mfe = float(lines.pop(0))
+            # Line 3 is the dot-bracket structure
+            dotparens = lines.pop(0)
+            # If there are any more lines, they are a pair list format
+            # structure
+            pairlist = []
+            for line in lines:
+                pair = line.split('\t')
+                pairlist.append([int(pair[0]) - 1, int(pair[1]) - 1])
+            output.append({'mfe': mfe, 'dotparens': dotparens,
+                           'pairlist': pairlist})
+
+        return output
+
+    # Helper methods for repetitive tasks
+    def _set_material(self, strand_input, material, multi=False):
+        if multi:
+            if len(set([s.material for s in strand_input])) > 1:
+                raise ValueError('Inputs must all be coral.DNA or all '
+                                 'coral.RNA')
+            if material is None:
+                return strand_input[0].material
+            else:
+                return material
+        else:
+            if material is None:
+                return strand_input.material
+            else:
+                return material
+
+    def _prep_cmd_args(self, temp, dangles, material, pseudo, sodium,
+                       magnesium, multi=False):
+        cmd_args = []
+        cmd_args += ['-T', temp]
+        cmd_args += ['-dangles', dangles]
+        cmd_args += ['-material', material]
+        cmd_args += ['-sodium', sodium]
+        cmd_args += ['-magnesium', magnesium]
+        if pseudo:
+            cmd_args.append('-pseudo')
+        if multi:
+            cmd_args.append('-multi')
+
+        return cmd_args
+
+    def _run(self, command, cmd_args, lines):
+        prefix = command
+        path = os.path.join(self._tempdir, '{}.in'.format(prefix))
+        with open(path, 'w') as f:
+            f.write('\n'.join(lines))
+
+        arguments = [os.path.join(self._nupack_home, 'bin', command)]
+        arguments += cmd_args
+        arguments.append(prefix)
+
+        arguments = [str(x) for x in arguments]
+        process = subprocess.Popen(arguments, stdout=subprocess.PIPE,
+                                   stderr=subprocess.STDOUT, cwd=self._tempdir)
+        output = process.communicate()[0]
+        return output
 
 
 def nupack_multi(seqs, material, cmd, arguments, report=True):
@@ -341,6 +1140,6 @@ def run_nupack(kwargs):
     :returns: Variable - whatever `cmd` returns.
 
     '''
-    run = Nupack(kwargs['seq'])
+    run = NUPACK(kwargs['seq'])
     output = getattr(run, kwargs['cmd'])(**kwargs['arguments'])
     return output

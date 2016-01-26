@@ -74,4 +74,9 @@ MIT
 
 ## Author
 
-Contact Nick at nbolten@gmail.com with any questions about Coral.
+The author and maintainer of Coral is Nick Bolten. Contact him (me) at
+nbolten@gmail.com with any and all Coral questions (don't be shy!).
+
+## Changelog
+
+View the changelog [here](HISTORY.md).
