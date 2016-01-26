@@ -217,7 +217,7 @@ class ViennaRNA(object):
         if constraints is not None:
             inputs.append(constraints)
 
-        if strand.topology == 'circular':
+        if strand.circular:
             cmd_args.append('--circ')
         rnafold_output = self._run('RNAfold', inputs, cmd_args, cmd_kwargs)
 

@@ -59,12 +59,12 @@ def read_dna(path):
     dna.features = sorted(dna.features, key=lambda feature: feature.start)
     # Used to use data_file_division, but it's inconsistent (not always the
     # molecule type)
-    dna.topology = 'linear'
+    dna.circular = False
     with open(path) as f:
         first_line = f.read().split()
         for word in first_line:
             if word == 'circular':
-                dna.topology = 'circular'
+                dna.circular = True
 
     return dna
 
@@ -121,7 +121,10 @@ def write_dna(dna, path):
     seq = SeqRecord(Seq(str(dna), alphabet=ambiguous_dna), id=bio_id,
                     name=dna.name[0:16].replace(' ', '_'), features=features,
                     description=dna.name)
-    seq.annotations['data_file_division'] = dna.topology
+    if dna.circular:
+        seq.annotations['data_file_division'] = 'circular'
+    else:
+        seq.annotations['data_file_division'] = 'linear'
 
     if filetype == 'genbank':
         SeqIO.write(seq, path, 'genbank')

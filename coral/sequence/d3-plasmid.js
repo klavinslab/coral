@@ -2,8 +2,6 @@
 // downloaded dynamically
 function d3sequence(sequence_json, div_id) {
   // TODO: Have methods for drawing circular vs. linear, keep core logic the same
-  // FIXME: remove this after testing
-  //sequence_json.topology = 'linear';
   // Option that might make it into a configurable version
   // TODO: control more of these with CSS
 
