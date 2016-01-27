@@ -228,10 +228,11 @@ class Sequence(object):
 
 class NucleicAcidSequence(Sequence):
     '''Abstract sequence container for a single nucleic acid sequence
-       molecule.'''
-    def reverse_complement(self):
+    molecule.'''
+    def complement(self):
         copy = self.copy()
-        copy.seq = reverse_complement(self.seq, self.material)
+        code = dict(COMPLEMENTS[self.material])
+        copy.seq = ''.join([code[str(base)] for base in copy])
         return copy
 
     def is_palindrome(self):
@@ -248,6 +249,14 @@ class NucleicAcidSequence(Sequence):
         else:
             # Sequence has odd number of bases and cannot be a palindrome
             return False
+
+    def reverse(self):
+        return self[::-1]
+
+    def reverse_complement(self):
+        copy = self.copy()
+        copy.seq = str(self.reverse().complement())
+        return copy
 
 
 def _decompose(string, n):
