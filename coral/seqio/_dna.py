@@ -83,7 +83,7 @@ def read_sequencing(directory):
     # Exclude files that aren't sequencing results
     seq_paths = [x for x in dirfiles if os.path.splitext(x)[1] in seq_exts]
     paths = [os.path.join(directory, x) for x in seq_paths]
-    sequences = [read_dna(x).to_ss() for x in paths]
+    sequences = [read_dna(x).top for x in paths]
 
     return sequences
 
