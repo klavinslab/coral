@@ -315,15 +315,432 @@ class TestNUPACK(object):
                                                 material='rna1999')
         assert_equal(rna99_output, [4.733, .2058])
 
+    def test_complexes(self):
+        dnas = self.dnas[:2]
+        rnas = self.rnas[:2]
+        # Test DNA
+        dna_data = [[1, 0, -4.92069506e-02],
+                    [0, 1, -2.01874269e-02],
+                    [2, 0, -5.76962013e+00],
+                    [1, 1, -5.60626976e+00],
+                    [0, 2, -6.02915496e+00],
+                    [3, 0, -1.02261804e+01],
+                    [2, 1, -1.08277874e+01],
+                    [1, 2, -9.83335621e+00],
+                    [0, 3, -8.94565103e+00],
+                    [4, 0, -1.54019941e+01],
+                    [3, 1, -1.57681947e+01],
+                    [2, 2, -1.56221971e+01],
+                    [1, 3, -1.48468888e+01],
+                    [0, 4, -1.41217372e+01]]
+        dna_expected = [{'complex': [int(row[0]), int(row[1])],
+                         'energy': float(row[2])} for row in dna_data]
+
+        dna_output = self.nupack.complexes(dnas, 4)
+        assert_equal(dna_expected, dna_output)
+
+        # Test RNA
+        rna_data = [[1, 0, -9.28516187e-02],
+                    [0, 1, -4.32138317e-03],
+                    [2, 0, -5.33244849e+00],
+                    [1, 1, -2.96200638e+00],
+                    [0, 2, -3.28345221e+00],
+                    [3, 0, -8.66644413e+00],
+                    [2, 1, -8.12678954e+00],
+                    [1, 2, -5.50808307e+00],
+                    [0, 3, -4.51692546e+00],
+                    [4, 0, -1.33713694e+01],
+                    [3, 1, -1.17159283e+01],
+                    [2, 2, -1.08018186e+01],
+                    [1, 3, -7.97713466e+00],
+                    [0, 4, -6.98583185e+00]]
+
+        rna_expected = [{'complex': [int(row[0]), int(row[1])],
+                         'energy': float(row[2])} for row in rna_data]
+
+        rna_output = self.nupack.complexes(rnas, 4)
+        assert_equal(rna_expected, rna_output)
+
+        # Test RNA 1999
+        rna99_data = [[1, 0, -7.97413222e-03],
+                      [0, 1, -1.09376608e-04],
+                      [2, 0, -5.66294745e+00],
+                      [1, 1, -3.00357694e+00],
+                      [0, 2, -3.61831003e+00],
+                      [3, 0, -8.58329727e+00],
+                      [2, 1, -8.40127714e+00],
+                      [1, 2, -5.24448000e+00],
+                      [0, 3, -3.89211467e+00],
+                      [4, 0, -1.34538247e+01],
+                      [3, 1, -1.15873619e+01],
+                      [2, 2, -1.07578288e+01],
+                      [1, 3, -7.43779859e+00],
+                      [0, 4, -6.56448976e+00]]
+
+        rna99_expected = [{'complex': [int(row[0]), int(row[1])],
+                           'energy': float(row[2])} for row in rna99_data]
+
+        rna99_output = self.nupack.complexes(rnas, 4, material='rna1999')
+        assert_equal(rna99_expected, rna99_output)
+
+        # Test DNA with pairs option
+        dim = sum([len(x) for x in dnas])
+        dnapairs_data = self._read_cxepairs('complexes_pairs_dna.cx-epairs')
+        for i, pairlist in enumerate(dnapairs_data):
+            dna_expected[i]['epairs'] = self._pairs_to_np(pairlist, dim)
+        dnapairs_output = self.nupack.complexes(dnas, 4, pairs=True)
+        # Since there's a numpy matrix in there, have to use numpy comparison
+        # on each element
+        for expected, output in zip(dna_expected, dnapairs_output):
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['energy'], output['energy'])
+            assert_true(np.array_equal(expected['epairs'], output['epairs']))
+
+        # Test RNA with pairs option
+        dim = sum([len(x) for x in rnas])
+        rnapairs_data = self._read_cxepairs('complexes_pairs_rna.cx-epairs')
+        for i, pairlist in enumerate(rnapairs_data):
+            rna_expected[i]['epairs'] = self._pairs_to_np(pairlist, dim)
+        rnapairs_output = self.nupack.complexes(rnas, 4, pairs=True)
+        # Since there's a numpy matrix in there, have to use numpy comparison
+        # on each element
+        for expected, output in zip(rna_expected, rnapairs_output):
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['energy'], output['energy'])
+            assert_true(np.array_equal(expected['epairs'], output['epairs']))
+
+        # Test RNA 1999 with pairs option
+        dim = sum([len(x) for x in rnas])
+        rna99pairs_dat = self._read_cxepairs('complexes_pairs_rna99.cx-epairs')
+        for i, pairlist in enumerate(rna99pairs_dat):
+            rna99_expected[i]['epairs'] = self._pairs_to_np(pairlist, dim)
+        rna99pairs_output = self.nupack.complexes(rnas, 4, pairs=True,
+                                                  material='rna1999')
+        # Since there's a numpy matrix in there, have to use numpy comparison
+        # on each element
+        for expected, output in zip(rna99_expected, rna99pairs_output):
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['energy'], output['energy'])
+            assert_true(np.array_equal(expected['epairs'], output['epairs']))
+
+        # Test DNA with the ordered option
+        dna_ocx = [[1, 0, -4.92069506e-02],
+                   [0, 1, -2.01874269e-02],
+                   [2, 0, -5.76962013e+00],
+                   [1, 1, -5.60626976e+00],
+                   [0, 2, -6.02915496e+00],
+                   [3, 0, -1.02261804e+01],
+                   [2, 1, -1.08277874e+01],
+                   [1, 2, -9.83335621e+00],
+                   [0, 3, -8.94565103e+00],
+                   [4, 0, -1.54019941e+01],
+                   [3, 1, -1.57681947e+01],
+                   [2, 2, -1.51522348e+01],
+                   [2, 2, -1.52349820e+01],
+                   [1, 3, -1.48468888e+01],
+                   [0, 4, -1.41217372e+01]]
+        dna_ocx_expect = [{'complex': [l[0], l[1]], 'energy': l[2]} for l in
+                          dna_ocx]
+        dna_ocx_keys = [[1],
+                        [2],
+                        [1, 1],
+                        [1, 2],
+                        [2, 2],
+                        [1, 1, 1],
+                        [1, 1, 2],
+                        [1, 2, 2],
+                        [2, 2, 2],
+                        [1, 1, 1, 1],
+                        [1, 1, 1, 2],
+                        [1, 1, 2, 2],
+                        [1, 2, 1, 2],
+                        [1, 2, 2, 2],
+                        [2, 2, 2, 2]]
+        for i, key in enumerate(dna_ocx_keys):
+            dna_ocx_expect[i]['permutation'] = key
+        dna_ocx = self.nupack.complexes(dnas, 4, ordered=True)
+        assert_equal(dna_ocx_expect, dna_ocx)
+
+        # Test RNA with the ordered option
+        rna_ocx = [[1, 0, -9.28516187e-02],
+                   [0, 1, -4.32138317e-03],
+                   [2, 0, -5.33244849e+00],
+                   [1, 1, -2.96200638e+00],
+                   [0, 2, -3.28345221e+00],
+                   [3, 0, -8.66644413e+00],
+                   [2, 1, -8.12678954e+00],
+                   [1, 2, -5.50808307e+00],
+                   [0, 3, -4.51692546e+00],
+                   [4, 0, -1.33713694e+01],
+                   [3, 1, -1.17159283e+01],
+                   [2, 2, -1.05784008e+01],
+                   [2, 2, -1.00680851e+01],
+                   [1, 3, -7.97713466e+00],
+                   [0, 4, -6.98583185e+00]]
+        rna_ocx_expect = [{'complex': [l[0], l[1]], 'energy': l[2]} for l in
+                          rna_ocx]
+        rna_ocx_keys = [[1],
+                        [2],
+                        [1, 1],
+                        [1, 2],
+                        [2, 2],
+                        [1, 1, 1],
+                        [1, 1, 2],
+                        [1, 2, 2],
+                        [2, 2, 2],
+                        [1, 1, 1, 1],
+                        [1, 1, 1, 2],
+                        [1, 1, 2, 2],
+                        [1, 2, 1, 2],
+                        [1, 2, 2, 2],
+                        [2, 2, 2, 2]]
+        for i, key in enumerate(rna_ocx_keys):
+            rna_ocx_expect[i]['permutation'] = key
+        rna_ocx = self.nupack.complexes(rnas, 4, ordered=True)
+        assert_equal(rna_ocx_expect, rna_ocx)
+
+        # Test RNA 99 with the ordered option
+        rna99_ocx = [[1, 0, -7.97413222e-03],
+                     [0, 1, -1.09376608e-04],
+                     [2, 0, -5.66294745e+00],
+                     [1, 1, -3.00357694e+00],
+                     [0, 2, -3.61831003e+00],
+                     [3, 0, -8.58329727e+00],
+                     [2, 1, -8.40127714e+00],
+                     [1, 2, -5.24448000e+00],
+                     [0, 3, -3.89211467e+00],
+                     [4, 0, -1.34538247e+01],
+                     [3, 1, -1.15873619e+01],
+                     [2, 2, -1.03498891e+01],
+                     [2, 2, -1.03107451e+01],
+                     [1, 3, -7.43779859e+00],
+                     [0, 4, -6.56448976e+00]]
+        rna99_ocx_expect = [{'complex': [l[0], l[1]], 'energy': l[2]} for l
+                            in rna99_ocx]
+        rna99_ocx_keys = [[1],
+                          [2],
+                          [1, 1],
+                          [1, 2],
+                          [2, 2],
+                          [1, 1, 1],
+                          [1, 1, 2],
+                          [1, 2, 2],
+                          [2, 2, 2],
+                          [1, 1, 1, 1],
+                          [1, 1, 1, 2],
+                          [1, 1, 2, 2],
+                          [1, 2, 1, 2],
+                          [1, 2, 2, 2],
+                          [2, 2, 2, 2]]
+        for i, key in enumerate(rna99_ocx_keys):
+            rna99_ocx_expect[i]['permutation'] = key
+        rna99_ocx = self.nupack.complexes(rnas, 4, ordered=True,
+                                          material='rna1999')
+        assert_equal(rna99_ocx_expect, rna99_ocx)
+
+        # Test DNA with the ordered and pairs options
+        dnapairs_ocx_d = self._read_cxepairs('complexes_pairs_dna.ocx-epairs')
+        for i, pairlist in enumerate(dnapairs_ocx_d):
+            dna_ocx_expect[i]['epairs'] = self._pairs_to_np(pairlist, dim)
+        dna_ocx = self.nupack.complexes(dnas, 4, ordered=True, pairs=True)
+        for expected, output in zip(dna_ocx_expect, dna_ocx):
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['energy'], output['energy'])
+            assert_equal(expected['permutation'], output['permutation'])
+            assert_true(np.array_equal(expected['epairs'], output['epairs']))
+
+        # Test RNA with the ordered and pairs options
+        rnapairs_ocx_d = self._read_cxepairs('complexes_pairs_rna.ocx-epairs')
+        for i, pairlist in enumerate(rnapairs_ocx_d):
+            rna_ocx_expect[i]['epairs'] = self._pairs_to_np(pairlist, dim)
+        rna_ocx = self.nupack.complexes(rnas, 4, ordered=True, pairs=True)
+        for expected, output in zip(rna_ocx_expect, rna_ocx):
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['energy'], output['energy'])
+            assert_equal(expected['permutation'], output['permutation'])
+            assert_true(np.array_equal(expected['epairs'], output['epairs']))
+
+        # Test RNA 1999 with the ordered and pairs options
+        r99pairs_ocx_epairs_file = 'complexes_pairs_rna99.ocx-epairs'
+        rna99pairs_ocx_d = self._read_cxepairs(r99pairs_ocx_epairs_file)
+        for i, pairlist in enumerate(rna99pairs_ocx_d):
+            rna99_ocx_expect[i]['epairs'] = self._pairs_to_np(pairlist, dim)
+        rna99_ocx = self.nupack.complexes(rnas, 4, ordered=True, pairs=True,
+                                          material='rna1999')
+        for expected, output in zip(rna99_ocx_expect, rna99_ocx):
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['energy'], output['energy'])
+            assert_equal(expected['permutation'], output['permutation'])
+            assert_true(np.array_equal(expected['epairs'], output['epairs']))
+
+        # Test DNA with the mfe option
+        dna_ocx_mfe_expect = self._process_mfe('complexes_mfe_dna.ocx-mfe')
+        for expect, mfedat in zip(dna_ocx_expect, dna_ocx_mfe_expect):
+            expect['mfe'] = mfedat['mfe']
+            expect['dotparens'] = mfedat['dotparens']
+            expect['pairlist'] = mfedat['pairlist']
+        dna_ocx_mfe = self.nupack.complexes(dnas, 4, mfe=True)
+        for expected, output in zip(dna_ocx_expect, dna_ocx_mfe):
+            assert_equal(expected['energy'], output['energy'])
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['mfe'], output['mfe'])
+            assert_equal(expected['dotparens'], output['dotparens'])
+            assert_equal(expected['pairlist'], output['pairlist'])
+
+        # Test RNA with the mfe option
+        rna_ocx_mfe_expect = self._process_mfe('complexes_mfe_rna.ocx-mfe')
+        for expect, mfedat in zip(rna_ocx_expect, rna_ocx_mfe_expect):
+            expect['mfe'] = mfedat['mfe']
+            expect['dotparens'] = mfedat['dotparens']
+            expect['pairlist'] = mfedat['pairlist']
+        rna_ocx_mfe = self.nupack.complexes(rnas, 4, mfe=True)
+        for expected, output in zip(rna_ocx_expect, rna_ocx_mfe):
+            assert_equal(expected['energy'], output['energy'])
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['mfe'], output['mfe'])
+            assert_equal(expected['dotparens'], output['dotparens'])
+            assert_equal(expected['pairlist'], output['pairlist'])
+
+        # Test RNA 1999 with the mfe option
+        rna99_ocx_mfe_expect = self._process_mfe('complexes_mfe_rna99.ocx-mfe')
+        for expect, mfedat in zip(rna99_ocx_expect, rna99_ocx_mfe_expect):
+            expect['mfe'] = mfedat['mfe']
+            expect['dotparens'] = mfedat['dotparens']
+            expect['pairlist'] = mfedat['pairlist']
+        rna99_ocx_mfe = self.nupack.complexes(rnas, 4, mfe=True,
+                                              material='rna1999')
+        for expected, output in zip(rna99_ocx_expect, rna99_ocx_mfe):
+            assert_equal(expected['energy'], output['energy'])
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['mfe'], output['mfe'])
+            assert_equal(expected['dotparens'], output['dotparens'])
+            assert_equal(expected['pairlist'], output['pairlist'])
+
+        # Test DNA with the mfe and pairs options
+        dna_ocx_mfe_pairs = self.nupack.complexes(dnas, 4, mfe=True,
+                                                  pairs=True)
+        for expected, output in zip(dna_ocx_expect, dna_ocx_mfe_pairs):
+            assert_equal(expected['energy'], output['energy'])
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['mfe'], output['mfe'])
+            assert_equal(expected['dotparens'], output['dotparens'])
+            assert_equal(expected['pairlist'], output['pairlist'])
+            assert_true(np.array_equal(expected['epairs'], output['epairs']))
+
+        # TODO: Restore the 'RNA' material version - for whatever reason, it
+        # has a disagreeing dotparens structure in it.
+
+        # Test RNA 1999 with the mfe and pairs options
+        rna99_ocx_mfe_pairs = self.nupack.complexes(rnas, 4, mfe=True,
+                                                    pairs=True,
+                                                    material='rna1999')
+        for expected, output in zip(rna99_ocx_expect, rna99_ocx_mfe_pairs):
+            assert_equal(expected['energy'], output['energy'])
+            assert_equal(expected['complex'], output['complex'])
+            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['mfe'], output['mfe'])
+            assert_equal(expected['dotparens'], output['dotparens'])
+            assert_equal(expected['pairlist'], output['pairlist'])
+            assert_true(np.array_equal(expected['epairs'], output['epairs']))
+
+    def test_complexes_timeonly(self):
+        # Test complex size of 4
+        dna_4 = self.nupack.complexes_timeonly(self.dnas[:2], 4)
+        assert_equal(dna_4, 0.33)
+        rna_4 = self.nupack.complexes_timeonly(self.rnas[:2], 4)
+        assert_equal(rna_4, 0.33)
+        rna99_4 = self.nupack.complexes_timeonly(self.dnas[:2], 4)
+        assert_equal(rna99_4, 0.33)
+
+        # Test complex size of 8
+        dna_8 = self.nupack.complexes_timeonly(self.dnas[:2], 8)
+        assert_equal(dna_8, 18.66)
+        rna_8 = self.nupack.complexes_timeonly(self.rnas[:2], 8)
+        assert_equal(rna_8, 18.66)
+        rna99_8 = self.nupack.complexes_timeonly(self.dnas[:2], 8)
+        assert_equal(rna99_8, 18.66)
+
+    def _process_mfe(self, filename):
+        curdir = os.path.dirname(__file__)
+        mfepath = os.path.join(curdir, 'data', filename)
+        with open(mfepath) as f:
+            mfefile = f.read()
+        commentline = '% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %'
+        sections = mfefile.split(commentline)
+        output = []
+        for section in sections[1::2]:
+            lines = section.split('\n')
+            # Remove first three lines - information not used
+            lines.pop(0)
+            lines.pop(0)
+            lines.pop(0)
+            # Remove the last (empty) line
+            lines.pop()
+            mfe_data = {}
+            mfe_data['mfe'] = float(lines[0])
+            mfe_data['dotparens'] = lines[1]
+            pairlist = []
+            if len(lines) > 2:
+                for line in lines[2:]:
+                    data = line.split('\t')
+                    pairlist.append([int(data[0]) - 1, int(data[1]) - 1])
+            mfe_data['pairlist'] = pairlist
+            output.append(mfe_data)
+
+        return output
+
+    def _read_cxepairs(self, filename):
+        curdir = os.path.dirname(__file__)
+        epairspath = os.path.join(curdir, 'data', filename)
+        with open(epairspath) as f:
+            epairsfile = f.read()
+        commentline = '% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% %'
+        sections = epairsfile.split(commentline)
+        output = []
+        for section in sections[1::2]:
+            # Skipping every other one eliminates comments and blank lines
+            lines = section.split('\n')
+            # Remove first three lines - information not used
+            lines.pop(0)
+            lines.pop(0)
+            lines.pop(0)
+            # Remove the last (empty) line
+            lines.pop()
+            # Extract data
+            complex_data = []
+            for line in lines:
+                data = line.split('\t')
+                base_i = int(data[0])
+                base_j = int(data[1])
+                prob = float(data[2])
+                complex_data.append((base_i, base_j, prob))
+            output.append(complex_data)
+
+        return output
+
     def _process_ppairs(self, filename, dim):
-        mat = np.zeros((dim, dim + 1))
         curdir = os.path.dirname(__file__)
         tsvpath = os.path.join(curdir, 'data', filename)
         with open(tsvpath) as f:
-            reader = csv.reader(f, delimiter='\t')
-            for line in reader:
-                i = int(line[0]) - 1
-                j = int(line[1]) - 1
-                prob = float(line[2])
-                mat[i, j] = prob
+            pairlist = [row for row in csv.reader(f, delimiter='\t')]
+
+        return self._pairs_to_np(pairlist, dim)
+
+    def _pairs_to_np(self, pairlist, dim):
+        '''Given a set of pair probability lines, construct a numpy array.
+
+        :param pairlist: a list of pair probability triples
+        :type pairlist: list
+
+        '''
+        mat = np.zeros((dim, dim + 1))
+        for line in pairlist:
+            i = int(line[0]) - 1
+            j = int(line[1]) - 1
+            prob = float(line[2])
+            mat[i, j] = prob
         return mat
