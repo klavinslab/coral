@@ -1014,17 +1014,18 @@ class NUPACK(object):
         :param magnesium: Magnesium concentration in solution (molar), only
                           applies to DNA>
         :type magnesium: float
-        :returns: A list of dictionaries containing at least 'energy' and
-                  'complex' keys. If 'ordered' is True, the different
-                  possible ordered permutations of complexes are considered
-                  and an additional 'permutation' key distinguishing
-                  permutations is added. If 'pairs' is True, there is an
-                  additional 'epairs' key containing the base-pairing
-                  expectation values. If 'mfe' is selected, 'mfe, 'dotparens',
-                  and 'pairlist' keys in the same as .mfe(). In addition, 'mfe'
-                  sets the -ordered flag, so the same keys as when 'ordered' is
-                  set to True are added.
-        :rtype:
+        :returns: A list of dictionaries containing at least 'energy',
+                  'complex', and 'strands' keys. If 'ordered' is True, the
+                  different possible ordered permutations of complexes are
+                  considered. In addition, with 'ordered' set to True, an
+                  additional 'order' key describing the exact order of strands
+                  and a 'permutation' index (integer) are added. If 'pairs' is
+                  True, there is an additional 'epairs' key containing the
+                  base-pairing expectation values. If 'mfe' is selected, 'mfe,
+                  'dotparens', and 'pairlist' keys in the same as .mfe(). In
+                  addition, 'mfe' sets the -ordered flag, so the same keys as
+                  when 'ordered' is set to True are added.
+        :rtype: float
 
         '''
         # TODO: Consider returning a pandas dataframe in this (and other)
@@ -1061,7 +1062,9 @@ class NUPACK(object):
                     data = line.split('\t')
                     energy = float(data[-1])
                     complexes = [int(d) for d in data[2:2 + nstrands]]
-                    output.append({'energy': energy, 'complex': complexes})
+                    permutation = int(data[1])
+                    output.append({'energy': energy, 'complex': complexes,
+                                   'permutation': permutation})
 
             key_lines = self._read_tempfile('complexes.ocx-key').split('\n')
 
@@ -1070,7 +1073,7 @@ class NUPACK(object):
             for i, line in enumerate(data_lines):
                 data = line.split('\t')
                 keys = [int(d) for d in data[2:-1]]
-                output[i]['permutation'] = keys
+                output[i]['order'] = keys
 
             if pairs:
                 epairs_data = self._read_tempfile('complexes.ocx-epairs')
@@ -1109,6 +1112,10 @@ class NUPACK(object):
                     proba_mat = self._pairs_to_np(pairs, dim)
                     output[i]['epairs'] = proba_mat
 
+        # Add strands (for downstream concentrations)
+        for cx in output:
+            cx['strands'] = [s.copy() for s in strands]
+
         return output
 
     @tempdirs.tempdir
@@ -1132,6 +1139,73 @@ class NUPACK(object):
         lines = self._multi_lines(strands, [max_size])
         stdout = self._run('complexes', cmd_args, lines)
         return float(re.search('calculation\: (.*) seconds', stdout).group(1))
+
+    @tempdirs.tempdir
+    def concentrations(self, complexes, concs, ordered=False, pairs=False,
+                       cutoff=0.001, temp=37.0):
+        '''
+        :param complexes: A list of the type returned by the complexes()
+                          method.
+        :type complexes: list
+        :param concs: The concentration(s) of each strand species in the
+                      initial complex. If they are all the same, a single
+                      float can be used here.
+        :type concs: list of floats or float
+        :param ordered: Consider distinct ordered complexes - all distinct
+                        circular permutations of each complex.
+        :type ordered: bool
+        :param pairs: Calculate base-pairing observables as with .pairs().
+        :type pairs: bool
+        :param cutoff: A setting when pairs is set to True - only probabilities
+                       above this threshold will be returned.
+        :type cutoff: float
+        :param temp: Temperature.
+        :type temp: float
+        :returns: A list of dictionaries containing (at least) a
+                  'concentrations' key. If 'pairs' is True, an 'fpairs' key
+                  is added.
+        :rtype: list
+
+        '''
+        # Check inputs
+        nstrands = len(complexes['strands'])
+        try:
+            if len(concs) != nstrands:
+                raise ValueError('concs argument not same length as strands.')
+        except TypeError:
+            concs = [concs for i in range(len(complexes['strands']))]
+
+        # Set up command-line arguments
+        cmd_args = ['-quiet']
+        if ordered:
+            cmd_args.append('-ordered')
+
+        # Write .con file
+        with open(os.path.join(self._tempdir, 'concentrations.con')) as f:
+            f.writelines(concs)
+
+        # Write .cx or .ocx file
+        header = ['%t Number of strands: {}'.format(nstrands),
+                  '%\tid\tsequence']
+        for i, strand in enumerate(complexes['strands']):
+            header.append('%\t{}\t{}'.format(i + 1, strand))
+        header.append('%\tT = {}'.format(temp))
+        body = []
+        for i, cx in enumerate(complexes):
+            permutation = '\t'.join(complexes['complex'])
+            line = '{}\t{}\t{}'.format(i + 1, permutation, complexes['energy'])
+            body.append(line)
+
+        if ordered:
+            cxfile = os.path.join(self._tempdir, 'concentrations.ocx')
+        else:
+            cxfile = os.path.join(self._tempdir, 'concentrations.cx')
+
+        with open(cxfile) as f:
+            f.writelines(header + body)
+
+        # Run 'concentrations'
+        self._run('concentrations', cmd_args, None)
 
     # Helper methods for preparing command input files
     def _multi_lines(self, strands, permutation):

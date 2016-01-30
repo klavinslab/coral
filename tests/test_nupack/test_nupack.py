@@ -337,7 +337,9 @@ class TestNUPACK(object):
                          'energy': float(row[2])} for row in dna_data]
 
         dna_output = self.nupack.complexes(dnas, 4)
-        assert_equal(dna_expected, dna_output)
+        for expect, output in zip(dna_expected, dna_output):
+            assert_equal(expect['complex'], output['complex'])
+            assert_equal(expect['energy'], output['energy'])
 
         # Test RNA
         rna_data = [[1, 0, -9.28516187e-02],
@@ -359,7 +361,9 @@ class TestNUPACK(object):
                          'energy': float(row[2])} for row in rna_data]
 
         rna_output = self.nupack.complexes(rnas, 4)
-        assert_equal(rna_expected, rna_output)
+        for expect, output in zip(rna_expected, rna_output):
+            assert_equal(expect['complex'], output['complex'])
+            assert_equal(expect['energy'], output['energy'])
 
         # Test RNA 1999
         rna99_data = [[1, 0, -7.97413222e-03],
@@ -381,7 +385,9 @@ class TestNUPACK(object):
                            'energy': float(row[2])} for row in rna99_data]
 
         rna99_output = self.nupack.complexes(rnas, 4, material='rna1999')
-        assert_equal(rna99_expected, rna99_output)
+        for expect, output in zip(rna99_expected, rna99_output):
+            assert_equal(expect['complex'], output['complex'])
+            assert_equal(expect['energy'], output['energy'])
 
         # Test DNA with pairs option
         dim = sum([len(x) for x in dnas])
@@ -457,9 +463,12 @@ class TestNUPACK(object):
                         [1, 2, 2, 2],
                         [2, 2, 2, 2]]
         for i, key in enumerate(dna_ocx_keys):
-            dna_ocx_expect[i]['permutation'] = key
+            dna_ocx_expect[i]['order'] = key
         dna_ocx = self.nupack.complexes(dnas, 4, ordered=True)
-        assert_equal(dna_ocx_expect, dna_ocx)
+        for expect, output in zip(dna_ocx_expect, dna_ocx):
+            assert_equal(expect['complex'], output['complex'])
+            assert_equal(expect['energy'], output['energy'])
+            assert_equal(expect['order'], output['order'])
 
         # Test RNA with the ordered option
         rna_ocx = [[1, 0, -9.28516187e-02],
@@ -495,9 +504,12 @@ class TestNUPACK(object):
                         [1, 2, 2, 2],
                         [2, 2, 2, 2]]
         for i, key in enumerate(rna_ocx_keys):
-            rna_ocx_expect[i]['permutation'] = key
+            rna_ocx_expect[i]['order'] = key
         rna_ocx = self.nupack.complexes(rnas, 4, ordered=True)
-        assert_equal(rna_ocx_expect, rna_ocx)
+        for expect, output in zip(rna_ocx_expect, rna_ocx):
+            assert_equal(expect['complex'], output['complex'])
+            assert_equal(expect['energy'], output['energy'])
+            assert_equal(expect['order'], output['order'])
 
         # Test RNA 99 with the ordered option
         rna99_ocx = [[1, 0, -7.97413222e-03],
@@ -533,10 +545,13 @@ class TestNUPACK(object):
                           [1, 2, 2, 2],
                           [2, 2, 2, 2]]
         for i, key in enumerate(rna99_ocx_keys):
-            rna99_ocx_expect[i]['permutation'] = key
+            rna99_ocx_expect[i]['order'] = key
         rna99_ocx = self.nupack.complexes(rnas, 4, ordered=True,
                                           material='rna1999')
-        assert_equal(rna99_ocx_expect, rna99_ocx)
+        for expect, output in zip(rna99_ocx_expect, rna99_ocx):
+            assert_equal(expect['complex'], output['complex'])
+            assert_equal(expect['energy'], output['energy'])
+            assert_equal(expect['order'], output['order'])
 
         # Test DNA with the ordered and pairs options
         dnapairs_ocx_d = self._read_cxepairs('complexes_pairs_dna.ocx-epairs')
@@ -546,7 +561,7 @@ class TestNUPACK(object):
         for expected, output in zip(dna_ocx_expect, dna_ocx):
             assert_equal(expected['complex'], output['complex'])
             assert_equal(expected['energy'], output['energy'])
-            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['order'], output['order'])
             assert_true(np.array_equal(expected['epairs'], output['epairs']))
 
         # Test RNA with the ordered and pairs options
@@ -557,7 +572,7 @@ class TestNUPACK(object):
         for expected, output in zip(rna_ocx_expect, rna_ocx):
             assert_equal(expected['complex'], output['complex'])
             assert_equal(expected['energy'], output['energy'])
-            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['order'], output['order'])
             assert_true(np.array_equal(expected['epairs'], output['epairs']))
 
         # Test RNA 1999 with the ordered and pairs options
@@ -570,7 +585,7 @@ class TestNUPACK(object):
         for expected, output in zip(rna99_ocx_expect, rna99_ocx):
             assert_equal(expected['complex'], output['complex'])
             assert_equal(expected['energy'], output['energy'])
-            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['order'], output['order'])
             assert_true(np.array_equal(expected['epairs'], output['epairs']))
 
         # Test DNA with the mfe option
@@ -583,7 +598,7 @@ class TestNUPACK(object):
         for expected, output in zip(dna_ocx_expect, dna_ocx_mfe):
             assert_equal(expected['energy'], output['energy'])
             assert_equal(expected['complex'], output['complex'])
-            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['order'], output['order'])
             assert_equal(expected['mfe'], output['mfe'])
             assert_equal(expected['dotparens'], output['dotparens'])
             assert_equal(expected['pairlist'], output['pairlist'])
@@ -598,7 +613,7 @@ class TestNUPACK(object):
         for expected, output in zip(rna_ocx_expect, rna_ocx_mfe):
             assert_equal(expected['energy'], output['energy'])
             assert_equal(expected['complex'], output['complex'])
-            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['order'], output['order'])
             assert_equal(expected['mfe'], output['mfe'])
             assert_equal(expected['dotparens'], output['dotparens'])
             assert_equal(expected['pairlist'], output['pairlist'])
@@ -614,7 +629,7 @@ class TestNUPACK(object):
         for expected, output in zip(rna99_ocx_expect, rna99_ocx_mfe):
             assert_equal(expected['energy'], output['energy'])
             assert_equal(expected['complex'], output['complex'])
-            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['order'], output['order'])
             assert_equal(expected['mfe'], output['mfe'])
             assert_equal(expected['dotparens'], output['dotparens'])
             assert_equal(expected['pairlist'], output['pairlist'])
@@ -625,7 +640,7 @@ class TestNUPACK(object):
         for expected, output in zip(dna_ocx_expect, dna_ocx_mfe_pairs):
             assert_equal(expected['energy'], output['energy'])
             assert_equal(expected['complex'], output['complex'])
-            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['order'], output['order'])
             assert_equal(expected['mfe'], output['mfe'])
             assert_equal(expected['dotparens'], output['dotparens'])
             assert_equal(expected['pairlist'], output['pairlist'])
@@ -641,7 +656,7 @@ class TestNUPACK(object):
         for expected, output in zip(rna99_ocx_expect, rna99_ocx_mfe_pairs):
             assert_equal(expected['energy'], output['energy'])
             assert_equal(expected['complex'], output['complex'])
-            assert_equal(expected['permutation'], output['permutation'])
+            assert_equal(expected['order'], output['order'])
             assert_equal(expected['mfe'], output['mfe'])
             assert_equal(expected['dotparens'], output['dotparens'])
             assert_equal(expected['pairlist'], output['pairlist'])
@@ -663,6 +678,86 @@ class TestNUPACK(object):
         assert_equal(rna_8, 18.66)
         rna99_8 = self.nupack.complexes_timeonly(self.dnas[:2], 8)
         assert_equal(rna99_8, 18.66)
+
+    def _test_concentrations(self):
+        dnas = self.dnas[:2]
+
+        # Test simple case
+        expected = [[9.999907e-07],
+                    [9.998446e-07],
+                    [7.675362e-11],
+                    [3.682595e-12],
+                    [1.893207e-12],
+                    [2.675905e-16],
+                    [1.287201e-16],
+                    [2.122290e-18],
+                    [4.907111e-19],
+                    [8.627347e-21],
+                    [6.789014e-22],
+                    [1.778772e-22],
+                    [2.099592e-24],
+                    [4.853486e-25]]
+
+        complexes = self.nupack.complexes(dnas, 4)
+        arg_output = self.nupack.concentrations(complexes, 1e-6)
+        for expect, out in zip(expected, arg_output):
+            assert_equal(expect, out['concentration'])
+
+        # Test ordered case
+        ordered_expected = [[9.999907e-07],
+                            [9.998446e-07],
+                            [7.675362e-11],
+                            [3.682595e-12],
+                            [1.893207e-12],
+                            [2.675905e-16],
+                            [1.287201e-16],
+                            [2.122290e-18],
+                            [4.907111e-19],
+                            [8.627347e-21],
+                            [6.789014e-22],
+                            [1.237905e-22],
+                            [5.408664e-23],
+                            [2.099592e-24],
+                            [4.853486e-25]]
+
+        ocomplexes = self.nupack.complexes(dnas, 4)
+        ordered_output = self.nupack.concentrations(ocomplexes, 1e-6,
+                                                    ordered=True)
+        for expect, out in zip(ordered_expected, ordered_output):
+            assert_equal(expect, out['concentration'])
+
+        # Test with pairs
+        pairs_expected = self._read_pairs('concentrations_pairs.cx-epairs')
+        pairs_output = self.nupack.concentrations(dnas, 1e-6, pairs=True)
+        for expect, out in zip(pairs_expected, pairs_output):
+            assert_equal(expect, out['concentration'])
+#
+#        # Test with pairs with complexes as argument
+#        arg_pairs_output = self.nupack.concentrations(dnas, 1e-6, pairs=True,
+#                                                      complexes=complexes)
+#        for expect, out in zip(pairs_expected, arg_pairs_output):
+#            assert_equal(expect, out['concentration'])
+#
+#        # Test with pairs and high cutoff
+#        pairs_ct_expected = [[9.933000e-01],
+#                             [9.868000e-01],
+#                             [9.999984e-01],
+#                             [9.843713e-01],
+#                             [9.932675e-01],
+#                             [9.885687e-01],
+#                             [9.980516e-01],
+#                             [9.922003e-01],
+#                             [9.965996e-01],
+#                             [9.963997e-01],
+#                             [9.999922e-01],
+#                             [9.999922e-01],
+#                             [9.965996e-01],
+#                             [9.978997e-01],
+#                             [9.984999e-01]]
+#        pairs_ct_output = self.nupack.concentrations(dnas, 1e-6, pairs=True,
+#                                                     cutoff=0.9)
+#        for expect, out in zip(pairs_ct_expected, pairs_ct_output):
+#            assert_equal(expect, out['fpairs'])
 
     def _process_mfe(self, filename):
         curdir = os.path.dirname(__file__)
