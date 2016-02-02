@@ -264,8 +264,8 @@ def _decompose(string, n):
 class Feature(object):
     '''Represent an annotated feature - track sequence regions with
     metadata.'''
-    def __init__(self, name, start, stop, feature_type, gene='', locus_tag='',
-                 qualifiers=None, strand=0, gaps=None):
+    def __init__(self, name, start, stop, feature_type='misc_feature', gene='',
+                 locus_tag='', qualifiers=None, strand=0, gaps=None):
         '''
         :param name: Name of the feature. Used during feature extraction.
         :type name: str
