@@ -269,9 +269,9 @@ class Feature(object):
         '''
         :param name: Name of the feature. Used during feature extraction.
         :type name: str
-        :param start: Where the feature starts
+        :param start: Where the feature starts (0-indexed)
         :type start: int
-        :param stop: Where the feature stops
+        :param stop: Where the feature stops (1-indexed, like slices)
         :type stop: int
         :param feature_type: The type of the feature. Allowed types:
                                 'coding', 'primer', 'promoter', 'terminator',

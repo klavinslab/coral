@@ -6,6 +6,7 @@ import tempfile
 import coral.analysis
 import coral.reaction
 import coral.seqio
+from ._sequence import Feature
 from ._nucleicacid import NucleicAcid
 
 
@@ -430,6 +431,24 @@ class DNA(object):
         '''
         return coral.analysis.tm(self, parameters=parameters)
 
+    def to_feature(self, name=None, feature_type='misc_feature'):
+        '''Create a feature from the current object.
+
+        :param name: Name for the new feature. Must be specified if the DNA
+                     instance has no .name attribute.
+        :type name: str
+        :param feature_type: The type of feature (genbank standard).
+        :type feature_type: str
+
+        '''
+        if name is None:
+            if not self.name:
+                raise ValueError('name attribute missing from DNA instance'
+                                 ' and arguments')
+            name = self.name
+        return Feature(name, start=0, stop=len(self),
+                       feature_type=feature_type)
+
     def transcribe(self):
         '''Transcribe into RNA.
 
@@ -844,15 +863,15 @@ class Primer(object):
             self.tm = anneal.tm()
 
         # TODO: make into property so tm updates automatically
-        try:
+        if anneal.ds:
             self.anneal = anneal.top
-        except AttributeError:
+        else:
             self.anneal = anneal
 
         if overhang is not None:
-            try:
+            if overhang.ds:
                 self.overhang = overhang.top
-            except AttributeError:
+            else:
                 self.overhang = overhang
         else:
             self.overhang = ssDNA('')
