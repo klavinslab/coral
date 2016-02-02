@@ -817,14 +817,18 @@ class RestrictionSite(object):
 
 class Primer(object):
     '''A DNA primer - ssDNA with tm, anneal, and optional overhang.'''
-    def __init__(self, anneal, tm, overhang=None, name='', note=''):
+    def __init__(self, anneal, tm=None, tm_method='cloning', overhang=None,
+                 name='', note=''):
         '''
         :param anneal: Annealing sequence
-        :type anneal: coral.DNA
+        :type anneal: coral.ssDNA
         :param overhang: Overhang sequence
-        :type overhang: coral.DNA
-        :param tm: melting temperature
+        :type overhang: coral.ssDNA
+        :param tm: Melting temperature (allow manually setting the melting
+                   temp, auto-calculation won't happen).
         :type tm: float
+        :param tm_method: Method to use when calling cr.analysis.tm.
+        :type tm_method: str
         :param name: Optional name of the primer. Used when writing to csv with
                      seqio.write_primers.
         :type name: str
@@ -834,11 +838,17 @@ class Primer(object):
         :returns: coral.Primer instance.
 
         '''
-        self.tm = tm
+        if tm is not None:
+            self.tm = tm
+        else:
+            self.tm = anneal.tm()
+
+        # TODO: make into property so tm updates automatically
         try:
             self.anneal = anneal.top
         except AttributeError:
             self.anneal = anneal
+
         if overhang is not None:
             try:
                 self.overhang = overhang.top
@@ -846,6 +856,7 @@ class Primer(object):
                 self.overhang = overhang
         else:
             self.overhang = ssDNA('')
+
         self.name = name
         self.note = note
 
@@ -860,13 +871,22 @@ class Primer(object):
                           name=self.name, note=self.note)
 
     def primer(self):
-        '''Produce full (overhang + annealing sequence) primer sequence.
+        '''Produce (ss) DNA of the overhang + anneal sequence.
+
+        :returns: The (ss) DNA sequence of the primer.
+        :rtype: coral.ssDNA
+
+        '''
+        return self.overhang + self.anneal
+
+    def to_ds(self):
+        '''Produces (ds) DNA of the overhang + anneal sequence.
 
         :returns: The DNA sequence of the primer.
         :rtype: coral.DNA
 
         '''
-        return self.overhang + self.anneal
+        return self.primer().to_ds()
 
     def __repr__(self):
         '''Representation of a primer.'''
@@ -878,7 +898,7 @@ class Primer(object):
             return 'Primer: {} Tm: {:.2f}'.format(anneal, self.tm)
 
     def __str__(self):
-        '''Coerce DNA object to string.
+        '''Coerce Primer object to string.
 
         :returns: A string of the full primer sequence.
         :rtype: str

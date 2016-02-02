@@ -91,8 +91,8 @@ def gibson_primers(dna1, dna2, overlap='mixed', maxlen=80, overlap_tm=65.0,
     else:
         # There's an insert to use as the overhang
         overlap = insert
-        fwd_overhang = insert.to_ss()
-        rev_overhang = insert.reverse_complement().to_ss()
+        fwd_overhang = insert.primer()
+        rev_overhang = insert.reverse_complement().primer()
         # Generate primers using anneal, overhang, and tm data
         fwd = coral.Primer(fwd_anneal.primer(), tm=fwd_anneal.tm,
                            overhang=fwd_overhang)
@@ -107,7 +107,7 @@ def gibson_primers(dna1, dna2, overlap='mixed', maxlen=80, overlap_tm=65.0,
             if coral.analysis.tm(overlap) < overlap_tm:
                 raise TmError('Right primer is too long with this Tm setting.')
             # Regenerate forward overhang
-            fwd_overhang = overlap.to_ss()
+            fwd_overhang = overlap.primer()
             # Regenerate primer with new overhang
             fwd = coral.Primer(fwd_anneal.primer(), tm=fwd_anneal.tm,
                                overhang=fwd_overhang)
@@ -122,7 +122,7 @@ def gibson_primers(dna1, dna2, overlap='mixed', maxlen=80, overlap_tm=65.0,
                 raise TmError('Left primer is too long with this Tm setting.')
             # Regenerate reverse overhang
             rev_overhang = overlap.reverse_complement().to_ss()
-            rev = coral.Primer(rev_anneal.primer(), tm=rev_anneal.tm,
+            rev = coral.Primer(rev_anneal.to_ss(), tm=rev_anneal.tm,
                                overhang=rev_overhang)
             # Increase 'trimming' index
             right_trim += 1
