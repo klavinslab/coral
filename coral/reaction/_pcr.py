@@ -95,8 +95,8 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_primer_len=14):
         rev_5_top = rev_5_top - len(template)
 
     # overhangs
-    fwd_overhang = fwd.primer()[:-fwd_len].to_ds()
-    rev_overhang = rev.primer()[:-rev_len].to_ds()
+    fwd_overhang = fwd.primer()[:-fwd_len]
+    rev_overhang = rev.primer()[:-rev_len]
 
     # TODO: what about searching substrings over circulate templates?
     # Cases:

@@ -119,7 +119,7 @@ class OligoAssembly(object):
                 oligos[i] = oligos[i].reverse_complement()
 
         # Make single-stranded
-        oligos = [oligo.to_ss() for oligo in oligos]
+        oligos = [oligo.top for oligo in oligos]
 
         assembly_dict = {'oligos': oligos,
                          'overlaps': overlaps,
