@@ -1,6 +1,6 @@
 '''Base sequence classes.'''
 import re
-from coral.constants.genbank import TO_CORAL
+from .genbank import featurenames
 from .alphabets import AlphabetError
 
 
@@ -314,13 +314,11 @@ class Feature(object):
         else:
             self.gaps = gaps
 
-        allowed_types = list(sorted(TO_CORAL.keys()))
-
-        if feature_type in allowed_types:
+        if feature_type in featurenames:
             self.feature_type = feature_type
         else:
             msg1 = 'feature_type '
-            msg2 = 'must be one of the following: {}'.format(allowed_types)
+            msg2 = 'must be one of the following: {}'.format(featurenames)
             raise ValueError(msg1 + msg2)
 
     def move(self, bases):

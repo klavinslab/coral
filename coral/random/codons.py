@@ -1,7 +1,7 @@
 '''Generate a random DNA sequence.'''
 import random
 import coral
-from coral.constants.molecular_bio import CODON_FREQ_BY_AA
+from coral.constants.codons import CODON_FREQ_BY_AA
 
 
 def random_codons(peptide, frequency_cutoff=0.0, weighted=False, table=None):

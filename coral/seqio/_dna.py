@@ -8,7 +8,6 @@ from Bio.SeqRecord import SeqRecord
 from Bio.SeqFeature import SeqFeature, FeatureLocation, ExactPosition
 from Bio.SeqFeature import CompoundLocation
 import coral
-import coral.constants.genbank
 
 
 class PrimerAnnotationError(ValueError):
@@ -172,35 +171,6 @@ def write_primers(primer_list, path, names=None, notes=None):
             writer.writerow([primer.name, string_rep, primer.note])
 
 
-def _process_feature_type(feature_type, bio_to_coral=True):
-    '''Translate genbank feature types into usable ones (currently identical).
-    The feature table is derived from the official genbank spec (gbrel.txt)
-    available at http://www.insdc.org/documents/feature-table
-
-    :param feature_type: feature to convert
-    :type feature_type: str
-    :param bio_to_coral: from coral to Biopython (True) or the other direction
-                   (False)
-    :param bio_to_coral: bool
-    :returns: coral version of genbank feature_type, or vice-versa.
-    :rtype: str
-
-    '''
-
-    err_msg = 'Unrecognized feature type: {}'.format(feature_type)
-    if bio_to_coral:
-        try:
-            name = coral.constants.genbank.TO_CORAL[feature_type]
-        except KeyError:
-            raise ValueError(err_msg)
-    else:
-        try:
-            name = coral.constants.genbank.TO_BIO[feature_type]
-        except KeyError:
-            raise ValueError(err_msg)
-    return name
-
-
 def _seqfeature_to_coral(feature):
     '''Convert a Biopython SeqFeature to a coral.Feature.
 
@@ -243,7 +213,6 @@ def _seqfeature_to_coral(feature):
         feature_start = int(feature.location.start)
         feature_stop = int(feature.location.end)
         feature_gaps = []
-    feature_type = _process_feature_type(feature.type)
     if feature.location.strand == -1:
         feature_strand = 1
     else:
@@ -257,7 +226,7 @@ def _seqfeature_to_coral(feature):
     else:
         locus_tag = []
     coral_feature = coral.Feature(feature_name, feature_start,
-                                  feature_stop, feature_type,
+                                  feature_stop, feature.type,
                                   gene=gene, locus_tag=locus_tag,
                                   qualifiers=qualifiers,
                                   strand=feature_strand,
@@ -273,7 +242,6 @@ def _coral_to_seqfeature(feature):
 
     '''
     bio_strand = 1 if feature.strand == 1 else -1
-    ftype = _process_feature_type(feature.feature_type, bio_to_coral=False)
     sublocations = []
     if feature.gaps:
         # There are gaps. Have to define location_operator and  add subfeatures
@@ -301,7 +269,7 @@ def _coral_to_seqfeature(feature):
                                    strand=bio_strand)
     qualifiers = feature.qualifiers
     qualifiers['label'] = [feature.name]
-    seqfeature = SeqFeature(location, type=ftype,
+    seqfeature = SeqFeature(location, type=feature.feature_type,
                             qualifiers=qualifiers,
                             location_operator=location_operator)
     return seqfeature

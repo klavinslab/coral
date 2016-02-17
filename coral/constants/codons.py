@@ -1,20 +1,6 @@
 '''Defines data and parameters in an easily resuable format.'''
 
 
-# Common sequence alphabets.
-ALPHABETS = {
-    'dna': 'ATGCNatgcn-',
-    'rna': 'AUGCNaugcn',
-    'peptide': 'ACDEFGHIKLMNPQRSTVWYXacdefghiklmnpqrstvwyx'}
-
-
-COMPLEMENTS = {
-    'dna': {'A': 'T', 'T': 'A', 'G': 'C', 'C': 'G', 'N': 'N', 'a': 't',
-            't': 'a', 'g': 'c', 'c': 'g', 'n': 'n', '-': '-'},
-    'rna': {'A': 'U', 'U': 'A', 'G': 'C', 'C': 'G', 'N': 'N', 'a': 'u',
-            'u': 'a', 'g': 'c', 'c': 'g', 'n': 'n'}}
-
-
 # The standard codon table.
 CODON_TABLE = {
     'A': ['GCG', 'GCA', 'GCU', 'GCC'],
