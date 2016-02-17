@@ -4,6 +4,7 @@ from . import analysis
 from . import constants
 from . import database
 from . import design
+from . import random
 from . import reaction
 from . import seqio
 from . import utils

@@ -1,20 +1,18 @@
 '''Base sequence classes.'''
 import collections
-import coral
-from coral.sequence._sequence import Sequence
-from coral.constants.molecular_bio import COMPLEMENTS
+import coral as cr
+from ._sequence import Sequence
+from .complements import COMPLEMENTS
 
 
 class NucleicAcid(Sequence):
     '''Abstract sequence container for a single nucleic acid sequence
     molecule.'''
-    def __init__(self, sequence, material, circular=False, run_checks=True,
-                 any_char='N'):
+    def __init__(self, sequence, material, alphabet, circular=False,
+                 run_checks=True, any_char='N'):
         '''
         :param sequence: Input sequence.
         :type sequence: str
-        :param material: Material type (dna, rna)
-        :type material: str
         :param circular: The topology of the sequence - if the ends connect,
                          (a circular sequence), set to True. Otherwise, set to
                          False. Enables operations like .rotate().
@@ -28,13 +26,16 @@ class NucleicAcid(Sequence):
         :returns: coral.sequence.Sequence instance.
 
         '''
-        super(NucleicAcid, self).__init__(sequence, material,
+        super(NucleicAcid, self).__init__(sequence, alphabet,
                                           run_checks=run_checks,
                                           any_char=any_char)
+        self.material = material
+        self.ds = False
         self.circular = circular
 
     def copy(self):
-        return type(self)(self.seq, self.material, circular=self.circular,
+        return type(self)(self.seq, material=self.material,
+                          alphabet=self.alphabet, circular=self.circular,
                           run_checks=False)
 
     def circularize(self):
@@ -143,7 +144,7 @@ class NucleicAcid(Sequence):
         mw_c = counter['c'] * 329.2
         mw_u = counter['u'] * 306.2
 
-        if self.material == 'dna':
+        if self.aterial == 'dna':
             return mw_a + mw_t + mw_g + mw_c + 79.0
         else:
             return mw_a + mw_u + mw_g + mw_c + 159.0
@@ -194,4 +195,4 @@ class NucleicAcid(Sequence):
         :type parameters: str
 
         '''
-        return coral.analysis.tm(self, parameters=parameters)
+        return cr.analysis.tm(self, parameters=parameters)

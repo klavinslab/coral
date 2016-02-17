@@ -4,7 +4,7 @@ Tests for RandomBases class of analysis module.
 '''
 
 from nose.tools import assert_equal
-from coral import design
+import coral as cr
 
 
 def test_randomdna():
@@ -14,5 +14,5 @@ def test_randomdna():
 
     '''
 
-    output = design.random_dna(200)
+    output = cr.random.random_dna(200)
     assert_equal(len(output), 200)

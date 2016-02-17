@@ -4,18 +4,6 @@ import coral
 from coral.constants.molecular_bio import CODON_FREQ_BY_AA
 
 
-def random_dna(n):
-    '''Generate a random DNA sequence.
-
-    :param n: Output sequence length.
-    :type n: int
-    :returns: Random DNA sequence of length n.
-    :rtype: coral.DNA
-
-    '''
-    return coral.DNA(''.join([random.choice('ATGC') for i in range(n)]))
-
-
 def random_codons(peptide, frequency_cutoff=0.0, weighted=False, table=None):
     '''Generate randomized codons given a peptide sequence.
 
@@ -45,7 +33,30 @@ def random_codons(peptide, frequency_cutoff=0.0, weighted=False, table=None):
     '''
     if table is None:
         table = CODON_FREQ_BY_AA['sc']
+
     # Process codon table using frequency_cutoff
+    def _cutoff(table, cutoff):
+        '''Generate new codon frequency table given a mean cutoff.
+
+        :param table: codon frequency table of form
+                      {amino acid: codon: frequency}.
+        :type table: dict
+        :param cutoff: value between 0 and 1.0 for mean frequency cutoff.
+        :type cutoff: float
+        :returns: A codon frequency table with some codons removed.
+        :rtype: dict
+
+        '''
+        new_table = {}
+        # IDEA: cutoff should be relative to most-frequent codon, not average?
+        for amino_acid, codons in table.iteritems():
+            average_cutoff = cutoff * sum(codons.values()) / len(codons)
+            new_table[amino_acid] = {}
+            for codon, frequency in codons.iteritems():
+                if frequency > average_cutoff:
+                    new_table[amino_acid][codon] = frequency
+        return new_table
+
     new_table = _cutoff(table, frequency_cutoff)
     # Select codons randomly or using weighted distribution
     rna = ''
@@ -68,25 +79,3 @@ def random_codons(peptide, frequency_cutoff=0.0, weighted=False, table=None):
             selection = random.choice(codons.keys())
         rna += selection
     return coral.RNA(rna)
-
-
-def _cutoff(table, frequency_cutoff):
-    '''Generate new codon frequency table given a mean cutoff.
-
-    :param table: codon frequency table of form {amino acid: codon: frequency}
-    :type table: dict
-    :param frequency_cutoff: value between 0 and 1.0 for mean frequency cutoff
-    :type frequency_cutoff: float
-    :returns: A codon frequency table with some codons removed.
-    :rtype: dict
-
-    '''
-    new_table = {}
-    # IDEA: cutoff should be relative to most-frequent codon, not average?
-    for amino_acid, codons in table.iteritems():
-        average_cutoff = frequency_cutoff * sum(codons.values()) / len(codons)
-        new_table[amino_acid] = {}
-        for codon, frequency in codons.iteritems():
-            if frequency > average_cutoff:
-                new_table[amino_acid][codon] = frequency
-    return new_table
