@@ -909,9 +909,9 @@ class Primer(object):
 
     def __repr__(self):
         '''Representation of a primer.'''
-        anneal = self.anneal.top.seq.upper()
+        anneal = self.anneal.seq.upper()
         if self.overhang:
-            overhang = self.overhang.top.seq.lower()
+            overhang = self.overhang.seq.lower()
             return 'Primer: {} Tm: {:.2f}'.format(overhang + anneal, self.tm)
         else:
             return 'Primer: {} Tm: {:.2f}'.format(anneal, self.tm)

@@ -113,6 +113,8 @@ class Sanger(object):
     def _analyze_single(self, reference, result):
         '''Report mistmatches and indels for a single (aligned) reference and
         result.'''
+        # TODO: Recalculate coverage based on reference (e.g. sequencing result
+        # longer than template
         reference_str = str(reference)
         result_str = str(result)
         report = {'mismatches': [], 'insertions': [], 'deletions': []}
