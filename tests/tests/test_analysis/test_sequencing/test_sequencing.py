@@ -1,6 +1,6 @@
 '''Test sequencing module.'''
 import os
-from coral import analysis, seqio
+import coral as cr
 from nose.tools import assert_equal
 # FIXME: Multiprocessing exceptions hang, don't just fail and report
 
@@ -16,17 +16,17 @@ class TestSanger(object):
 
     def read_results(self, path):
         '''Read in sequencing results.'''
-        seqs = seqio.read_sequencing(path)
+        seqs = cr.io.read_sequencing(path)
         return seqs
 
     def read_reference(self, path):
         '''Read in sequencing reference sequence.'''
-        seq = seqio.read_dna(path)
+        seq = cr.io.read_dna(path)
         return seq
 
     def test_sanger(self):
         '''Test basic Sanger methods and init'''
-        self.sanger = analysis.Sanger(self.reference, self.results)
+        self.sanger = cr.analysis.Sanger(self.reference, self.results)
         self.sanger.report()
         # There should be one mismatch at position 381
         assert_equal(self.sanger.mismatches, [[(381, 381)], []])
@@ -37,7 +37,7 @@ class TestSanger(object):
 
     def test_input_single(self):
         '''If users inputs single sequence as a result, handle seamlessly.'''
-        analysis.Sanger(self.reference, self.results[0])
+        cr.analysis.Sanger(self.reference, self.results[0])
 
     def test_alignment(self):
         '''Ensure that alignment is consistent.'''

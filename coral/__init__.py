@@ -6,7 +6,7 @@ from . import database
 from . import design
 from . import random
 from . import reaction
-from . import seqio
+from . import io
 from . import utils
 from .sequence import DNA
 from .sequence import ssDNA
