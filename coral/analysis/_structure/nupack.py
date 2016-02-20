@@ -9,6 +9,10 @@ import time
 from coral.utils import tempdirs
 
 
+class LambdaError(Exception):
+    '''Raise if maximum states is exceeded (for \'distributions\' command).'''
+
+
 class NUPACK(object):
     '''Run NUPACK functions on sequences.'''
     def __init__(self, nupack_home=None):
@@ -251,8 +255,8 @@ class NUPACK(object):
         :returns: Two probability matrices: The probability matrix as in the
                   pairs method (but with a dimension equal to the sum of the
                   lengths of the sequences in the permutation), and a similar
-                  probability matrix where strands of the same species are
-                  considered to be indistinguishable.
+                  probability matrix where multiple strands of the same species
+                  are considered to be indistinguishable.
         :rtype: list
 
         '''
@@ -878,9 +882,9 @@ class NUPACK(object):
         :param magnesium: Magnesium concentration in solution (molar), only
                           applies to DNA>
         :type magnesium: float
-        :returns: A length 2 list of the ensemble defect (float) and normalized
+        :returns: A 2-tuple of the ensemble defect (float) and normalized
                   ensemble defect (float).
-        :rtype: list
+        :rtype: tuple
 
         '''
         # Set the material (will be used to set command material flag)
@@ -897,7 +901,7 @@ class NUPACK(object):
         stdout = self._run('defect', cmd_args, lines).split('\n')
 
         # Return the defect [ensemble defect, ensemble defect]
-        return [float(stdout[-3]), float(stdout[-2])]
+        return (float(stdout[-3]), float(stdout[-2]))
 
     @tempdirs.tempdir
     def defect_multi(self, strands, dotparens, permutation=None, mfe=False,
@@ -943,9 +947,9 @@ class NUPACK(object):
         :param magnesium: Magnesium concentration in solution (molar), only
                           applies to DNA>
         :type magnesium: float
-        :returns: The free energy of the sequence with the specified secondary
-                  structure.
-        :rtype: float
+        :returns: A 2-tuple of the ensemble defect (float) and normalized
+                  ensemble defect (float).
+        :rtype: tuple
 
         '''
         # Set the material (will be used to set command material flag)
@@ -965,7 +969,7 @@ class NUPACK(object):
         stdout = self._run('defect', cmd_args, lines).split('\n')
 
         # Return the defect [ensemble defect, ensemble defect]
-        return [float(stdout[-3]), float(stdout[-2])]
+        return (float(stdout[-3]), float(stdout[-2]))
 
     @tempdirs.tempdir
     def complexes(self, strands, max_size, ordered=False, pairs=False,
@@ -1159,7 +1163,7 @@ class NUPACK(object):
         :param cutoff: A setting when pairs is set to True - only probabilities
                        above this threshold will be returned.
         :type cutoff: float
-        :param temp: Temperature.
+        :param temp: Temperature in C.
         :type temp: float
         :returns: A list of dictionaries containing (at least) a
                   'concentrations' key. If 'pairs' is True, an 'fpairs' key
@@ -1168,7 +1172,7 @@ class NUPACK(object):
 
         '''
         # Check inputs
-        nstrands = len(complexes['strands'])
+        nstrands = len(complexes[0]['strands'])
         try:
             if len(concs) != nstrands:
                 raise ValueError('concs argument not same length as strands.')
@@ -1206,6 +1210,136 @@ class NUPACK(object):
 
         # Run 'concentrations'
         self._run('concentrations', cmd_args, None)
+
+        # Parse the .eq (concentrations) file
+        eq_lines = self._read_tempfile('concentrations.eq').split('\n')
+        tsv_lines = [l for l in eq_lines if not l.startswith('%')]
+        output = []
+        for i, line in enumerate(tsv_lines):
+            # It's a TSV
+            data = line.split('\t')
+            # Column 0 is an index
+            # Columns 1-nstrands is the complex
+            cx = [int(c) for c in data[1:nstrands]]
+            # Column nstrands + 1 is the complex energy
+            # Column nstrands + 2 is the equilibrium concentration
+            eq = float(data[nstrands + 2])
+            output[i] = {'complex': cx, 'concentration': eq}
+
+        if pairs:
+            # Read the .fpairs file
+            pairs = self._read_tempfile('concentrations.fpairs')
+            pairs_tsv = [l for l in pairs.split('\n') if not l.startswith('%')]
+            # Remove first line (n complexes)
+            dim = int(pairs_tsv.pop(0))
+            pprob = [[int(p[0]), int(p[1]), float(p[2])] for p in pairs_tsv]
+            # Convert to augmented numpy matrix
+            fpairs_mat = self.pairs_to_np(pprob, dim)
+            for i, out in enumerate(output):
+                output[i]['fpairs'] = fpairs_mat
+
+        return output
+
+    @tempdirs.tempdir
+    def distributions(self, complexes, counts, volume, maxstates=1e7,
+                      ordered=False, temp=37.0):
+        '''Runs the \'distributions\' NUPACK command. Note: this is intended
+        for a relatively small number of species (on the order of ~20
+        total strands for complex size ~14).
+
+        :param complexes: A list of the type returned by the complexes()
+                          method.
+        :type complexes: list
+        :param counts: A list of the exact number of molecules of each initial
+                       species (the strands in the complexes command).
+        :type counts: list of ints
+        :param volume: The volume, in liters, of the container.
+        :type volume: float
+        :param maxstates: Maximum number of states to be enumerated, needed
+                          as allowing too many states can lead to a segfault.
+                          In NUPACK, this is referred to as lambda.
+        :type maxstates: float
+        :param ordered: Consider distinct ordered complexes - all distinct
+                        circular permutations of each complex.
+        :type ordered: bool
+        :param temp: Temperature in C.
+        :type temp: float
+        :returns: A list of dictionaries containing (at least) a 'complexes'
+                  key for the unique complex, an 'ev' key for the expected
+                  value of the complex population and a 'probcols' list
+                  indicating the probability that a given complex has
+                  population 0, 1, ... max(pop) at equilibrium.
+        :rtype: list
+        :raises: LambdaError if maxstates is exceeded.
+
+        '''
+        # Check inputs
+        nstrands = len(complexes[0]['strands'])
+        if len(counts) != nstrands:
+            raise ValueError('counts argument not same length as strands.')
+
+        # Set up command-line arguments
+        cmd_args = []
+        if ordered:
+            cmd_args.append('-ordered')
+
+        # Write .count file
+        countpath = os.path.join(self._tempdir, 'distributions.count')
+        with open(countpath, 'w') as f:
+            f.writelines([str(c) for c in counts] + [str(volume)])
+
+        # Write .cx or .ocx file
+        header = ['%t Number of strands: {}'.format(nstrands),
+                  '%\tid\tsequence']
+        for i, strand in enumerate(complexes['strands']):
+            header.append('%\t{}\t{}'.format(i + 1, strand))
+        header.append('%\tT = {}'.format(temp))
+        body = []
+        for i, cx in enumerate(complexes):
+            permutation = '\t'.join(complexes['complex'])
+            line = '{}\t{}\t{}'.format(i + 1, permutation, complexes['energy'])
+            body.append(line)
+
+        if ordered:
+            cxfile = os.path.join(self._tempdir, 'distributions.ocx')
+        else:
+            cxfile = os.path.join(self._tempdir, 'distributions.cx')
+
+        with open(cxfile) as f:
+            f.writelines(header + body)
+
+        # Run 'distributions'
+        stdout = self._run('distributions', cmd_args, None)
+
+        # Parse STDOUT
+        stdout_lines = stdout.split('\n')
+        if stdout_lines[0].startswith('Exceeded maximum number'):
+            raise LambdaError('Exceeded maxstates combinations.')
+
+        # pop_search = re.search('There are (*) pop', stdout_lines[0]).group(1)
+        # populations = int(pop_search)
+        # kT_search = re.search('of the box: (*) kT', stdout_lines[1]).group(1)
+        # kT = float(kT_search)
+
+        # Parse .dist file (comments header + TSV)
+        dist_lines = self._read_tempfile('distributions.dist').split('\n')
+        tsv_lines = [l for l in dist_lines if not l.startswith('%')]
+        tsv_lines.pop()
+        output = []
+        for i, line in enumerate(tsv_lines):
+            data = line.split('\t')
+            # Column 0 is an index
+            # Columns 1-nstrands are complexes
+            cx = [int(d) for d in data[1:nstrands]]
+            # Column nstrands + 1 is expected value of complex
+            ev = float(data[nstrands + 1])
+            # Columns nstrands + 2 and on are probability columns
+            probcols = [float(d) for d in data[nstrands + 2:]]
+            output[i]['complex'] = cx
+            output[i]['ev'] = ev
+            output[i]['probcols'] = probcols
+
+        return output
 
     # Helper methods for preparing command input files
     def _multi_lines(self, strands, permutation):
