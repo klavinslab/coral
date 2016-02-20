@@ -1,0 +1,72 @@
+% NUPACK 3.0
+% This is test_concentrations.fpairs, an output file generated for a "concentrations"
+% calculation of base pair fractions.
+% For information on contents, see NUPACK manual.
+% Program: concentrations
+% Start time: Thu Jan 28 10:59:24 2016 PST
+% Command: ../bin/concentrations -pairs test_concentrations
+% Minimum output pair fraction: 0.001
+% Initial monomer concentrations:
+%   1: 1.000000e-06 Molar
+%   2: 1.000000e-06 Molar
+%
+% Following is the header from the input file (test_concentrations.cx):
+%
+% NUPACK 3.0
+% Program: complexes
+% Start time: Thu Jan 28 01:27:25 2016 PST
+%
+% Command: ../bin/complexes -quiet -pairs -cutoff 0.001 test_complexes
+% Maximum complex size to enumerate: 4
+% Number of complexes from enumeration: 14
+% Additional complexes from .list file: 0
+% Total number of permutations to calculate: 15
+% Parameters: RNA, 1995
+% Dangles setting: 1
+% Temperature (C): 37.0
+% Sodium concentration: 1.0000 M
+% Magnesium concentration: 0.0000 M
+%
+% Do not change the comments below this line, as they may be read by other programs!
+%
+% Number of strands: 2
+% id sequence
+%  1 GATACTAGCG
+%  2 TACGATT
+% T = 37.0
+17
+1	5	7.781987e-03
+1	9	1.110839e-01
+1	18	8.812159e-01
+2	6	6.730637e-03
+2	18	9.933000e-01
+3	7	1.139972e-02
+3	8	1.806719e-03
+3	18	9.868000e-01
+4	18	9.999984e-01
+5	1	7.781987e-03
+5	10	7.780911e-03
+5	18	9.843713e-01
+6	2	6.730637e-03
+6	18	9.932675e-01
+7	3	1.139972e-02
+7	18	9.885687e-01
+8	3	1.806719e-03
+8	18	9.980516e-01
+9	1	1.110839e-01
+9	18	8.887963e-01
+10	5	7.780911e-03
+10	18	9.922003e-01
+11	15	3.394092e-03
+11	18	9.965996e-01
+12	16	2.086032e-03
+12	17	1.507996e-03
+12	18	9.963997e-01
+13	18	9.999922e-01
+14	18	9.999922e-01
+15	11	3.394092e-03
+15	18	9.965996e-01
+16	12	2.086032e-03
+16	18	9.978997e-01
+17	12	1.507996e-03
+17	18	9.984999e-01

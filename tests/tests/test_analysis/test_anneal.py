@@ -54,7 +54,7 @@ def test_near_index():
     current_path = os.path.dirname(__file__)
     template = seqio.read_dna(os.path.join(current_path,
                                            "pMODKan-HO-pACT1GEV.ape"))
-    template.circular = True
+    template = template.circularize()
     seq = DNA('aggccctttcgtctcgcgcgttt')
     primer = Primer(seq, 50.6)
     matches = analysis.anneal(template, primer)
@@ -66,6 +66,7 @@ def test_near_index():
 
     print fwd_matches
     print loc[0]
+    print loc[1]
     assert_true(len(fwd_matches) == len(loc[0]))
     assert_true(len(rev_matches) == len(loc[1]))
     for match in loc[0]:

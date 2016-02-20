@@ -69,11 +69,11 @@ def primer(dna, tm=65, min_len=10, tm_undershoot=1, tm_overshoot=3,
     tm_diffs = [abs(melt - tm) for primer, melt in primers_tms]
     best_index = tm_diffs.index(min(tm_diffs))
     best_primer, best_tm = primers_tms[best_index]
-    best_primer = best_primer.to_ss()
+    best_primer = best_primer.top
 
     # Apply overhang
     if overhang:
-        overhang = overhang.to_ss()
+        overhang = overhang.top
 
     output_primer = coral.Primer(best_primer, best_tm, overhang=overhang)
 

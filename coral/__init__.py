@@ -8,6 +8,7 @@ from . import reaction
 from . import seqio
 from . import utils
 from .sequence import DNA
+from .sequence import ssDNA
 from .sequence import RNA
 from .sequence import Peptide
 from .sequence import Primer

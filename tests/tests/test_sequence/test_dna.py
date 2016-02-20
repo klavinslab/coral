@@ -22,17 +22,6 @@ class TestDNA(object):
         assert_equal(str(circ_dna.linearize(-1)), 'CATG')
         assert_raises(ValueError, circ_dna.linearize().linearize)
 
-    def test_to_ss_ds(self):
-        assert_equal(self.test_dna.to_ds(), self.test_dna)
-        ss_dna = self.test_dna.to_ss()
-        assert_equal(ss_dna.ds, False)
-        ds_dna = self.test_dna.to_ds()
-        assert_equal(ds_dna.ds, True)
-        assert_equal(ds_dna.top, str(ss_dna))
-
-        ds_to_ss_to_ds = self.test_dna.to_ss().to_ds()
-        assert_equal(self.test_dna, ds_to_ss_to_ds)
-
     def test_locate(self):
         assert_equal(self.test_dna.locate('a'), [[0], [2]])
         assert_equal(self.test_dna.locate('at'), [[0], [2]])
@@ -122,8 +111,6 @@ class TestDNA(object):
 
     def test_add(self):
         assert_equal(str(self.test_dna + self.test_dna), 'ATGCATGC')
-        assert_equal(str(self.test_dna.to_ss() +
-                         self.test_dna.to_ss()), 'ATGCATGC')
 
     def test_radd(self):
         assert_equal(str(sum([self.test_dna, self.test_dna])), 'ATGCATGC')
@@ -171,21 +158,6 @@ class TestDNA(object):
         assert_equal(self.test_dna.bottom, str(flipped))
 
 
-def test_stranded_init():
-    ss_dna = DNA('atgc', ds=False)
-    assert_true(all([base == '-' for base in ss_dna.bottom]))
-
-    ds_dna = DNA('atgc')
-    assert_equal(str(ds_dna), ds_dna.reverse_complement().bottom)
-
-
-def test_stranded_complemented():
-    ss_dna = DNA('atgc', ds=False)
-    r_ss_dna = ss_dna.reverse_complement()
-    assert_equal(r_ss_dna.top, 'GCAT')
-    assert_equal(r_ss_dna.bottom, '----')
-
-
 class TestFeatures(object):
     '''Test features model using DNA object.'''
     def __init__(self):
@@ -230,7 +202,7 @@ class TestFeatures(object):
         assert_equal(str(extracted), 'TGCATGCATGCATGCATGC')
 
     def test_excise(self):
-        copy = self.dna.copy().circularize()
+        copy = self.dna.circularize()
         feature = copy.select_features('Coding Feature')[0]
         rotated = copy.rotate_to(feature.start)
         expected = rotated[feature.stop - feature.start:]
