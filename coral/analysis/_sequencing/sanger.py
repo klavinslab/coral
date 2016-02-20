@@ -1,5 +1,5 @@
 '''Sanger sequencing alignment tools.'''
-import coral.analysis
+import coral as cr
 
 # FIXME: sequencing that goes past 'end' of a circular reference
 # is reported as an insertion
@@ -8,13 +8,21 @@ import coral.analysis
 
 class Sanger(object):
     '''Align and analyze Sanger sequencing results.'''
-    def __init__(self, reference, results):
+    def __init__(self, reference, results, method='needle',
+                 method_kwargs=None):
         '''
         :param reference: Reference sequence.
         :type reference: :class:`coral.DNA`
         :param results: Sequencing result string. A list of DNA objects is also
                         valid.
         :type results: list of coral.DNA sequences
+        :param method: Alignment method to use. Options are:
+                         \'needle\': Uses coral.analysis.needle_msa
+                         \'MAFFT\': Uses coral.analysis.MAFFT
+        :type method: str
+        :param method_kwargs: Optional keyword arguments to send to the
+                              alignment function.
+        :type method_kwargs: dict
         :returns: instance of coral.analysis.Sanger (contains alignment and
                   provides analysis/visualization methods
 
@@ -27,6 +35,12 @@ class Sanger(object):
         # Sequences and calculations that get reused
         self.reference = reference
         self.results = results
+        self.method = method
+        if method_kwargs is None:
+            self.method_kwargs = {}
+        else:
+            self.method_kwargs = method_kwargs
+
         self._remove_n()
         self.names = []
         for i, result in enumerate(self.results):
@@ -36,11 +50,19 @@ class Sanger(object):
                 self.names.append(result.name)
 
         # Align
-        print '(Aligning...)'
         self.align()
 
     def align(self):
-        self.alignment = coral.analysis.MAFFT([self.reference] + self.results)
+        if self.method == 'needle':
+            self.alignment = cr.analysis.needle_msa(self.reference,
+                                                    self.results,
+                                                    **self.method_kwargs)
+        elif self.method == 'MAFFT':
+            self.alignment = cr.analysis.MAFFT([self.reference] + self.results,
+                                               **self.method_kwargs)
+        else:
+            raise ValueError('Only \'needle\' or \'MAFFT\' methods allowed.')
+
         self.aligned_reference = self.alignment[0].copy()
         self.aligned_results = []
         for result in self.alignment[1:]:
