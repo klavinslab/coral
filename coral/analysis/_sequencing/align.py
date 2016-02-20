@@ -1,50 +1,18 @@
 '''Numpy implementation of Needlman-Wunsch algorithm'''
-import os
 import numpy as np
+from . import substitution_matrices as submat
 
 
-def read_matrix(path):
-    '''Read in matrix in NCBI format and put into numpy array. Score for e.g.
-    a 'C' changing to an 'A' is stored as matrix[ord('C'), ord('A')]. As such,
-    the score is a direct array lookup from each pair in the alignment, making
-    score calculation very fast.
+def as_ord_matrix(matrix):
+    '''Given the SubstitutionMatrix input, generate an equivalent matrix that
+    is indexed by the ASCII number of each residue (e.g. A -> 65).'''
+    ords = [ord(c) for c in matrix.alphabet]
+    ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
+    for i, row_ord in enumerate(ords):
+        for j, col_ord in enumerate(ords):
+            ord_matrix[row_ord, col_ord] = matrix[i, j]
 
-    :param path: Path to the NCBI format matrix.
-    :type path: str.
-
-    '''
-    matrix_row = 0
-    if not os.path.exists(path):
-        if '/' in path:
-            raise ValueError('path for matrix {} doest not exist'.format(path))
-        cur_path = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-        handle = open(os.path.join(cur_path, 'data', path))
-    else:
-        handle = open(path)
-
-    headers = None
-    while headers is None:
-        line = handle.readline().strip()
-        # Ignore comments (#)
-        if line[0] == '#':
-            continue
-        # First that isn't a comment is the header
-        headers = [ord(x) for x in line.split(' ') if x]
-    mat_size = max(headers) + 1
-
-    matrix = np.zeros((mat_size, mat_size), dtype=np.int)
-
-    # TODO: see if readlines + for loop is just as fast (faster?)
-    line = handle.readline()
-    while line:
-        line_vals = [int(x) for x in line[:-1].split(' ')[1:] if x]
-        for ohidx, val in zip(headers, line_vals):
-            matrix[headers[matrix_row], ohidx] = val
-        matrix_row += 1
-        line = handle.readline()
-    handle.close()
-
-    return matrix
+    return ord_matrix
 
 
 def max_index(array):
@@ -59,7 +27,7 @@ def max_index(array):
 
 
 def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
-            gap_double=-7, matrix='DNA_simple'):
+            gap_double=-7, matrix=submat.DNA_SIMPLE):
     '''Calculates the alignment of two sequences. The global method uses
     a global Needleman-Wunsh algorithm, local does a a local
     Smith-Waterman alignment, global_cfe does a global alignment with
@@ -85,12 +53,12 @@ def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
     :param gap_double: The gap-opening cost if a gap is already open in the
                        other sequence (negative number).
     :type gap_double: float
-    :param matrix: A score matrix dictionary name. Only one available now is
-                   \'DNA_simple\'.
+    :param matrix: A score matrix dictionary name. Examples can be found in
+                   the substitution_matrices module.
     :type matrix: str
 
     '''
-    amatrix = read_matrix(matrix)
+    amatrix = as_ord_matrix(matrix)
     NONE, LEFT, UP, DIAG = range(4)  # NONE is 0
     max_j = len(seqj)
     max_i = len(seqi)
@@ -225,8 +193,8 @@ def score_alignment(a, b, gap_open, gap_extend, matrix):
     :type gap_open: int
     :param gap_extend: The cost of extending an open gap (negative number).
     :type gap_extend: int.
-    :param matrix: Scoring matrix. Only option for now is DNA_simple.
-    :type matrix: str
+    :param matrix: A score matrix dictionary name. Examples can be found in
+                   the substitution_matrices module.
 
     '''
     al = a
@@ -234,7 +202,7 @@ def score_alignment(a, b, gap_open, gap_extend, matrix):
     l = len(al)
     score = 0
     assert len(bl) == l, 'Alignment lengths must be the same'
-    mat = read_matrix(matrix)
+    mat = as_ord_matrix(matrix)
 
     gap_started = 0
 

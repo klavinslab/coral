@@ -2,7 +2,6 @@ import numpy as np
 cimport numpy as np
 from . import substitution_matrices as submat
 from libc.string cimport strlen
-import os
 
 
 # Access to the Python/C API
@@ -47,6 +46,18 @@ cdef inline DTYPE_FLOAT max2(DTYPE_FLOAT a, DTYPE_FLOAT b):
     return b if b > a else a
 
 
+def as_ord_matrix(matrix):
+    '''Given the SubstitutionMatrix input, generate an equivalent matrix that
+    is indexed by the ASCII number of each residue (e.g. A -> 65).'''
+    ords = [ord(c) for c in matrix.alphabet]
+    ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
+    for i, row_ord in enumerate(ords):
+        for j, col_ord in enumerate(ords):
+            ord_matrix[row_ord, col_ord] = matrix[i, j]
+
+    return ord_matrix
+
+
 def max_index(array):
     '''Locate the index of the largest value in the array. If there are
     multiple, finds the earliest one in the row-flattened array.
@@ -86,9 +97,9 @@ def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
     :param gap_double: The gap-opening cost if a gap is already open in the
                        other sequence (negative number).
     :type gap_double: float
-    :param matrix: A score matrix dictionary name. Only one available now is
-                   \'DNA_simple\'.
-    :type matrix: str
+    :param matrix: A score matrix dictionary name. Examples can be found in
+                   the substitution_matrices module.
+    :type matrix: SubstitutionMatrix
 
     '''
     cdef int NONE = 0,  LEFT = 1, UP = 2,  DIAG = 3
@@ -135,7 +146,7 @@ def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
 
     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)
     cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = matrix
-
+    amatrix = as_ord_matrix(matrix)
 
     # START HERE:
     if imethod == 0:
@@ -244,8 +255,9 @@ def score_alignment(a, b, int gap_open, int gap_extend, matrix):
     :type gap_open: int
     :param gap_extend: The cost of extending an open gap (negative number).
     :type gap_extend: int.
-    :param matrix: Scoring matrix. Only option for now is DNA_simple.
-    :type matrix: str
+    :param matrix: A score matrix dictionary name. Examples can be found in
+                   the substitution_matrices module.
+    :type matrix: SubstitutionMatrix
 
     '''
     cdef char *al = a
@@ -254,7 +266,7 @@ def score_alignment(a, b, int gap_open, int gap_extend, matrix):
     cdef int score = 0, this_score
     assert strlen(bl) == l, 'Alignment lengths must be the same'
     cdef np.ndarray[DTYPE_INT, ndim=2] mat
-    mat = matrix
+    mat = as_ord_matrix(matrix)
 
     cdef bint gap_started = 0
 

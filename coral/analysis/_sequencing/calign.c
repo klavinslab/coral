@@ -699,7 +699,7 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "coral/analysis/_sequencing/calign.pyx":17
+/* "coral/analysis/_sequencing/calign.pyx":16
  *
  * # Declaring numpy data types speeds things up massively
  * ctypedef np.int_t DTYPE_INT             # <<<<<<<<<<<<<<
@@ -708,7 +708,7 @@ typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
  */
 typedef __pyx_t_5numpy_int_t __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT;
 
-/* "coral/analysis/_sequencing/calign.pyx":18
+/* "coral/analysis/_sequencing/calign.pyx":17
  * # Declaring numpy data types speeds things up massively
  * ctypedef np.int_t DTYPE_INT
  * ctypedef np.uint_t DTYPE_UINT             # <<<<<<<<<<<<<<
@@ -717,7 +717,7 @@ typedef __pyx_t_5numpy_int_t __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYP
  */
 typedef __pyx_t_5numpy_uint_t __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT;
 
-/* "coral/analysis/_sequencing/calign.pyx":19
+/* "coral/analysis/_sequencing/calign.pyx":18
  * ctypedef np.int_t DTYPE_INT
  * ctypedef np.uint_t DTYPE_UINT
  * ctypedef np.float32_t DTYPE_FLOAT             # <<<<<<<<<<<<<<
@@ -864,7 +864,40 @@ static CYTHON_INLINE PyObject* __Pyx_PyObject_GetAttrStr(PyObject* obj, PyObject
 
 static PyObject *__Pyx_GetBuiltinName(PyObject *name);
 
+#if CYTHON_COMPILING_IN_CPYTHON
+static CYTHON_INLINE int __Pyx_ListComp_Append(PyObject* list, PyObject* x) {
+    PyListObject* L = (PyListObject*) list;
+    Py_ssize_t len = Py_SIZE(list);
+    if (likely(L->allocated > len)) {
+        Py_INCREF(x);
+        PyList_SET_ITEM(list, len, x);
+        Py_SIZE(list) = len+1;
+        return 0;
+    }
+    return PyList_Append(list, x);
+}
+#else
+#define __Pyx_ListComp_Append(L,x) PyList_Append(L,x)
+#endif
+
+static CYTHON_INLINE Py_UCS4 __Pyx_PyUnicode_AsPy_UCS4(PyObject*);
+
+#if PY_MAJOR_VERSION >= 3
+#define __Pyx_PyObject_Ord(c)\
+    (likely(PyUnicode_Check(c)) ? (long)__Pyx_PyUnicode_AsPy_UCS4(c) : __Pyx__PyObject_Ord(c))
+#else
+#define __Pyx_PyObject_Ord(c) __Pyx__PyObject_Ord(c)
+#endif
+static long __Pyx__PyObject_Ord(PyObject* c);
+
 static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name);
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace);
+#else
+#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace)\
+    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
+#endif
 
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw);
@@ -911,6 +944,8 @@ static CYTHON_INLINE int  __Pyx_GetBufferAndValidate(Py_buffer* buf, PyObject* o
     __Pyx_TypeInfo* dtype, int flags, int nd, int cast, __Pyx_BufFmt_StackElem* stack);
 static CYTHON_INLINE void __Pyx_SafeReleaseBuffer(Py_buffer* info);
 
+static void __Pyx_RaiseBufferFallbackError(void);
+
 static void __Pyx_RaiseBufferIndexError(int axis);
 
 #define __Pyx_BufPtrStrided2d(type, buf, i0, s0, i1, s1) (type)((char*)buf + i0 * s0 + i1 * s1)
@@ -943,19 +978,10 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j
 static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i,
                                                      int is_list, int wraparound, int boundscheck);
 
-#if CYTHON_COMPILING_IN_CPYTHON
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, long intval, int inplace);
-#else
-#define __Pyx_PyInt_AddObjC(op1, op2, intval, inplace)\
-    (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
-#endif
-
 static CYTHON_INLINE void __Pyx_ErrRestore(PyObject *type, PyObject *value, PyObject *tb);
 static CYTHON_INLINE void __Pyx_ErrFetch(PyObject **type, PyObject **value, PyObject **tb);
 
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
-
-static void __Pyx_RaiseBufferFallbackError(void);
 
 #if PY_MAJOR_VERSION >= 3 && !CYTHON_COMPILING_IN_PYPY
 static PyObject *__Pyx_PyDict_GetItem(PyObject *d, PyObject* key) {
@@ -1027,9 +1053,9 @@ static Py_ssize_t __Pyx_minusones[] = {-1, -1, -1, -1, -1, -1, -1, -1};
 
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
 
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_npy_ulong(npy_ulong value);
 
@@ -1192,6 +1218,8 @@ static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6
 int __pyx_module_is_main_coral__analysis___sequencing__calign = 0;
 
 /* Implementation of 'coral.analysis._sequencing.calign' */
+static PyObject *__pyx_builtin_max;
+static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_Exception;
 static PyObject *__pyx_builtin_ValueError;
@@ -1204,6 +1232,7 @@ static char __pyx_k_O[] = "O";
 static char __pyx_k_Q[] = "Q";
 static char __pyx_k_a[] = "a";
 static char __pyx_k_b[] = "b";
+static char __pyx_k_c[] = "c";
 static char __pyx_k_d[] = "d";
 static char __pyx_k_f[] = "f";
 static char __pyx_k_g[] = "g";
@@ -1225,7 +1254,6 @@ static char __pyx_k_bl[] = "bl";
 static char __pyx_k_ci[] = "ci";
 static char __pyx_k_cj[] = "cj";
 static char __pyx_k_np[] = "np";
-static char __pyx_k_os[] = "os";
 static char __pyx_k_inf[] = "inf";
 static char __pyx_k_mat[] = "mat";
 static char __pyx_k_max[] = "max";
@@ -1235,6 +1263,7 @@ static char __pyx_k_NONE[] = "NONE";
 static char __pyx_k_fill[] = "fill";
 static char __pyx_k_flip[] = "flip";
 static char __pyx_k_main[] = "__main__";
+static char __pyx_k_ords[] = "ords";
 static char __pyx_k_seqi[] = "_seqi";
 static char __pyx_k_seqj[] = "_seqj";
 static char __pyx_k_test[] = "__test__";
@@ -1269,14 +1298,19 @@ static char __pyx_k_aligner[] = "aligner";
 static char __pyx_k_amatrix[] = "amatrix";
 static char __pyx_k_col_idx[] = "col_idx";
 static char __pyx_k_col_max[] = "col_max";
+static char __pyx_k_col_ord[] = "col_ord";
 static char __pyx_k_float32[] = "float32";
 static char __pyx_k_imethod[] = "imethod";
+static char __pyx_k_integer[] = "integer";
 static char __pyx_k_pointer[] = "pointer";
 static char __pyx_k_row_idx[] = "row_idx";
 static char __pyx_k_row_max[] = "row_max";
+static char __pyx_k_row_ord[] = "row_ord";
+static char __pyx_k_alphabet[] = "alphabet";
 static char __pyx_k_gap_open[] = "gap_open";
 static char __pyx_k_up_score[] = "up_score";
 static char __pyx_k_Exception[] = "Exception";
+static char __pyx_k_enumerate[] = "enumerate";
 static char __pyx_k_max_index[] = "max_index";
 static char __pyx_k_max_score[] = "max_score";
 static char __pyx_k_DNA_SIMPLE[] = "DNA_SIMPLE";
@@ -1286,10 +1320,12 @@ static char __pyx_k_gap_double[] = "gap_double";
 static char __pyx_k_gap_extend[] = "gap_extend";
 static char __pyx_k_global_cfe[] = "global_cfe";
 static char __pyx_k_left_score[] = "left_score";
+static char __pyx_k_ord_matrix[] = "ord_matrix";
 static char __pyx_k_this_score[] = "this_score";
 static char __pyx_k_gap_started[] = "gap_started";
 static char __pyx_k_RuntimeError[] = "RuntimeError";
 static char __pyx_k_align_counter[] = "align_counter";
+static char __pyx_k_as_ord_matrix[] = "as_ord_matrix";
 static char __pyx_k_unravel_index[] = "unravel_index";
 static char __pyx_k_wtf_pointer_i[] = "wtf!:pointer: %i";
 static char __pyx_k_score_alignment[] = "score_alignment";
@@ -1328,20 +1364,25 @@ static PyObject *__pyx_n_s_align_counter;
 static PyObject *__pyx_n_s_align_i;
 static PyObject *__pyx_n_s_align_j;
 static PyObject *__pyx_n_s_aligner;
+static PyObject *__pyx_n_s_alphabet;
 static PyObject *__pyx_n_s_amatrix;
 static PyObject *__pyx_n_s_arange;
 static PyObject *__pyx_n_s_argmax;
 static PyObject *__pyx_n_s_array;
+static PyObject *__pyx_n_s_as_ord_matrix;
 static PyObject *__pyx_n_s_b;
 static PyObject *__pyx_n_s_bl;
+static PyObject *__pyx_n_s_c;
 static PyObject *__pyx_n_s_ci;
 static PyObject *__pyx_n_s_cj;
 static PyObject *__pyx_n_s_col_idx;
 static PyObject *__pyx_n_s_col_max;
+static PyObject *__pyx_n_s_col_ord;
 static PyObject *__pyx_n_s_coral_analysis__sequencing_calig;
 static PyObject *__pyx_n_s_diag_score;
 static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_empty;
+static PyObject *__pyx_n_s_enumerate;
 static PyObject *__pyx_n_s_fill;
 static PyObject *__pyx_n_s_flip;
 static PyObject *__pyx_n_s_float32;
@@ -1359,6 +1400,7 @@ static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_imethod;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_inf;
+static PyObject *__pyx_n_s_integer;
 static PyObject *__pyx_n_s_j;
 static PyObject *__pyx_n_s_l;
 static PyObject *__pyx_n_s_left_score;
@@ -1376,12 +1418,14 @@ static PyObject *__pyx_kp_u_ndarray_is_not_C_contiguous;
 static PyObject *__pyx_kp_u_ndarray_is_not_Fortran_contiguou;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
-static PyObject *__pyx_n_s_os;
+static PyObject *__pyx_n_s_ord_matrix;
+static PyObject *__pyx_n_s_ords;
 static PyObject *__pyx_n_s_p;
 static PyObject *__pyx_n_s_pointer;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_row_idx;
 static PyObject *__pyx_n_s_row_max;
+static PyObject *__pyx_n_s_row_ord;
 static PyObject *__pyx_n_s_score;
 static PyObject *__pyx_n_s_score_alignment;
 static PyObject *__pyx_n_s_seqi;
@@ -1400,9 +1444,10 @@ static PyObject *__pyx_n_s_unravel_index;
 static PyObject *__pyx_n_s_up_score;
 static PyObject *__pyx_kp_s_wtf_pointer_i;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_array); /* proto */
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v__seqj, PyObject *__pyx_v__seqi, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_open, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_extend, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_double, PyObject *__pyx_v_method, PyObject *__pyx_v_matrix); /* proto */
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignment(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_a, PyObject *__pyx_v_b, int __pyx_v_gap_open, int __pyx_v_gap_extend, PyObject *__pyx_v_matrix); /* proto */
+static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_matrix); /* proto */
+static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_array); /* proto */
+static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v__seqj, PyObject *__pyx_v__seqi, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_open, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_extend, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_double, PyObject *__pyx_v_method, PyObject *__pyx_v_matrix); /* proto */
+static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignment(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_a, PyObject *__pyx_v_b, int __pyx_v_gap_open, int __pyx_v_gap_extend, PyObject *__pyx_v_matrix); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_int_0;
@@ -1445,11 +1490,13 @@ static PyObject *__pyx_tuple__35;
 static PyObject *__pyx_tuple__36;
 static PyObject *__pyx_tuple__38;
 static PyObject *__pyx_tuple__40;
+static PyObject *__pyx_tuple__42;
 static PyObject *__pyx_codeobj__37;
 static PyObject *__pyx_codeobj__39;
 static PyObject *__pyx_codeobj__41;
+static PyObject *__pyx_codeobj__43;
 
-/* "coral/analysis/_sequencing/calign.pyx":22
+/* "coral/analysis/_sequencing/calign.pyx":21
  *
  *
  * cdef inline DTYPE_FLOAT max3(DTYPE_FLOAT a, DTYPE_FLOAT b, DTYPE_FLOAT c):             # <<<<<<<<<<<<<<
@@ -1464,7 +1511,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_2;
   __Pyx_RefNannySetupContext("max3", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":33
+  /* "coral/analysis/_sequencing/calign.pyx":32
  *
  *     '''
  *     if c > b:             # <<<<<<<<<<<<<<
@@ -1474,7 +1521,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   __pyx_t_1 = ((__pyx_v_c > __pyx_v_b) != 0);
   if (__pyx_t_1) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":34
+    /* "coral/analysis/_sequencing/calign.pyx":33
  *     '''
  *     if c > b:
  *         return c if c > a else a             # <<<<<<<<<<<<<<
@@ -1489,7 +1536,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
     __pyx_r = __pyx_t_2;
     goto __pyx_L0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":33
+    /* "coral/analysis/_sequencing/calign.pyx":32
  *
  *     '''
  *     if c > b:             # <<<<<<<<<<<<<<
@@ -1498,7 +1545,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
  */
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":35
+  /* "coral/analysis/_sequencing/calign.pyx":34
  *     if c > b:
  *         return c if c > a else a
  *     return b if b > a else a             # <<<<<<<<<<<<<<
@@ -1513,7 +1560,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   __pyx_r = __pyx_t_2;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":22
+  /* "coral/analysis/_sequencing/calign.pyx":21
  *
  *
  * cdef inline DTYPE_FLOAT max3(DTYPE_FLOAT a, DTYPE_FLOAT b, DTYPE_FLOAT c):             # <<<<<<<<<<<<<<
@@ -1527,7 +1574,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":38
+/* "coral/analysis/_sequencing/calign.pyx":37
  *
  *
  * cdef inline DTYPE_FLOAT max2(DTYPE_FLOAT a, DTYPE_FLOAT b):             # <<<<<<<<<<<<<<
@@ -1541,7 +1588,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_1;
   __Pyx_RefNannySetupContext("max2", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":47
+  /* "coral/analysis/_sequencing/calign.pyx":46
  *
  *     '''
  *     return b if b > a else a             # <<<<<<<<<<<<<<
@@ -1556,7 +1603,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":38
+  /* "coral/analysis/_sequencing/calign.pyx":37
  *
  *
  * cdef inline DTYPE_FLOAT max2(DTYPE_FLOAT a, DTYPE_FLOAT b):             # <<<<<<<<<<<<<<
@@ -1570,7 +1617,333 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":50
+/* "coral/analysis/_sequencing/calign.pyx":49
+ *
+ *
+ * def as_ord_matrix(matrix):             # <<<<<<<<<<<<<<
+ *     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
+ *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix(PyObject *__pyx_self, PyObject *__pyx_v_matrix); /*proto*/
+static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_as_ord_matrix[] = "Given the SubstitutionMatrix input, generate an equivalent matrix that\n    is indexed by the ASCII number of each residue (e.g. A -> 65).";
+static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix = {"as_ord_matrix", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix, METH_O, __pyx_doc_5coral_8analysis_11_sequencing_6calign_as_ord_matrix};
+static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix(PyObject *__pyx_self, PyObject *__pyx_v_matrix) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("as_ord_matrix (wrapper)", 0);
+  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(__pyx_self, ((PyObject *)__pyx_v_matrix));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_matrix) {
+  PyObject *__pyx_v_ords = NULL;
+  PyObject *__pyx_v_ord_matrix = NULL;
+  PyObject *__pyx_v_i = NULL;
+  PyObject *__pyx_v_row_ord = NULL;
+  PyObject *__pyx_v_j = NULL;
+  PyObject *__pyx_v_col_ord = NULL;
+  PyObject *__pyx_v_c = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  Py_ssize_t __pyx_t_4;
+  PyObject *(*__pyx_t_5)(PyObject *);
+  long __pyx_t_6;
+  PyObject *__pyx_t_7 = NULL;
+  PyObject *__pyx_t_8 = NULL;
+  Py_ssize_t __pyx_t_9;
+  PyObject *__pyx_t_10 = NULL;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("as_ord_matrix", 0);
+
+  /* "coral/analysis/_sequencing/calign.pyx":52
+ *     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
+ *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
+ *     ords = [ord(c) for c in matrix.alphabet]             # <<<<<<<<<<<<<<
+ *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
+ *     for i, row_ord in enumerate(ords):
+ */
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_matrix, __pyx_n_s_alphabet); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
+    __pyx_t_3 = __pyx_t_2; __Pyx_INCREF(__pyx_t_3); __pyx_t_4 = 0;
+    __pyx_t_5 = NULL;
+  } else {
+    __pyx_t_4 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_5 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  for (;;) {
+    if (likely(!__pyx_t_5)) {
+      if (likely(PyList_CheckExact(__pyx_t_3))) {
+        if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_3)) break;
+        #if CYTHON_COMPILING_IN_CPYTHON
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        #else
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_2);
+        #endif
+      } else {
+        if (__pyx_t_4 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+        #if CYTHON_COMPILING_IN_CPYTHON
+        __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        #else
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_3, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __Pyx_GOTREF(__pyx_t_2);
+        #endif
+      }
+    } else {
+      __pyx_t_2 = __pyx_t_5(__pyx_t_3);
+      if (unlikely(!__pyx_t_2)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_2);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_c, __pyx_t_2);
+    __pyx_t_2 = 0;
+    __pyx_t_6 = __Pyx_PyObject_Ord(__pyx_v_c); if (unlikely(__pyx_t_6 == (long)(Py_UCS4)-1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyInt_From_long(__pyx_t_6); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_2))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 52; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_ords = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "coral/analysis/_sequencing/calign.pyx":53
+ *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
+ *     ords = [ord(c) for c in matrix.alphabet]
+ *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)             # <<<<<<<<<<<<<<
+ *     for i, row_ord in enumerate(ords):
+ *         for j, col_ord in enumerate(ords):
+ */
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_INCREF(__pyx_v_ords);
+  __Pyx_GIVEREF(__pyx_v_ords);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_ords);
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_max, __pyx_t_1, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_t_2, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(__pyx_v_ords);
+  __Pyx_GIVEREF(__pyx_v_ords);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_ords);
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_max, __pyx_t_2, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_t_7, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_2);
+  __pyx_t_1 = 0;
+  __pyx_t_2 = 0;
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_GIVEREF(__pyx_t_7);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_7);
+  __pyx_t_7 = 0;
+  __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_integer); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_dtype, __pyx_t_8) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_2, __pyx_t_7); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_8);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __pyx_v_ord_matrix = __pyx_t_8;
+  __pyx_t_8 = 0;
+
+  /* "coral/analysis/_sequencing/calign.pyx":54
+ *     ords = [ord(c) for c in matrix.alphabet]
+ *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
+ *     for i, row_ord in enumerate(ords):             # <<<<<<<<<<<<<<
+ *         for j, col_ord in enumerate(ords):
+ *             ord_matrix[row_ord, col_ord] = matrix[i, j]
+ */
+  __Pyx_INCREF(__pyx_int_0);
+  __pyx_t_8 = __pyx_int_0;
+  __pyx_t_7 = __pyx_v_ords; __Pyx_INCREF(__pyx_t_7); __pyx_t_4 = 0;
+  for (;;) {
+    if (__pyx_t_4 >= PyList_GET_SIZE(__pyx_t_7)) break;
+    #if CYTHON_COMPILING_IN_CPYTHON
+    __pyx_t_2 = PyList_GET_ITEM(__pyx_t_7, __pyx_t_4); __Pyx_INCREF(__pyx_t_2); __pyx_t_4++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    #else
+    __pyx_t_2 = PySequence_ITEM(__pyx_t_7, __pyx_t_4); __pyx_t_4++; if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    #endif
+    __Pyx_XDECREF_SET(__pyx_v_row_ord, __pyx_t_2);
+    __pyx_t_2 = 0;
+    __Pyx_INCREF(__pyx_t_8);
+    __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_8);
+    __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_t_8, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_8);
+    __pyx_t_8 = __pyx_t_2;
+    __pyx_t_2 = 0;
+
+    /* "coral/analysis/_sequencing/calign.pyx":55
+ *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
+ *     for i, row_ord in enumerate(ords):
+ *         for j, col_ord in enumerate(ords):             # <<<<<<<<<<<<<<
+ *             ord_matrix[row_ord, col_ord] = matrix[i, j]
+ *
+ */
+    __Pyx_INCREF(__pyx_int_0);
+    __pyx_t_2 = __pyx_int_0;
+    __pyx_t_3 = __pyx_v_ords; __Pyx_INCREF(__pyx_t_3); __pyx_t_9 = 0;
+    for (;;) {
+      if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_3)) break;
+      #if CYTHON_COMPILING_IN_CPYTHON
+      __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_9); __Pyx_INCREF(__pyx_t_1); __pyx_t_9++; if (unlikely(0 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      #else
+      __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      #endif
+      __Pyx_XDECREF_SET(__pyx_v_col_ord, __pyx_t_1);
+      __pyx_t_1 = 0;
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_XDECREF_SET(__pyx_v_j, __pyx_t_2);
+      __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_t_2, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 55; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_2);
+      __pyx_t_2 = __pyx_t_1;
+      __pyx_t_1 = 0;
+
+      /* "coral/analysis/_sequencing/calign.pyx":56
+ *     for i, row_ord in enumerate(ords):
+ *         for j, col_ord in enumerate(ords):
+ *             ord_matrix[row_ord, col_ord] = matrix[i, j]             # <<<<<<<<<<<<<<
+ *
+ *     return ord_matrix
+ */
+      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_INCREF(__pyx_v_i);
+      __Pyx_GIVEREF(__pyx_v_i);
+      PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_i);
+      __Pyx_INCREF(__pyx_v_j);
+      __Pyx_GIVEREF(__pyx_v_j);
+      PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_j);
+      __pyx_t_10 = PyObject_GetItem(__pyx_v_matrix, __pyx_t_1); if (unlikely(__pyx_t_10 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+      __Pyx_GOTREF(__pyx_t_10);
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_INCREF(__pyx_v_row_ord);
+      __Pyx_GIVEREF(__pyx_v_row_ord);
+      PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_row_ord);
+      __Pyx_INCREF(__pyx_v_col_ord);
+      __Pyx_GIVEREF(__pyx_v_col_ord);
+      PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_col_ord);
+      if (unlikely(PyObject_SetItem(__pyx_v_ord_matrix, __pyx_t_1, __pyx_t_10) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 56; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+
+      /* "coral/analysis/_sequencing/calign.pyx":55
+ *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
+ *     for i, row_ord in enumerate(ords):
+ *         for j, col_ord in enumerate(ords):             # <<<<<<<<<<<<<<
+ *             ord_matrix[row_ord, col_ord] = matrix[i, j]
+ *
+ */
+    }
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+    /* "coral/analysis/_sequencing/calign.pyx":54
+ *     ords = [ord(c) for c in matrix.alphabet]
+ *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
+ *     for i, row_ord in enumerate(ords):             # <<<<<<<<<<<<<<
+ *         for j, col_ord in enumerate(ords):
+ *             ord_matrix[row_ord, col_ord] = matrix[i, j]
+ */
+  }
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+
+  /* "coral/analysis/_sequencing/calign.pyx":58
+ *             ord_matrix[row_ord, col_ord] = matrix[i, j]
+ *
+ *     return ord_matrix             # <<<<<<<<<<<<<<
+ *
+ *
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_ord_matrix);
+  __pyx_r = __pyx_v_ord_matrix;
+  goto __pyx_L0;
+
+  /* "coral/analysis/_sequencing/calign.pyx":49
+ *
+ *
+ * def as_ord_matrix(matrix):             # <<<<<<<<<<<<<<
+ *     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
+ *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_XDECREF(__pyx_t_10);
+  __Pyx_AddTraceback("coral.analysis._sequencing.calign.as_ord_matrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_ords);
+  __Pyx_XDECREF(__pyx_v_ord_matrix);
+  __Pyx_XDECREF(__pyx_v_i);
+  __Pyx_XDECREF(__pyx_v_row_ord);
+  __Pyx_XDECREF(__pyx_v_j);
+  __Pyx_XDECREF(__pyx_v_col_ord);
+  __Pyx_XDECREF(__pyx_v_c);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "coral/analysis/_sequencing/calign.pyx":61
  *
  *
  * def max_index(array):             # <<<<<<<<<<<<<<
@@ -1579,21 +1952,21 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_1max_index(PyObject *__pyx_self, PyObject *__pyx_v_array); /*proto*/
-static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_max_index[] = "Locate the index of the largest value in the array. If there are\n    multiple, finds the earliest one in the row-flattened array.\n\n    :param array: Any array.\n    :type array: numpy.array\n\n    ";
-static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_1max_index = {"max_index", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_1max_index, METH_O, __pyx_doc_5coral_8analysis_11_sequencing_6calign_max_index};
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_1max_index(PyObject *__pyx_self, PyObject *__pyx_v_array) {
+static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3max_index(PyObject *__pyx_self, PyObject *__pyx_v_array); /*proto*/
+static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_2max_index[] = "Locate the index of the largest value in the array. If there are\n    multiple, finds the earliest one in the row-flattened array.\n\n    :param array: Any array.\n    :type array: numpy.array\n\n    ";
+static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_3max_index = {"max_index", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_3max_index, METH_O, __pyx_doc_5coral_8analysis_11_sequencing_6calign_2max_index};
+static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3max_index(PyObject *__pyx_self, PyObject *__pyx_v_array) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("max_index (wrapper)", 0);
-  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(__pyx_self, ((PyObject *)__pyx_v_array));
+  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(__pyx_self, ((PyObject *)__pyx_v_array));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_array) {
+static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_array) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1608,7 +1981,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHO
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("max_index", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":58
+  /* "coral/analysis/_sequencing/calign.pyx":69
  *
  *     '''
  *     return np.unravel_index(array.argmax(), array.shape)             # <<<<<<<<<<<<<<
@@ -1616,12 +1989,12 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHO
  *
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_unravel_index); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_unravel_index); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_array, __pyx_n_s_argmax); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_array, __pyx_n_s_argmax); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_4))) {
@@ -1634,14 +2007,14 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHO
     }
   }
   if (__pyx_t_5) {
-    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   } else {
-    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_2 = __Pyx_PyObject_CallNoArg(__pyx_t_4); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_array, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_array, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_5 = NULL;
   __pyx_t_6 = 0;
@@ -1655,7 +2028,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHO
       __pyx_t_6 = 1;
     }
   }
-  __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   if (__pyx_t_5) {
     __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -1666,7 +2039,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHO
   PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_4);
   __pyx_t_2 = 0;
   __pyx_t_4 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 58; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_7, NULL); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 69; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -1674,7 +2047,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHO
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":50
+  /* "coral/analysis/_sequencing/calign.pyx":61
  *
  *
  * def max_index(array):             # <<<<<<<<<<<<<<
@@ -1698,7 +2071,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHO
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":61
+/* "coral/analysis/_sequencing/calign.pyx":72
  *
  *
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,             # <<<<<<<<<<<<<<
@@ -1707,10 +2080,10 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_max_index(CYTHO
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3aligner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_2aligner[] = "Calculates the alignment of two sequences. The global method uses\n    a global Needleman-Wunsh algorithm, local does a a local\n    Smith-Waterman alignment, global_cfe does a global alignment with\n    cost-free ends and glocal does an alignment which is global only with\n    respect to the shorter sequence, also known as a semi-global\n    alignment. Returns the aligned (sub)sequences as character arrays.\n\n    Gotoh, O. (1982). J. Mol. Biol. 162, 705-708.\n    Needleman, S. & Wunsch, C. (1970). J. Mol. Biol. 48(3), 443-53.\n    Smith, T.F. & Waterman M.S. (1981). J. Mol. Biol. 147, 195-197.\n\n    :param seqj: First sequence.\n    :type seqj: str\n    :param seqi: Second sequence.\n    :type seqi: str\n    :param method: Type of alignment: 'global', 'global_cfe', 'local', or\n                   'glocal'.\n    :type method: str\n    :param gap_open: The cost of opening a gap (negative number).\n    :type gap_open: float\n    :param gap_extend: The cost of extending an open gap (negative number).\n    :type gap_extend: float\n    :param gap_double: The gap-opening cost if a gap is already open in the\n                       other sequence (negative number).\n    :type gap_double: float\n    :param matrix: A score matrix dictionary name. Only one available now is\n                   'DNA_simple'.\n    :type matrix: str\n\n    ";
-static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_3aligner = {"aligner", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_3aligner, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5coral_8analysis_11_sequencing_6calign_2aligner};
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3aligner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5aligner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_4aligner[] = "Calculates the alignment of two sequences. The global method uses\n    a global Needleman-Wunsh algorithm, local does a a local\n    Smith-Waterman alignment, global_cfe does a global alignment with\n    cost-free ends and glocal does an alignment which is global only with\n    respect to the shorter sequence, also known as a semi-global\n    alignment. Returns the aligned (sub)sequences as character arrays.\n\n    Gotoh, O. (1982). J. Mol. Biol. 162, 705-708.\n    Needleman, S. & Wunsch, C. (1970). J. Mol. Biol. 48(3), 443-53.\n    Smith, T.F. & Waterman M.S. (1981). J. Mol. Biol. 147, 195-197.\n\n    :param seqj: First sequence.\n    :type seqj: str\n    :param seqi: Second sequence.\n    :type seqi: str\n    :param method: Type of alignment: 'global', 'global_cfe', 'local', or\n                   'glocal'.\n    :type method: str\n    :param gap_open: The cost of opening a gap (negative number).\n    :type gap_open: float\n    :param gap_extend: The cost of extending an open gap (negative number).\n    :type gap_extend: float\n    :param gap_double: The gap-opening cost if a gap is already open in the\n                       other sequence (negative number).\n    :type gap_double: float\n    :param matrix: A score matrix dictionary name. Examples can be found in\n                   the substitution_matrices module.\n    :type matrix: SubstitutionMatrix\n\n    ";
+static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_5aligner = {"aligner", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_5aligner, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5coral_8analysis_11_sequencing_6calign_4aligner};
+static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5aligner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v__seqj = 0;
   PyObject *__pyx_v__seqi = 0;
   __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_open;
@@ -1751,7 +2124,7 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3aligner(PyObje
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_seqi)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("aligner", 0, 2, 7, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("aligner", 0, 2, 7, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (kw_args > 0) {
@@ -1780,7 +2153,7 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3aligner(PyObje
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "aligner") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "aligner") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1798,17 +2171,17 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3aligner(PyObje
     __pyx_v__seqj = values[0];
     __pyx_v__seqi = values[1];
     if (values[2]) {
-      __pyx_v_gap_open = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_gap_open == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_gap_open = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_gap_open == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_gap_open = ((__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT)-7.0);
     }
     if (values[3]) {
-      __pyx_v_gap_extend = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_gap_extend == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_gap_extend = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_gap_extend == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_gap_extend = ((__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT)-7.0);
     }
     if (values[4]) {
-      __pyx_v_gap_double = __pyx_PyFloat_AsFloat(values[4]); if (unlikely((__pyx_v_gap_double == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 62; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+      __pyx_v_gap_double = __pyx_PyFloat_AsFloat(values[4]); if (unlikely((__pyx_v_gap_double == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
       __pyx_v_gap_double = ((__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT)-7.0);
     }
@@ -1817,20 +2190,20 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3aligner(PyObje
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("aligner", 0, 2, 7, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("aligner", 0, 2, 7, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("coral.analysis._sequencing.calign.aligner", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(__pyx_self, __pyx_v__seqj, __pyx_v__seqi, __pyx_v_gap_open, __pyx_v_gap_extend, __pyx_v_gap_double, __pyx_v_method, __pyx_v_matrix);
+  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(__pyx_self, __pyx_v__seqj, __pyx_v__seqi, __pyx_v_gap_open, __pyx_v_gap_extend, __pyx_v_gap_double, __pyx_v_method, __pyx_v_matrix);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v__seqj, PyObject *__pyx_v__seqi, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_open, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_extend, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_double, PyObject *__pyx_v_method, PyObject *__pyx_v_matrix) {
+static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v__seqj, PyObject *__pyx_v__seqi, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_open, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_extend, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_double, PyObject *__pyx_v_method, PyObject *__pyx_v_matrix) {
   int __pyx_v_NONE;
   int __pyx_v_LEFT;
   int __pyx_v_UP;
@@ -1892,17 +2265,17 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   PyArrayObject *__pyx_t_13 = NULL;
   PyArrayObject *__pyx_t_14 = NULL;
   PyArrayObject *__pyx_t_15 = NULL;
-  PyObject *__pyx_t_16 = NULL;
-  PyObject *__pyx_t_17 = NULL;
-  int __pyx_t_18;
-  int __pyx_t_19;
-  Py_ssize_t __pyx_t_20;
-  Py_ssize_t __pyx_t_21;
-  int __pyx_t_22;
-  Py_ssize_t __pyx_t_23;
+  PyArrayObject *__pyx_t_16 = NULL;
+  int __pyx_t_17;
+  PyObject *__pyx_t_18 = NULL;
+  PyObject *__pyx_t_19 = NULL;
+  PyObject *__pyx_t_20 = NULL;
+  PyObject *__pyx_t_21 = NULL;
+  PyObject *__pyx_t_22 = NULL;
+  int __pyx_t_23;
   Py_ssize_t __pyx_t_24;
   Py_ssize_t __pyx_t_25;
-  Py_ssize_t __pyx_t_26;
+  int __pyx_t_26;
   Py_ssize_t __pyx_t_27;
   Py_ssize_t __pyx_t_28;
   Py_ssize_t __pyx_t_29;
@@ -1921,22 +2294,26 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   Py_ssize_t __pyx_t_42;
   Py_ssize_t __pyx_t_43;
   Py_ssize_t __pyx_t_44;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_45;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_46;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_47;
+  Py_ssize_t __pyx_t_45;
+  Py_ssize_t __pyx_t_46;
+  Py_ssize_t __pyx_t_47;
   Py_ssize_t __pyx_t_48;
-  Py_ssize_t __pyx_t_49;
-  Py_ssize_t __pyx_t_50;
-  Py_ssize_t __pyx_t_51;
+  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_49;
+  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_50;
+  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_51;
   Py_ssize_t __pyx_t_52;
   Py_ssize_t __pyx_t_53;
   Py_ssize_t __pyx_t_54;
   Py_ssize_t __pyx_t_55;
-  PyObject *(*__pyx_t_56)(PyObject *);
+  Py_ssize_t __pyx_t_56;
   Py_ssize_t __pyx_t_57;
   Py_ssize_t __pyx_t_58;
   Py_ssize_t __pyx_t_59;
-  Py_ssize_t __pyx_t_60;
+  PyObject *(*__pyx_t_60)(PyObject *);
+  Py_ssize_t __pyx_t_61;
+  Py_ssize_t __pyx_t_62;
+  Py_ssize_t __pyx_t_63;
+  Py_ssize_t __pyx_t_64;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1962,7 +2339,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_pybuffernd_amatrix.data = NULL;
   __pyx_pybuffernd_amatrix.rcbuffer = &__pyx_pybuffer_amatrix;
 
-  /* "coral/analysis/_sequencing/calign.pyx":94
+  /* "coral/analysis/_sequencing/calign.pyx":105
  *
  *     '''
  *     cdef int NONE = 0,  LEFT = 1, UP = 2,  DIAG = 3             # <<<<<<<<<<<<<<
@@ -1974,7 +2351,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_v_UP = 2;
   __pyx_v_DIAG = 3;
 
-  /* "coral/analysis/_sequencing/calign.pyx":95
+  /* "coral/analysis/_sequencing/calign.pyx":106
  *     '''
  *     cdef int NONE = 0,  LEFT = 1, UP = 2,  DIAG = 3
  *     cdef bint flip = 0             # <<<<<<<<<<<<<<
@@ -1983,27 +2360,27 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_flip = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":96
+  /* "coral/analysis/_sequencing/calign.pyx":107
  *     cdef int NONE = 0,  LEFT = 1, UP = 2,  DIAG = 3
  *     cdef bint flip = 0
  *     cdef char* seqj = _seqj             # <<<<<<<<<<<<<<
  *     cdef char* seqi = _seqi
  *     cdef size_t align_counter = 0
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v__seqj); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 96; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v__seqj); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_seqj = __pyx_t_1;
 
-  /* "coral/analysis/_sequencing/calign.pyx":97
+  /* "coral/analysis/_sequencing/calign.pyx":108
  *     cdef bint flip = 0
  *     cdef char* seqj = _seqj
  *     cdef char* seqi = _seqi             # <<<<<<<<<<<<<<
  *     cdef size_t align_counter = 0
  *
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v__seqi); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 97; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v__seqi); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 108; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_seqi = __pyx_t_1;
 
-  /* "coral/analysis/_sequencing/calign.pyx":98
+  /* "coral/analysis/_sequencing/calign.pyx":109
  *     cdef char* seqj = _seqj
  *     cdef char* seqi = _seqi
  *     cdef size_t align_counter = 0             # <<<<<<<<<<<<<<
@@ -2012,17 +2389,17 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_align_counter = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":102
+  /* "coral/analysis/_sequencing/calign.pyx":113
  *     cdef int imethod
  *
  *     if method == 'global':             # <<<<<<<<<<<<<<
  *         imethod = 0
  *     elif method == 'local':
  */
-  __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_global, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 102; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_global, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_2) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":103
+    /* "coral/analysis/_sequencing/calign.pyx":114
  *
  *     if method == 'global':
  *         imethod = 0             # <<<<<<<<<<<<<<
@@ -2031,7 +2408,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     __pyx_v_imethod = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":102
+    /* "coral/analysis/_sequencing/calign.pyx":113
  *     cdef int imethod
  *
  *     if method == 'global':             # <<<<<<<<<<<<<<
@@ -2041,17 +2418,17 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     goto __pyx_L3;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":104
+  /* "coral/analysis/_sequencing/calign.pyx":115
  *     if method == 'global':
  *         imethod = 0
  *     elif method == 'local':             # <<<<<<<<<<<<<<
  *         imethod = 1
  *     elif method == 'glocal':
  */
-  __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_local, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 104; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_local, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_2) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":105
+    /* "coral/analysis/_sequencing/calign.pyx":116
  *         imethod = 0
  *     elif method == 'local':
  *         imethod = 1             # <<<<<<<<<<<<<<
@@ -2060,7 +2437,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     __pyx_v_imethod = 1;
 
-    /* "coral/analysis/_sequencing/calign.pyx":104
+    /* "coral/analysis/_sequencing/calign.pyx":115
  *     if method == 'global':
  *         imethod = 0
  *     elif method == 'local':             # <<<<<<<<<<<<<<
@@ -2070,17 +2447,17 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     goto __pyx_L3;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":106
+  /* "coral/analysis/_sequencing/calign.pyx":117
  *     elif method == 'local':
  *         imethod = 1
  *     elif method == 'glocal':             # <<<<<<<<<<<<<<
  *         imethod = 2
  *     elif method == 'global_cfe':
  */
-  __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_glocal, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 106; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_glocal, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_2) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":107
+    /* "coral/analysis/_sequencing/calign.pyx":118
  *         imethod = 1
  *     elif method == 'glocal':
  *         imethod = 2             # <<<<<<<<<<<<<<
@@ -2089,7 +2466,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     __pyx_v_imethod = 2;
 
-    /* "coral/analysis/_sequencing/calign.pyx":106
+    /* "coral/analysis/_sequencing/calign.pyx":117
  *     elif method == 'local':
  *         imethod = 1
  *     elif method == 'glocal':             # <<<<<<<<<<<<<<
@@ -2099,17 +2476,17 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     goto __pyx_L3;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":108
+  /* "coral/analysis/_sequencing/calign.pyx":119
  *     elif method == 'glocal':
  *         imethod = 2
  *     elif method == 'global_cfe':             # <<<<<<<<<<<<<<
  *         imethod = 3
  *
  */
-  __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_global_cfe, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 108; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_global_cfe, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_2) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":109
+    /* "coral/analysis/_sequencing/calign.pyx":120
  *         imethod = 2
  *     elif method == 'global_cfe':
  *         imethod = 3             # <<<<<<<<<<<<<<
@@ -2118,7 +2495,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     __pyx_v_imethod = 3;
 
-    /* "coral/analysis/_sequencing/calign.pyx":108
+    /* "coral/analysis/_sequencing/calign.pyx":119
  *     elif method == 'glocal':
  *         imethod = 2
  *     elif method == 'global_cfe':             # <<<<<<<<<<<<<<
@@ -2128,7 +2505,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   }
   __pyx_L3:;
 
-  /* "coral/analysis/_sequencing/calign.pyx":111
+  /* "coral/analysis/_sequencing/calign.pyx":122
  *         imethod = 3
  *
  *     cdef size_t max_j = strlen(seqj)             # <<<<<<<<<<<<<<
@@ -2137,7 +2514,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_max_j = strlen(__pyx_v_seqj);
 
-  /* "coral/analysis/_sequencing/calign.pyx":112
+  /* "coral/analysis/_sequencing/calign.pyx":123
  *
  *     cdef size_t max_j = strlen(seqj)
  *     cdef size_t max_i = strlen(seqi)             # <<<<<<<<<<<<<<
@@ -2146,7 +2523,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_max_i = strlen(__pyx_v_seqi);
 
-  /* "coral/analysis/_sequencing/calign.pyx":113
+  /* "coral/analysis/_sequencing/calign.pyx":124
  *     cdef size_t max_j = strlen(seqj)
  *     cdef size_t max_i = strlen(seqi)
  *     if max_i == max_j == 0:             # <<<<<<<<<<<<<<
@@ -2160,7 +2537,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":114
+    /* "coral/analysis/_sequencing/calign.pyx":125
  *     cdef size_t max_i = strlen(seqi)
  *     if max_i == max_j == 0:
  *         return '', ''             # <<<<<<<<<<<<<<
@@ -2172,7 +2549,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     __pyx_r = __pyx_tuple__3;
     goto __pyx_L0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":113
+    /* "coral/analysis/_sequencing/calign.pyx":124
  *     cdef size_t max_j = strlen(seqj)
  *     cdef size_t max_i = strlen(seqi)
  *     if max_i == max_j == 0:             # <<<<<<<<<<<<<<
@@ -2181,7 +2558,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":116
+  /* "coral/analysis/_sequencing/calign.pyx":127
  *         return '', ''
  *
  *     if max_j > max_i:             # <<<<<<<<<<<<<<
@@ -2191,7 +2568,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_t_3 = ((__pyx_v_max_j > __pyx_v_max_i) != 0);
   if (__pyx_t_3) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":117
+    /* "coral/analysis/_sequencing/calign.pyx":128
  *
  *     if max_j > max_i:
  *         flip = 1             # <<<<<<<<<<<<<<
@@ -2200,7 +2577,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     __pyx_v_flip = 1;
 
-    /* "coral/analysis/_sequencing/calign.pyx":118
+    /* "coral/analysis/_sequencing/calign.pyx":129
  *     if max_j > max_i:
  *         flip = 1
  *         seqi, seqj = seqj, seqi             # <<<<<<<<<<<<<<
@@ -2212,7 +2589,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     __pyx_v_seqi = __pyx_t_1;
     __pyx_v_seqj = __pyx_t_4;
 
-    /* "coral/analysis/_sequencing/calign.pyx":119
+    /* "coral/analysis/_sequencing/calign.pyx":130
  *         flip = 1
  *         seqi, seqj = seqj, seqi
  *         max_i, max_j = max_j, max_i             # <<<<<<<<<<<<<<
@@ -2224,7 +2601,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     __pyx_v_max_i = __pyx_t_5;
     __pyx_v_max_j = __pyx_t_6;
 
-    /* "coral/analysis/_sequencing/calign.pyx":116
+    /* "coral/analysis/_sequencing/calign.pyx":127
  *         return '', ''
  *
  *     if max_j > max_i:             # <<<<<<<<<<<<<<
@@ -2233,7 +2610,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":126
+  /* "coral/analysis/_sequencing/calign.pyx":137
  *     cdef PyObject *ai, *aj
  *
  *     assert gap_extend <= 0, 'gap_extend penalty must be <= 0'             # <<<<<<<<<<<<<<
@@ -2244,12 +2621,12 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!((__pyx_v_gap_extend <= 0.0) != 0))) {
       PyErr_SetObject(PyExc_AssertionError, __pyx_kp_s_gap_extend_penalty_must_be_0);
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 126; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
   }
   #endif
 
-  /* "coral/analysis/_sequencing/calign.pyx":127
+  /* "coral/analysis/_sequencing/calign.pyx":138
  *
  *     assert gap_extend <= 0, 'gap_extend penalty must be <= 0'
  *     assert gap_open <= 0, 'gap_open must be <= 0'             # <<<<<<<<<<<<<<
@@ -2260,28 +2637,28 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!((__pyx_v_gap_open <= 0.0) != 0))) {
       PyErr_SetObject(PyExc_AssertionError, __pyx_kp_s_gap_open_must_be_0);
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 127; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 138; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
   }
   #endif
 
-  /* "coral/analysis/_sequencing/calign.pyx":129
+  /* "coral/analysis/_sequencing/calign.pyx":140
  *     assert gap_open <= 0, 'gap_open must be <= 0'
  *
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_i = np.empty((max_i + 1, max_j + 1), dtype=np.float32)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_j = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     agap_i.fill(-np.inf)
  */
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_empty); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_empty); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyInt_FromSize_t((__pyx_v_max_i + 1)); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_FromSize_t((__pyx_v_max_i + 1)); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_9 = __Pyx_PyInt_FromSize_t((__pyx_v_max_j + 1)); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyInt_FromSize_t((__pyx_v_max_j + 1)); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = PyTuple_New(2); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_7);
@@ -2289,32 +2666,32 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   PyTuple_SET_ITEM(__pyx_t_10, 1, __pyx_t_9);
   __pyx_t_7 = 0;
   __pyx_t_9 = 0;
-  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_GIVEREF(__pyx_t_10);
   PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_10);
   __pyx_t_10 = 0;
-  __pyx_t_10 = PyDict_New(); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = PyDict_New(); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_float32); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_float32); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_dtype, __pyx_t_11) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_dtype, __pyx_t_11) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_9, __pyx_t_10); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_9, __pyx_t_10); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  if (!(likely(((__pyx_t_11) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_11, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_11) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_11, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_12 = ((PyArrayObject *)__pyx_t_11);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_agap_i.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_agap_i = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 129; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_agap_i.diminfo[0].strides = __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_agap_i.diminfo[0].shape = __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_agap_i.diminfo[1].strides = __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_agap_i.diminfo[1].shape = __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -2322,23 +2699,23 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_v_agap_i = ((PyArrayObject *)__pyx_t_11);
   __pyx_t_11 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":130
+  /* "coral/analysis/_sequencing/calign.pyx":141
  *
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_i = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_j = np.empty((max_i + 1, max_j + 1), dtype=np.float32)             # <<<<<<<<<<<<<<
  *     agap_i.fill(-np.inf)
  *     agap_j.fill(-np.inf)
  */
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_empty); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_empty); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = __Pyx_PyInt_FromSize_t((__pyx_v_max_i + 1)); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = __Pyx_PyInt_FromSize_t((__pyx_v_max_i + 1)); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_9 = __Pyx_PyInt_FromSize_t((__pyx_v_max_j + 1)); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyInt_FromSize_t((__pyx_v_max_j + 1)); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_11);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_11);
@@ -2346,32 +2723,32 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_9);
   __pyx_t_11 = 0;
   __pyx_t_9 = 0;
-  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8);
   __pyx_t_8 = 0;
-  __pyx_t_8 = PyDict_New(); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = PyDict_New(); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_float32); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_float32); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_dtype, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_dtype, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_13 = ((PyArrayObject *)__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_agap_j.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_agap_j = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 130; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_agap_j.diminfo[0].strides = __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_agap_j.diminfo[0].shape = __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_agap_j.diminfo[1].strides = __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_agap_j.diminfo[1].shape = __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -2379,21 +2756,21 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_v_agap_j = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":131
+  /* "coral/analysis/_sequencing/calign.pyx":142
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_i = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_j = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     agap_i.fill(-np.inf)             # <<<<<<<<<<<<<<
  *     agap_j.fill(-np.inf)
  *
  */
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_agap_i), __pyx_n_s_fill); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_agap_i), __pyx_n_s_fill); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_inf); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_inf); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = PyNumber_Negative(__pyx_t_10); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = PyNumber_Negative(__pyx_t_10); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __pyx_t_10 = NULL;
@@ -2407,38 +2784,38 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     }
   }
   if (!__pyx_t_10) {
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_GOTREF(__pyx_t_7);
   } else {
-    __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_11);
     __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_10); __pyx_t_10 = NULL;
     __Pyx_GIVEREF(__pyx_t_9);
     PyTuple_SET_ITEM(__pyx_t_11, 0+1, __pyx_t_9);
     __pyx_t_9 = 0;
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_11, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 131; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_11, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":132
+  /* "coral/analysis/_sequencing/calign.pyx":143
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_j = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     agap_i.fill(-np.inf)
  *     agap_j.fill(-np.inf)             # <<<<<<<<<<<<<<
  *
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] score = np.zeros((max_i + 1, max_j + 1), dtype=np.float32)
  */
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_agap_j), __pyx_n_s_fill); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_agap_j), __pyx_n_s_fill); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_inf); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_inf); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  __pyx_t_11 = PyNumber_Negative(__pyx_t_9); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = PyNumber_Negative(__pyx_t_9); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __pyx_t_9 = NULL;
@@ -2452,40 +2829,40 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     }
   }
   if (!__pyx_t_9) {
-    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_11); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_11); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_GOTREF(__pyx_t_7);
   } else {
-    __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_10);
     __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9); __pyx_t_9 = NULL;
     __Pyx_GIVEREF(__pyx_t_11);
     PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_t_11);
     __pyx_t_11 = 0;
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 132; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   }
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":134
+  /* "coral/analysis/_sequencing/calign.pyx":145
  *     agap_j.fill(-np.inf)
  *
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] score = np.zeros((max_i + 1, max_j + 1), dtype=np.float32)             # <<<<<<<<<<<<<<
  *
  *     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)
  */
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_zeros); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyInt_FromSize_t((__pyx_v_max_i + 1)); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyInt_FromSize_t((__pyx_v_max_i + 1)); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_10 = __Pyx_PyInt_FromSize_t((__pyx_v_max_j + 1)); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = __Pyx_PyInt_FromSize_t((__pyx_v_max_j + 1)); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = PyTuple_New(2); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GIVEREF(__pyx_t_7);
   PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_7);
@@ -2493,32 +2870,32 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   PyTuple_SET_ITEM(__pyx_t_11, 1, __pyx_t_10);
   __pyx_t_7 = 0;
   __pyx_t_10 = 0;
-  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_GIVEREF(__pyx_t_11);
   PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_11);
   __pyx_t_11 = 0;
-  __pyx_t_11 = PyDict_New(); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = PyDict_New(); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
-  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_float32); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_float32); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_11, __pyx_n_s_dtype, __pyx_t_9) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_11, __pyx_n_s_dtype, __pyx_t_9) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, __pyx_t_11); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_9) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_9, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_14 = ((PyArrayObject *)__pyx_t_9);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_score.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_score = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_score.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 134; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_score.diminfo[0].strides = __pyx_pybuffernd_score.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_score.diminfo[0].shape = __pyx_pybuffernd_score.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_score.diminfo[1].strides = __pyx_pybuffernd_score.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_score.diminfo[1].shape = __pyx_pybuffernd_score.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -2526,23 +2903,23 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_v_score = ((PyArrayObject *)__pyx_t_9);
   __pyx_t_9 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":136
+  /* "coral/analysis/_sequencing/calign.pyx":147
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] score = np.zeros((max_i + 1, max_j + 1), dtype=np.float32)
  *
  *     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = matrix
- *
+ *     amatrix = as_ord_matrix(matrix)
  */
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_zeros); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_zeros); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  __pyx_t_9 = __Pyx_PyInt_FromSize_t((__pyx_v_max_i + 1)); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_PyInt_FromSize_t((__pyx_v_max_i + 1)); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_10 = __Pyx_PyInt_FromSize_t((__pyx_v_max_j + 1)); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = __Pyx_PyInt_FromSize_t((__pyx_v_max_j + 1)); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_GIVEREF(__pyx_t_9);
   PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_9);
@@ -2550,32 +2927,32 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   PyTuple_SET_ITEM(__pyx_t_8, 1, __pyx_t_10);
   __pyx_t_9 = 0;
   __pyx_t_10 = 0;
-  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_10 = PyTuple_New(1); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_8);
   __pyx_t_8 = 0;
-  __pyx_t_8 = PyDict_New(); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_8 = PyDict_New(); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_9 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_9);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_uint); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_9, __pyx_n_s_uint); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_dtype, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_dtype, __pyx_t_7) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_10, __pyx_t_8); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_10, __pyx_t_8); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_15 = ((PyArrayObject *)__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_pointer.rcbuffer->pybuffer, (PyObject*)__pyx_t_15, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_pointer = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 136; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_pointer.diminfo[0].strides = __pyx_pybuffernd_pointer.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_pointer.diminfo[0].shape = __pyx_pybuffernd_pointer.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_pointer.diminfo[1].strides = __pyx_pybuffernd_pointer.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_pointer.diminfo[1].shape = __pyx_pybuffernd_pointer.rcbuffer->pybuffer.shape[1];
     }
   }
@@ -2583,28 +2960,84 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_v_pointer = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":137
+  /* "coral/analysis/_sequencing/calign.pyx":148
  *
  *     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)
  *     cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = matrix             # <<<<<<<<<<<<<<
- *
+ *     amatrix = as_ord_matrix(matrix)
  *
  */
-  if (!(likely(((__pyx_v_matrix) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_matrix, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (!(likely(((__pyx_v_matrix) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_matrix, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_t_7 = __pyx_v_matrix;
   __Pyx_INCREF(__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_7), &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_amatrix = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.buf = NULL;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 137; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_amatrix.diminfo[0].strides = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_amatrix.diminfo[0].shape = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_amatrix.diminfo[1].strides = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_amatrix.diminfo[1].shape = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.shape[1];
     }
   }
   __pyx_v_amatrix = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":141
+  /* "coral/analysis/_sequencing/calign.pyx":149
+ *     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)
+ *     cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = matrix
+ *     amatrix = as_ord_matrix(matrix)             # <<<<<<<<<<<<<<
+ *
+ *     # START HERE:
+ */
+  __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_as_ord_matrix); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_8);
+  __pyx_t_10 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_8))) {
+    __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_8);
+    if (likely(__pyx_t_10)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_8);
+      __Pyx_INCREF(__pyx_t_10);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_8, function);
+    }
+  }
+  if (!__pyx_t_10) {
+    __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_matrix); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_7);
+  } else {
+    __pyx_t_11 = PyTuple_New(1+1); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_GIVEREF(__pyx_t_10); PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_10); __pyx_t_10 = NULL;
+    __Pyx_INCREF(__pyx_v_matrix);
+    __Pyx_GIVEREF(__pyx_v_matrix);
+    PyTuple_SET_ITEM(__pyx_t_11, 0+1, __pyx_v_matrix);
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_11, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+  if (!(likely(((__pyx_t_7) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_7, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_16 = ((PyArrayObject *)__pyx_t_7);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer);
+    __pyx_t_17 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)__pyx_t_16, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
+    if (unlikely(__pyx_t_17 < 0)) {
+      PyErr_Fetch(&__pyx_t_18, &__pyx_t_19, &__pyx_t_20);
+      if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)__pyx_v_amatrix, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+        Py_XDECREF(__pyx_t_18); Py_XDECREF(__pyx_t_19); Py_XDECREF(__pyx_t_20);
+        __Pyx_RaiseBufferFallbackError();
+      } else {
+        PyErr_Restore(__pyx_t_18, __pyx_t_19, __pyx_t_20);
+      }
+    }
+    __pyx_pybuffernd_amatrix.diminfo[0].strides = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_amatrix.diminfo[0].shape = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_amatrix.diminfo[1].strides = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_amatrix.diminfo[1].shape = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.shape[1];
+    if (unlikely(__pyx_t_17 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 149; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  }
+  __pyx_t_16 = 0;
+  __Pyx_DECREF_SET(__pyx_v_amatrix, ((PyArrayObject *)__pyx_t_7));
+  __pyx_t_7 = 0;
+
+  /* "coral/analysis/_sequencing/calign.pyx":152
  *
  *     # START HERE:
  *     if imethod == 0:             # <<<<<<<<<<<<<<
@@ -2614,100 +3047,100 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   switch (__pyx_v_imethod) {
     case 0:
 
-    /* "coral/analysis/_sequencing/calign.pyx":142
+    /* "coral/analysis/_sequencing/calign.pyx":153
  *     # START HERE:
  *     if imethod == 0:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  */
-    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__5, __pyx_t_7) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__5, __pyx_t_7) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":143
+    /* "coral/analysis/_sequencing/calign.pyx":154
  *     if imethod == 0:
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP             # <<<<<<<<<<<<<<
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  */
-    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_UP); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_UP); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__7, __pyx_t_7) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__7, __pyx_t_7) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":144
+    /* "coral/analysis/_sequencing/calign.pyx":155
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)             # <<<<<<<<<<<<<<
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:
  */
-    __pyx_t_7 = PyFloat_FromDouble(__pyx_v_gap_open); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyFloat_FromDouble(__pyx_v_gap_open); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_gap_extend); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_gap_extend); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_arange); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = __Pyx_PyInt_FromSize_t(__pyx_v_max_j); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_arange); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __pyx_t_11 = __Pyx_PyInt_FromSize_t(__pyx_v_max_j); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_11);
+    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_INCREF(__pyx_int_0);
     __Pyx_GIVEREF(__pyx_int_0);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_int_0);
-    __Pyx_GIVEREF(__pyx_t_10);
-    PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_10);
-    __pyx_t_10 = 0;
-    __pyx_t_10 = PyDict_New(); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_16 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_16, __pyx_n_s_float32); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_dtype, __pyx_t_17) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_17 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_9, __pyx_t_10); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_GIVEREF(__pyx_t_11);
+    PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_11);
+    __pyx_t_11 = 0;
+    __pyx_t_11 = PyDict_New(); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_11);
+    __pyx_t_21 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    __pyx_t_22 = __Pyx_PyObject_GetAttrStr(__pyx_t_21, __pyx_n_s_float32); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    if (PyDict_SetItem(__pyx_t_11, __pyx_n_s_dtype, __pyx_t_22) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __pyx_t_22 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_9, __pyx_t_11); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __pyx_t_10 = PyNumber_Multiply(__pyx_t_8, __pyx_t_17); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __pyx_t_11 = PyNumber_Multiply(__pyx_t_8, __pyx_t_22); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_11);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_17 = PyNumber_Add(__pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __pyx_t_22 = PyNumber_Add(__pyx_t_7, __pyx_t_11); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__9, __pyx_t_17) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__9, __pyx_t_22) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":145
+    /* "coral/analysis/_sequencing/calign.pyx":156
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)             # <<<<<<<<<<<<<<
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT
  */
-    __pyx_t_17 = PyFloat_FromDouble(__pyx_v_gap_open); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_10 = PyFloat_FromDouble(__pyx_v_gap_extend); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_22 = PyFloat_FromDouble(__pyx_v_gap_open); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
+    __pyx_t_11 = PyFloat_FromDouble(__pyx_v_gap_extend); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_11);
+    __pyx_t_7 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_arange); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_arange); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyInt_FromSize_t(__pyx_v_max_i); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyInt_FromSize_t(__pyx_v_max_i); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_INCREF(__pyx_int_0);
     __Pyx_GIVEREF(__pyx_int_0);
@@ -2715,32 +3148,32 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     __Pyx_GIVEREF(__pyx_t_7);
     PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_7);
     __pyx_t_7 = 0;
-    __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyDict_New(); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_11 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_float32); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_dtype, __pyx_t_16) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_16 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_9, __pyx_t_7); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
+    __pyx_t_10 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_10);
+    __pyx_t_21 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_float32); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_dtype, __pyx_t_21) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    __pyx_t_21 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_9, __pyx_t_7); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = PyNumber_Multiply(__pyx_t_10, __pyx_t_16); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = PyNumber_Multiply(__pyx_t_11, __pyx_t_21); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_16 = PyNumber_Add(__pyx_t_17, __pyx_t_7); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    __pyx_t_21 = PyNumber_Add(__pyx_t_22, __pyx_t_7); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__11, __pyx_t_16) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__11, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":141
+    /* "coral/analysis/_sequencing/calign.pyx":152
  *
  *     # START HERE:
  *     if imethod == 0:             # <<<<<<<<<<<<<<
@@ -2749,7 +3182,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":146
+    /* "coral/analysis/_sequencing/calign.pyx":157
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:             # <<<<<<<<<<<<<<
@@ -2758,31 +3191,31 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     case 3:
 
-    /* "coral/analysis/_sequencing/calign.pyx":147
+    /* "coral/analysis/_sequencing/calign.pyx":158
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:
  */
-    __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__13, __pyx_t_16) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+    __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__13, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":148
+    /* "coral/analysis/_sequencing/calign.pyx":159
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP             # <<<<<<<<<<<<<<
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT
  */
-    __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_UP); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__15, __pyx_t_16) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+    __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v_UP); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__15, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":146
+    /* "coral/analysis/_sequencing/calign.pyx":157
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:             # <<<<<<<<<<<<<<
@@ -2791,7 +3224,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":149
+    /* "coral/analysis/_sequencing/calign.pyx":160
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:             # <<<<<<<<<<<<<<
@@ -2800,70 +3233,70 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     case 2:
 
-    /* "coral/analysis/_sequencing/calign.pyx":150
+    /* "coral/analysis/_sequencing/calign.pyx":161
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *
  */
-    __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__17, __pyx_t_16) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+    __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__17, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":151
+    /* "coral/analysis/_sequencing/calign.pyx":162
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)             # <<<<<<<<<<<<<<
  *
  *     for i in range(1, max_i + 1):
  */
-    __pyx_t_16 = PyFloat_FromDouble(__pyx_v_gap_open); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_7 = PyFloat_FromDouble(__pyx_v_gap_extend); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_21 = PyFloat_FromDouble(__pyx_v_gap_open); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    __pyx_t_7 = PyFloat_FromDouble(__pyx_v_gap_extend); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_17 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_arange); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_10);
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_17 = __Pyx_PyInt_FromSize_t(__pyx_v_max_j); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_22 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
+    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_22, __pyx_n_s_arange); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __pyx_t_22 = __Pyx_PyInt_FromSize_t(__pyx_v_max_j); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
+    __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_9);
     __Pyx_INCREF(__pyx_int_0);
     __Pyx_GIVEREF(__pyx_int_0);
     PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_int_0);
-    __Pyx_GIVEREF(__pyx_t_17);
-    PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_17);
-    __pyx_t_17 = 0;
-    __pyx_t_17 = PyDict_New(); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GIVEREF(__pyx_t_22);
+    PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_22);
+    __pyx_t_22 = 0;
+    __pyx_t_22 = PyDict_New(); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
+    __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_float32); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_11);
+    __pyx_t_10 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_float32); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    if (PyDict_SetItem(__pyx_t_17, __pyx_n_s_dtype, __pyx_t_11) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_10, __pyx_t_9, __pyx_t_17); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_11);
+    if (PyDict_SetItem(__pyx_t_22, __pyx_n_s_dtype, __pyx_t_10) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_11, __pyx_t_9, __pyx_t_22); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_17 = PyNumber_Multiply(__pyx_t_7, __pyx_t_11); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __pyx_t_22 = PyNumber_Multiply(__pyx_t_7, __pyx_t_10); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = PyNumber_Add(__pyx_t_16, __pyx_t_17); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__19, __pyx_t_11) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __pyx_t_10 = PyNumber_Add(__pyx_t_21, __pyx_t_22); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__19, __pyx_t_10) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":149
+    /* "coral/analysis/_sequencing/calign.pyx":160
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:             # <<<<<<<<<<<<<<
@@ -2874,7 +3307,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     default: break;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":153
+  /* "coral/analysis/_sequencing/calign.pyx":164
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *
  *     for i in range(1, max_i + 1):             # <<<<<<<<<<<<<<
@@ -2882,10 +3315,10 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  *         for j in range(1, max_j + 1):
  */
   __pyx_t_6 = (__pyx_v_max_i + 1);
-  for (__pyx_t_18 = 1; __pyx_t_18 < __pyx_t_6; __pyx_t_18+=1) {
-    __pyx_v_i = __pyx_t_18;
+  for (__pyx_t_17 = 1; __pyx_t_17 < __pyx_t_6; __pyx_t_17+=1) {
+    __pyx_v_i = __pyx_t_17;
 
-    /* "coral/analysis/_sequencing/calign.pyx":154
+    /* "coral/analysis/_sequencing/calign.pyx":165
  *
  *     for i in range(1, max_i + 1):
  *         ci = seqi[i - 1]             # <<<<<<<<<<<<<<
@@ -2894,7 +3327,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     __pyx_v_ci = (__pyx_v_seqi[(__pyx_v_i - 1)]);
 
-    /* "coral/analysis/_sequencing/calign.pyx":155
+    /* "coral/analysis/_sequencing/calign.pyx":166
  *     for i in range(1, max_i + 1):
  *         ci = seqi[i - 1]
  *         for j in range(1, max_j + 1):             # <<<<<<<<<<<<<<
@@ -2902,10 +3335,10 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  *             # agap_i
  */
     __pyx_t_5 = (__pyx_v_max_j + 1);
-    for (__pyx_t_19 = 1; __pyx_t_19 < __pyx_t_5; __pyx_t_19+=1) {
-      __pyx_v_j = __pyx_t_19;
+    for (__pyx_t_23 = 1; __pyx_t_23 < __pyx_t_5; __pyx_t_23+=1) {
+      __pyx_v_j = __pyx_t_23;
 
-      /* "coral/analysis/_sequencing/calign.pyx":156
+      /* "coral/analysis/_sequencing/calign.pyx":167
  *         ci = seqi[i - 1]
  *         for j in range(1, max_j + 1):
  *             cj = seqj[j - 1]             # <<<<<<<<<<<<<<
@@ -2914,365 +3347,365 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       __pyx_v_cj = (__pyx_v_seqj[(__pyx_v_j - 1)]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":159
+      /* "coral/analysis/_sequencing/calign.pyx":170
  *             # agap_i
  *             agap_i[i,j] = max3(
  *                          score[i, j - 1] + gap_open,             # <<<<<<<<<<<<<<
  *                          agap_i[i, j - 1] + gap_extend,
  *                          agap_j[i, j - 1] + gap_double)
  */
-      __pyx_t_20 = __pyx_v_i;
-      __pyx_t_21 = (__pyx_v_j - 1);
-      __pyx_t_22 = -1;
-      if (__pyx_t_20 < 0) {
-        __pyx_t_20 += __pyx_pybuffernd_score.diminfo[0].shape;
-        if (unlikely(__pyx_t_20 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_20 >= __pyx_pybuffernd_score.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_21 < 0) {
-        __pyx_t_21 += __pyx_pybuffernd_score.diminfo[1].shape;
-        if (unlikely(__pyx_t_21 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_21 >= __pyx_pybuffernd_score.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_24 = __pyx_v_i;
+      __pyx_t_25 = (__pyx_v_j - 1);
+      __pyx_t_26 = -1;
+      if (__pyx_t_24 < 0) {
+        __pyx_t_24 += __pyx_pybuffernd_score.diminfo[0].shape;
+        if (unlikely(__pyx_t_24 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_24 >= __pyx_pybuffernd_score.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_25 < 0) {
+        __pyx_t_25 += __pyx_pybuffernd_score.diminfo[1].shape;
+        if (unlikely(__pyx_t_25 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_25 >= __pyx_pybuffernd_score.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":160
+      /* "coral/analysis/_sequencing/calign.pyx":171
  *             agap_i[i,j] = max3(
  *                          score[i, j - 1] + gap_open,
  *                          agap_i[i, j - 1] + gap_extend,             # <<<<<<<<<<<<<<
  *                          agap_j[i, j - 1] + gap_double)
  *             # agap_j
  */
-      __pyx_t_23 = __pyx_v_i;
-      __pyx_t_24 = (__pyx_v_j - 1);
-      __pyx_t_22 = -1;
-      if (__pyx_t_23 < 0) {
-        __pyx_t_23 += __pyx_pybuffernd_agap_i.diminfo[0].shape;
-        if (unlikely(__pyx_t_23 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_23 >= __pyx_pybuffernd_agap_i.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_24 < 0) {
-        __pyx_t_24 += __pyx_pybuffernd_agap_i.diminfo[1].shape;
-        if (unlikely(__pyx_t_24 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_24 >= __pyx_pybuffernd_agap_i.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 160; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_27 = __pyx_v_i;
+      __pyx_t_28 = (__pyx_v_j - 1);
+      __pyx_t_26 = -1;
+      if (__pyx_t_27 < 0) {
+        __pyx_t_27 += __pyx_pybuffernd_agap_i.diminfo[0].shape;
+        if (unlikely(__pyx_t_27 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_27 >= __pyx_pybuffernd_agap_i.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_28 < 0) {
+        __pyx_t_28 += __pyx_pybuffernd_agap_i.diminfo[1].shape;
+        if (unlikely(__pyx_t_28 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_28 >= __pyx_pybuffernd_agap_i.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":161
+      /* "coral/analysis/_sequencing/calign.pyx":172
  *                          score[i, j - 1] + gap_open,
  *                          agap_i[i, j - 1] + gap_extend,
  *                          agap_j[i, j - 1] + gap_double)             # <<<<<<<<<<<<<<
  *             # agap_j
  *             agap_j[i,j] = max3(
  */
-      __pyx_t_25 = __pyx_v_i;
-      __pyx_t_26 = (__pyx_v_j - 1);
-      __pyx_t_22 = -1;
-      if (__pyx_t_25 < 0) {
-        __pyx_t_25 += __pyx_pybuffernd_agap_j.diminfo[0].shape;
-        if (unlikely(__pyx_t_25 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_25 >= __pyx_pybuffernd_agap_j.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_26 < 0) {
-        __pyx_t_26 += __pyx_pybuffernd_agap_j.diminfo[1].shape;
-        if (unlikely(__pyx_t_26 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_26 >= __pyx_pybuffernd_agap_j.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_29 = __pyx_v_i;
+      __pyx_t_30 = (__pyx_v_j - 1);
+      __pyx_t_26 = -1;
+      if (__pyx_t_29 < 0) {
+        __pyx_t_29 += __pyx_pybuffernd_agap_j.diminfo[0].shape;
+        if (unlikely(__pyx_t_29 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_29 >= __pyx_pybuffernd_agap_j.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_30 < 0) {
+        __pyx_t_30 += __pyx_pybuffernd_agap_j.diminfo[1].shape;
+        if (unlikely(__pyx_t_30 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_30 >= __pyx_pybuffernd_agap_j.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":158
+      /* "coral/analysis/_sequencing/calign.pyx":169
  *             cj = seqj[j - 1]
  *             # agap_i
  *             agap_i[i,j] = max3(             # <<<<<<<<<<<<<<
  *                          score[i, j - 1] + gap_open,
  *                          agap_i[i, j - 1] + gap_extend,
  */
-      __pyx_t_27 = __pyx_v_i;
-      __pyx_t_28 = __pyx_v_j;
-      __pyx_t_22 = -1;
-      if (__pyx_t_27 < 0) {
-        __pyx_t_27 += __pyx_pybuffernd_agap_i.diminfo[0].shape;
-        if (unlikely(__pyx_t_27 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_27 >= __pyx_pybuffernd_agap_i.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_28 < 0) {
-        __pyx_t_28 += __pyx_pybuffernd_agap_i.diminfo[1].shape;
-        if (unlikely(__pyx_t_28 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_28 >= __pyx_pybuffernd_agap_i.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_31 = __pyx_v_i;
+      __pyx_t_32 = __pyx_v_j;
+      __pyx_t_26 = -1;
+      if (__pyx_t_31 < 0) {
+        __pyx_t_31 += __pyx_pybuffernd_agap_i.diminfo[0].shape;
+        if (unlikely(__pyx_t_31 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_31 >= __pyx_pybuffernd_agap_i.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_32 < 0) {
+        __pyx_t_32 += __pyx_pybuffernd_agap_i.diminfo[1].shape;
+        if (unlikely(__pyx_t_32 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_32 >= __pyx_pybuffernd_agap_i.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 169; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_agap_i.diminfo[1].strides) = __pyx_f_5coral_8analysis_11_sequencing_6calign_max3(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_20, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_21, __pyx_pybuffernd_score.diminfo[1].strides)) + __pyx_v_gap_open), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_23, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_24, __pyx_pybuffernd_agap_i.diminfo[1].strides)) + __pyx_v_gap_extend), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_25, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_26, __pyx_pybuffernd_agap_j.diminfo[1].strides)) + __pyx_v_gap_double));
+      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_agap_i.diminfo[1].strides) = __pyx_f_5coral_8analysis_11_sequencing_6calign_max3(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_score.diminfo[1].strides)) + __pyx_v_gap_open), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_agap_i.diminfo[1].strides)) + __pyx_v_gap_extend), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_agap_j.diminfo[1].strides)) + __pyx_v_gap_double));
 
-      /* "coral/analysis/_sequencing/calign.pyx":164
+      /* "coral/analysis/_sequencing/calign.pyx":175
  *             # agap_j
  *             agap_j[i,j] = max3(
  *                          score[i - 1, j] + gap_open,             # <<<<<<<<<<<<<<
  *                          agap_j[i - 1, j] + gap_extend,
  *                          agap_i[i - 1, j] + gap_double)
  */
-      __pyx_t_29 = (__pyx_v_i - 1);
-      __pyx_t_30 = __pyx_v_j;
-      __pyx_t_22 = -1;
-      if (__pyx_t_29 < 0) {
-        __pyx_t_29 += __pyx_pybuffernd_score.diminfo[0].shape;
-        if (unlikely(__pyx_t_29 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_29 >= __pyx_pybuffernd_score.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_30 < 0) {
-        __pyx_t_30 += __pyx_pybuffernd_score.diminfo[1].shape;
-        if (unlikely(__pyx_t_30 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_30 >= __pyx_pybuffernd_score.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_33 = (__pyx_v_i - 1);
+      __pyx_t_34 = __pyx_v_j;
+      __pyx_t_26 = -1;
+      if (__pyx_t_33 < 0) {
+        __pyx_t_33 += __pyx_pybuffernd_score.diminfo[0].shape;
+        if (unlikely(__pyx_t_33 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_33 >= __pyx_pybuffernd_score.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_34 < 0) {
+        __pyx_t_34 += __pyx_pybuffernd_score.diminfo[1].shape;
+        if (unlikely(__pyx_t_34 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_34 >= __pyx_pybuffernd_score.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":165
+      /* "coral/analysis/_sequencing/calign.pyx":176
  *             agap_j[i,j] = max3(
  *                          score[i - 1, j] + gap_open,
  *                          agap_j[i - 1, j] + gap_extend,             # <<<<<<<<<<<<<<
  *                          agap_i[i - 1, j] + gap_double)
  *             # score
  */
-      __pyx_t_31 = (__pyx_v_i - 1);
-      __pyx_t_32 = __pyx_v_j;
-      __pyx_t_22 = -1;
-      if (__pyx_t_31 < 0) {
-        __pyx_t_31 += __pyx_pybuffernd_agap_j.diminfo[0].shape;
-        if (unlikely(__pyx_t_31 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_31 >= __pyx_pybuffernd_agap_j.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_32 < 0) {
-        __pyx_t_32 += __pyx_pybuffernd_agap_j.diminfo[1].shape;
-        if (unlikely(__pyx_t_32 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_32 >= __pyx_pybuffernd_agap_j.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 165; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_35 = (__pyx_v_i - 1);
+      __pyx_t_36 = __pyx_v_j;
+      __pyx_t_26 = -1;
+      if (__pyx_t_35 < 0) {
+        __pyx_t_35 += __pyx_pybuffernd_agap_j.diminfo[0].shape;
+        if (unlikely(__pyx_t_35 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_35 >= __pyx_pybuffernd_agap_j.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_36 < 0) {
+        __pyx_t_36 += __pyx_pybuffernd_agap_j.diminfo[1].shape;
+        if (unlikely(__pyx_t_36 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_36 >= __pyx_pybuffernd_agap_j.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":166
+      /* "coral/analysis/_sequencing/calign.pyx":177
  *                          score[i - 1, j] + gap_open,
  *                          agap_j[i - 1, j] + gap_extend,
  *                          agap_i[i - 1, j] + gap_double)             # <<<<<<<<<<<<<<
  *             # score
  *             diag_score = score[i - 1, j - 1] + amatrix[ci, cj]
  */
-      __pyx_t_33 = (__pyx_v_i - 1);
-      __pyx_t_34 = __pyx_v_j;
-      __pyx_t_22 = -1;
-      if (__pyx_t_33 < 0) {
-        __pyx_t_33 += __pyx_pybuffernd_agap_i.diminfo[0].shape;
-        if (unlikely(__pyx_t_33 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_33 >= __pyx_pybuffernd_agap_i.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_34 < 0) {
-        __pyx_t_34 += __pyx_pybuffernd_agap_i.diminfo[1].shape;
-        if (unlikely(__pyx_t_34 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_34 >= __pyx_pybuffernd_agap_i.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 166; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_37 = (__pyx_v_i - 1);
+      __pyx_t_38 = __pyx_v_j;
+      __pyx_t_26 = -1;
+      if (__pyx_t_37 < 0) {
+        __pyx_t_37 += __pyx_pybuffernd_agap_i.diminfo[0].shape;
+        if (unlikely(__pyx_t_37 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_37 >= __pyx_pybuffernd_agap_i.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_38 < 0) {
+        __pyx_t_38 += __pyx_pybuffernd_agap_i.diminfo[1].shape;
+        if (unlikely(__pyx_t_38 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_38 >= __pyx_pybuffernd_agap_i.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":163
+      /* "coral/analysis/_sequencing/calign.pyx":174
  *                          agap_j[i, j - 1] + gap_double)
  *             # agap_j
  *             agap_j[i,j] = max3(             # <<<<<<<<<<<<<<
  *                          score[i - 1, j] + gap_open,
  *                          agap_j[i - 1, j] + gap_extend,
  */
-      __pyx_t_35 = __pyx_v_i;
-      __pyx_t_36 = __pyx_v_j;
-      __pyx_t_22 = -1;
-      if (__pyx_t_35 < 0) {
-        __pyx_t_35 += __pyx_pybuffernd_agap_j.diminfo[0].shape;
-        if (unlikely(__pyx_t_35 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_35 >= __pyx_pybuffernd_agap_j.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_36 < 0) {
-        __pyx_t_36 += __pyx_pybuffernd_agap_j.diminfo[1].shape;
-        if (unlikely(__pyx_t_36 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_36 >= __pyx_pybuffernd_agap_j.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 163; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_39 = __pyx_v_i;
+      __pyx_t_40 = __pyx_v_j;
+      __pyx_t_26 = -1;
+      if (__pyx_t_39 < 0) {
+        __pyx_t_39 += __pyx_pybuffernd_agap_j.diminfo[0].shape;
+        if (unlikely(__pyx_t_39 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_39 >= __pyx_pybuffernd_agap_j.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_40 < 0) {
+        __pyx_t_40 += __pyx_pybuffernd_agap_j.diminfo[1].shape;
+        if (unlikely(__pyx_t_40 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_40 >= __pyx_pybuffernd_agap_j.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_agap_j.diminfo[1].strides) = __pyx_f_5coral_8analysis_11_sequencing_6calign_max3(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_score.diminfo[1].strides)) + __pyx_v_gap_open), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_agap_j.diminfo[1].strides)) + __pyx_v_gap_extend), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_agap_i.diminfo[1].strides)) + __pyx_v_gap_double));
+      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_39, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_40, __pyx_pybuffernd_agap_j.diminfo[1].strides) = __pyx_f_5coral_8analysis_11_sequencing_6calign_max3(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_score.diminfo[1].strides)) + __pyx_v_gap_open), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_agap_j.diminfo[1].strides)) + __pyx_v_gap_extend), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_37, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_38, __pyx_pybuffernd_agap_i.diminfo[1].strides)) + __pyx_v_gap_double));
 
-      /* "coral/analysis/_sequencing/calign.pyx":168
+      /* "coral/analysis/_sequencing/calign.pyx":179
  *                          agap_i[i - 1, j] + gap_double)
  *             # score
  *             diag_score = score[i - 1, j - 1] + amatrix[ci, cj]             # <<<<<<<<<<<<<<
  *             left_score = agap_i[i, j]
  *             up_score   = agap_j[i, j]
  */
-      __pyx_t_37 = (__pyx_v_i - 1);
-      __pyx_t_38 = (__pyx_v_j - 1);
-      __pyx_t_22 = -1;
-      if (__pyx_t_37 < 0) {
-        __pyx_t_37 += __pyx_pybuffernd_score.diminfo[0].shape;
-        if (unlikely(__pyx_t_37 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_37 >= __pyx_pybuffernd_score.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_38 < 0) {
-        __pyx_t_38 += __pyx_pybuffernd_score.diminfo[1].shape;
-        if (unlikely(__pyx_t_38 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_38 >= __pyx_pybuffernd_score.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_41 = (__pyx_v_i - 1);
+      __pyx_t_42 = (__pyx_v_j - 1);
+      __pyx_t_26 = -1;
+      if (__pyx_t_41 < 0) {
+        __pyx_t_41 += __pyx_pybuffernd_score.diminfo[0].shape;
+        if (unlikely(__pyx_t_41 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_41 >= __pyx_pybuffernd_score.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_42 < 0) {
+        __pyx_t_42 += __pyx_pybuffernd_score.diminfo[1].shape;
+        if (unlikely(__pyx_t_42 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_42 >= __pyx_pybuffernd_score.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_39 = __pyx_v_ci;
-      __pyx_t_40 = __pyx_v_cj;
-      __pyx_t_22 = -1;
-      if (__pyx_t_39 < 0) {
-        __pyx_t_39 += __pyx_pybuffernd_amatrix.diminfo[0].shape;
-        if (unlikely(__pyx_t_39 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_39 >= __pyx_pybuffernd_amatrix.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_40 < 0) {
-        __pyx_t_40 += __pyx_pybuffernd_amatrix.diminfo[1].shape;
-        if (unlikely(__pyx_t_40 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_40 >= __pyx_pybuffernd_amatrix.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_43 = __pyx_v_ci;
+      __pyx_t_44 = __pyx_v_cj;
+      __pyx_t_26 = -1;
+      if (__pyx_t_43 < 0) {
+        __pyx_t_43 += __pyx_pybuffernd_amatrix.diminfo[0].shape;
+        if (unlikely(__pyx_t_43 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_43 >= __pyx_pybuffernd_amatrix.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_44 < 0) {
+        __pyx_t_44 += __pyx_pybuffernd_amatrix.diminfo[1].shape;
+        if (unlikely(__pyx_t_44 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_44 >= __pyx_pybuffernd_amatrix.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_11 = PyFloat_FromDouble(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_37, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_38, __pyx_pybuffernd_score.diminfo[1].strides)) + (*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT *, __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.buf, __pyx_t_39, __pyx_pybuffernd_amatrix.diminfo[0].strides, __pyx_t_40, __pyx_pybuffernd_amatrix.diminfo[1].strides)))); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 168; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_XDECREF_SET(__pyx_v_diag_score, __pyx_t_11);
-      __pyx_t_11 = 0;
+      __pyx_t_10 = PyFloat_FromDouble(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_41, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_42, __pyx_pybuffernd_score.diminfo[1].strides)) + (*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT *, __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.buf, __pyx_t_43, __pyx_pybuffernd_amatrix.diminfo[0].strides, __pyx_t_44, __pyx_pybuffernd_amatrix.diminfo[1].strides)))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_10);
+      __Pyx_XDECREF_SET(__pyx_v_diag_score, __pyx_t_10);
+      __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":169
+      /* "coral/analysis/_sequencing/calign.pyx":180
  *             # score
  *             diag_score = score[i - 1, j - 1] + amatrix[ci, cj]
  *             left_score = agap_i[i, j]             # <<<<<<<<<<<<<<
  *             up_score   = agap_j[i, j]
  *             max_score = max3(diag_score, up_score, left_score)
  */
-      __pyx_t_41 = __pyx_v_i;
-      __pyx_t_42 = __pyx_v_j;
-      __pyx_t_22 = -1;
-      if (__pyx_t_41 < 0) {
-        __pyx_t_41 += __pyx_pybuffernd_agap_i.diminfo[0].shape;
-        if (unlikely(__pyx_t_41 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_41 >= __pyx_pybuffernd_agap_i.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_42 < 0) {
-        __pyx_t_42 += __pyx_pybuffernd_agap_i.diminfo[1].shape;
-        if (unlikely(__pyx_t_42 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_42 >= __pyx_pybuffernd_agap_i.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 169; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_45 = __pyx_v_i;
+      __pyx_t_46 = __pyx_v_j;
+      __pyx_t_26 = -1;
+      if (__pyx_t_45 < 0) {
+        __pyx_t_45 += __pyx_pybuffernd_agap_i.diminfo[0].shape;
+        if (unlikely(__pyx_t_45 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_45 >= __pyx_pybuffernd_agap_i.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_46 < 0) {
+        __pyx_t_46 += __pyx_pybuffernd_agap_i.diminfo[1].shape;
+        if (unlikely(__pyx_t_46 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_46 >= __pyx_pybuffernd_agap_i.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_11 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_41, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_42, __pyx_pybuffernd_agap_i.diminfo[1].strides))); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 169; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_XDECREF_SET(__pyx_v_left_score, __pyx_t_11);
-      __pyx_t_11 = 0;
+      __pyx_t_10 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_45, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_46, __pyx_pybuffernd_agap_i.diminfo[1].strides))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_10);
+      __Pyx_XDECREF_SET(__pyx_v_left_score, __pyx_t_10);
+      __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":170
+      /* "coral/analysis/_sequencing/calign.pyx":181
  *             diag_score = score[i - 1, j - 1] + amatrix[ci, cj]
  *             left_score = agap_i[i, j]
  *             up_score   = agap_j[i, j]             # <<<<<<<<<<<<<<
  *             max_score = max3(diag_score, up_score, left_score)
  *
  */
-      __pyx_t_43 = __pyx_v_i;
-      __pyx_t_44 = __pyx_v_j;
-      __pyx_t_22 = -1;
-      if (__pyx_t_43 < 0) {
-        __pyx_t_43 += __pyx_pybuffernd_agap_j.diminfo[0].shape;
-        if (unlikely(__pyx_t_43 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_43 >= __pyx_pybuffernd_agap_j.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_44 < 0) {
-        __pyx_t_44 += __pyx_pybuffernd_agap_j.diminfo[1].shape;
-        if (unlikely(__pyx_t_44 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_44 >= __pyx_pybuffernd_agap_j.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_47 = __pyx_v_i;
+      __pyx_t_48 = __pyx_v_j;
+      __pyx_t_26 = -1;
+      if (__pyx_t_47 < 0) {
+        __pyx_t_47 += __pyx_pybuffernd_agap_j.diminfo[0].shape;
+        if (unlikely(__pyx_t_47 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_47 >= __pyx_pybuffernd_agap_j.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_48 < 0) {
+        __pyx_t_48 += __pyx_pybuffernd_agap_j.diminfo[1].shape;
+        if (unlikely(__pyx_t_48 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_48 >= __pyx_pybuffernd_agap_j.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_11 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_43, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_44, __pyx_pybuffernd_agap_j.diminfo[1].strides))); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_XDECREF_SET(__pyx_v_up_score, __pyx_t_11);
-      __pyx_t_11 = 0;
+      __pyx_t_10 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_47, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_48, __pyx_pybuffernd_agap_j.diminfo[1].strides))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_10);
+      __Pyx_XDECREF_SET(__pyx_v_up_score, __pyx_t_10);
+      __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":171
+      /* "coral/analysis/_sequencing/calign.pyx":182
  *             left_score = agap_i[i, j]
  *             up_score   = agap_j[i, j]
  *             max_score = max3(diag_score, up_score, left_score)             # <<<<<<<<<<<<<<
  *
  *             score[i, j] = max_score
  */
-      __pyx_t_45 = __pyx_PyFloat_AsFloat(__pyx_v_diag_score); if (unlikely((__pyx_t_45 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_46 = __pyx_PyFloat_AsFloat(__pyx_v_up_score); if (unlikely((__pyx_t_46 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_47 = __pyx_PyFloat_AsFloat(__pyx_v_left_score); if (unlikely((__pyx_t_47 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_11 = PyFloat_FromDouble(__pyx_f_5coral_8analysis_11_sequencing_6calign_max3(__pyx_t_45, __pyx_t_46, __pyx_t_47)); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_11);
-      __Pyx_XDECREF_SET(__pyx_v_max_score, __pyx_t_11);
-      __pyx_t_11 = 0;
+      __pyx_t_49 = __pyx_PyFloat_AsFloat(__pyx_v_diag_score); if (unlikely((__pyx_t_49 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_50 = __pyx_PyFloat_AsFloat(__pyx_v_up_score); if (unlikely((__pyx_t_50 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_51 = __pyx_PyFloat_AsFloat(__pyx_v_left_score); if (unlikely((__pyx_t_51 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyFloat_FromDouble(__pyx_f_5coral_8analysis_11_sequencing_6calign_max3(__pyx_t_49, __pyx_t_50, __pyx_t_51)); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_10);
+      __Pyx_XDECREF_SET(__pyx_v_max_score, __pyx_t_10);
+      __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":173
+      /* "coral/analysis/_sequencing/calign.pyx":184
  *             max_score = max3(diag_score, up_score, left_score)
  *
  *             score[i, j] = max_score             # <<<<<<<<<<<<<<
  *
  *             # global
  */
-      __pyx_t_47 = __pyx_PyFloat_AsFloat(__pyx_v_max_score); if (unlikely((__pyx_t_47 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_48 = __pyx_v_i;
-      __pyx_t_49 = __pyx_v_j;
-      __pyx_t_22 = -1;
-      if (__pyx_t_48 < 0) {
-        __pyx_t_48 += __pyx_pybuffernd_score.diminfo[0].shape;
-        if (unlikely(__pyx_t_48 < 0)) __pyx_t_22 = 0;
-      } else if (unlikely(__pyx_t_48 >= __pyx_pybuffernd_score.diminfo[0].shape)) __pyx_t_22 = 0;
-      if (__pyx_t_49 < 0) {
-        __pyx_t_49 += __pyx_pybuffernd_score.diminfo[1].shape;
-        if (unlikely(__pyx_t_49 < 0)) __pyx_t_22 = 1;
-      } else if (unlikely(__pyx_t_49 >= __pyx_pybuffernd_score.diminfo[1].shape)) __pyx_t_22 = 1;
-      if (unlikely(__pyx_t_22 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_22);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 173; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_51 = __pyx_PyFloat_AsFloat(__pyx_v_max_score); if (unlikely((__pyx_t_51 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_52 = __pyx_v_i;
+      __pyx_t_53 = __pyx_v_j;
+      __pyx_t_26 = -1;
+      if (__pyx_t_52 < 0) {
+        __pyx_t_52 += __pyx_pybuffernd_score.diminfo[0].shape;
+        if (unlikely(__pyx_t_52 < 0)) __pyx_t_26 = 0;
+      } else if (unlikely(__pyx_t_52 >= __pyx_pybuffernd_score.diminfo[0].shape)) __pyx_t_26 = 0;
+      if (__pyx_t_53 < 0) {
+        __pyx_t_53 += __pyx_pybuffernd_score.diminfo[1].shape;
+        if (unlikely(__pyx_t_53 < 0)) __pyx_t_26 = 1;
+      } else if (unlikely(__pyx_t_53 >= __pyx_pybuffernd_score.diminfo[1].shape)) __pyx_t_26 = 1;
+      if (unlikely(__pyx_t_26 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_26);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_48, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_49, __pyx_pybuffernd_score.diminfo[1].strides) = __pyx_t_47;
+      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_53, __pyx_pybuffernd_score.diminfo[1].strides) = __pyx_t_51;
 
-      /* "coral/analysis/_sequencing/calign.pyx":176
+      /* "coral/analysis/_sequencing/calign.pyx":187
  *
  *             # global
  *             if max_score == up_score:             # <<<<<<<<<<<<<<
  *                 pointer[i,j] = UP
  *             elif max_score == left_score:
  */
-      __pyx_t_11 = PyObject_RichCompare(__pyx_v_max_score, __pyx_v_up_score, Py_EQ); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_11); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_10 = PyObject_RichCompare(__pyx_v_max_score, __pyx_v_up_score, Py_EQ); __Pyx_XGOTREF(__pyx_t_10); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_10); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 187; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       if (__pyx_t_3) {
 
-        /* "coral/analysis/_sequencing/calign.pyx":177
+        /* "coral/analysis/_sequencing/calign.pyx":188
  *             # global
  *             if max_score == up_score:
  *                 pointer[i,j] = UP             # <<<<<<<<<<<<<<
  *             elif max_score == left_score:
  *                 pointer[i,j] = LEFT
  */
-        __pyx_t_50 = __pyx_v_i;
-        __pyx_t_51 = __pyx_v_j;
-        __pyx_t_22 = -1;
-        if (__pyx_t_50 < 0) {
-          __pyx_t_50 += __pyx_pybuffernd_pointer.diminfo[0].shape;
-          if (unlikely(__pyx_t_50 < 0)) __pyx_t_22 = 0;
-        } else if (unlikely(__pyx_t_50 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_22 = 0;
-        if (__pyx_t_51 < 0) {
-          __pyx_t_51 += __pyx_pybuffernd_pointer.diminfo[1].shape;
-          if (unlikely(__pyx_t_51 < 0)) __pyx_t_22 = 1;
-        } else if (unlikely(__pyx_t_51 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_22 = 1;
-        if (unlikely(__pyx_t_22 != -1)) {
-          __Pyx_RaiseBufferIndexError(__pyx_t_22);
-          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_54 = __pyx_v_i;
+        __pyx_t_55 = __pyx_v_j;
+        __pyx_t_26 = -1;
+        if (__pyx_t_54 < 0) {
+          __pyx_t_54 += __pyx_pybuffernd_pointer.diminfo[0].shape;
+          if (unlikely(__pyx_t_54 < 0)) __pyx_t_26 = 0;
+        } else if (unlikely(__pyx_t_54 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_26 = 0;
+        if (__pyx_t_55 < 0) {
+          __pyx_t_55 += __pyx_pybuffernd_pointer.diminfo[1].shape;
+          if (unlikely(__pyx_t_55 < 0)) __pyx_t_26 = 1;
+        } else if (unlikely(__pyx_t_55 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_26 = 1;
+        if (unlikely(__pyx_t_26 != -1)) {
+          __Pyx_RaiseBufferIndexError(__pyx_t_26);
+          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
-        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_50, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_51, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_UP;
+        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_54, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_55, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_UP;
 
-        /* "coral/analysis/_sequencing/calign.pyx":176
+        /* "coral/analysis/_sequencing/calign.pyx":187
  *
  *             # global
  *             if max_score == up_score:             # <<<<<<<<<<<<<<
@@ -3282,43 +3715,43 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
         goto __pyx_L10;
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":178
+      /* "coral/analysis/_sequencing/calign.pyx":189
  *             if max_score == up_score:
  *                 pointer[i,j] = UP
  *             elif max_score == left_score:             # <<<<<<<<<<<<<<
  *                 pointer[i,j] = LEFT
  *             else:
  */
-      __pyx_t_11 = PyObject_RichCompare(__pyx_v_max_score, __pyx_v_left_score, Py_EQ); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_11); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 178; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __pyx_t_10 = PyObject_RichCompare(__pyx_v_max_score, __pyx_v_left_score, Py_EQ); __Pyx_XGOTREF(__pyx_t_10); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_10); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       if (__pyx_t_3) {
 
-        /* "coral/analysis/_sequencing/calign.pyx":179
+        /* "coral/analysis/_sequencing/calign.pyx":190
  *                 pointer[i,j] = UP
  *             elif max_score == left_score:
  *                 pointer[i,j] = LEFT             # <<<<<<<<<<<<<<
  *             else:
  *                 pointer[i,j] = DIAG
  */
-        __pyx_t_52 = __pyx_v_i;
-        __pyx_t_53 = __pyx_v_j;
-        __pyx_t_22 = -1;
-        if (__pyx_t_52 < 0) {
-          __pyx_t_52 += __pyx_pybuffernd_pointer.diminfo[0].shape;
-          if (unlikely(__pyx_t_52 < 0)) __pyx_t_22 = 0;
-        } else if (unlikely(__pyx_t_52 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_22 = 0;
-        if (__pyx_t_53 < 0) {
-          __pyx_t_53 += __pyx_pybuffernd_pointer.diminfo[1].shape;
-          if (unlikely(__pyx_t_53 < 0)) __pyx_t_22 = 1;
-        } else if (unlikely(__pyx_t_53 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_22 = 1;
-        if (unlikely(__pyx_t_22 != -1)) {
-          __Pyx_RaiseBufferIndexError(__pyx_t_22);
-          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_56 = __pyx_v_i;
+        __pyx_t_57 = __pyx_v_j;
+        __pyx_t_26 = -1;
+        if (__pyx_t_56 < 0) {
+          __pyx_t_56 += __pyx_pybuffernd_pointer.diminfo[0].shape;
+          if (unlikely(__pyx_t_56 < 0)) __pyx_t_26 = 0;
+        } else if (unlikely(__pyx_t_56 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_26 = 0;
+        if (__pyx_t_57 < 0) {
+          __pyx_t_57 += __pyx_pybuffernd_pointer.diminfo[1].shape;
+          if (unlikely(__pyx_t_57 < 0)) __pyx_t_26 = 1;
+        } else if (unlikely(__pyx_t_57 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_26 = 1;
+        if (unlikely(__pyx_t_26 != -1)) {
+          __Pyx_RaiseBufferIndexError(__pyx_t_26);
+          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
-        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_53, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_LEFT;
+        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_56, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_57, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_LEFT;
 
-        /* "coral/analysis/_sequencing/calign.pyx":178
+        /* "coral/analysis/_sequencing/calign.pyx":189
  *             if max_score == up_score:
  *                 pointer[i,j] = UP
  *             elif max_score == left_score:             # <<<<<<<<<<<<<<
@@ -3328,7 +3761,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
         goto __pyx_L10;
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":181
+      /* "coral/analysis/_sequencing/calign.pyx":192
  *                 pointer[i,j] = LEFT
  *             else:
  *                 pointer[i,j] = DIAG             # <<<<<<<<<<<<<<
@@ -3336,28 +3769,28 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  *
  */
       /*else*/ {
-        __pyx_t_54 = __pyx_v_i;
-        __pyx_t_55 = __pyx_v_j;
-        __pyx_t_22 = -1;
-        if (__pyx_t_54 < 0) {
-          __pyx_t_54 += __pyx_pybuffernd_pointer.diminfo[0].shape;
-          if (unlikely(__pyx_t_54 < 0)) __pyx_t_22 = 0;
-        } else if (unlikely(__pyx_t_54 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_22 = 0;
-        if (__pyx_t_55 < 0) {
-          __pyx_t_55 += __pyx_pybuffernd_pointer.diminfo[1].shape;
-          if (unlikely(__pyx_t_55 < 0)) __pyx_t_22 = 1;
-        } else if (unlikely(__pyx_t_55 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_22 = 1;
-        if (unlikely(__pyx_t_22 != -1)) {
-          __Pyx_RaiseBufferIndexError(__pyx_t_22);
-          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        __pyx_t_58 = __pyx_v_i;
+        __pyx_t_59 = __pyx_v_j;
+        __pyx_t_26 = -1;
+        if (__pyx_t_58 < 0) {
+          __pyx_t_58 += __pyx_pybuffernd_pointer.diminfo[0].shape;
+          if (unlikely(__pyx_t_58 < 0)) __pyx_t_26 = 0;
+        } else if (unlikely(__pyx_t_58 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_26 = 0;
+        if (__pyx_t_59 < 0) {
+          __pyx_t_59 += __pyx_pybuffernd_pointer.diminfo[1].shape;
+          if (unlikely(__pyx_t_59 < 0)) __pyx_t_26 = 1;
+        } else if (unlikely(__pyx_t_59 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_26 = 1;
+        if (unlikely(__pyx_t_26 != -1)) {
+          __Pyx_RaiseBufferIndexError(__pyx_t_26);
+          {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
-        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_54, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_55, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_DIAG;
+        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_58, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_59, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_DIAG;
       }
       __pyx_L10:;
     }
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":184
+  /* "coral/analysis/_sequencing/calign.pyx":195
  *
  *
  *     if imethod == 0:             # <<<<<<<<<<<<<<
@@ -3367,42 +3800,42 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   switch (__pyx_v_imethod) {
     case 0:
 
-    /* "coral/analysis/_sequencing/calign.pyx":186
+    /* "coral/analysis/_sequencing/calign.pyx":197
  *     if imethod == 0:
  *         # max anywhere
  *         i, j = max_index(score)             # <<<<<<<<<<<<<<
  *     elif imethod == 2:
  *         # max in last col
  */
-    __pyx_t_17 = __Pyx_GetModuleGlobalName(__pyx_n_s_max_index); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_16 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_17))) {
-      __pyx_t_16 = PyMethod_GET_SELF(__pyx_t_17);
-      if (likely(__pyx_t_16)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_17);
-        __Pyx_INCREF(__pyx_t_16);
+    __pyx_t_22 = __Pyx_GetModuleGlobalName(__pyx_n_s_max_index); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
+    __pyx_t_21 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_22))) {
+      __pyx_t_21 = PyMethod_GET_SELF(__pyx_t_22);
+      if (likely(__pyx_t_21)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_22);
+        __Pyx_INCREF(__pyx_t_21);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_17, function);
+        __Pyx_DECREF_SET(__pyx_t_22, function);
       }
     }
-    if (!__pyx_t_16) {
-      __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_17, ((PyObject *)__pyx_v_score)); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_11);
+    if (!__pyx_t_21) {
+      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_22, ((PyObject *)__pyx_v_score)); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_10);
     } else {
-      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = PyTuple_New(1+1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_16); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_16); __pyx_t_16 = NULL;
+      __Pyx_GIVEREF(__pyx_t_21); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_21); __pyx_t_21 = NULL;
       __Pyx_INCREF(((PyObject *)__pyx_v_score));
       __Pyx_GIVEREF(((PyObject *)__pyx_v_score));
       PyTuple_SET_ITEM(__pyx_t_7, 0+1, ((PyObject *)__pyx_v_score));
-      __pyx_t_11 = __Pyx_PyObject_Call(__pyx_t_17, __pyx_t_7, NULL); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_11);
+      __pyx_t_10 = __Pyx_PyObject_Call(__pyx_t_22, __pyx_t_7, NULL); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_10);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     }
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    if ((likely(PyTuple_CheckExact(__pyx_t_11))) || (PyList_CheckExact(__pyx_t_11))) {
-      PyObject* sequence = __pyx_t_11;
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    if ((likely(PyTuple_CheckExact(__pyx_t_10))) || (PyList_CheckExact(__pyx_t_10))) {
+      PyObject* sequence = __pyx_t_10;
       #if CYTHON_COMPILING_IN_CPYTHON
       Py_ssize_t size = Py_SIZE(sequence);
       #else
@@ -3411,54 +3844,54 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
       #if CYTHON_COMPILING_IN_CPYTHON
       if (likely(PyTuple_CheckExact(sequence))) {
-        __pyx_t_17 = PyTuple_GET_ITEM(sequence, 0);
+        __pyx_t_22 = PyTuple_GET_ITEM(sequence, 0);
         __pyx_t_7 = PyTuple_GET_ITEM(sequence, 1);
       } else {
-        __pyx_t_17 = PyList_GET_ITEM(sequence, 0);
+        __pyx_t_22 = PyList_GET_ITEM(sequence, 0);
         __pyx_t_7 = PyList_GET_ITEM(sequence, 1);
       }
-      __Pyx_INCREF(__pyx_t_17);
+      __Pyx_INCREF(__pyx_t_22);
       __Pyx_INCREF(__pyx_t_7);
       #else
-      __pyx_t_17 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_17);
-      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_22 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_22);
+      __pyx_t_7 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
       #endif
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_16 = PyObject_GetIter(__pyx_t_11); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_16);
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_56 = Py_TYPE(__pyx_t_16)->tp_iternext;
-      index = 0; __pyx_t_17 = __pyx_t_56(__pyx_t_16); if (unlikely(!__pyx_t_17)) goto __pyx_L11_unpacking_failed;
-      __Pyx_GOTREF(__pyx_t_17);
-      index = 1; __pyx_t_7 = __pyx_t_56(__pyx_t_16); if (unlikely(!__pyx_t_7)) goto __pyx_L11_unpacking_failed;
+      __pyx_t_21 = PyObject_GetIter(__pyx_t_10); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_21);
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __pyx_t_60 = Py_TYPE(__pyx_t_21)->tp_iternext;
+      index = 0; __pyx_t_22 = __pyx_t_60(__pyx_t_21); if (unlikely(!__pyx_t_22)) goto __pyx_L11_unpacking_failed;
+      __Pyx_GOTREF(__pyx_t_22);
+      index = 1; __pyx_t_7 = __pyx_t_60(__pyx_t_21); if (unlikely(!__pyx_t_7)) goto __pyx_L11_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_7);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_56(__pyx_t_16), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_56 = NULL;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_60(__pyx_t_21), 2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_60 = NULL;
+      __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
       goto __pyx_L12_unpacking_done;
       __pyx_L11_unpacking_failed:;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-      __pyx_t_56 = NULL;
+      __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+      __pyx_t_60 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_L12_unpacking_done:;
     }
-    __pyx_t_18 = __Pyx_PyInt_As_int(__pyx_t_17); if (unlikely((__pyx_t_18 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_19 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_19 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 186; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_17 = __Pyx_PyInt_As_int(__pyx_t_22); if (unlikely((__pyx_t_17 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __pyx_t_23 = __Pyx_PyInt_As_int(__pyx_t_7); if (unlikely((__pyx_t_23 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_v_i = __pyx_t_18;
-    __pyx_v_j = __pyx_t_19;
+    __pyx_v_i = __pyx_t_17;
+    __pyx_v_j = __pyx_t_23;
 
-    /* "coral/analysis/_sequencing/calign.pyx":184
+    /* "coral/analysis/_sequencing/calign.pyx":195
  *
  *
  *     if imethod == 0:             # <<<<<<<<<<<<<<
@@ -3467,7 +3900,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":187
+    /* "coral/analysis/_sequencing/calign.pyx":198
  *         # max anywhere
  *         i, j = max_index(score)
  *     elif imethod == 2:             # <<<<<<<<<<<<<<
@@ -3476,43 +3909,43 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     case 2:
 
-    /* "coral/analysis/_sequencing/calign.pyx":189
+    /* "coral/analysis/_sequencing/calign.pyx":200
  *     elif imethod == 2:
  *         # max in last col
  *         i, j = (score[:,-1].argmax(), max_j)             # <<<<<<<<<<<<<<
  *     elif imethod == 3:
  *         # from i,j to max(max(last row), max(last col)) for free
  */
-    __pyx_t_7 = PyObject_GetItem(((PyObject *)__pyx_v_score), __pyx_tuple__21); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_7 = PyObject_GetItem(((PyObject *)__pyx_v_score), __pyx_tuple__21); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_argmax); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
+    __pyx_t_22 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_argmax); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __pyx_t_7 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_17))) {
-      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_17);
+    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_22))) {
+      __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_22);
       if (likely(__pyx_t_7)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_17);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_22);
         __Pyx_INCREF(__pyx_t_7);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_17, function);
+        __Pyx_DECREF_SET(__pyx_t_22, function);
       }
     }
     if (__pyx_t_7) {
-      __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_17, __pyx_t_7); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_22, __pyx_t_7); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     } else {
-      __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_17); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_22); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __Pyx_GOTREF(__pyx_t_11);
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_19 = __Pyx_PyInt_As_int(__pyx_t_11); if (unlikely((__pyx_t_19 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    __Pyx_GOTREF(__pyx_t_10);
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __pyx_t_23 = __Pyx_PyInt_As_int(__pyx_t_10); if (unlikely((__pyx_t_23 == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     __pyx_t_6 = __pyx_v_max_j;
-    __pyx_v_i = __pyx_t_19;
+    __pyx_v_i = __pyx_t_23;
     __pyx_v_j = __pyx_t_6;
 
-    /* "coral/analysis/_sequencing/calign.pyx":187
+    /* "coral/analysis/_sequencing/calign.pyx":198
  *         # max anywhere
  *         i, j = max_index(score)
  *     elif imethod == 2:             # <<<<<<<<<<<<<<
@@ -3521,7 +3954,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":190
+    /* "coral/analysis/_sequencing/calign.pyx":201
  *         # max in last col
  *         i, j = (score[:,-1].argmax(), max_j)
  *     elif imethod == 3:             # <<<<<<<<<<<<<<
@@ -3530,161 +3963,161 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     case 3:
 
-    /* "coral/analysis/_sequencing/calign.pyx":192
+    /* "coral/analysis/_sequencing/calign.pyx":203
  *     elif imethod == 3:
  *         # from i,j to max(max(last row), max(last col)) for free
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()             # <<<<<<<<<<<<<<
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()
  *         if row_max > col_max:
  */
-    __pyx_t_17 = __Pyx_GetItemInt(((PyObject *)__pyx_v_score), -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(__pyx_t_17 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_max); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_22 = __Pyx_GetItemInt(((PyObject *)__pyx_v_score), -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(__pyx_t_22 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 203; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_22);
+    __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_22, __pyx_n_s_max); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_17 = NULL;
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __pyx_t_22 = NULL;
     if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_7))) {
-      __pyx_t_17 = PyMethod_GET_SELF(__pyx_t_7);
-      if (likely(__pyx_t_17)) {
+      __pyx_t_22 = PyMethod_GET_SELF(__pyx_t_7);
+      if (likely(__pyx_t_22)) {
         PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
-        __Pyx_INCREF(__pyx_t_17);
+        __Pyx_INCREF(__pyx_t_22);
         __Pyx_INCREF(function);
         __Pyx_DECREF_SET(__pyx_t_7, function);
       }
     }
-    if (__pyx_t_17) {
-      __pyx_t_11 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_17); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+    if (__pyx_t_22) {
+      __pyx_t_10 = __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_22); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
     } else {
-      __pyx_t_11 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = __Pyx_PyObject_CallNoArg(__pyx_t_7); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __Pyx_GOTREF(__pyx_t_11);
+    __Pyx_GOTREF(__pyx_t_10);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_17 = __Pyx_GetItemInt(((PyObject *)__pyx_v_score), -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(__pyx_t_17 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_17, __pyx_n_s_argmax); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
-    __pyx_t_17 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_16))) {
-      __pyx_t_17 = PyMethod_GET_SELF(__pyx_t_16);
-      if (likely(__pyx_t_17)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_16);
-        __Pyx_INCREF(__pyx_t_17);
+    __pyx_t_22 = __Pyx_GetItemInt(((PyObject *)__pyx_v_score), -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(__pyx_t_22 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 203; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_22);
+    __pyx_t_21 = __Pyx_PyObject_GetAttrStr(__pyx_t_22, __pyx_n_s_argmax); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
+    __pyx_t_22 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_21))) {
+      __pyx_t_22 = PyMethod_GET_SELF(__pyx_t_21);
+      if (likely(__pyx_t_22)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_21);
+        __Pyx_INCREF(__pyx_t_22);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_16, function);
+        __Pyx_DECREF_SET(__pyx_t_21, function);
       }
     }
-    if (__pyx_t_17) {
-      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_17); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+    if (__pyx_t_22) {
+      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_21, __pyx_t_22); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
     } else {
-      __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_16); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_21); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 203; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_v_row_max = __pyx_t_11;
-    __pyx_t_11 = 0;
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    __pyx_v_row_max = __pyx_t_10;
+    __pyx_t_10 = 0;
     __pyx_v_col_idx = __pyx_t_7;
     __pyx_t_7 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":193
+    /* "coral/analysis/_sequencing/calign.pyx":204
  *         # from i,j to max(max(last row), max(last col)) for free
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()             # <<<<<<<<<<<<<<
  *         if row_max > col_max:
  *             pointer[-1,col_idx+1:] = LEFT
  */
-    __pyx_t_11 = PyObject_GetItem(((PyObject *)__pyx_v_score), __pyx_tuple__23); if (unlikely(__pyx_t_11 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_16 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_max); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_16))) {
-      __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_16);
-      if (likely(__pyx_t_11)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_16);
-        __Pyx_INCREF(__pyx_t_11);
+    __pyx_t_10 = PyObject_GetItem(((PyObject *)__pyx_v_score), __pyx_tuple__23); if (unlikely(__pyx_t_10 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_10);
+    __pyx_t_21 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_max); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __pyx_t_10 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_21))) {
+      __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_21);
+      if (likely(__pyx_t_10)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_21);
+        __Pyx_INCREF(__pyx_t_10);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_16, function);
+        __Pyx_DECREF_SET(__pyx_t_21, function);
       }
     }
-    if (__pyx_t_11) {
-      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_16, __pyx_t_11); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    if (__pyx_t_10) {
+      __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_21, __pyx_t_10); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else {
-      __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_16); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = __Pyx_PyObject_CallNoArg(__pyx_t_21); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_11 = PyObject_GetItem(((PyObject *)__pyx_v_score), __pyx_tuple__25); if (unlikely(__pyx_t_11 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_11);
-    __pyx_t_17 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_argmax); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
-    __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-    __pyx_t_11 = NULL;
-    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_17))) {
-      __pyx_t_11 = PyMethod_GET_SELF(__pyx_t_17);
-      if (likely(__pyx_t_11)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_17);
-        __Pyx_INCREF(__pyx_t_11);
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    __pyx_t_10 = PyObject_GetItem(((PyObject *)__pyx_v_score), __pyx_tuple__25); if (unlikely(__pyx_t_10 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_10);
+    __pyx_t_22 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_argmax); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
+    __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+    __pyx_t_10 = NULL;
+    if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_22))) {
+      __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_22);
+      if (likely(__pyx_t_10)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_22);
+        __Pyx_INCREF(__pyx_t_10);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_17, function);
+        __Pyx_DECREF_SET(__pyx_t_22, function);
       }
     }
-    if (__pyx_t_11) {
-      __pyx_t_16 = __Pyx_PyObject_CallOneArg(__pyx_t_17, __pyx_t_11); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
+    if (__pyx_t_10) {
+      __pyx_t_21 = __Pyx_PyObject_CallOneArg(__pyx_t_22, __pyx_t_10); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else {
-      __pyx_t_16 = __Pyx_PyObject_CallNoArg(__pyx_t_17); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_21 = __Pyx_PyObject_CallNoArg(__pyx_t_22); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __Pyx_GOTREF(__pyx_t_16);
-    __Pyx_DECREF(__pyx_t_17); __pyx_t_17 = 0;
+    __Pyx_GOTREF(__pyx_t_21);
+    __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
     __pyx_v_col_max = __pyx_t_7;
     __pyx_t_7 = 0;
-    __pyx_v_row_idx = __pyx_t_16;
-    __pyx_t_16 = 0;
+    __pyx_v_row_idx = __pyx_t_21;
+    __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":194
+    /* "coral/analysis/_sequencing/calign.pyx":205
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()
  *         if row_max > col_max:             # <<<<<<<<<<<<<<
  *             pointer[-1,col_idx+1:] = LEFT
  *         else:
  */
-    __pyx_t_16 = PyObject_RichCompare(__pyx_v_row_max, __pyx_v_col_max, Py_GT); __Pyx_XGOTREF(__pyx_t_16); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 194; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_16); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 194; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+    __pyx_t_21 = PyObject_RichCompare(__pyx_v_row_max, __pyx_v_col_max, Py_GT); __Pyx_XGOTREF(__pyx_t_21); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 205; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_21); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 205; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
     if (__pyx_t_3) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":195
+      /* "coral/analysis/_sequencing/calign.pyx":206
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()
  *         if row_max > col_max:
  *             pointer[-1,col_idx+1:] = LEFT             # <<<<<<<<<<<<<<
  *         else:
  *             pointer[row_idx+1:,-1] = UP
  */
-      __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_16);
-      __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_v_col_idx, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_21);
+      __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_v_col_idx, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_17 = PySlice_New(__pyx_t_7, Py_None, Py_None); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_17);
+      __pyx_t_22 = PySlice_New(__pyx_t_7, Py_None, Py_None); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_22);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_INCREF(__pyx_int_neg_1);
       __Pyx_GIVEREF(__pyx_int_neg_1);
       PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_int_neg_1);
-      __Pyx_GIVEREF(__pyx_t_17);
-      PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_17);
-      __pyx_t_17 = 0;
-      if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_t_7, __pyx_t_16) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 195; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GIVEREF(__pyx_t_22);
+      PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_22);
+      __pyx_t_22 = 0;
+      if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_t_7, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 206; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":194
+      /* "coral/analysis/_sequencing/calign.pyx":205
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()
  *         if row_max > col_max:             # <<<<<<<<<<<<<<
@@ -3694,7 +4127,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
       goto __pyx_L13;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":197
+    /* "coral/analysis/_sequencing/calign.pyx":208
  *             pointer[-1,col_idx+1:] = LEFT
  *         else:
  *             pointer[row_idx+1:,-1] = UP             # <<<<<<<<<<<<<<
@@ -3702,28 +4135,28 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  *     seqlen = max_i + max_j
  */
     /*else*/ {
-      __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_UP); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_16);
-      __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_v_row_idx, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v_UP); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_21);
+      __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_v_row_idx, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_17 = PySlice_New(__pyx_t_7, Py_None, Py_None); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_17);
+      __pyx_t_22 = PySlice_New(__pyx_t_7, Py_None, Py_None); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_22);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_GIVEREF(__pyx_t_17);
-      PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_17);
+      __Pyx_GIVEREF(__pyx_t_22);
+      PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_22);
       __Pyx_INCREF(__pyx_int_neg_1);
       __Pyx_GIVEREF(__pyx_int_neg_1);
       PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_int_neg_1);
-      __pyx_t_17 = 0;
-      if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_t_7, __pyx_t_16) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 197; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_22 = 0;
+      if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_t_7, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
     }
     __pyx_L13:;
 
-    /* "coral/analysis/_sequencing/calign.pyx":190
+    /* "coral/analysis/_sequencing/calign.pyx":201
  *         # max in last col
  *         i, j = (score[:,-1].argmax(), max_j)
  *     elif imethod == 3:             # <<<<<<<<<<<<<<
@@ -3734,7 +4167,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
     default: break;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":199
+  /* "coral/analysis/_sequencing/calign.pyx":210
  *             pointer[row_idx+1:,-1] = UP
  *
  *     seqlen = max_i + max_j             # <<<<<<<<<<<<<<
@@ -3743,7 +4176,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_seqlen = (__pyx_v_max_i + __pyx_v_max_j);
 
-  /* "coral/analysis/_sequencing/calign.pyx":200
+  /* "coral/analysis/_sequencing/calign.pyx":211
  *
  *     seqlen = max_i + max_j
  *     ai = PyString_FromStringAndSize(NULL, seqlen)             # <<<<<<<<<<<<<<
@@ -3752,7 +4185,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_ai = PyString_FromStringAndSize(NULL, __pyx_v_seqlen);
 
-  /* "coral/analysis/_sequencing/calign.pyx":201
+  /* "coral/analysis/_sequencing/calign.pyx":212
  *     seqlen = max_i + max_j
  *     ai = PyString_FromStringAndSize(NULL, seqlen)
  *     aj = PyString_FromStringAndSize(NULL, seqlen)             # <<<<<<<<<<<<<<
@@ -3761,7 +4194,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_aj = PyString_FromStringAndSize(NULL, __pyx_v_seqlen);
 
-  /* "coral/analysis/_sequencing/calign.pyx":204
+  /* "coral/analysis/_sequencing/calign.pyx":215
  *
  *     # use this and PyObject instead of assigning directly...
  *     align_j = PyString_AS_STRING(aj)             # <<<<<<<<<<<<<<
@@ -3770,7 +4203,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_align_j = PyString_AS_STRING(__pyx_v_aj);
 
-  /* "coral/analysis/_sequencing/calign.pyx":205
+  /* "coral/analysis/_sequencing/calign.pyx":216
  *     # use this and PyObject instead of assigning directly...
  *     align_j = PyString_AS_STRING(aj)
  *     align_i = PyString_AS_STRING(ai)             # <<<<<<<<<<<<<<
@@ -3779,34 +4212,34 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   __pyx_v_align_i = PyString_AS_STRING(__pyx_v_ai);
 
-  /* "coral/analysis/_sequencing/calign.pyx":207
+  /* "coral/analysis/_sequencing/calign.pyx":218
  *     align_i = PyString_AS_STRING(ai)
  *
  *     p = pointer[i, j]             # <<<<<<<<<<<<<<
  *     while p != NONE:
  *         if p == DIAG:
  */
-  __pyx_t_57 = __pyx_v_i;
-  __pyx_t_58 = __pyx_v_j;
-  __pyx_t_19 = -1;
-  if (__pyx_t_57 < 0) {
-    __pyx_t_57 += __pyx_pybuffernd_pointer.diminfo[0].shape;
-    if (unlikely(__pyx_t_57 < 0)) __pyx_t_19 = 0;
-  } else if (unlikely(__pyx_t_57 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_19 = 0;
-  if (__pyx_t_58 < 0) {
-    __pyx_t_58 += __pyx_pybuffernd_pointer.diminfo[1].shape;
-    if (unlikely(__pyx_t_58 < 0)) __pyx_t_19 = 1;
-  } else if (unlikely(__pyx_t_58 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_19 = 1;
-  if (unlikely(__pyx_t_19 != -1)) {
-    __Pyx_RaiseBufferIndexError(__pyx_t_19);
-    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 207; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_61 = __pyx_v_i;
+  __pyx_t_62 = __pyx_v_j;
+  __pyx_t_23 = -1;
+  if (__pyx_t_61 < 0) {
+    __pyx_t_61 += __pyx_pybuffernd_pointer.diminfo[0].shape;
+    if (unlikely(__pyx_t_61 < 0)) __pyx_t_23 = 0;
+  } else if (unlikely(__pyx_t_61 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_23 = 0;
+  if (__pyx_t_62 < 0) {
+    __pyx_t_62 += __pyx_pybuffernd_pointer.diminfo[1].shape;
+    if (unlikely(__pyx_t_62 < 0)) __pyx_t_23 = 1;
+  } else if (unlikely(__pyx_t_62 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_23 = 1;
+  if (unlikely(__pyx_t_23 != -1)) {
+    __Pyx_RaiseBufferIndexError(__pyx_t_23);
+    {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_16 = __Pyx_PyInt_From_npy_ulong((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_57, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_58, __pyx_pybuffernd_pointer.diminfo[1].strides))); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 207; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_t_16);
-  __pyx_v_p = __pyx_t_16;
-  __pyx_t_16 = 0;
+  __pyx_t_21 = __Pyx_PyInt_From_npy_ulong((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_61, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_62, __pyx_pybuffernd_pointer.diminfo[1].strides))); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_21);
+  __pyx_v_p = __pyx_t_21;
+  __pyx_t_21 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":208
+  /* "coral/analysis/_sequencing/calign.pyx":219
  *
  *     p = pointer[i, j]
  *     while p != NONE:             # <<<<<<<<<<<<<<
@@ -3814,30 +4247,30 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  *             i -= 1
  */
   while (1) {
-    __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_NONE); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_7 = PyObject_RichCompare(__pyx_v_p, __pyx_t_16, Py_NE); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 208; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v_NONE); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    __pyx_t_7 = PyObject_RichCompare(__pyx_v_p, __pyx_t_21, Py_NE); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 219; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (!__pyx_t_3) break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":209
+    /* "coral/analysis/_sequencing/calign.pyx":220
  *     p = pointer[i, j]
  *     while p != NONE:
  *         if p == DIAG:             # <<<<<<<<<<<<<<
  *             i -= 1
  *             j -= 1
  */
-    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_DIAG); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 209; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_DIAG); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_16 = PyObject_RichCompare(__pyx_v_p, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_16); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 209; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_21 = PyObject_RichCompare(__pyx_v_p, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_21); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_16); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 209; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_21); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 220; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
     if (__pyx_t_3) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":210
+      /* "coral/analysis/_sequencing/calign.pyx":221
  *     while p != NONE:
  *         if p == DIAG:
  *             i -= 1             # <<<<<<<<<<<<<<
@@ -3846,7 +4279,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       __pyx_v_i = (__pyx_v_i - 1);
 
-      /* "coral/analysis/_sequencing/calign.pyx":211
+      /* "coral/analysis/_sequencing/calign.pyx":222
  *         if p == DIAG:
  *             i -= 1
  *             j -= 1             # <<<<<<<<<<<<<<
@@ -3855,7 +4288,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       __pyx_v_j = (__pyx_v_j - 1);
 
-      /* "coral/analysis/_sequencing/calign.pyx":212
+      /* "coral/analysis/_sequencing/calign.pyx":223
  *             i -= 1
  *             j -= 1
  *             align_j[align_counter] = seqj[j]             # <<<<<<<<<<<<<<
@@ -3864,7 +4297,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       (__pyx_v_align_j[__pyx_v_align_counter]) = (__pyx_v_seqj[__pyx_v_j]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":213
+      /* "coral/analysis/_sequencing/calign.pyx":224
  *             j -= 1
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = seqi[i]             # <<<<<<<<<<<<<<
@@ -3873,7 +4306,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       (__pyx_v_align_i[__pyx_v_align_counter]) = (__pyx_v_seqi[__pyx_v_i]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":209
+      /* "coral/analysis/_sequencing/calign.pyx":220
  *     p = pointer[i, j]
  *     while p != NONE:
  *         if p == DIAG:             # <<<<<<<<<<<<<<
@@ -3883,22 +4316,22 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
       goto __pyx_L16;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":214
+    /* "coral/analysis/_sequencing/calign.pyx":225
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = seqi[i]
  *         elif p == LEFT:             # <<<<<<<<<<<<<<
  *             j -= 1
  *             align_j[align_counter] = seqj[j]
  */
-    __pyx_t_16 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_7 = PyObject_RichCompare(__pyx_v_p, __pyx_t_16, Py_EQ); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 214; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_21 = __Pyx_PyInt_From_int(__pyx_v_LEFT); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_21);
+    __pyx_t_7 = PyObject_RichCompare(__pyx_v_p, __pyx_t_21, Py_EQ); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (__pyx_t_3) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":215
+      /* "coral/analysis/_sequencing/calign.pyx":226
  *             align_i[align_counter] = seqi[i]
  *         elif p == LEFT:
  *             j -= 1             # <<<<<<<<<<<<<<
@@ -3907,7 +4340,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       __pyx_v_j = (__pyx_v_j - 1);
 
-      /* "coral/analysis/_sequencing/calign.pyx":216
+      /* "coral/analysis/_sequencing/calign.pyx":227
  *         elif p == LEFT:
  *             j -= 1
  *             align_j[align_counter] = seqj[j]             # <<<<<<<<<<<<<<
@@ -3916,7 +4349,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       (__pyx_v_align_j[__pyx_v_align_counter]) = (__pyx_v_seqj[__pyx_v_j]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":217
+      /* "coral/analysis/_sequencing/calign.pyx":228
  *             j -= 1
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = c'-'             # <<<<<<<<<<<<<<
@@ -3925,7 +4358,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       (__pyx_v_align_i[__pyx_v_align_counter]) = '-';
 
-      /* "coral/analysis/_sequencing/calign.pyx":214
+      /* "coral/analysis/_sequencing/calign.pyx":225
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = seqi[i]
  *         elif p == LEFT:             # <<<<<<<<<<<<<<
@@ -3935,22 +4368,22 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
       goto __pyx_L16;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":218
+    /* "coral/analysis/_sequencing/calign.pyx":229
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = c'-'
  *         elif p == UP:             # <<<<<<<<<<<<<<
  *             i -= 1
  *             align_j[align_counter] = c'-'
  */
-    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_UP); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_UP); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_16 = PyObject_RichCompare(__pyx_v_p, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_16); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_21 = PyObject_RichCompare(__pyx_v_p, __pyx_t_7, Py_EQ); __Pyx_XGOTREF(__pyx_t_21); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_16); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+    __pyx_t_3 = __Pyx_PyObject_IsTrue(__pyx_t_21); if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 229; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
     if (__pyx_t_3) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":219
+      /* "coral/analysis/_sequencing/calign.pyx":230
  *             align_i[align_counter] = c'-'
  *         elif p == UP:
  *             i -= 1             # <<<<<<<<<<<<<<
@@ -3959,7 +4392,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       __pyx_v_i = (__pyx_v_i - 1);
 
-      /* "coral/analysis/_sequencing/calign.pyx":220
+      /* "coral/analysis/_sequencing/calign.pyx":231
  *         elif p == UP:
  *             i -= 1
  *             align_j[align_counter] = c'-'             # <<<<<<<<<<<<<<
@@ -3968,7 +4401,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       (__pyx_v_align_j[__pyx_v_align_counter]) = '-';
 
-      /* "coral/analysis/_sequencing/calign.pyx":221
+      /* "coral/analysis/_sequencing/calign.pyx":232
  *             i -= 1
  *             align_j[align_counter] = c'-'
  *             align_i[align_counter] = seqi[i]             # <<<<<<<<<<<<<<
@@ -3977,7 +4410,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
       (__pyx_v_align_i[__pyx_v_align_counter]) = (__pyx_v_seqi[__pyx_v_i]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":218
+      /* "coral/analysis/_sequencing/calign.pyx":229
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = c'-'
  *         elif p == UP:             # <<<<<<<<<<<<<<
@@ -3987,7 +4420,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
       goto __pyx_L16;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":223
+    /* "coral/analysis/_sequencing/calign.pyx":234
  *             align_i[align_counter] = seqi[i]
  *         else:
  *             raise Exception('wtf!:pointer: %i', p)             # <<<<<<<<<<<<<<
@@ -3995,24 +4428,24 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  *         p = pointer[i, j]
  */
     /*else*/ {
-      __pyx_t_16 = PyTuple_New(2); if (unlikely(!__pyx_t_16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __Pyx_GOTREF(__pyx_t_16);
+      __pyx_t_21 = PyTuple_New(2); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __Pyx_GOTREF(__pyx_t_21);
       __Pyx_INCREF(__pyx_kp_s_wtf_pointer_i);
       __Pyx_GIVEREF(__pyx_kp_s_wtf_pointer_i);
-      PyTuple_SET_ITEM(__pyx_t_16, 0, __pyx_kp_s_wtf_pointer_i);
+      PyTuple_SET_ITEM(__pyx_t_21, 0, __pyx_kp_s_wtf_pointer_i);
       __Pyx_INCREF(__pyx_v_p);
       __Pyx_GIVEREF(__pyx_v_p);
-      PyTuple_SET_ITEM(__pyx_t_16, 1, __pyx_v_p);
-      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_t_16, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      PyTuple_SET_ITEM(__pyx_t_21, 1, __pyx_v_p);
+      __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_Exception, __pyx_t_21, NULL); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_16); __pyx_t_16 = 0;
+      __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
       __Pyx_Raise(__pyx_t_7, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
     __pyx_L16:;
 
-    /* "coral/analysis/_sequencing/calign.pyx":224
+    /* "coral/analysis/_sequencing/calign.pyx":235
  *         else:
  *             raise Exception('wtf!:pointer: %i', p)
  *         align_counter += 1             # <<<<<<<<<<<<<<
@@ -4021,35 +4454,35 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
     __pyx_v_align_counter = (__pyx_v_align_counter + 1);
 
-    /* "coral/analysis/_sequencing/calign.pyx":225
+    /* "coral/analysis/_sequencing/calign.pyx":236
  *             raise Exception('wtf!:pointer: %i', p)
  *         align_counter += 1
  *         p = pointer[i, j]             # <<<<<<<<<<<<<<
  *
  *     _PyString_Resize(&aj, align_counter)
  */
-    __pyx_t_59 = __pyx_v_i;
-    __pyx_t_60 = __pyx_v_j;
-    __pyx_t_19 = -1;
-    if (__pyx_t_59 < 0) {
-      __pyx_t_59 += __pyx_pybuffernd_pointer.diminfo[0].shape;
-      if (unlikely(__pyx_t_59 < 0)) __pyx_t_19 = 0;
-    } else if (unlikely(__pyx_t_59 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_19 = 0;
-    if (__pyx_t_60 < 0) {
-      __pyx_t_60 += __pyx_pybuffernd_pointer.diminfo[1].shape;
-      if (unlikely(__pyx_t_60 < 0)) __pyx_t_19 = 1;
-    } else if (unlikely(__pyx_t_60 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_19 = 1;
-    if (unlikely(__pyx_t_19 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_19);
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_63 = __pyx_v_i;
+    __pyx_t_64 = __pyx_v_j;
+    __pyx_t_23 = -1;
+    if (__pyx_t_63 < 0) {
+      __pyx_t_63 += __pyx_pybuffernd_pointer.diminfo[0].shape;
+      if (unlikely(__pyx_t_63 < 0)) __pyx_t_23 = 0;
+    } else if (unlikely(__pyx_t_63 >= __pyx_pybuffernd_pointer.diminfo[0].shape)) __pyx_t_23 = 0;
+    if (__pyx_t_64 < 0) {
+      __pyx_t_64 += __pyx_pybuffernd_pointer.diminfo[1].shape;
+      if (unlikely(__pyx_t_64 < 0)) __pyx_t_23 = 1;
+    } else if (unlikely(__pyx_t_64 >= __pyx_pybuffernd_pointer.diminfo[1].shape)) __pyx_t_23 = 1;
+    if (unlikely(__pyx_t_23 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_23);
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_7 = __Pyx_PyInt_From_npy_ulong((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_59, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_60, __pyx_pybuffernd_pointer.diminfo[1].strides))); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 225; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyInt_From_npy_ulong((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_63, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_64, __pyx_pybuffernd_pointer.diminfo[1].strides))); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF_SET(__pyx_v_p, __pyx_t_7);
     __pyx_t_7 = 0;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":227
+  /* "coral/analysis/_sequencing/calign.pyx":238
  *         p = pointer[i, j]
  *
  *     _PyString_Resize(&aj, align_counter)             # <<<<<<<<<<<<<<
@@ -4058,7 +4491,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   _PyString_Resize((&__pyx_v_aj), __pyx_v_align_counter);
 
-  /* "coral/analysis/_sequencing/calign.pyx":228
+  /* "coral/analysis/_sequencing/calign.pyx":239
  *
  *     _PyString_Resize(&aj, align_counter)
  *     _PyString_Resize(&ai, align_counter)             # <<<<<<<<<<<<<<
@@ -4067,7 +4500,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   _PyString_Resize((&__pyx_v_ai), __pyx_v_align_counter);
 
-  /* "coral/analysis/_sequencing/calign.pyx":230
+  /* "coral/analysis/_sequencing/calign.pyx":241
  *     _PyString_Resize(&ai, align_counter)
  *
  *     if flip:             # <<<<<<<<<<<<<<
@@ -4077,7 +4510,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __pyx_t_3 = (__pyx_v_flip != 0);
   if (__pyx_t_3) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":231
+    /* "coral/analysis/_sequencing/calign.pyx":242
  *
  *     if flip:
  *         return (<object>ai)[::-1], (<object>aj)[::-1]             # <<<<<<<<<<<<<<
@@ -4085,23 +4518,23 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  *         return (<object>aj)[::-1], (<object>ai)[::-1]
  */
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_7 = PyObject_GetItem(((PyObject *)__pyx_v_ai), __pyx_slice__26); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __pyx_t_7 = PyObject_GetItem(((PyObject *)__pyx_v_ai), __pyx_slice__26); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_16 = PyObject_GetItem(((PyObject *)__pyx_v_aj), __pyx_slice__27); if (unlikely(__pyx_t_16 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_17 = PyTuple_New(2); if (unlikely(!__pyx_t_17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    __Pyx_GOTREF(__pyx_t_17);
+    __pyx_t_21 = PyObject_GetItem(((PyObject *)__pyx_v_aj), __pyx_slice__27); if (unlikely(__pyx_t_21 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_21);
+    __pyx_t_22 = PyTuple_New(2); if (unlikely(!__pyx_t_22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_22);
     __Pyx_GIVEREF(__pyx_t_7);
-    PyTuple_SET_ITEM(__pyx_t_17, 0, __pyx_t_7);
-    __Pyx_GIVEREF(__pyx_t_16);
-    PyTuple_SET_ITEM(__pyx_t_17, 1, __pyx_t_16);
+    PyTuple_SET_ITEM(__pyx_t_22, 0, __pyx_t_7);
+    __Pyx_GIVEREF(__pyx_t_21);
+    PyTuple_SET_ITEM(__pyx_t_22, 1, __pyx_t_21);
     __pyx_t_7 = 0;
-    __pyx_t_16 = 0;
-    __pyx_r = __pyx_t_17;
-    __pyx_t_17 = 0;
+    __pyx_t_21 = 0;
+    __pyx_r = __pyx_t_22;
+    __pyx_t_22 = 0;
     goto __pyx_L0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":230
+    /* "coral/analysis/_sequencing/calign.pyx":241
  *     _PyString_Resize(&ai, align_counter)
  *
  *     if flip:             # <<<<<<<<<<<<<<
@@ -4110,7 +4543,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":233
+  /* "coral/analysis/_sequencing/calign.pyx":244
  *         return (<object>ai)[::-1], (<object>aj)[::-1]
  *     else:
  *         return (<object>aj)[::-1], (<object>ai)[::-1]             # <<<<<<<<<<<<<<
@@ -4119,24 +4552,24 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
-    __pyx_t_17 = PyObject_GetItem(((PyObject *)__pyx_v_aj), __pyx_slice__28); if (unlikely(__pyx_t_17 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_17);
-    __pyx_t_16 = PyObject_GetItem(((PyObject *)__pyx_v_ai), __pyx_slice__29); if (unlikely(__pyx_t_16 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
-    __Pyx_GOTREF(__pyx_t_16);
-    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_22 = PyObject_GetItem(((PyObject *)__pyx_v_aj), __pyx_slice__28); if (unlikely(__pyx_t_22 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_22);
+    __pyx_t_21 = PyObject_GetItem(((PyObject *)__pyx_v_ai), __pyx_slice__29); if (unlikely(__pyx_t_21 == NULL)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;};
+    __Pyx_GOTREF(__pyx_t_21);
+    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
-    __Pyx_GIVEREF(__pyx_t_17);
-    PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_17);
-    __Pyx_GIVEREF(__pyx_t_16);
-    PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_16);
-    __pyx_t_17 = 0;
-    __pyx_t_16 = 0;
+    __Pyx_GIVEREF(__pyx_t_22);
+    PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_22);
+    __Pyx_GIVEREF(__pyx_t_21);
+    PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_21);
+    __pyx_t_22 = 0;
+    __pyx_t_21 = 0;
     __pyx_r = __pyx_t_7;
     __pyx_t_7 = 0;
     goto __pyx_L0;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":61
+  /* "coral/analysis/_sequencing/calign.pyx":72
  *
  *
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,             # <<<<<<<<<<<<<<
@@ -4151,8 +4584,8 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_XDECREF(__pyx_t_16);
-  __Pyx_XDECREF(__pyx_t_17);
+  __Pyx_XDECREF(__pyx_t_21);
+  __Pyx_XDECREF(__pyx_t_22);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_agap_i.rcbuffer->pybuffer);
@@ -4190,7 +4623,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":236
+/* "coral/analysis/_sequencing/calign.pyx":247
  *
  *
  * def score_alignment(a, b, int gap_open, int gap_extend, matrix):             # <<<<<<<<<<<<<<
@@ -4199,10 +4632,10 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2aligner(CYTHON
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5score_alignment(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_4score_alignment[] = "Calculate the alignment score from two aligned sequences.\n\n    :param a: The first aligned sequence.\n    :type a: str\n    :param b: The second aligned sequence.\n    :type b: str\n    :param gap_open: The cost of opening a gap (negative number).\n    :type gap_open: int\n    :param gap_extend: The cost of extending an open gap (negative number).\n    :type gap_extend: int.\n    :param matrix: Scoring matrix. Only option for now is DNA_simple.\n    :type matrix: str\n\n    ";
-static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_5score_alignment = {"score_alignment", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_5score_alignment, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5coral_8analysis_11_sequencing_6calign_4score_alignment};
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5score_alignment(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_7score_alignment(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_6score_alignment[] = "Calculate the alignment score from two aligned sequences.\n\n    :param a: The first aligned sequence.\n    :type a: str\n    :param b: The second aligned sequence.\n    :type b: str\n    :param gap_open: The cost of opening a gap (negative number).\n    :type gap_open: int\n    :param gap_extend: The cost of extending an open gap (negative number).\n    :type gap_extend: int.\n    :param matrix: A score matrix dictionary name. Examples can be found in\n                   the substitution_matrices module.\n    :type matrix: SubstitutionMatrix\n\n    ";
+static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_7score_alignment = {"score_alignment", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_7score_alignment, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5coral_8analysis_11_sequencing_6calign_6score_alignment};
+static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_7score_alignment(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_a = 0;
   PyObject *__pyx_v_b = 0;
   int __pyx_v_gap_open;
@@ -4237,26 +4670,26 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5score_alignmen
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, 1); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_gap_open)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, 2); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_gap_extend)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, 3); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
         case  4:
         if (likely((values[4] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_matrix)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+          __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, 4); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "score_alignment") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "score_alignment") < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
@@ -4269,26 +4702,26 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5score_alignmen
     }
     __pyx_v_a = values[0];
     __pyx_v_b = values[1];
-    __pyx_v_gap_open = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_gap_open == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
-    __pyx_v_gap_extend = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_gap_extend == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_gap_open = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_gap_open == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+    __pyx_v_gap_extend = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_gap_extend == (int)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     __pyx_v_matrix = values[4];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
+  __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
   __Pyx_AddTraceback("coral.analysis._sequencing.calign.score_alignment", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignment(__pyx_self, __pyx_v_a, __pyx_v_b, __pyx_v_gap_open, __pyx_v_gap_extend, __pyx_v_matrix);
+  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignment(__pyx_self, __pyx_v_a, __pyx_v_b, __pyx_v_gap_open, __pyx_v_gap_extend, __pyx_v_matrix);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignment(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_a, PyObject *__pyx_v_b, int __pyx_v_gap_open, int __pyx_v_gap_extend, PyObject *__pyx_v_matrix) {
+static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignment(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_a, PyObject *__pyx_v_b, int __pyx_v_gap_open, int __pyx_v_gap_extend, PyObject *__pyx_v_matrix) {
   char *__pyx_v_al;
   char *__pyx_v_bl;
   size_t __pyx_v_l;
@@ -4302,16 +4735,20 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
   __Pyx_RefNannyDeclarations
   char *__pyx_t_1;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
+  PyObject *__pyx_t_3 = NULL;
   PyObject *__pyx_t_4 = NULL;
   PyObject *__pyx_t_5 = NULL;
-  PyObject *__pyx_t_6 = NULL;
-  size_t __pyx_t_7;
-  size_t __pyx_t_8;
-  int __pyx_t_9;
-  int __pyx_t_10;
-  Py_ssize_t __pyx_t_11;
-  Py_ssize_t __pyx_t_12;
+  PyArrayObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  PyObject *__pyx_t_9 = NULL;
+  PyObject *__pyx_t_10 = NULL;
+  size_t __pyx_t_11;
+  size_t __pyx_t_12;
+  int __pyx_t_13;
+  int __pyx_t_14;
+  Py_ssize_t __pyx_t_15;
+  Py_ssize_t __pyx_t_16;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -4321,27 +4758,27 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
   __pyx_pybuffernd_mat.data = NULL;
   __pyx_pybuffernd_mat.rcbuffer = &__pyx_pybuffer_mat;
 
-  /* "coral/analysis/_sequencing/calign.pyx":251
+  /* "coral/analysis/_sequencing/calign.pyx":263
  *
  *     '''
  *     cdef char *al = a             # <<<<<<<<<<<<<<
  *     cdef char *bl = b
  *     cdef size_t l = strlen(al), i
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_a); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 251; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_a); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_al = __pyx_t_1;
 
-  /* "coral/analysis/_sequencing/calign.pyx":252
+  /* "coral/analysis/_sequencing/calign.pyx":264
  *     '''
  *     cdef char *al = a
  *     cdef char *bl = b             # <<<<<<<<<<<<<<
  *     cdef size_t l = strlen(al), i
  *     cdef int score = 0, this_score
  */
-  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_b); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 252; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_b); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 264; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_bl = __pyx_t_1;
 
-  /* "coral/analysis/_sequencing/calign.pyx":253
+  /* "coral/analysis/_sequencing/calign.pyx":265
  *     cdef char *al = a
  *     cdef char *bl = b
  *     cdef size_t l = strlen(al), i             # <<<<<<<<<<<<<<
@@ -4350,7 +4787,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
  */
   __pyx_v_l = strlen(__pyx_v_al);
 
-  /* "coral/analysis/_sequencing/calign.pyx":254
+  /* "coral/analysis/_sequencing/calign.pyx":266
  *     cdef char *bl = b
  *     cdef size_t l = strlen(al), i
  *     cdef int score = 0, this_score             # <<<<<<<<<<<<<<
@@ -4359,53 +4796,80 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
  */
   __pyx_v_score = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":255
+  /* "coral/analysis/_sequencing/calign.pyx":267
  *     cdef size_t l = strlen(al), i
  *     cdef int score = 0, this_score
  *     assert strlen(bl) == l, 'Alignment lengths must be the same'             # <<<<<<<<<<<<<<
  *     cdef np.ndarray[DTYPE_INT, ndim=2] mat
- *     mat = matrix
+ *     mat = as_ord_matrix(matrix)
  */
   #ifndef CYTHON_WITHOUT_ASSERTIONS
   if (unlikely(!Py_OptimizeFlag)) {
     if (unlikely(!((strlen(__pyx_v_bl) == __pyx_v_l) != 0))) {
       PyErr_SetObject(PyExc_AssertionError, __pyx_kp_s_Alignment_lengths_must_be_the_sa);
-      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 255; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      {__pyx_filename = __pyx_f[0]; __pyx_lineno = 267; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
   }
   #endif
 
-  /* "coral/analysis/_sequencing/calign.pyx":257
+  /* "coral/analysis/_sequencing/calign.pyx":269
  *     assert strlen(bl) == l, 'Alignment lengths must be the same'
  *     cdef np.ndarray[DTYPE_INT, ndim=2] mat
- *     mat = matrix             # <<<<<<<<<<<<<<
+ *     mat = as_ord_matrix(matrix)             # <<<<<<<<<<<<<<
  *
  *     cdef bint gap_started = 0
  */
-  if (!(likely(((__pyx_v_matrix) == Py_None) || likely(__Pyx_TypeTest(__pyx_v_matrix, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_t_2 = __pyx_v_matrix;
-  __Pyx_INCREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_as_ord_matrix); if (unlikely(!__pyx_t_3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_4 = NULL;
+  if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_4 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_4)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_4);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  if (!__pyx_t_4) {
+    __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_matrix); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+  } else {
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
+    __Pyx_INCREF(__pyx_v_matrix);
+    __Pyx_GIVEREF(__pyx_v_matrix);
+    PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_v_matrix);
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_5, NULL); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __Pyx_GOTREF(__pyx_t_2);
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  }
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_6 = ((PyArrayObject *)__pyx_t_2);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat.rcbuffer->pybuffer);
-    __pyx_t_3 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_2), &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
-    if (unlikely(__pyx_t_3 < 0)) {
-      PyErr_Fetch(&__pyx_t_4, &__pyx_t_5, &__pyx_t_6);
+    __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
+    if (unlikely(__pyx_t_7 < 0)) {
+      PyErr_Fetch(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
       if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_v_mat, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
-        Py_XDECREF(__pyx_t_4); Py_XDECREF(__pyx_t_5); Py_XDECREF(__pyx_t_6);
+        Py_XDECREF(__pyx_t_8); Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_10);
         __Pyx_RaiseBufferFallbackError();
       } else {
-        PyErr_Restore(__pyx_t_4, __pyx_t_5, __pyx_t_6);
+        PyErr_Restore(__pyx_t_8, __pyx_t_9, __pyx_t_10);
       }
     }
     __pyx_pybuffernd_mat.diminfo[0].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_mat.diminfo[0].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_mat.diminfo[1].strides = __pyx_pybuffernd_mat.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_mat.diminfo[1].shape = __pyx_pybuffernd_mat.rcbuffer->pybuffer.shape[1];
-    if (unlikely(__pyx_t_3 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 257; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (unlikely(__pyx_t_7 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 269; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
+  __pyx_t_6 = 0;
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":259
- *     mat = matrix
+  /* "coral/analysis/_sequencing/calign.pyx":271
+ *     mat = as_ord_matrix(matrix)
  *
  *     cdef bint gap_started = 0             # <<<<<<<<<<<<<<
  *
@@ -4413,36 +4877,36 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
  */
   __pyx_v_gap_started = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":261
+  /* "coral/analysis/_sequencing/calign.pyx":273
  *     cdef bint gap_started = 0
  *
  *     for i in range(l):             # <<<<<<<<<<<<<<
  *         if al[i] == c'-' or bl[i] == c'-':
  *             score += gap_extend if gap_started else gap_open
  */
-  __pyx_t_7 = __pyx_v_l;
-  for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-    __pyx_v_i = __pyx_t_8;
+  __pyx_t_11 = __pyx_v_l;
+  for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
+    __pyx_v_i = __pyx_t_12;
 
-    /* "coral/analysis/_sequencing/calign.pyx":262
+    /* "coral/analysis/_sequencing/calign.pyx":274
  *
  *     for i in range(l):
  *         if al[i] == c'-' or bl[i] == c'-':             # <<<<<<<<<<<<<<
  *             score += gap_extend if gap_started else gap_open
  *             gap_started = 1
  */
-    __pyx_t_10 = (((__pyx_v_al[__pyx_v_i]) == '-') != 0);
-    if (!__pyx_t_10) {
+    __pyx_t_14 = (((__pyx_v_al[__pyx_v_i]) == '-') != 0);
+    if (!__pyx_t_14) {
     } else {
-      __pyx_t_9 = __pyx_t_10;
+      __pyx_t_13 = __pyx_t_14;
       goto __pyx_L6_bool_binop_done;
     }
-    __pyx_t_10 = (((__pyx_v_bl[__pyx_v_i]) == '-') != 0);
-    __pyx_t_9 = __pyx_t_10;
+    __pyx_t_14 = (((__pyx_v_bl[__pyx_v_i]) == '-') != 0);
+    __pyx_t_13 = __pyx_t_14;
     __pyx_L6_bool_binop_done:;
-    if (__pyx_t_9) {
+    if (__pyx_t_13) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":263
+      /* "coral/analysis/_sequencing/calign.pyx":275
  *     for i in range(l):
  *         if al[i] == c'-' or bl[i] == c'-':
  *             score += gap_extend if gap_started else gap_open             # <<<<<<<<<<<<<<
@@ -4450,13 +4914,13 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
  *         else:
  */
       if ((__pyx_v_gap_started != 0)) {
-        __pyx_t_3 = __pyx_v_gap_extend;
+        __pyx_t_7 = __pyx_v_gap_extend;
       } else {
-        __pyx_t_3 = __pyx_v_gap_open;
+        __pyx_t_7 = __pyx_v_gap_open;
       }
-      __pyx_v_score = (__pyx_v_score + __pyx_t_3);
+      __pyx_v_score = (__pyx_v_score + __pyx_t_7);
 
-      /* "coral/analysis/_sequencing/calign.pyx":264
+      /* "coral/analysis/_sequencing/calign.pyx":276
  *         if al[i] == c'-' or bl[i] == c'-':
  *             score += gap_extend if gap_started else gap_open
  *             gap_started = 1             # <<<<<<<<<<<<<<
@@ -4465,7 +4929,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
  */
       __pyx_v_gap_started = 1;
 
-      /* "coral/analysis/_sequencing/calign.pyx":262
+      /* "coral/analysis/_sequencing/calign.pyx":274
  *
  *     for i in range(l):
  *         if al[i] == c'-' or bl[i] == c'-':             # <<<<<<<<<<<<<<
@@ -4475,7 +4939,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
       goto __pyx_L5;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":266
+    /* "coral/analysis/_sequencing/calign.pyx":278
  *             gap_started = 1
  *         else:
  *             score += mat[al[i], bl[i]]             # <<<<<<<<<<<<<<
@@ -4483,24 +4947,24 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
  *     return score
  */
     /*else*/ {
-      __pyx_t_11 = (__pyx_v_al[__pyx_v_i]);
-      __pyx_t_12 = (__pyx_v_bl[__pyx_v_i]);
-      __pyx_t_3 = -1;
-      if (__pyx_t_11 < 0) {
-        __pyx_t_11 += __pyx_pybuffernd_mat.diminfo[0].shape;
-        if (unlikely(__pyx_t_11 < 0)) __pyx_t_3 = 0;
-      } else if (unlikely(__pyx_t_11 >= __pyx_pybuffernd_mat.diminfo[0].shape)) __pyx_t_3 = 0;
-      if (__pyx_t_12 < 0) {
-        __pyx_t_12 += __pyx_pybuffernd_mat.diminfo[1].shape;
-        if (unlikely(__pyx_t_12 < 0)) __pyx_t_3 = 1;
-      } else if (unlikely(__pyx_t_12 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_3 = 1;
-      if (unlikely(__pyx_t_3 != -1)) {
-        __Pyx_RaiseBufferIndexError(__pyx_t_3);
-        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 266; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_15 = (__pyx_v_al[__pyx_v_i]);
+      __pyx_t_16 = (__pyx_v_bl[__pyx_v_i]);
+      __pyx_t_7 = -1;
+      if (__pyx_t_15 < 0) {
+        __pyx_t_15 += __pyx_pybuffernd_mat.diminfo[0].shape;
+        if (unlikely(__pyx_t_15 < 0)) __pyx_t_7 = 0;
+      } else if (unlikely(__pyx_t_15 >= __pyx_pybuffernd_mat.diminfo[0].shape)) __pyx_t_7 = 0;
+      if (__pyx_t_16 < 0) {
+        __pyx_t_16 += __pyx_pybuffernd_mat.diminfo[1].shape;
+        if (unlikely(__pyx_t_16 < 0)) __pyx_t_7 = 1;
+      } else if (unlikely(__pyx_t_16 >= __pyx_pybuffernd_mat.diminfo[1].shape)) __pyx_t_7 = 1;
+      if (unlikely(__pyx_t_7 != -1)) {
+        __Pyx_RaiseBufferIndexError(__pyx_t_7);
+        {__pyx_filename = __pyx_f[0]; __pyx_lineno = 278; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_v_score = (__pyx_v_score + (*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_12, __pyx_pybuffernd_mat.diminfo[1].strides)));
+      __pyx_v_score = (__pyx_v_score + (*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[1].strides)));
 
-      /* "coral/analysis/_sequencing/calign.pyx":267
+      /* "coral/analysis/_sequencing/calign.pyx":279
  *         else:
  *             score += mat[al[i], bl[i]]
  *             gap_started = 0             # <<<<<<<<<<<<<<
@@ -4511,19 +4975,19 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
     __pyx_L5:;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":268
+  /* "coral/analysis/_sequencing/calign.pyx":280
  *             score += mat[al[i], bl[i]]
  *             gap_started = 0
  *     return score             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_score); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 268; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_score); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 280; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":236
+  /* "coral/analysis/_sequencing/calign.pyx":247
  *
  *
  * def score_alignment(a, b, int gap_open, int gap_extend, matrix):             # <<<<<<<<<<<<<<
@@ -4534,6 +4998,9 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4score_alignmen
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat.rcbuffer->pybuffer);
@@ -6739,20 +7206,25 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_align_i, __pyx_k_align_i, sizeof(__pyx_k_align_i), 0, 0, 1, 1},
   {&__pyx_n_s_align_j, __pyx_k_align_j, sizeof(__pyx_k_align_j), 0, 0, 1, 1},
   {&__pyx_n_s_aligner, __pyx_k_aligner, sizeof(__pyx_k_aligner), 0, 0, 1, 1},
+  {&__pyx_n_s_alphabet, __pyx_k_alphabet, sizeof(__pyx_k_alphabet), 0, 0, 1, 1},
   {&__pyx_n_s_amatrix, __pyx_k_amatrix, sizeof(__pyx_k_amatrix), 0, 0, 1, 1},
   {&__pyx_n_s_arange, __pyx_k_arange, sizeof(__pyx_k_arange), 0, 0, 1, 1},
   {&__pyx_n_s_argmax, __pyx_k_argmax, sizeof(__pyx_k_argmax), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
+  {&__pyx_n_s_as_ord_matrix, __pyx_k_as_ord_matrix, sizeof(__pyx_k_as_ord_matrix), 0, 0, 1, 1},
   {&__pyx_n_s_b, __pyx_k_b, sizeof(__pyx_k_b), 0, 0, 1, 1},
   {&__pyx_n_s_bl, __pyx_k_bl, sizeof(__pyx_k_bl), 0, 0, 1, 1},
+  {&__pyx_n_s_c, __pyx_k_c, sizeof(__pyx_k_c), 0, 0, 1, 1},
   {&__pyx_n_s_ci, __pyx_k_ci, sizeof(__pyx_k_ci), 0, 0, 1, 1},
   {&__pyx_n_s_cj, __pyx_k_cj, sizeof(__pyx_k_cj), 0, 0, 1, 1},
   {&__pyx_n_s_col_idx, __pyx_k_col_idx, sizeof(__pyx_k_col_idx), 0, 0, 1, 1},
   {&__pyx_n_s_col_max, __pyx_k_col_max, sizeof(__pyx_k_col_max), 0, 0, 1, 1},
+  {&__pyx_n_s_col_ord, __pyx_k_col_ord, sizeof(__pyx_k_col_ord), 0, 0, 1, 1},
   {&__pyx_n_s_coral_analysis__sequencing_calig, __pyx_k_coral_analysis__sequencing_calig, sizeof(__pyx_k_coral_analysis__sequencing_calig), 0, 0, 1, 1},
   {&__pyx_n_s_diag_score, __pyx_k_diag_score, sizeof(__pyx_k_diag_score), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
   {&__pyx_n_s_empty, __pyx_k_empty, sizeof(__pyx_k_empty), 0, 0, 1, 1},
+  {&__pyx_n_s_enumerate, __pyx_k_enumerate, sizeof(__pyx_k_enumerate), 0, 0, 1, 1},
   {&__pyx_n_s_fill, __pyx_k_fill, sizeof(__pyx_k_fill), 0, 0, 1, 1},
   {&__pyx_n_s_flip, __pyx_k_flip, sizeof(__pyx_k_flip), 0, 0, 1, 1},
   {&__pyx_n_s_float32, __pyx_k_float32, sizeof(__pyx_k_float32), 0, 0, 1, 1},
@@ -6770,6 +7242,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_imethod, __pyx_k_imethod, sizeof(__pyx_k_imethod), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_inf, __pyx_k_inf, sizeof(__pyx_k_inf), 0, 0, 1, 1},
+  {&__pyx_n_s_integer, __pyx_k_integer, sizeof(__pyx_k_integer), 0, 0, 1, 1},
   {&__pyx_n_s_j, __pyx_k_j, sizeof(__pyx_k_j), 0, 0, 1, 1},
   {&__pyx_n_s_l, __pyx_k_l, sizeof(__pyx_k_l), 0, 0, 1, 1},
   {&__pyx_n_s_left_score, __pyx_k_left_score, sizeof(__pyx_k_left_score), 0, 0, 1, 1},
@@ -6787,12 +7260,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_u_ndarray_is_not_Fortran_contiguou, __pyx_k_ndarray_is_not_Fortran_contiguou, sizeof(__pyx_k_ndarray_is_not_Fortran_contiguou), 0, 1, 0, 0},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
-  {&__pyx_n_s_os, __pyx_k_os, sizeof(__pyx_k_os), 0, 0, 1, 1},
+  {&__pyx_n_s_ord_matrix, __pyx_k_ord_matrix, sizeof(__pyx_k_ord_matrix), 0, 0, 1, 1},
+  {&__pyx_n_s_ords, __pyx_k_ords, sizeof(__pyx_k_ords), 0, 0, 1, 1},
   {&__pyx_n_s_p, __pyx_k_p, sizeof(__pyx_k_p), 0, 0, 1, 1},
   {&__pyx_n_s_pointer, __pyx_k_pointer, sizeof(__pyx_k_pointer), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_row_idx, __pyx_k_row_idx, sizeof(__pyx_k_row_idx), 0, 0, 1, 1},
   {&__pyx_n_s_row_max, __pyx_k_row_max, sizeof(__pyx_k_row_max), 0, 0, 1, 1},
+  {&__pyx_n_s_row_ord, __pyx_k_row_ord, sizeof(__pyx_k_row_ord), 0, 0, 1, 1},
   {&__pyx_n_s_score, __pyx_k_score, sizeof(__pyx_k_score), 0, 0, 1, 1},
   {&__pyx_n_s_score_alignment, __pyx_k_score_alignment, sizeof(__pyx_k_score_alignment), 0, 0, 1, 1},
   {&__pyx_n_s_seqi, __pyx_k_seqi, sizeof(__pyx_k_seqi), 0, 0, 1, 1},
@@ -6814,8 +7289,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __pyx_builtin_Exception = __Pyx_GetBuiltinName(__pyx_n_s_Exception); if (!__pyx_builtin_Exception) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 223; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_max = __Pyx_GetBuiltinName(__pyx_n_s_max); if (!__pyx_builtin_max) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 53; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 54; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 164; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_builtin_Exception = __Pyx_GetBuiltinName(__pyx_n_s_Exception); if (!__pyx_builtin_Exception) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 234; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_ValueError = __Pyx_GetBuiltinName(__pyx_n_s_ValueError); if (!__pyx_builtin_ValueError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_builtin_RuntimeError = __Pyx_GetBuiltinName(__pyx_n_s_RuntimeError); if (!__pyx_builtin_RuntimeError) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 799; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   return 0;
@@ -6827,188 +7304,188 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":114
+  /* "coral/analysis/_sequencing/calign.pyx":125
  *     cdef size_t max_i = strlen(seqi)
  *     if max_i == max_j == 0:
  *         return '', ''             # <<<<<<<<<<<<<<
  *
  *     if max_j > max_i:
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_kp_s__2, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 114; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_kp_s__2, __pyx_kp_s__2); if (unlikely(!__pyx_tuple__3)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 125; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "coral/analysis/_sequencing/calign.pyx":142
+  /* "coral/analysis/_sequencing/calign.pyx":153
  *     # START HERE:
  *     if imethod == 0:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  */
-  __pyx_slice__4 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__4 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__4)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__4);
   __Pyx_GIVEREF(__pyx_slice__4);
-  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__4); if (unlikely(!__pyx_tuple__5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 142; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__4); if (unlikely(!__pyx_tuple__5)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "coral/analysis/_sequencing/calign.pyx":143
+  /* "coral/analysis/_sequencing/calign.pyx":154
  *     if imethod == 0:
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP             # <<<<<<<<<<<<<<
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  */
-  __pyx_slice__6 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__6 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__6)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__6);
   __Pyx_GIVEREF(__pyx_slice__6);
-  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_slice__6, __pyx_int_0); if (unlikely(!__pyx_tuple__7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 143; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__7 = PyTuple_Pack(2, __pyx_slice__6, __pyx_int_0); if (unlikely(!__pyx_tuple__7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "coral/analysis/_sequencing/calign.pyx":144
+  /* "coral/analysis/_sequencing/calign.pyx":155
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)             # <<<<<<<<<<<<<<
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:
  */
-  __pyx_slice__8 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__8 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__8)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__8);
   __Pyx_GIVEREF(__pyx_slice__8);
-  __pyx_tuple__9 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__8); if (unlikely(!__pyx_tuple__9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 144; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__9 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__8); if (unlikely(!__pyx_tuple__9)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "coral/analysis/_sequencing/calign.pyx":145
+  /* "coral/analysis/_sequencing/calign.pyx":156
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)             # <<<<<<<<<<<<<<
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT
  */
-  __pyx_slice__10 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__10 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__10);
   __Pyx_GIVEREF(__pyx_slice__10);
-  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_slice__10, __pyx_int_0); if (unlikely(!__pyx_tuple__11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__11 = PyTuple_Pack(2, __pyx_slice__10, __pyx_int_0); if (unlikely(!__pyx_tuple__11)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "coral/analysis/_sequencing/calign.pyx":147
+  /* "coral/analysis/_sequencing/calign.pyx":158
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:
  */
-  __pyx_slice__12 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__12 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__12)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__12);
   __Pyx_GIVEREF(__pyx_slice__12);
-  __pyx_tuple__13 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__12); if (unlikely(!__pyx_tuple__13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__13 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__12); if (unlikely(!__pyx_tuple__13)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "coral/analysis/_sequencing/calign.pyx":148
+  /* "coral/analysis/_sequencing/calign.pyx":159
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP             # <<<<<<<<<<<<<<
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT
  */
-  __pyx_slice__14 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__14 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__14)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__14);
   __Pyx_GIVEREF(__pyx_slice__14);
-  __pyx_tuple__15 = PyTuple_Pack(2, __pyx_slice__14, __pyx_int_0); if (unlikely(!__pyx_tuple__15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__15 = PyTuple_Pack(2, __pyx_slice__14, __pyx_int_0); if (unlikely(!__pyx_tuple__15)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
 
-  /* "coral/analysis/_sequencing/calign.pyx":150
+  /* "coral/analysis/_sequencing/calign.pyx":161
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *
  */
-  __pyx_slice__16 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__16 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__16)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__16);
   __Pyx_GIVEREF(__pyx_slice__16);
-  __pyx_tuple__17 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__16); if (unlikely(!__pyx_tuple__17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 150; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__17 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__16); if (unlikely(!__pyx_tuple__17)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__17);
   __Pyx_GIVEREF(__pyx_tuple__17);
 
-  /* "coral/analysis/_sequencing/calign.pyx":151
+  /* "coral/analysis/_sequencing/calign.pyx":162
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)             # <<<<<<<<<<<<<<
  *
  *     for i in range(1, max_i + 1):
  */
-  __pyx_slice__18 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__18)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__18 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__18)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__18);
   __Pyx_GIVEREF(__pyx_slice__18);
-  __pyx_tuple__19 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__18); if (unlikely(!__pyx_tuple__19)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 151; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__19 = PyTuple_Pack(2, __pyx_int_0, __pyx_slice__18); if (unlikely(!__pyx_tuple__19)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
 
-  /* "coral/analysis/_sequencing/calign.pyx":189
+  /* "coral/analysis/_sequencing/calign.pyx":200
  *     elif imethod == 2:
  *         # max in last col
  *         i, j = (score[:,-1].argmax(), max_j)             # <<<<<<<<<<<<<<
  *     elif imethod == 3:
  *         # from i,j to max(max(last row), max(last col)) for free
  */
-  __pyx_slice__20 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__20 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__20)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__20);
   __Pyx_GIVEREF(__pyx_slice__20);
-  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_slice__20, __pyx_int_neg_1); if (unlikely(!__pyx_tuple__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 189; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__21 = PyTuple_Pack(2, __pyx_slice__20, __pyx_int_neg_1); if (unlikely(!__pyx_tuple__21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 200; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
 
-  /* "coral/analysis/_sequencing/calign.pyx":193
+  /* "coral/analysis/_sequencing/calign.pyx":204
  *         # from i,j to max(max(last row), max(last col)) for free
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()             # <<<<<<<<<<<<<<
  *         if row_max > col_max:
  *             pointer[-1,col_idx+1:] = LEFT
  */
-  __pyx_slice__22 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__22 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__22)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__22);
   __Pyx_GIVEREF(__pyx_slice__22);
-  __pyx_tuple__23 = PyTuple_Pack(2, __pyx_slice__22, __pyx_int_neg_1); if (unlikely(!__pyx_tuple__23)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__23 = PyTuple_Pack(2, __pyx_slice__22, __pyx_int_neg_1); if (unlikely(!__pyx_tuple__23)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__23);
   __Pyx_GIVEREF(__pyx_tuple__23);
-  __pyx_slice__24 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__24)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__24 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__24)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__24);
   __Pyx_GIVEREF(__pyx_slice__24);
-  __pyx_tuple__25 = PyTuple_Pack(2, __pyx_slice__24, __pyx_int_neg_1); if (unlikely(!__pyx_tuple__25)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 193; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__25 = PyTuple_Pack(2, __pyx_slice__24, __pyx_int_neg_1); if (unlikely(!__pyx_tuple__25)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 204; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
 
-  /* "coral/analysis/_sequencing/calign.pyx":231
+  /* "coral/analysis/_sequencing/calign.pyx":242
  *
  *     if flip:
  *         return (<object>ai)[::-1], (<object>aj)[::-1]             # <<<<<<<<<<<<<<
  *     else:
  *         return (<object>aj)[::-1], (<object>ai)[::-1]
  */
-  __pyx_slice__26 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__26)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__26 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__26)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__26);
   __Pyx_GIVEREF(__pyx_slice__26);
-  __pyx_slice__27 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__27)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 231; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__27 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__27)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 242; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__27);
   __Pyx_GIVEREF(__pyx_slice__27);
 
-  /* "coral/analysis/_sequencing/calign.pyx":233
+  /* "coral/analysis/_sequencing/calign.pyx":244
  *         return (<object>ai)[::-1], (<object>aj)[::-1]
  *     else:
  *         return (<object>aj)[::-1], (<object>ai)[::-1]             # <<<<<<<<<<<<<<
  *
  *
  */
-  __pyx_slice__28 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__28 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__28)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__28);
   __Pyx_GIVEREF(__pyx_slice__28);
-  __pyx_slice__29 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 233; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_slice__29 = PySlice_New(Py_None, Py_None, __pyx_int_neg_1); if (unlikely(!__pyx_slice__29)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 244; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_slice__29);
   __Pyx_GIVEREF(__pyx_slice__29);
 
@@ -7078,41 +7555,53 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__35);
   __Pyx_GIVEREF(__pyx_tuple__35);
 
-  /* "coral/analysis/_sequencing/calign.pyx":50
+  /* "coral/analysis/_sequencing/calign.pyx":49
+ *
+ *
+ * def as_ord_matrix(matrix):             # <<<<<<<<<<<<<<
+ *     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
+ *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
+ */
+  __pyx_tuple__36 = PyTuple_Pack(8, __pyx_n_s_matrix, __pyx_n_s_ords, __pyx_n_s_ord_matrix, __pyx_n_s_i, __pyx_n_s_row_ord, __pyx_n_s_j, __pyx_n_s_col_ord, __pyx_n_s_c); if (unlikely(!__pyx_tuple__36)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__36);
+  __Pyx_GIVEREF(__pyx_tuple__36);
+  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_as_ord_matrix, 49, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+
+  /* "coral/analysis/_sequencing/calign.pyx":61
  *
  *
  * def max_index(array):             # <<<<<<<<<<<<<<
  *     '''Locate the index of the largest value in the array. If there are
  *     multiple, finds the earliest one in the row-flattened array.
  */
-  __pyx_tuple__36 = PyTuple_Pack(1, __pyx_n_s_array); if (unlikely(!__pyx_tuple__36)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__36);
-  __Pyx_GIVEREF(__pyx_tuple__36);
-  __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_max_index, 50, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__38 = PyTuple_Pack(1, __pyx_n_s_array); if (unlikely(!__pyx_tuple__38)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__38);
+  __Pyx_GIVEREF(__pyx_tuple__38);
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_max_index, 61, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "coral/analysis/_sequencing/calign.pyx":61
+  /* "coral/analysis/_sequencing/calign.pyx":72
  *
  *
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,             # <<<<<<<<<<<<<<
  *             DTYPE_FLOAT gap_double=-7, method='global',
  *             matrix=submat.DNA_SIMPLE):
  */
-  __pyx_tuple__38 = PyTuple_Pack(41, __pyx_n_s_seqj, __pyx_n_s_seqi, __pyx_n_s_gap_open, __pyx_n_s_gap_extend, __pyx_n_s_gap_double, __pyx_n_s_method, __pyx_n_s_matrix, __pyx_n_s_NONE, __pyx_n_s_LEFT, __pyx_n_s_UP, __pyx_n_s_DIAG, __pyx_n_s_flip, __pyx_n_s_seqj_2, __pyx_n_s_seqi_2, __pyx_n_s_align_counter, __pyx_n_s_imethod, __pyx_n_s_max_j, __pyx_n_s_max_i, __pyx_n_s_align_j, __pyx_n_s_align_i, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_ci, __pyx_n_s_cj, __pyx_n_s_ai, __pyx_n_s_aj, __pyx_n_s_agap_i, __pyx_n_s_agap_j, __pyx_n_s_score, __pyx_n_s_pointer, __pyx_n_s_amatrix, __pyx_n_s_diag_score, __pyx_n_s_left_score, __pyx_n_s_up_score, __pyx_n_s_max_score, __pyx_n_s_row_max, __pyx_n_s_col_idx, __pyx_n_s_col_max, __pyx_n_s_row_idx, __pyx_n_s_seqlen, __pyx_n_s_p); if (unlikely(!__pyx_tuple__38)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__38);
-  __Pyx_GIVEREF(__pyx_tuple__38);
-  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(7, 0, 41, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_aligner, 61, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__40 = PyTuple_Pack(41, __pyx_n_s_seqj, __pyx_n_s_seqi, __pyx_n_s_gap_open, __pyx_n_s_gap_extend, __pyx_n_s_gap_double, __pyx_n_s_method, __pyx_n_s_matrix, __pyx_n_s_NONE, __pyx_n_s_LEFT, __pyx_n_s_UP, __pyx_n_s_DIAG, __pyx_n_s_flip, __pyx_n_s_seqj_2, __pyx_n_s_seqi_2, __pyx_n_s_align_counter, __pyx_n_s_imethod, __pyx_n_s_max_j, __pyx_n_s_max_i, __pyx_n_s_align_j, __pyx_n_s_align_i, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_ci, __pyx_n_s_cj, __pyx_n_s_ai, __pyx_n_s_aj, __pyx_n_s_agap_i, __pyx_n_s_agap_j, __pyx_n_s_score, __pyx_n_s_pointer, __pyx_n_s_amatrix, __pyx_n_s_diag_score, __pyx_n_s_left_score, __pyx_n_s_up_score, __pyx_n_s_max_score, __pyx_n_s_row_max, __pyx_n_s_col_idx, __pyx_n_s_col_max, __pyx_n_s_row_idx, __pyx_n_s_seqlen, __pyx_n_s_p); if (unlikely(!__pyx_tuple__40)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__40);
+  __Pyx_GIVEREF(__pyx_tuple__40);
+  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(7, 0, 41, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_aligner, 72, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "coral/analysis/_sequencing/calign.pyx":236
+  /* "coral/analysis/_sequencing/calign.pyx":247
  *
  *
  * def score_alignment(a, b, int gap_open, int gap_extend, matrix):             # <<<<<<<<<<<<<<
  *     '''Calculate the alignment score from two aligned sequences.
  *
  */
-  __pyx_tuple__40 = PyTuple_Pack(13, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_gap_open, __pyx_n_s_gap_extend, __pyx_n_s_matrix, __pyx_n_s_al, __pyx_n_s_bl, __pyx_n_s_l, __pyx_n_s_i, __pyx_n_s_score, __pyx_n_s_this_score, __pyx_n_s_mat, __pyx_n_s_gap_started); if (unlikely(!__pyx_tuple__40)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-  __Pyx_GOTREF(__pyx_tuple__40);
-  __Pyx_GIVEREF(__pyx_tuple__40);
-  __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(5, 0, 13, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_score_alignment, 236, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_tuple__42 = PyTuple_Pack(13, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_gap_open, __pyx_n_s_gap_extend, __pyx_n_s_matrix, __pyx_n_s_al, __pyx_n_s_bl, __pyx_n_s_l, __pyx_n_s_i, __pyx_n_s_score, __pyx_n_s_this_score, __pyx_n_s_mat, __pyx_n_s_gap_started); if (unlikely(!__pyx_tuple__42)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __Pyx_GOTREF(__pyx_tuple__42);
+  __Pyx_GIVEREF(__pyx_tuple__42);
+  __pyx_codeobj__43 = (PyObject*)__Pyx_PyCode_New(5, 0, 13, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__42, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_score_alignment, 247, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__43)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -7252,7 +7741,7 @@ PyMODINIT_FUNC PyInit_calign(void)
  * cimport numpy as np
  * from . import substitution_matrices as submat             # <<<<<<<<<<<<<<
  * from libc.string cimport strlen
- * import os
+ *
  */
   __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 3; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
@@ -7268,68 +7757,68 @@ PyMODINIT_FUNC PyInit_calign(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":5
- * from . import substitution_matrices as submat
- * from libc.string cimport strlen
- * import os             # <<<<<<<<<<<<<<
+  /* "coral/analysis/_sequencing/calign.pyx":49
  *
  *
+ * def as_ord_matrix(matrix):             # <<<<<<<<<<<<<<
+ *     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
+ *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
  */
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_os, 0, -1); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_os, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 5; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_as_ord_matrix, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":50
+  /* "coral/analysis/_sequencing/calign.pyx":61
  *
  *
  * def max_index(array):             # <<<<<<<<<<<<<<
  *     '''Locate the index of the largest value in the array. If there are
  *     multiple, finds the earliest one in the row-flattened array.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_1max_index, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_3max_index, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_max_index, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 50; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_max_index, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":63
+  /* "coral/analysis/_sequencing/calign.pyx":74
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
  *             DTYPE_FLOAT gap_double=-7, method='global',
  *             matrix=submat.DNA_SIMPLE):             # <<<<<<<<<<<<<<
  *     '''Calculates the alignment of two sequences. The global method uses
  *     a global Needleman-Wunsh algorithm, local does a a local
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_submat); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_submat); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_DNA_SIMPLE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 63; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_DNA_SIMPLE); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 74; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_k_ = __pyx_t_1;
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":61
+  /* "coral/analysis/_sequencing/calign.pyx":72
  *
  *
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,             # <<<<<<<<<<<<<<
  *             DTYPE_FLOAT gap_double=-7, method='global',
  *             matrix=submat.DNA_SIMPLE):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_3aligner, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_5aligner, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_aligner, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_aligner, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":236
+  /* "coral/analysis/_sequencing/calign.pyx":247
  *
  *
  * def score_alignment(a, b, int gap_open, int gap_extend, matrix):             # <<<<<<<<<<<<<<
  *     '''Calculate the alignment score from two aligned sequences.
  *
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_5score_alignment, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_7score_alignment, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_score_alignment, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_score_alignment, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "coral/analysis/_sequencing/calign.pyx":1
@@ -7403,6 +7892,64 @@ static PyObject *__Pyx_GetBuiltinName(PyObject *name) {
     return result;
 }
 
+static CYTHON_INLINE Py_UCS4 __Pyx_PyUnicode_AsPy_UCS4(PyObject* x) {
+   Py_ssize_t length;
+   #if CYTHON_PEP393_ENABLED
+   length = PyUnicode_GET_LENGTH(x);
+   if (likely(length == 1)) {
+       return PyUnicode_READ_CHAR(x, 0);
+   }
+   #else
+   length = PyUnicode_GET_SIZE(x);
+   if (likely(length == 1)) {
+       return PyUnicode_AS_UNICODE(x)[0];
+   }
+   #if Py_UNICODE_SIZE == 2
+   else if (PyUnicode_GET_SIZE(x) == 2) {
+       Py_UCS4 high_val = PyUnicode_AS_UNICODE(x)[0];
+       if (high_val >= 0xD800 && high_val <= 0xDBFF) {
+           Py_UCS4 low_val = PyUnicode_AS_UNICODE(x)[1];
+           if (low_val >= 0xDC00 && low_val <= 0xDFFF) {
+               return 0x10000 + (((high_val & ((1<<10)-1)) << 10) | (low_val & ((1<<10)-1)));
+           }
+       }
+   }
+   #endif
+   #endif
+   PyErr_Format(PyExc_ValueError,
+                "only single character unicode strings can be converted to Py_UCS4, "
+                "got length %" CYTHON_FORMAT_SSIZE_T "d", length);
+   return (Py_UCS4)-1;
+}
+
+static long __Pyx__PyObject_Ord(PyObject* c) {
+    Py_ssize_t size;
+    if (PyBytes_Check(c)) {
+        size = PyBytes_GET_SIZE(c);
+        if (likely(size == 1)) {
+            return (unsigned char) PyBytes_AS_STRING(c)[0];
+        }
+#if PY_MAJOR_VERSION < 3
+    } else if (PyUnicode_Check(c)) {
+        return (long)__Pyx_PyUnicode_AsPy_UCS4(c);
+#endif
+#if (!CYTHON_COMPILING_IN_PYPY) || (defined(PyByteArray_AS_STRING) && defined(PyByteArray_GET_SIZE))
+    } else if (PyByteArray_Check(c)) {
+        size = PyByteArray_GET_SIZE(c);
+        if (likely(size == 1)) {
+            return (unsigned char) PyByteArray_AS_STRING(c)[0];
+        }
+#endif
+    } else {
+        PyErr_Format(PyExc_TypeError,
+            "ord() expected string of length 1, but %.200s found", c->ob_type->tp_name);
+        return (long)(Py_UCS4)-1;
+    }
+    PyErr_Format(PyExc_TypeError,
+        "ord() expected a character, but string of length %zd found", size);
+    return (long)(Py_UCS4)-1;
+}
+
 static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
     PyObject *result;
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -7419,6 +7966,107 @@ static CYTHON_INLINE PyObject *__Pyx_GetModuleGlobalName(PyObject *name) {
     }
     return result;
 }
+
+#if CYTHON_USE_PYLONG_INTERNALS
+  #include "longintrepr.h"
+#endif
+
+#if CYTHON_COMPILING_IN_CPYTHON
+static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED int inplace) {
+    #if PY_MAJOR_VERSION < 3
+    if (likely(PyInt_CheckExact(op1))) {
+        const long b = intval;
+        long x;
+        long a = PyInt_AS_LONG(op1);
+            x = (long)((unsigned long)a + b);
+            if (likely((x^a) >= 0 || (x^b) >= 0))
+                return PyInt_FromLong(x);
+            return PyLong_Type.tp_as_number->nb_add(op1, op2);
+    }
+    #endif
+    #if CYTHON_USE_PYLONG_INTERNALS && PY_MAJOR_VERSION >= 3
+    if (likely(PyLong_CheckExact(op1))) {
+        const long b = intval;
+        long a, x;
+        const PY_LONG_LONG llb = intval;
+        PY_LONG_LONG lla, llx;
+        const digit* digits = ((PyLongObject*)op1)->ob_digit;
+        const Py_ssize_t size = Py_SIZE(op1);
+        if (likely(__Pyx_sst_abs(size) <= 1)) {
+            a = likely(size) ? digits[0] : 0;
+            if (size == -1) a = -a;
+        } else {
+            switch (size) {
+                case -2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+                    }
+                case 2:
+                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
+                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+                    }
+                case -3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+                    }
+                case 3:
+                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
+                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+                    }
+                case -4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+                    }
+                case 4:
+                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
+                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
+                        break;
+                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
+                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
+                        goto long_long;
+                    }
+                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
+            }
+        }
+                x = a + b;
+            return PyLong_FromLong(x);
+        long_long:
+                llx = lla + llb;
+            return PyLong_FromLongLong(llx);
+    }
+    #endif
+    if (PyFloat_CheckExact(op1)) {
+        const long b = intval;
+        double a = PyFloat_AS_DOUBLE(op1);
+            double result;
+            PyFPE_START_PROTECT("add", return NULL)
+            result = ((double)a) + (double)b;
+            PyFPE_END_PROTECT(result)
+            return PyFloat_FromDouble(result);
+    }
+    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
+}
+#endif
 
 #if CYTHON_COMPILING_IN_CPYTHON
 static CYTHON_INLINE PyObject* __Pyx_PyObject_Call(PyObject *func, PyObject *arg, PyObject *kw) {
@@ -8323,6 +8971,11 @@ static CYTHON_INLINE void __Pyx_SafeReleaseBuffer(Py_buffer* info) {
   __Pyx_ReleaseBuffer(info);
 }
 
+static void __Pyx_RaiseBufferFallbackError(void) {
+  PyErr_SetString(PyExc_ValueError,
+     "Buffer acquisition failed on assignment; and then reacquiring the old buffer failed too!");
+}
+
 static void __Pyx_RaiseBufferIndexError(int axis) {
   PyErr_Format(PyExc_IndexError,
      "Out of bounds on buffer access (axis %d)", axis);
@@ -8464,107 +9117,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
 #endif
     return __Pyx_GetItemInt_Generic(o, PyInt_FromSsize_t(i));
 }
-
-#if CYTHON_USE_PYLONG_INTERNALS
-  #include "longintrepr.h"
-#endif
-
-#if CYTHON_COMPILING_IN_CPYTHON
-static PyObject* __Pyx_PyInt_AddObjC(PyObject *op1, PyObject *op2, CYTHON_UNUSED long intval, CYTHON_UNUSED int inplace) {
-    #if PY_MAJOR_VERSION < 3
-    if (likely(PyInt_CheckExact(op1))) {
-        const long b = intval;
-        long x;
-        long a = PyInt_AS_LONG(op1);
-            x = (long)((unsigned long)a + b);
-            if (likely((x^a) >= 0 || (x^b) >= 0))
-                return PyInt_FromLong(x);
-            return PyLong_Type.tp_as_number->nb_add(op1, op2);
-    }
-    #endif
-    #if CYTHON_USE_PYLONG_INTERNALS && PY_MAJOR_VERSION >= 3
-    if (likely(PyLong_CheckExact(op1))) {
-        const long b = intval;
-        long a, x;
-        const PY_LONG_LONG llb = intval;
-        PY_LONG_LONG lla, llx;
-        const digit* digits = ((PyLongObject*)op1)->ob_digit;
-        const Py_ssize_t size = Py_SIZE(op1);
-        if (likely(__Pyx_sst_abs(size) <= 1)) {
-            a = likely(size) ? digits[0] : 0;
-            if (size == -1) a = -a;
-        } else {
-            switch (size) {
-                case -2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = -(long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-                    }
-                case 2:
-                    if (8 * sizeof(long) - 1 > 2 * PyLong_SHIFT) {
-                        a = (long) (((((unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 2 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-                    }
-                case -3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = -(long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-                    }
-                case 3:
-                    if (8 * sizeof(long) - 1 > 3 * PyLong_SHIFT) {
-                        a = (long) (((((((unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 3 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-                    }
-                case -4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = -(long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = -(PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-                    }
-                case 4:
-                    if (8 * sizeof(long) - 1 > 4 * PyLong_SHIFT) {
-                        a = (long) (((((((((unsigned long)digits[3]) << PyLong_SHIFT) | (unsigned long)digits[2]) << PyLong_SHIFT) | (unsigned long)digits[1]) << PyLong_SHIFT) | (unsigned long)digits[0]));
-                        break;
-                    } else if (8 * sizeof(PY_LONG_LONG) - 1 > 4 * PyLong_SHIFT) {
-                        lla = (PY_LONG_LONG) (((((((((unsigned PY_LONG_LONG)digits[3]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[2]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[1]) << PyLong_SHIFT) | (unsigned PY_LONG_LONG)digits[0]));
-                        goto long_long;
-                    }
-                default: return PyLong_Type.tp_as_number->nb_add(op1, op2);
-            }
-        }
-                x = a + b;
-            return PyLong_FromLong(x);
-        long_long:
-                llx = lla + llb;
-            return PyLong_FromLongLong(llx);
-    }
-    #endif
-    if (PyFloat_CheckExact(op1)) {
-        const long b = intval;
-        double a = PyFloat_AS_DOUBLE(op1);
-            double result;
-            PyFPE_START_PROTECT("add", return NULL)
-            result = ((double)a) + (double)b;
-            PyFPE_END_PROTECT(result)
-            return PyFloat_FromDouble(result);
-    }
-    return (inplace ? PyNumber_InPlaceAdd : PyNumber_Add)(op1, op2);
-}
-#endif
 
 static CYTHON_INLINE void __Pyx_ErrRestore(PyObject *type, PyObject *value, PyObject *tb) {
 #if CYTHON_COMPILING_IN_CPYTHON
@@ -8756,11 +9308,6 @@ bad:
     return;
 }
 #endif
-
-static void __Pyx_RaiseBufferFallbackError(void) {
-  PyErr_SetString(PyExc_ValueError,
-     "Buffer acquisition failed on assignment; and then reacquiring the old buffer failed too!");
-}
 
 static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
@@ -9237,32 +9784,6 @@ raise_neg_overflow:
     return (int) -1;
 }
 
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-    const int neg_one = (int) -1, const_zero = (int) 0;
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-        }
-    } else {
-        if (sizeof(int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
-                                     little, !is_unsigned);
-    }
-}
-
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
@@ -9285,6 +9806,32 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
         return _PyLong_FromByteArray(bytes, sizeof(long),
+                                     little, !is_unsigned);
+    }
+}
+
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+    const int neg_one = (int) -1, const_zero = (int) 0;
+    const int is_unsigned = neg_one > const_zero;
+    if (is_unsigned) {
+        if (sizeof(int) < sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(unsigned long)) {
+            return PyLong_FromUnsignedLong((unsigned long) value);
+        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
+            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
+        }
+    } else {
+        if (sizeof(int) <= sizeof(long)) {
+            return PyInt_FromLong((long) value);
+        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
+            return PyLong_FromLongLong((PY_LONG_LONG) value);
+        }
+    }
+    {
+        int one = 1; int little = (int)*(unsigned char *)&one;
+        unsigned char *bytes = (unsigned char *)&value;
+        return _PyLong_FromByteArray(bytes, sizeof(int),
                                      little, !is_unsigned);
     }
 }

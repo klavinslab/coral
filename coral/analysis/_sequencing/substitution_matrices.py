@@ -2,14 +2,9 @@ import numpy as np
 
 
 class SubstitutionMatrix(np.ndarray):
-    '''Generates and contains a substitution matrix indexed by the ASCII number
-    of each character (e.g. 'A' is 65 in ASCII and 'T' is 84, so the
-    substitution log odds of replacing an 'A' by a 'T' would be located at
-    mat[65, 84].
-
-    The (human-readable) inputs can be accessed with SubtitutionMatrix.alphabet
-    and SubstitutionMatrix.matrix The ASCII number-indexed matrix is available
-    at SubstitutionMatrix.ord_matrix.'''
+    '''Container for a subsitution matrix - is simply a numpy ndarray with an
+    additional .alphabet attribute indicating the labels for each row and
+    column.'''
     def __new__(cls, matrix, alphabet):
         '''
         :param matrix: A square 2D array-like (e.g. list of lists of numbers or
@@ -25,26 +20,17 @@ class SubstitutionMatrix(np.ndarray):
         :type alphabet: str
 
         '''
-        ords = [ord(char) for char in alphabet]
-        mat_size = max(ords) + 1
+        obj = np.asarray(matrix).view(cls)
+        obj.astype(np.integer)
 
-        template_mat = np.zeros((mat_size, mat_size), dtype=np.int)
-        obj = np.asarray(template_mat).view(cls)
-
-        for i, row_ord in enumerate(ords):
-            for j, col_ord in enumerate(ords):
-                obj[row_ord, col_ord] = matrix[i, j]
-
-        obj.input_alphabet = alphabet
-        obj.input_matrix = matrix
+        obj.alphabet = alphabet
 
         return obj
 
     def __array_finalize__(self, obj):
         if obj is None:
             return
-        self.input_alphabet = getattr(obj, 'input_alphabet', None)
-        self.input_matrix = getattr(obj, 'input_matrix', None)
+        self.alphabet = getattr(obj, 'alphabet', None)
 
 
 DNA_SIMPLE = SubstitutionMatrix(np.array([[1, -1, -1, -1, -1],
