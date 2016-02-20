@@ -51,7 +51,8 @@ def run_needle(args):
     return needle(*args)
 
 
-def needle_msa(reference, results):
+def needle_msa(reference, results, gap_open=-15, gap_extend=0,
+               matrix='DNA_simple'):
     '''Create a multiple sequence alignment based on aligning every result
     sequence against the reference, then inserting gaps until every aligned
     reference is identical
@@ -61,8 +62,8 @@ def needle_msa(reference, results):
     # Convert alignments to list of strings
     alignments = []
     for result in results:
-        ref_dna, res_dna, score = needle(reference, result, gap_open=-15,
-                                         gap_extend=0)
+        ref_dna, res_dna, score = needle(reference, result, gap_open=gap_open,
+                                         gap_extend=gap_extend, matrix=matrix)
         alignments.append([str(ref_dna), str(res_dna), score])
 
     def insert_gap(sequence, position):
