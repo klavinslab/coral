@@ -1,9 +1,13 @@
 '''Needleman-Wunsch alignment functions.'''
-import multiprocessing
 import coral as cr
+import multiprocessing
+import warnings
 try:
     from .calign import aligner, score_alignment
 except ImportError:
+    message = ('NW alignment extension could not be imported, falling back'
+               'on native Python version (~100 times slower).')
+    warnings.warn(message)
     from .align import aligner, score_alignment
 
 
