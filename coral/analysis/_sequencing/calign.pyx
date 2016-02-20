@@ -1,5 +1,6 @@
 import numpy as np
 cimport numpy as np
+from . import substitution_matrices as submat
 from libc.string cimport strlen
 import os
 
@@ -46,53 +47,6 @@ cdef inline DTYPE_FLOAT max2(DTYPE_FLOAT a, DTYPE_FLOAT b):
     return b if b > a else a
 
 
-cdef object read_matrix(path):
-    '''Read in matrix in NCBI format and put into numpy array. Score for e.g.
-    a 'C' changing to an 'A' is stored as matrix[ord('C'), ord('A')]. As such,
-    the score is a direct array lookup from each pair in the alignment, making
-    score calculation very fast.
-
-    :param path: Path to the NCBI format matrix.
-    :type path: str.
-
-    '''
-    cdef np.ndarray[DTYPE_INT, ndim=2] matrix
-    cdef size_t i, matrix_row = 0
-    cdef int v, mat_size
-
-    if not os.path.exists(path):
-        if '/' in path:
-            raise ValueError('path for matrix {} doest not exist'.format(path))
-        cur_path = os.path.abspath(os.path.join(os.path.dirname(__file__)))
-        fh = open(os.path.join(cur_path, 'data', path))
-    else:
-        fh = open(path)
-
-    headers = None
-    while headers is None:
-        line = fh.readline().strip()
-        # Ignore comments (#)
-        if line[0] == '#':
-            continue
-        # First that isn't a comment is the header
-        headers = [ord(x) for x in line.split(' ') if x]
-    mat_size = max(headers) + 1
-
-    matrix = np.zeros((mat_size, mat_size), dtype=np.int)
-
-    # TODO: see if readlines + for loop is just as fast (faster?)
-    line = fh.readline()
-    while line:
-        line_vals = [int(x) for x in line[:-1].split(' ')[1:] if x]
-        for ohidx, val in zip(headers, line_vals):
-            matrix[headers[matrix_row], ohidx] = val
-        matrix_row += 1
-        line = fh.readline()
-    fh.close()
-
-    return matrix
-
-
 def max_index(array):
     '''Locate the index of the largest value in the array. If there are
     multiple, finds the earliest one in the row-flattened array.
@@ -105,7 +59,8 @@ def max_index(array):
 
 
 def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
-            DTYPE_FLOAT gap_double=-7, method='global', matrix='DNA_simple'):
+            DTYPE_FLOAT gap_double=-7, method='global',
+            matrix=submat.DNA_SIMPLE):
     '''Calculates the alignment of two sequences. The global method uses
     a global Needleman-Wunsh algorithm, local does a a local
     Smith-Waterman alignment, global_cfe does a global alignment with
@@ -179,7 +134,7 @@ def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
     cdef np.ndarray[DTYPE_FLOAT, ndim=2] score = np.zeros((max_i + 1, max_j + 1), dtype=np.float32)
 
     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)
-    cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = read_matrix(matrix)
+    cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = matrix
 
 
     # START HERE:
@@ -299,7 +254,7 @@ def score_alignment(a, b, int gap_open, int gap_extend, matrix):
     cdef int score = 0, this_score
     assert strlen(bl) == l, 'Alignment lengths must be the same'
     cdef np.ndarray[DTYPE_INT, ndim=2] mat
-    mat = read_matrix(matrix)
+    mat = matrix
 
     cdef bint gap_started = 0
 

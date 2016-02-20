@@ -1,5 +1,6 @@
 '''Needleman-Wunsch alignment functions.'''
 import coral as cr
+from . import substitution_matrices as submat
 import multiprocessing
 import warnings
 try:
@@ -11,7 +12,8 @@ except ImportError:
     from .align import aligner, score_alignment
 
 
-def needle(reference, query, gap_open=-15, gap_extend=0, matrix='DNA_simple'):
+def needle(reference, query, gap_open=-15, gap_extend=0,
+           matrix=submat.DNA_SIMPLE):
     '''Do a Needleman-Wunsch alignment.
 
     :param reference: Reference sequence.
@@ -39,7 +41,7 @@ def needle(reference, query, gap_open=-15, gap_extend=0, matrix='DNA_simple'):
 
     # Score the alignment
     score = score_alignment(aligned_ref, aligned_res, gap_open, gap_extend,
-                            'DNA_simple')
+                            matrix)
 
     return cr.DNA(aligned_ref), cr.DNA(aligned_res), score
 
@@ -52,7 +54,7 @@ def run_needle(args):
 
 
 def needle_msa(reference, results, gap_open=-15, gap_extend=0,
-               matrix='DNA_simple'):
+               matrix=submat.DNA_SIMPLE):
     '''Create a multiple sequence alignment based on aligning every result
     sequence against the reference, then inserting gaps until every aligned
     reference is identical
@@ -109,7 +111,7 @@ def needle_msa(reference, results, gap_open=-15, gap_extend=0,
 
 
 def needle_multi(references, queries, gap_open=-15, gap_extend=0,
-                 matrix='DNA_simple'):
+                 matrix=submat.DNA_SIMPLE):
     '''Batch process of sequencing split over several cores. Acts just like
     needle but sequence inputs are lists.
 
