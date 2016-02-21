@@ -1,5 +1,6 @@
 '''Coral, core modules for synthetic DNA design.'''
 __version__ = '0.5.0'
+from . import alignment
 from . import analysis
 from . import constants
 from . import database

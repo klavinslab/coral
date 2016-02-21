@@ -1,5 +1,5 @@
 '''A Coral wrapper for the MAFFT command line multiple sequence aligner.'''
-import coral
+import coral as cr
 import os
 import shutil
 import subprocess
@@ -50,6 +50,6 @@ def MAFFT(sequences, gap_open=1.53, gap_extension=0.0, retree=2):
     for record in records:
         lines = record.split('\n')
         name = lines.pop(0)
-        aligned_list.append(coral.DNA(''.join(lines)))
+        aligned_list.append(cr.DNA(''.join(lines)))
 
     return aligned_list
