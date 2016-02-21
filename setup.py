@@ -77,7 +77,10 @@ config = {
                     'Programming Language :: Python :: 2.7',
                     'Programming Language :: Python :: 2 :: Only',
                     'Topic :: Scientific/Engineering',
-                    'Topic :: Scientific/Engineering :: Bio-Informatics']
+                    'Topic :: Scientific/Engineering :: Bio-Informatics'],
+    'keywords': ['synthetic biology', 'biology', 'design', 'automation',
+                 'cloning', 'sanger', 'primer', 'dna', 'structure'],
+    'zip_safe': False
 }
 
 seq_extension = Extension('coral.analysis._sequencing.calign',
