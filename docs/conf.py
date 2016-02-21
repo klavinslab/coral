@@ -12,8 +12,8 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from coral import __version__
 import os
-import re
 import sys
 
 # If extensions (or modules to document with autodoc) are in another directory,
@@ -53,12 +53,6 @@ copyright = u'2013, Nick Bolten'
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-
-with open(os.path.join(base_path, '../coral/__init__.py'), 'r') as fd:
-    __version__ = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
-                            fd.read(), re.MULTILINE).group(1)
-if not __version__:
-    raise RuntimeError('Cannot find version information')
 
 # The short X.Y version.
 version = __version__
