@@ -1,7 +1,7 @@
 Changelog for Coral
 ===================
 
-* 0.5.0 (replace this)
+0.5.0 (2016-02-20)
 * Separated `ssDNA` (single-stranded) and `DNA` (implicitly double-stranded)
 classes. Convert between them using `.to_ds()` and `.to_ss()` methods,
 respectively.
