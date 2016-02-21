@@ -6,6 +6,7 @@ from coral.analysis import ViennaRNA
 
 
 class Structure(object):
+
     def __init__(self, mode='viennarna'):
         allowed = ['viennarna']
         if mode not in allowed:

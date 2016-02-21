@@ -56,7 +56,7 @@ def assemble_oligos(dna_list, reference=None):
     # NOTE:If 1-4 are satisfied, unique linear assembly has been found (proof?)
     # 8) Start with first end and build iteratively
     last_index = ends[0]
-    assembly = dna_list[last_index].to_ds()
+    assembly = dna_list[last_index]
     flip = True
     # This would be slightly less complicated if the sequences were tied to
     # their match info in a tuple

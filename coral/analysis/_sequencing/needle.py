@@ -1,13 +1,19 @@
 '''Needleman-Wunsch alignment functions.'''
+import coral as cr
+from . import substitution_matrices as submat
 import multiprocessing
-import coral
+import warnings
 try:
     from .calign import aligner, score_alignment
 except ImportError:
+    message = ('NW alignment extension could not be imported, falling back'
+               'on native Python version (~100 times slower).')
+    warnings.warn(message)
     from .align import aligner, score_alignment
 
 
-def needle(reference, query, gap_open=-15, gap_extend=0, matrix='DNA_simple'):
+def needle(reference, query, gap_open=-15, gap_extend=0,
+           matrix=submat.DNA_SIMPLE):
     '''Do a Needleman-Wunsch alignment.
 
     :param reference: Reference sequence.
@@ -35,9 +41,9 @@ def needle(reference, query, gap_open=-15, gap_extend=0, matrix='DNA_simple'):
 
     # Score the alignment
     score = score_alignment(aligned_ref, aligned_res, gap_open, gap_extend,
-                            'DNA_simple')
+                            matrix)
 
-    return coral.DNA(aligned_ref), coral.DNA(aligned_res), score
+    return cr.DNA(aligned_ref), cr.DNA(aligned_res), score
 
 
 def run_needle(args):
@@ -47,8 +53,65 @@ def run_needle(args):
     return needle(*args)
 
 
+def needle_msa(reference, results, gap_open=-15, gap_extend=0,
+               matrix=submat.DNA_SIMPLE):
+    '''Create a multiple sequence alignment based on aligning every result
+    sequence against the reference, then inserting gaps until every aligned
+    reference is identical
+
+    '''
+    gap = '-'
+    # Convert alignments to list of strings
+    alignments = []
+    for result in results:
+        ref_dna, res_dna, score = needle(reference, result, gap_open=gap_open,
+                                         gap_extend=gap_extend, matrix=matrix)
+        alignments.append([str(ref_dna), str(res_dna), score])
+
+    def insert_gap(sequence, position):
+        return sequence[:position] + gap + sequence[position:]
+
+    i = 0
+    while True:
+        # Iterate over 'columns' in every reference
+        refs = [alignment[0][i] for alignment in alignments]
+
+        # If there's a non-unanimous gap, insert gap into alignments
+        gaps = [ref == gap for ref in refs]
+        if any(gaps) and not all(gaps):
+            for alignment in alignments:
+                if alignment[0][i] != gap:
+                    alignment[0] = insert_gap(alignment[0], i)
+                    alignment[1] = insert_gap(alignment[1], i)
+
+        # If all references match, we're all done
+        alignment_set = set(alignment[0] for alignment in alignments)
+        if len(alignment_set) == 1:
+            break
+
+        # If we've reach the end of some, but not all sequences, add end gap
+        lens = [len(alignment[0]) for alignment in alignments]
+        if i + 1 in lens:
+            for alignment in alignments:
+                if len(alignment[0]) == i + 1:
+                    alignment[0] = alignment[0] + gap
+                    alignment[1] = alignment[1] + gap
+
+        i += 1
+
+        if i > 20:
+            break
+
+    # Convert into MSA format
+    output_alignment = [cr.DNA(alignments[0][0])]
+    for alignment in alignments:
+        output_alignment.append(cr.DNA(alignment[1]))
+
+    return output_alignment
+
+
 def needle_multi(references, queries, gap_open=-15, gap_extend=0,
-                 matrix='DNA_simple'):
+                 matrix=submat.DNA_SIMPLE):
     '''Batch process of sequencing split over several cores. Acts just like
     needle but sequence inputs are lists.
 

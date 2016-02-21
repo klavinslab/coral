@@ -100,7 +100,7 @@ def anneal(template, primer, min_tm=50.0, min_len=10):
     # Maximum annealing length to test (can't exceed template length)
     max_len = min(len(template), len(primer))
 
-    primer_dna = primer.primer().to_ds()
+    primer_dna = primer.to_ds()
     anneal_len = min_len
     anneal_seq = primer_dna[-anneal_len:]
     binding_data = []

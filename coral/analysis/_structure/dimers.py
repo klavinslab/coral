@@ -1,4 +1,4 @@
-'''Check for primer dimers using Nupack.'''
+'''Check for primer dimers using NUPACK.'''
 import coral.analysis
 
 
@@ -26,7 +26,7 @@ def dimers(primer1, primer2, concentrations=[5e-7, 3e-11]):
     # primer-complement binding
 
     # Simulate binding of template vs. primers
-    nupack = coral.analysis.Nupack([primer1.primer(), primer2.primer(),
+    nupack = coral.analysis.NUPACK([primer1.primer(), primer2.primer(),
                                     primer1.primer().reverse_complement(),
                                     primer2.primer().reverse_complement()])
     # Include reverse complement concentration

@@ -1,6 +1,5 @@
 Sphinx==1.3.3
-argparse==1.2.1
-biopython==1.66
 nose==1.3.7
-numpy==1.10.2
-wsgiref==0.1.2
+twine==1.6.5
+wheel==0.29.0
+zest.releaser==6.6.2

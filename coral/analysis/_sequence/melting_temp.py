@@ -76,6 +76,9 @@ def tm(seq, dna_conc=50, salt_conc=50, parameters='cloning'):
     # Sum up the nearest-neighbor enthalpy and entropy
     seq = str(seq).upper()
 
+    # TODO: catch more cases when alphabets expand
+    if 'N' in seq:
+        raise ValueError('Can\'t calculate Tm of an N base.')
     new_delt = _pair_deltas(seq, pars)
     deltas[0] += new_delt[0]
     deltas[1] += new_delt[1]
