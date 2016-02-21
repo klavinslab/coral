@@ -72,7 +72,6 @@ config = {
                  'coral.utils'],
     'package_data': {'coral': ['coral/sequence/d3-plasmid.js']},
     'include_package_data': True,
-    'scripts': [],
     'classifiers': ['Programming Language :: Python',
                     'Programming Language :: Python :: 2.7',
                     'Programming Language :: Python :: 2 :: Only',
