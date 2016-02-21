@@ -8,6 +8,7 @@ from coral.constants.molecular_bio import COMPLEMENTS
 class NucleicAcid(Sequence):
     '''Abstract sequence container for a single nucleic acid sequence
     molecule.'''
+
     def __init__(self, sequence, material, circular=False, run_checks=True,
                  any_char='N'):
         '''

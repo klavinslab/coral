@@ -4,6 +4,7 @@ from ._sequence import Sequence
 
 class Peptide(object):
     '''Peptide sequence.'''
+
     def __init__(self, peptide, features=None, run_checks=True):
         '''
         :param peptide: Input sequence (peptide).

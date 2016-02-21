@@ -15,6 +15,7 @@ class LambdaError(Exception):
 
 class NUPACK(object):
     '''Run NUPACK functions on sequences.'''
+
     def __init__(self, nupack_home=None):
         '''
         :param nupack_home: NUPACK home dir. If the NUPACK commands aren't in

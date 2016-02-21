@@ -16,6 +16,7 @@ class IPythonDisplayImportError(ImportError):
 
 class ssDNA(NucleicAcid):
     '''ssDNA sequence.'''
+
     def __init__(self, sequence, circular=False, run_checks=True):
         super(ssDNA, self).__init__(sequence, 'dna', circular=circular,
                                     run_checks=run_checks, any_char='N')
@@ -30,6 +31,7 @@ class ssDNA(NucleicAcid):
 
 class DNA(object):
     '''dsDNA sequence.'''
+
     def __init__(self, dna, circular=False, features=None, run_checks=True,
                  bottom=None, name=None):
         '''
@@ -753,6 +755,7 @@ def _flip_feature(self, feature, parent_len):
 
 class RestrictionSite(object):
     '''Recognition site and properties of a restriction endonuclease.'''
+
     def __init__(self, recognition_site, cut_site, name=None):
         '''
         :param recognition_site: Input sequence.
@@ -836,6 +839,7 @@ class RestrictionSite(object):
 
 class Primer(object):
     '''A DNA primer - ssDNA with tm, anneal, and optional overhang.'''
+
     def __init__(self, anneal, tm=None, tm_method='cloning', overhang=None,
                  name='', note=''):
         '''

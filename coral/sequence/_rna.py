@@ -5,6 +5,7 @@ from coral.sequence._nucleicacid import NucleicAcid
 
 class RNA(NucleicAcid):
     '''ssRNA sequence.'''
+
     def __init__(self, rna, circular=False, run_checks=True):
         '''
         :param rna: Input sequence (RNA).

@@ -156,7 +156,7 @@ def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
         if row_max > col_max:
             pointer[-1, col_idx + 1:] = LEFT
         else:
-            pointer[row_idx+1:, -1] = UP
+            pointer[row_idx + 1:, -1] = UP
 
     p = pointer[i, j]
     while p != NONE:

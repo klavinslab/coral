@@ -5,6 +5,7 @@ class SubstitutionMatrix(np.ndarray):
     '''Container for a subsitution matrix - is simply a numpy ndarray with an
     additional .alphabet attribute indicating the labels for each row and
     column.'''
+
     def __new__(cls, matrix, alphabet):
         '''
         :param matrix: A square 2D array-like (e.g. list of lists of numbers or

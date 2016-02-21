@@ -1,3 +1,2 @@
 include requirements.txt
-include coral/analysis/_sequencing/data/*
 include coral/sequence/d3-plasmid.js

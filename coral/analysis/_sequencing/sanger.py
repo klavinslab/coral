@@ -8,6 +8,7 @@ import coral as cr
 
 class Sanger(object):
     '''Align and analyze Sanger sequencing results.'''
+
     def __init__(self, reference, results, method='needle',
                  method_kwargs=None):
         '''

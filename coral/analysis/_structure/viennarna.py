@@ -10,6 +10,7 @@ from coral.utils import tempdirs
 
 # TODO: Generic structure object to return from ViennaRNA, NUPACK classes
 class ViennaRNA(object):
+
     def __init__(self):
         self._tempdir = ''
 

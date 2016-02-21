@@ -16,8 +16,11 @@ DNA design.
 Coral works with PyPy so long as a PyPy-compatible numpy is installed.
 '''
 
-# Check python versions
+import re
 import sys
+import numpy
+
+# Check python versions
 if sys.version_info.major > 2:
     print('Coral is currently compatible only with Python 2.')
     sys.exit(1)
@@ -27,14 +30,19 @@ try:
 except ImportError:
     from distutils.core import setup, Extension
 
-import numpy  # noqa
+# Get version from package __init__.py
+with open('coral/__init__.py', 'r') as fd:
+    __version__ = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+                            fd.read(), re.MULTILINE).group(1)
+if not __version__:
+    raise RuntimeError('Cannot find version information')
 
 
 doclines = __doc__.split('\n')
 
 config = {
     'name': 'coral',
-    'version': '0.4.3',
+    'version': __version__,
     'description': doclines[0],
     'long_description': '\n'.join(doclines[2:]),
     'author': 'Nick Bolten',
@@ -62,8 +70,7 @@ config = {
                  'coral.reaction',
                  'coral.sequence',
                  'coral.utils'],
-    'package_data': {'coral': ['coral/analysis/_sequencing/data/*',
-                               'coral/sequence/d3-plasmid.js']},
+    'package_data': {'coral': ['coral/sequence/d3-plasmid.js']},
     'include_package_data': True,
     'scripts': [],
     'classifiers': ['Programming Language :: Python',
