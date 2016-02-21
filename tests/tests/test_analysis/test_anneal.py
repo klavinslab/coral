@@ -209,8 +209,8 @@ def test_primer_larger_than_template():
     template = cr.random.random_dna(50)
     overhangs = [cr.random.random_dna(200), cr.DNA('')]
     expected = overhangs[0] + template
-    primer1, primer2 = cr.design.primers(template, overhangs=overhangs,
-                                         min_len=14)
+    primer1, primer2 = cr.cloning.primers(template, overhangs=overhangs,
+                                          min_len=14)
     amplicon = cr.reaction.pcr(template, primer1, primer2)
 
     assert_true(expected == amplicon)

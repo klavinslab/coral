@@ -3,7 +3,7 @@ __version__ = '0.5.0'
 from . import analysis
 from . import constants
 from . import database
-from . import design
+from . import cloning
 from . import random
 from . import reaction
 from . import io
