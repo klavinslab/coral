@@ -1,8 +1,7 @@
 Changelog for Coral
 ===================
-# 0.5 Release
 
-### 0.5.0
+* 0.5.0 (replace this)
 * Separated `ssDNA` (single-stranded) and `DNA` (implicitly double-stranded)
 classes. Convert between them using `.to_ds()` and `.to_ss()` methods,
 respectively.
@@ -26,12 +25,10 @@ and DNA_SIMPLE.
 * dev note: started using zest.releaser to automate releases.
 
 
-# 0.4 Releases
-
-### 0.4.1-0.4.3
+0.4.1-0.4.3
 * Bugfixes to 0.4.0 (brown-bag style bugs, fixed immediately after elease).
 
-### 0.4.0
+0.4.0
 * Renamed `coral.DNA.rotate()` method to `coral.DNA.rotate_to()`.
 * Created new `coral.DNA.rotate()` method that rotates a sequence
 'counter-clockwise', acting as a deque.
@@ -52,21 +49,19 @@ strings) with boolean-valued `.circular` and `.ds` values, respectively.
 * Fixed an issue where re-running `coral.DNA.display()` in a Jupyter notebook
 resulted in non-updated text labels.
 
-# O.3 Releases
-
-### 0.3.3
+0.3.3
 * Added Python 2 version check to prevent installation on Python 3.
 
-### 0.3.2
+0.3.2
 * Removed cython dependencies entirely to ease installation.
 
-### 0.3.1
+0.3.1
 * Fixed issues with PCR simulation and annealing, can now handle all cases of
 primer directionality and overlaps, linear and circular templates.
 * Added pyx to package manifest for case where user already has cython
 installed.
 
-### 0.3.0
+0.3.0
 * Separated out annealing behavior into analysis function (`analysis.anneal`).
 * Functions that use annealing (e.g. `reaction.pcr`) can now accept partial
 annealing + overhang matches due to annealing overhaul.
@@ -79,21 +74,17 @@ behavior (assign by reference vs. value).
 * Fixed an issue where slicing the last N bases of a sequence (e.g.
 `y =x[-4:]`) would modify the feature locations of the parent (`x`).
 
-## O.2 Releases
-
-### 0.2.1
+0.2.1
 * Added HISTORY.md (this file) changelog.
 * Fixed version bump issue, added javascript to manifest, added
 dev-requirements.txt.
 
-### 0.2.0
+0.2.0
 * plasmid visualizations for iPython notebooks using `coral.DNA.display`.
 * features are now searchable using `coral.DNA.select_features`.
 * `seqio.read_dna` now keeps all feature qualifiers when reading genbank files
 (thanks @eyu-bolthreads!).
 
-## 0.1 Releases
-
-### 0.1.0
+0.1.0
 
 Initial Release.
