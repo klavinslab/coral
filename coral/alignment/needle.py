@@ -99,9 +99,6 @@ def needle_msa(reference, results, gap_open=-15, gap_extend=0,
 
         i += 1
 
-        if i > 20:
-            break
-
     # Convert into MSA format
     output_alignment = [cr.DNA(alignments[0][0])]
     for alignment in alignments:
