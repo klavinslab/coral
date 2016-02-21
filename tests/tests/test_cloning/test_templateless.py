@@ -47,11 +47,11 @@ def test_oligo_assembly():
            'cccaacgaaaagagagaccacatggtccttcttgagtttgtaacagctgctgggattacacat'
            'ggcatggatgaactatacaaaaggcctgctgcaaacgacgaaaactacgctttagtagcttaa')
     dna_seq = cr.DNA(seq)
-    assembly = cr.cloning.OligoAssembly(dna_seq,
-                                        tm=72,
-                                        length_range=(120, 120),
-                                        require_even=True,
-                                        start_5=True)
+    assembly = cr.cloning.Templateless(dna_seq,
+                                       tm=72,
+                                       length_range=(120, 120),
+                                       require_even=True,
+                                       start_5=True)
     assembly.design_assembly()
 
     # Prepare outputs vs reference
@@ -63,10 +63,10 @@ def test_oligo_assembly():
 
     # Test too short of oligo input
     too_short = cr.DNA(seq[0:100])
-    too_short_assembly = cr.cloning.OligoAssembly(too_short,
-                                                  tm=72,
-                                                  length_range=(120, 120),
-                                                  require_even=True,
-                                                  start_5=True)
+    too_short_assembly = cr.cloning.Templateless(too_short,
+                                                 tm=72,
+                                                 length_range=(120, 120),
+                                                 require_even=True,
+                                                 start_5=True)
     too_short_assembly.design_assembly()
     assert_equal(str(too_short_assembly.oligos[0]), str(too_short))

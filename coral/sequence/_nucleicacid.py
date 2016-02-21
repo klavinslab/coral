@@ -196,4 +196,4 @@ class NucleicAcid(Sequence):
         :type parameters: str
 
         '''
-        return cr.analysis.tm(self, parameters=parameters)
+        return cr.thermo.tm(self, parameters=parameters)

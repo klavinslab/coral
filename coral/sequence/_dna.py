@@ -437,7 +437,7 @@ class DNA(object):
         :type parameters: str
 
         '''
-        return cr.analysis.tm(self, parameters=parameters)
+        return cr.thermo.tm(self, parameters=parameters)
 
     def to_feature(self, name=None, feature_type='misc_feature'):
         '''Create a feature from the current object.

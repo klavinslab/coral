@@ -1,5 +1,5 @@
 '''Primer design tools.'''
-import coral
+import coral as cr
 import warnings
 
 
@@ -36,7 +36,7 @@ def primer(dna, tm=65, min_len=10, tm_undershoot=1, tm_overshoot=3,
 
     '''
     # Check Tm of input sequence to see if it's already too low
-    seq_tm = coral.analysis.tm(dna, parameters=tm_parameters)
+    seq_tm = cr.thermo.tm(dna, parameters=tm_parameters)
     if seq_tm < (tm - tm_undershoot):
         msg = 'Input sequence Tm is lower than primer Tm setting'
         raise ValueError(msg)
@@ -51,7 +51,7 @@ def primer(dna, tm=65, min_len=10, tm_undershoot=1, tm_overshoot=3,
     bases = min_len
     while last_tm <= tm + tm_overshoot and bases != len(dna):
         next_primer = dna[0:bases]
-        last_tm = coral.analysis.tm(next_primer, parameters=tm_parameters)
+        last_tm = cr.thermo.tm(next_primer, parameters=tm_parameters)
         primers_tms.append((next_primer, last_tm))
         bases += 1
 
@@ -60,8 +60,8 @@ def primer(dna, tm=65, min_len=10, tm_undershoot=1, tm_overshoot=3,
                    melt >= tm - tm_undershoot]
     if end_gc:
         primers_tms = [pair for pair in primers_tms if
-                       pair[0][-1] == coral.DNA('C') or
-                       pair[0][-1] == coral.DNA('G')]
+                       pair[0][-1] == cr.DNA('C') or
+                       pair[0][-1] == cr.DNA('G')]
     if not primers_tms:
         raise ValueError('No primers could be generated using these settings')
 
@@ -75,7 +75,7 @@ def primer(dna, tm=65, min_len=10, tm_undershoot=1, tm_overshoot=3,
     if overhang:
         overhang = overhang.top
 
-    output_primer = coral.Primer(best_primer, best_tm, overhang=overhang)
+    output_primer = cr.Primer(best_primer, best_tm, overhang=overhang)
 
     def _structure(primer):
         '''Check annealing sequence for structure.
@@ -86,7 +86,7 @@ def primer(dna, tm=65, min_len=10, tm_undershoot=1, tm_overshoot=3,
         '''
         # Check whole primer for high-probability structure, focus in on
         # annealing sequence, report average
-        nupack = coral.analysis.Nupack(primer.primer())
+        nupack = cr.structure.Nupack(primer.primer())
         pairs = nupack.pairs(0)
         anneal_len = len(primer.anneal)
         pairs_mean = sum(pairs[-anneal_len:]) / anneal_len

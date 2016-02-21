@@ -104,7 +104,7 @@ def gibson_primers(dna1, dna2, overlap='mixed', maxlen=80, overlap_tm=65.0,
             # Generate new overlap
             overlap = insert[left_trim:]
             # Tm must be above overlap_tm
-            if cr.analysis.tm(overlap) < overlap_tm:
+            if cr.thermo.tm(overlap) < overlap_tm:
                 raise TmError('Right primer is too long with this Tm setting.')
             # Regenerate forward overhang
             fwd_overhang = overlap.primer()
@@ -118,7 +118,7 @@ def gibson_primers(dna1, dna2, overlap='mixed', maxlen=80, overlap_tm=65.0,
             # Generate new overlap
             overlap = insert[:len(insert) - right_trim]
             # Tm must be above overlap_tm
-            if cr.analysis.tm(overlap) < overlap_tm:
+            if cr.thermo.tm(overlap) < overlap_tm:
                 raise TmError('Left primer is too long with this Tm setting.')
             # Regenerate reverse overhang
             rev_overhang = overlap.reverse_complement().to_ss()

@@ -186,7 +186,7 @@ def test_min_primer_length():
     seq = cr.DNA('cgccagggttttcccagtcacgac')
     seq = seq[:15]
     primer = cr.Primer(seq, 50.6)
-    assert_raises(cr.analysis._sequence.anneal.PrimerLengthError,
+    assert_raises(cr.analysis.PrimerLengthError,
                   cr.analysis.anneal, template, primer, min_len=16)
 
 

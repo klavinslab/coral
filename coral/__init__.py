@@ -9,6 +9,7 @@ from . import io
 from . import random
 from . import reaction
 from . import structure
+from . import thermo
 from . import utils
 from .sequence import DNA
 from .sequence import Feature
