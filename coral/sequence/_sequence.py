@@ -7,6 +7,7 @@ from .alphabets import AlphabetError
 class Sequence(object):
     '''Abstract representation of single chain of molecular sequences, e.g.
        a single DNA or RNA strand or Peptide.'''
+
     def __init__(self, sequence, alphabet, run_checks=True,
                  any_char='N', name=None):
         '''
@@ -268,6 +269,7 @@ def _decompose(string, n):
 class Feature(object):
     '''Represent an annotated feature - track sequence regions with
     metadata.'''
+
     def __init__(self, name, start, stop, feature_type='misc_feature', gene='',
                  locus_tag='', qualifiers=None, strand=0, gaps=None):
         '''

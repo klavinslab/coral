@@ -6,6 +6,7 @@ from ._nucleicacid import NucleicAcid
 
 class RNA(NucleicAcid):
     '''ssRNA sequence.'''
+
     def __init__(self, rna, alphabet=alphabets.rna, circular=False,
                  run_checks=True):
         '''

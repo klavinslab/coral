@@ -4,6 +4,7 @@ import coral.analysis
 
 class StructureWindows(object):
     '''Evaluate windows of structure and plot the results.'''
+
     def __init__(self, dna):
         '''
         :param dna: DNA sequence to analyze.

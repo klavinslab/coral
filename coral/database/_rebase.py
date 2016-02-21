@@ -7,6 +7,7 @@ import coral
 
 class Rebase(object):
     '''Retrieve restriction enzymes from rebase database.'''
+
     def __init__(self):
         self._tmpdir = None
         self.update()

@@ -15,6 +15,7 @@ class IPythonDisplayImportError(ImportError):
 
 class ssDNA(NucleicAcid):
     '''ssDNA sequence.'''
+
     def __init__(self, sequence, alphabet=alphabets.dna, circular=False,
                  run_checks=True):
         super(ssDNA, self).__init__(sequence, 'dna', alphabet=alphabet,
@@ -32,6 +33,7 @@ class ssDNA(NucleicAcid):
 
 class DNA(object):
     '''dsDNA sequence.'''
+
     def __init__(self, dna, alphabet=alphabets.dna, circular=False,
                  features=None, run_checks=True, bottom=None, name=None):
         '''
@@ -759,6 +761,7 @@ def _flip_feature(self, feature, parent_len):
 
 class RestrictionSite(object):
     '''Recognition site and properties of a restriction endonuclease.'''
+
     def __init__(self, recognition_site, cut_site, name=None):
         '''
         :param recognition_site: Input sequence.
@@ -842,6 +845,7 @@ class RestrictionSite(object):
 
 class Primer(object):
     '''A DNA primer - ssDNA with tm, anneal, and optional overhang.'''
+
     def __init__(self, anneal, tm=None, tm_method='cloning', overhang=None,
                  name='', note=''):
         '''
@@ -915,9 +919,9 @@ class Primer(object):
 
     def __repr__(self):
         '''Representation of a primer.'''
-        anneal = self.anneal.top.seq.upper()
+        anneal = self.anneal.seq.upper()
         if self.overhang:
-            overhang = self.overhang.top.seq.lower()
+            overhang = self.overhang.seq.lower()
             return 'Primer: {} Tm: {:.2f}'.format(overhang + anneal, self.tm)
         else:
             return 'Primer: {} Tm: {:.2f}'.format(anneal, self.tm)

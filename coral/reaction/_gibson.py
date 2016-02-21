@@ -236,9 +236,9 @@ def homology_report(seq1, seq2, strand1, strand2, cutoff=0, min_tm=63.0,
 
     def gen_chunks(s1, s2):
         chunks1 = [seq1_str[-(i + 1):] for i in range(min(len(seq1_str),
-                                                      max_size))]
+                                                          max_size))]
         chunks2 = [seq2_str[:(i + 1)] for i in range(min(len(seq2_str),
-                                                     max_size))]
+                                                         max_size))]
         return chunks1, chunks2
 
     seq1_chunks, seq2_chunks = gen_chunks(seq1_str, seq2_str)

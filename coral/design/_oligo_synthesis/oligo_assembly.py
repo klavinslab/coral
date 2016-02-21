@@ -5,6 +5,7 @@ import coral
 
 class OligoAssembly(object):
     '''Split a sequence into overlapping oligonucleotides.'''
+
     def __init__(self, dna, tm=72, length_range=(80, 200), require_even=True,
                  start_5=True, oligo_number=None, overlap_min=20,
                  min_exception=False):
@@ -179,8 +180,8 @@ class OligoAssembly(object):
             if self.primers:
                 for i, (primer, melt) in enumerate(self.primers):
                     oligo_writer.writerow(['primer {}'.format(i + 1),
-                                          primer,
-                                          'Tm: {:.2f}'.format(melt)])
+                                           primer,
+                                           'Tm: {:.2f}'.format(melt)])
 
     def write_map(self, path):
         '''Write genbank map that highlights overlaps.

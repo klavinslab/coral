@@ -5,6 +5,7 @@ from . import alphabets
 
 class Peptide(object):
     '''Peptide sequence.'''
+
     def __init__(self, peptide, alphabet=alphabets.peptide, features=None,
                  run_checks=True):
         '''
