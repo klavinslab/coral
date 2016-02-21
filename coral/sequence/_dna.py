@@ -3,9 +3,8 @@ import os
 import shutil
 import subprocess
 import tempfile
-import coral.analysis
-import coral.reaction
-import coral.seqio
+import coral as cr
+from . import alphabets
 from ._sequence import Feature
 from ._nucleicacid import NucleicAcid
 
@@ -17,23 +16,26 @@ class IPythonDisplayImportError(ImportError):
 class ssDNA(NucleicAcid):
     '''ssDNA sequence.'''
 
-    def __init__(self, sequence, circular=False, run_checks=True):
-        super(ssDNA, self).__init__(sequence, 'dna', circular=circular,
-                                    run_checks=run_checks, any_char='N')
-        self.ds = False
+    def __init__(self, sequence, alphabet=alphabets.dna, circular=False,
+                 run_checks=True):
+        super(ssDNA, self).__init__(sequence, 'dna', alphabet=alphabet,
+                                    circular=circular, run_checks=run_checks,
+                                    any_char='N')
 
     def copy(self):
-        return type(self)(self.seq, circular=self.circular, run_checks=False)
+        return type(self)(self.seq, alphabet=self.alphabet,
+                          circular=self.circular, run_checks=False)
 
     def to_ds(self):
-        return DNA(self.seq, circular=self.circular, run_checks=False)
+        return DNA(self.seq, alphabet=self.alphabet, circular=self.circular,
+                   run_checks=False)
 
 
 class DNA(object):
     '''dsDNA sequence.'''
 
-    def __init__(self, dna, circular=False, features=None, run_checks=True,
-                 bottom=None, name=None):
+    def __init__(self, dna, alphabet=alphabets.dna, circular=False,
+                 features=None, run_checks=True, bottom=None, name=None):
         '''
         :param dna: Input sequence (DNA).
         :type dna: str
@@ -61,14 +63,17 @@ class DNA(object):
         '''
         # TODO: accept sequences in general by running str() on it
         self.material = 'dna'
+        self.alphabet = alphabet
         dna = dna.strip()
-        self.top = ssDNA(dna, circular=circular, run_checks=run_checks)
+        self.top = ssDNA(dna, alphabet=self.alphabet, circular=circular,
+                         run_checks=run_checks)
         if bottom is None:
             # If bottom isn't auto-generated, expectation is that it will be
             # added manually
             self.bottom = self.top.reverse_complement()
         else:
-            self.bottom = ssDNA(bottom, circular=circular, run_checks=False)
+            self.bottom = ssDNA(bottom, alphabet=self.alphabet,
+                                circular=circular, run_checks=False)
 
         if features is None:
             self.features = []
@@ -101,7 +106,7 @@ class DNA(object):
             filename = os.path.join(tmp, '{}.ape'.format(self.name))
         else:
             filename = os.path.join(tmp, 'tmp.ape')
-        coral.seqio.write_dna(self, filename)
+        cr.io.write_dna(self, filename)
         process = subprocess.Popen([cmd, filename])
         # Block until window is closed
         try:
@@ -119,9 +124,10 @@ class DNA(object):
         '''
         # Significant performance improvements by skipping alphabet check
         features_copy = [feature.copy() for feature in self.features]
-        copy = type(self)(self.top.seq, circular=self.circular,
-                          features=features_copy, name=self.name,
-                          bottom=self.bottom.seq, run_checks=False)
+        copy = type(self)(self.top.seq, alphabet=self.alphabet,
+                          circular=self.circular, features=features_copy,
+                          name=self.name, bottom=self.bottom.seq,
+                          run_checks=False)
         return copy
 
     def circularize(self):
@@ -431,7 +437,7 @@ class DNA(object):
         :type parameters: str
 
         '''
-        return coral.analysis.tm(self, parameters=parameters)
+        return cr.thermo.tm(self, parameters=parameters)
 
     def to_feature(self, name=None, feature_type='misc_feature'):
         '''Create a feature from the current object.
@@ -458,7 +464,7 @@ class DNA(object):
         :rtype: coral.RNA
 
         '''
-        return coral.reaction.transcribe(self)
+        return cr.reaction.transcribe(self)
 
     def __add__(self, other):
         '''Add DNA together.
@@ -499,9 +505,9 @@ class DNA(object):
             feature.move(len(self))
         features = self_features + other_features
 
-        new_instance = DNA(tops, circular=False, run_checks=False,
-                           bottom=self.bottom.seq, features=features)
-        new_instance.bottom = ssDNA(bottoms)
+        new_instance = type(self)(tops, alphabet=self.alphabet, circular=False,
+                                  run_checks=False, bottom=bottoms,
+                                  features=features)
 
         return new_instance
 
@@ -647,7 +653,7 @@ class DNA(object):
         # strategy)
         new_bottom = self.bottom[::-1][key][::-1]
 
-        copy = type(self)(new_top.seq, circular=False,
+        copy = type(self)(new_top.seq, alphabet=self.alphabet, circular=False,
                           features=saved_features, bottom=self.bottom.seq,
                           run_checks=False)
         copy.bottom = new_bottom
@@ -850,13 +856,13 @@ class Primer(object):
         :param tm: Melting temperature (allow manually setting the melting
                    temp, auto-calculation won't happen).
         :type tm: float
-        :param tm_method: Method to use when calling cr.analysis.tm.
+        :param tm_method: Method to use when calling cr.thermo.tm.
         :type tm_method: str
         :param name: Optional name of the primer. Used when writing to csv with
-                     seqio.write_primers.
+                     io.write_primers.
         :type name: str
         :param note: Optional description to associate with the primer. Used
-                     when writing to csv with seqio.write_primers.
+                     when writing to csv with io.write_primers.
         :type note: str
         :returns: coral.Primer instance.
 

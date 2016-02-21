@@ -1,5 +1,5 @@
 '''PCR reaction(s).'''
-import coral
+import coral as cr
 
 
 class PrimingError(Exception):
@@ -31,10 +31,10 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_primer_len=14):
 
     '''
     # Find match in top or bottom strands for each primer
-    p1_matches = coral.analysis.anneal(template, primer1, min_tm=min_tm,
-                                       min_len=min_primer_len)
-    p2_matches = coral.analysis.anneal(template, primer2, min_tm=min_tm,
-                                       min_len=min_primer_len)
+    p1_matches = cr.analysis.anneal(template, primer1, min_tm=min_tm,
+                                    min_len=min_primer_len)
+    p2_matches = cr.analysis.anneal(template, primer2, min_tm=min_tm,
+                                    min_len=min_primer_len)
     p1_binding_locations = [m[0] for strand in p1_matches for m in strand]
     p2_binding_locations = [m[0] for strand in p2_matches for m in strand]
 

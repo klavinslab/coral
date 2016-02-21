@@ -175,7 +175,7 @@ class TestFeatures(object):
                                      'terminator')
         rbs_feature = Feature('RBS Feature', 101, 120, 'RBS')
         origin_feature = Feature('Origin Feature', 121, 140, 'rep_origin')
-        utr3_feature = Feature("3'UTR Feature", 141, 160, "3'UTR")
+        utr3_feature = Feature('3\'UTR Feature', 141, 160, '3\'UTR')
         origin_feature2 = Feature('Origin Feature', 161, 180, 'rep_origin')
 
         input_features = [misc_feature, misc_1_feature, coding_feature,
@@ -197,7 +197,7 @@ class TestFeatures(object):
 
     def test_extract(self):
         test_utr3_feature = [feature for feature in self.dna.features if
-                             feature.name == "3'UTR Feature"][0]
+                             feature.name == '3\'UTR Feature'][0]
         extracted = self.dna.extract(test_utr3_feature)
         assert_equal(str(extracted), 'TGCATGCATGCATGCATGC')
 
