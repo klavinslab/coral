@@ -1,5 +1,5 @@
 '''Check for primer dimers using NUPACK.'''
-import coral.analysis
+import coral as cr
 
 
 def dimers(primer1, primer2, concentrations=[5e-7, 3e-11]):
@@ -26,15 +26,14 @@ def dimers(primer1, primer2, concentrations=[5e-7, 3e-11]):
     # primer-complement binding
 
     # Simulate binding of template vs. primers
-    nupack = coral.analysis.NUPACK([primer1.primer(), primer2.primer(),
-                                    primer1.primer().reverse_complement(),
-                                    primer2.primer().reverse_complement()])
+    nupack = cr.structure.NUPACK([primer1.primer(), primer2.primer(),
+                                  primer1.primer().reverse_complement(),
+                                  primer2.primer().reverse_complement()])
     # Include reverse complement concentration
     primer_concs = [concentrations[0]] * 2
     template_concs = [concentrations[1]] * 2
     concs = primer_concs + template_concs
     nupack_concs = nupack.concentrations(2, conc=concs)
     dimer_conc = nupack_concs['concentrations'][5]
-    #primer1_template = nupack_concs['concentrations'][6]
-    #primer2_template = nupack_concs['concentrations'][10]
+
     return dimer_conc / concs[0]

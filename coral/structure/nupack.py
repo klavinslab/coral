@@ -1490,7 +1490,7 @@ class NUPACK(object):
 def nupack_multi(seqs, material, cmd, arguments, report=True):
     '''Split Nupack commands over processors.
 
-    :param inputs: List of sequences, same format as for coral.analysis.Nupack.
+    :param inputs: List of sequences, same format as for coral.thermo.Nupack.
     :type inpus: list
     :param material: Input material: 'dna' or 'rna'.
     :type material: str

@@ -1,8 +1,6 @@
 '''Provides the Structure class for convenient structural analysis
 questions.'''
-
-
-from coral.analysis import ViennaRNA
+from . import ViennaRNA
 
 
 class Structure(object):

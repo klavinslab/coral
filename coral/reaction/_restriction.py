@@ -1,5 +1,5 @@
 '''Restriction endonuclease reactions.'''
-import coral.reaction
+import coral as cr
 
 
 def digest(dna, restriction_enzyme):
@@ -76,11 +76,11 @@ def _cut(dna, index, restriction_enzyme):
         pass
     elif diff > 0:
         # 3' overhangs
-        left = coral.reaction.five_resect(left.flip(), diff).flip()
-        right = coral.reaction.five_resect(right, diff)
+        left = cr.reaction.five_resect(left.flip(), diff).flip()
+        right = cr.reaction.five_resect(right, diff)
     else:
         # 5' overhangs
-        left = coral.reaction.three_resect(left, abs(diff))
-        right = coral.reaction.three_resect(right.flip(), abs(diff)).flip()
+        left = cr.reaction.three_resect(left, abs(diff))
+        right = cr.reaction.three_resect(right.flip(), abs(diff)).flip()
 
     return [left, right]

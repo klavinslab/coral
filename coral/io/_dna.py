@@ -7,7 +7,7 @@ from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 from Bio.SeqFeature import SeqFeature, FeatureLocation, ExactPosition
 from Bio.SeqFeature import CompoundLocation
-import coral
+import coral as cr
 
 
 class PrimerAnnotationError(ValueError):
@@ -43,7 +43,7 @@ def read_dna(path):
         raise ValueError('File format not recognized.')
 
     seq = SeqIO.read(path, file_format)
-    dna = coral.DNA(str(seq.seq))
+    dna = cr.DNA(str(seq.seq))
     if seq.name == '.':
         dna.name = filename
     else:
@@ -225,12 +225,12 @@ def _seqfeature_to_coral(feature):
         locus_tag = qualifiers['locus_tag']
     else:
         locus_tag = []
-    coral_feature = coral.Feature(feature_name, feature_start,
-                                  feature_stop, feature.type,
-                                  gene=gene, locus_tag=locus_tag,
-                                  qualifiers=qualifiers,
-                                  strand=feature_strand,
-                                  gaps=feature_gaps)
+    coral_feature = cr.Feature(feature_name, feature_start,
+                               feature_stop, feature_type=feature.type,
+                               gene=gene, locus_tag=locus_tag,
+                               qualifiers=qualifiers,
+                               strand=feature_strand,
+                               gaps=feature_gaps)
     return coral_feature
 
 

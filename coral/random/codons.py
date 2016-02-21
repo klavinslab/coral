@@ -1,7 +1,6 @@
 '''Generate a random DNA sequence.'''
 import random
-import coral
-from coral.constants.codons import CODON_FREQ_BY_AA
+import coral as cr
 
 
 def random_codons(peptide, frequency_cutoff=0.0, weighted=False, table=None):
@@ -32,7 +31,7 @@ def random_codons(peptide, frequency_cutoff=0.0, weighted=False, table=None):
 
     '''
     if table is None:
-        table = CODON_FREQ_BY_AA['sc']
+        table = cr.constants.codons.CODON_FREQ_BY_AA['sc']
 
     # Process codon table using frequency_cutoff
     def _cutoff(table, cutoff):
@@ -78,4 +77,4 @@ def random_codons(peptide, frequency_cutoff=0.0, weighted=False, table=None):
         else:
             selection = random.choice(codons.keys())
         rna += selection
-    return coral.RNA(rna)
+    return cr.RNA(rna)

@@ -1,7 +1,7 @@
 import os
 from tempfile import mkdtemp
 from Bio import Entrez
-import coral.sequence
+import coral as cr
 
 
 # FIXME: If a Genome is a data structure, it should be in the DNA sequence
@@ -29,6 +29,6 @@ def fetch_genome(genome_id):
     tmpfile = os.path.join(mkdtemp(), 'tmp.gb')
     with open(tmpfile, 'w') as f:
         f.write(handle.read())
-    genome = coral.seqio.read_dna(tmpfile)
+    genome = cr.io.read_dna(tmpfile)
 
     return genome

@@ -1,5 +1,5 @@
 '''Sanger sequencing alignment tools.'''
-import coral as cr
+from . import needle_msa, MAFFT
 
 # FIXME: sequencing that goes past 'end' of a circular reference
 # is reported as an insertion
@@ -18,14 +18,12 @@ class Sanger(object):
                         valid.
         :type results: list of coral.DNA sequences
         :param method: Alignment method to use. Options are:
-                         \'needle\': Uses coral.analysis.needle_msa
-                         \'MAFFT\': Uses coral.analysis.MAFFT
+                         \'needle\': Uses needle_msa
+                         \'MAFFT\': Uses MAFFT
         :type method: str
         :param method_kwargs: Optional keyword arguments to send to the
                               alignment function.
         :type method_kwargs: dict
-        :returns: instance of coral.analysis.Sanger (contains alignment and
-                  provides analysis/visualization methods
 
         '''
         # Alignment params / thresholds
@@ -55,12 +53,11 @@ class Sanger(object):
 
     def align(self):
         if self.method == 'needle':
-            self.alignment = cr.analysis.needle_msa(self.reference,
-                                                    self.results,
-                                                    **self.method_kwargs)
+            self.alignment = needle_msa(self.reference, self.results,
+                                        **self.method_kwargs)
         elif self.method == 'MAFFT':
-            self.alignment = cr.analysis.MAFFT([self.reference] + self.results,
-                                               **self.method_kwargs)
+            self.alignment = MAFFT([self.reference] + self.results,
+                                   **self.method_kwargs)
         else:
             raise ValueError('Only \'needle\' or \'MAFFT\' methods allowed.')
 

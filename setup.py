@@ -57,18 +57,17 @@ config = {
                        'yeastdatabases': ['intermine', 'requests'],
                        'documentation': ['sphinx']},
     'packages': ['coral',
+                 'coral.alignment',
                  'coral.analysis',
-                 'coral.analysis._sequence',
-                 'coral.analysis._sequencing',
-                 'coral.analysis._structure',
+                 'coral.cloning',
                  'coral.constants',
                  'coral.database',
-                 'coral.design',
-                 'coral.design._oligo_synthesis',
-                 'coral.design._sequence_generation',
-                 'coral.seqio',
+                 'coral.io',
+                 'coral.random',
                  'coral.reaction',
                  'coral.sequence',
+                 'coral.structure',
+                 'coral.thermo',
                  'coral.utils'],
     'package_data': {'coral': ['coral/sequence/d3-plasmid.js']},
     'include_package_data': True,
@@ -82,8 +81,8 @@ config = {
     'zip_safe': False
 }
 
-seq_extension = Extension('coral.analysis._sequencing.calign',
-                          ['coral/analysis/_sequencing/calign.c'],
+seq_extension = Extension('coral.alignment.calign',
+                          ['coral/alignment/calign.c'],
                           include_dirs=[numpy.get_include()])
 EXTENSIONS = [seq_extension]
 

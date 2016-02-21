@@ -106,7 +106,7 @@ class DNA(object):
             filename = os.path.join(tmp, '{}.ape'.format(self.name))
         else:
             filename = os.path.join(tmp, 'tmp.ape')
-        cr.seqio.write_dna(self, filename)
+        cr.io.write_dna(self, filename)
         process = subprocess.Popen([cmd, filename])
         # Block until window is closed
         try:
@@ -856,13 +856,13 @@ class Primer(object):
         :param tm: Melting temperature (allow manually setting the melting
                    temp, auto-calculation won't happen).
         :type tm: float
-        :param tm_method: Method to use when calling cr.analysis.tm.
+        :param tm_method: Method to use when calling cr.thermo.tm.
         :type tm_method: str
         :param name: Optional name of the primer. Used when writing to csv with
-                     seqio.write_primers.
+                     io.write_primers.
         :type name: str
         :param note: Optional description to associate with the primer. Used
-                     when writing to csv with seqio.write_primers.
+                     when writing to csv with io.write_primers.
         :type note: str
         :returns: coral.Primer instance.
 

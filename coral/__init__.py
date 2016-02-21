@@ -11,10 +11,5 @@ from . import reaction
 from . import structure
 from . import thermo
 from . import utils
-from .sequence import DNA
+from .sequence import DNA, RNA, Peptide, Primer, RestrictionSite, ssDNA
 from .sequence import Feature
-from .sequence import RNA
-from .sequence import Peptide
-from .sequence import Primer
-from .sequence import RestrictionSite
-from .sequence import ssDNA

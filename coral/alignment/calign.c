@@ -234,8 +234,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__coral__analysis___sequencing__calign
-#define __PYX_HAVE_API__coral__analysis___sequencing__calign
+#define __PYX_HAVE__coral__alignment__calign
+#define __PYX_HAVE_API__coral__alignment__calign
 #include "string.h"
 #include "stdio.h"
 #include "stdlib.h"
@@ -470,7 +470,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "coral/analysis/_sequencing/calign.pyx",
+  "coral/alignment/calign.pyx",
   "__init__.pxd",
   "type.pxd",
 };
@@ -510,7 +510,7 @@ typedef struct {
 } __Pyx_BufFmt_Context;
 
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":725
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":725
  * # in Cython to enable them only on the right systems.
  *
  * ctypedef npy_int8       int8_t             # <<<<<<<<<<<<<<
@@ -519,7 +519,7 @@ typedef struct {
  */
 typedef npy_int8 __pyx_t_5numpy_int8_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":726
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":726
  *
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t             # <<<<<<<<<<<<<<
@@ -528,7 +528,7 @@ typedef npy_int8 __pyx_t_5numpy_int8_t;
  */
 typedef npy_int16 __pyx_t_5numpy_int16_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":727
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":727
  * ctypedef npy_int8       int8_t
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t             # <<<<<<<<<<<<<<
@@ -537,7 +537,7 @@ typedef npy_int16 __pyx_t_5numpy_int16_t;
  */
 typedef npy_int32 __pyx_t_5numpy_int32_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":728
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":728
  * ctypedef npy_int16      int16_t
  * ctypedef npy_int32      int32_t
  * ctypedef npy_int64      int64_t             # <<<<<<<<<<<<<<
@@ -546,7 +546,7 @@ typedef npy_int32 __pyx_t_5numpy_int32_t;
  */
 typedef npy_int64 __pyx_t_5numpy_int64_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":732
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":732
  * #ctypedef npy_int128     int128_t
  *
  * ctypedef npy_uint8      uint8_t             # <<<<<<<<<<<<<<
@@ -555,7 +555,7 @@ typedef npy_int64 __pyx_t_5numpy_int64_t;
  */
 typedef npy_uint8 __pyx_t_5numpy_uint8_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":733
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":733
  *
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t             # <<<<<<<<<<<<<<
@@ -564,7 +564,7 @@ typedef npy_uint8 __pyx_t_5numpy_uint8_t;
  */
 typedef npy_uint16 __pyx_t_5numpy_uint16_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":734
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":734
  * ctypedef npy_uint8      uint8_t
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t             # <<<<<<<<<<<<<<
@@ -573,7 +573,7 @@ typedef npy_uint16 __pyx_t_5numpy_uint16_t;
  */
 typedef npy_uint32 __pyx_t_5numpy_uint32_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":735
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":735
  * ctypedef npy_uint16     uint16_t
  * ctypedef npy_uint32     uint32_t
  * ctypedef npy_uint64     uint64_t             # <<<<<<<<<<<<<<
@@ -582,7 +582,7 @@ typedef npy_uint32 __pyx_t_5numpy_uint32_t;
  */
 typedef npy_uint64 __pyx_t_5numpy_uint64_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":739
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":739
  * #ctypedef npy_uint128    uint128_t
  *
  * ctypedef npy_float32    float32_t             # <<<<<<<<<<<<<<
@@ -591,7 +591,7 @@ typedef npy_uint64 __pyx_t_5numpy_uint64_t;
  */
 typedef npy_float32 __pyx_t_5numpy_float32_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":740
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":740
  *
  * ctypedef npy_float32    float32_t
  * ctypedef npy_float64    float64_t             # <<<<<<<<<<<<<<
@@ -600,7 +600,7 @@ typedef npy_float32 __pyx_t_5numpy_float32_t;
  */
 typedef npy_float64 __pyx_t_5numpy_float64_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":749
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":749
  * # The int types are mapped a bit surprising --
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t             # <<<<<<<<<<<<<<
@@ -609,7 +609,7 @@ typedef npy_float64 __pyx_t_5numpy_float64_t;
  */
 typedef npy_long __pyx_t_5numpy_int_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":750
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":750
  * # numpy.int corresponds to 'l' and numpy.long to 'q'
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t             # <<<<<<<<<<<<<<
@@ -618,7 +618,7 @@ typedef npy_long __pyx_t_5numpy_int_t;
  */
 typedef npy_longlong __pyx_t_5numpy_long_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":751
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":751
  * ctypedef npy_long       int_t
  * ctypedef npy_longlong   long_t
  * ctypedef npy_longlong   longlong_t             # <<<<<<<<<<<<<<
@@ -627,7 +627,7 @@ typedef npy_longlong __pyx_t_5numpy_long_t;
  */
 typedef npy_longlong __pyx_t_5numpy_longlong_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":753
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":753
  * ctypedef npy_longlong   longlong_t
  *
  * ctypedef npy_ulong      uint_t             # <<<<<<<<<<<<<<
@@ -636,7 +636,7 @@ typedef npy_longlong __pyx_t_5numpy_longlong_t;
  */
 typedef npy_ulong __pyx_t_5numpy_uint_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":754
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":754
  *
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t             # <<<<<<<<<<<<<<
@@ -645,7 +645,7 @@ typedef npy_ulong __pyx_t_5numpy_uint_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":755
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":755
  * ctypedef npy_ulong      uint_t
  * ctypedef npy_ulonglong  ulong_t
  * ctypedef npy_ulonglong  ulonglong_t             # <<<<<<<<<<<<<<
@@ -654,7 +654,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulong_t;
  */
 typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":757
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":757
  * ctypedef npy_ulonglong  ulonglong_t
  *
  * ctypedef npy_intp       intp_t             # <<<<<<<<<<<<<<
@@ -663,7 +663,7 @@ typedef npy_ulonglong __pyx_t_5numpy_ulonglong_t;
  */
 typedef npy_intp __pyx_t_5numpy_intp_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":758
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":758
  *
  * ctypedef npy_intp       intp_t
  * ctypedef npy_uintp      uintp_t             # <<<<<<<<<<<<<<
@@ -672,7 +672,7 @@ typedef npy_intp __pyx_t_5numpy_intp_t;
  */
 typedef npy_uintp __pyx_t_5numpy_uintp_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":760
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":760
  * ctypedef npy_uintp      uintp_t
  *
  * ctypedef npy_double     float_t             # <<<<<<<<<<<<<<
@@ -681,7 +681,7 @@ typedef npy_uintp __pyx_t_5numpy_uintp_t;
  */
 typedef npy_double __pyx_t_5numpy_float_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":761
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":761
  *
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t             # <<<<<<<<<<<<<<
@@ -690,7 +690,7 @@ typedef npy_double __pyx_t_5numpy_float_t;
  */
 typedef npy_double __pyx_t_5numpy_double_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":762
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":762
  * ctypedef npy_double     float_t
  * ctypedef npy_double     double_t
  * ctypedef npy_longdouble longdouble_t             # <<<<<<<<<<<<<<
@@ -699,32 +699,32 @@ typedef npy_double __pyx_t_5numpy_double_t;
  */
 typedef npy_longdouble __pyx_t_5numpy_longdouble_t;
 
-/* "coral/analysis/_sequencing/calign.pyx":16
+/* "coral/alignment/calign.pyx":16
  *
  * # Declaring numpy data types speeds things up massively
  * ctypedef np.int_t DTYPE_INT             # <<<<<<<<<<<<<<
  * ctypedef np.uint_t DTYPE_UINT
  * ctypedef np.float32_t DTYPE_FLOAT
  */
-typedef __pyx_t_5numpy_int_t __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT;
+typedef __pyx_t_5numpy_int_t __pyx_t_5coral_9alignment_6calign_DTYPE_INT;
 
-/* "coral/analysis/_sequencing/calign.pyx":17
+/* "coral/alignment/calign.pyx":17
  * # Declaring numpy data types speeds things up massively
  * ctypedef np.int_t DTYPE_INT
  * ctypedef np.uint_t DTYPE_UINT             # <<<<<<<<<<<<<<
  * ctypedef np.float32_t DTYPE_FLOAT
  *
  */
-typedef __pyx_t_5numpy_uint_t __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT;
+typedef __pyx_t_5numpy_uint_t __pyx_t_5coral_9alignment_6calign_DTYPE_UINT;
 
-/* "coral/analysis/_sequencing/calign.pyx":18
+/* "coral/alignment/calign.pyx":18
  * ctypedef np.int_t DTYPE_INT
  * ctypedef np.uint_t DTYPE_UINT
  * ctypedef np.float32_t DTYPE_FLOAT             # <<<<<<<<<<<<<<
  *
  *
  */
-typedef __pyx_t_5numpy_float32_t __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT;
+typedef __pyx_t_5numpy_float32_t __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT;
 #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
     typedef ::std::complex< float > __pyx_t_float_complex;
@@ -748,7 +748,7 @@ typedef __pyx_t_5numpy_float32_t __pyx_t_5coral_8analysis_11_sequencing_6calign_
 
 /*--- Type declarations ---*/
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":764
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":764
  * ctypedef npy_longdouble longdouble_t
  *
  * ctypedef npy_cfloat      cfloat_t             # <<<<<<<<<<<<<<
@@ -757,7 +757,7 @@ typedef __pyx_t_5numpy_float32_t __pyx_t_5coral_8analysis_11_sequencing_6calign_
  */
 typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":765
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":765
  *
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t             # <<<<<<<<<<<<<<
@@ -766,7 +766,7 @@ typedef npy_cfloat __pyx_t_5numpy_cfloat_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":766
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":766
  * ctypedef npy_cfloat      cfloat_t
  * ctypedef npy_cdouble     cdouble_t
  * ctypedef npy_clongdouble clongdouble_t             # <<<<<<<<<<<<<<
@@ -775,7 +775,7 @@ typedef npy_cdouble __pyx_t_5numpy_cdouble_t;
  */
 typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":768
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":768
  * ctypedef npy_clongdouble clongdouble_t
  *
  * ctypedef npy_cdouble     complex_t             # <<<<<<<<<<<<<<
@@ -1209,15 +1209,15 @@ static PyTypeObject *__pyx_ptype_5numpy_ndarray = 0;
 static PyTypeObject *__pyx_ptype_5numpy_ufunc = 0;
 static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, char *, char *, int *); /*proto*/
 
-/* Module declarations from 'coral.analysis._sequencing.calign' */
-static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_f_5coral_8analysis_11_sequencing_6calign_max3(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT); /*proto*/
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT = { "DTYPE_FLOAT", NULL, sizeof(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT), { 0 }, 0, 'R', 0, 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT = { "DTYPE_UINT", NULL, sizeof(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT), { 0 }, 0, IS_UNSIGNED(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT), 0 };
-static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT = { "DTYPE_INT", NULL, sizeof(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT), { 0 }, 0, IS_UNSIGNED(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT), 0 };
-#define __Pyx_MODULE_NAME "coral.analysis._sequencing.calign"
-int __pyx_module_is_main_coral__analysis___sequencing__calign = 0;
+/* Module declarations from 'coral.alignment.calign' */
+static CYTHON_INLINE __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_f_5coral_9alignment_6calign_max3(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT); /*proto*/
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT = { "DTYPE_FLOAT", NULL, sizeof(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT), { 0 }, 0, 'R', 0, 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_UINT = { "DTYPE_UINT", NULL, sizeof(__pyx_t_5coral_9alignment_6calign_DTYPE_UINT), { 0 }, 0, IS_UNSIGNED(__pyx_t_5coral_9alignment_6calign_DTYPE_UINT) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_5coral_9alignment_6calign_DTYPE_UINT), 0 };
+static __Pyx_TypeInfo __Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_INT = { "DTYPE_INT", NULL, sizeof(__pyx_t_5coral_9alignment_6calign_DTYPE_INT), { 0 }, 0, IS_UNSIGNED(__pyx_t_5coral_9alignment_6calign_DTYPE_INT) ? 'U' : 'I', IS_UNSIGNED(__pyx_t_5coral_9alignment_6calign_DTYPE_INT), 0 };
+#define __Pyx_MODULE_NAME "coral.alignment.calign"
+int __pyx_module_is_main_coral__alignment__calign = 0;
 
-/* Implementation of 'coral.analysis._sequencing.calign' */
+/* Implementation of 'coral.alignment.calign' */
 static PyObject *__pyx_builtin_max;
 static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_range;
@@ -1331,14 +1331,14 @@ static char __pyx_k_wtf_pointer_i[] = "wtf!:pointer: %i";
 static char __pyx_k_score_alignment[] = "score_alignment";
 static char __pyx_k_gap_open_must_be_0[] = "gap_open must be <= 0";
 static char __pyx_k_substitution_matrices[] = "substitution_matrices";
+static char __pyx_k_coral_alignment_calign[] = "coral.alignment.calign";
 static char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
 static char __pyx_k_gap_extend_penalty_must_be_0[] = "gap_extend penalty must be <= 0";
-static char __pyx_k_home_nick_projects_coral_coral[] = "/home/nick/projects/coral/coral/coral/analysis/_sequencing/calign.pyx";
+static char __pyx_k_home_nick_projects_coral_coral[] = "/home/nick/projects/coral/coral/coral/alignment/calign.pyx";
 static char __pyx_k_unknown_dtype_code_in_numpy_pxd[] = "unknown dtype code in numpy.pxd (%d)";
 static char __pyx_k_Alignment_lengths_must_be_the_sa[] = "Alignment lengths must be the same";
 static char __pyx_k_Format_string_allocated_too_shor[] = "Format string allocated too short, see comment in numpy.pxd";
 static char __pyx_k_Non_native_byte_order_not_suppor[] = "Non-native byte order not supported";
-static char __pyx_k_coral_analysis__sequencing_calig[] = "coral.analysis._sequencing.calign";
 static char __pyx_k_ndarray_is_not_Fortran_contiguou[] = "ndarray is not Fortran contiguous";
 static char __pyx_k_Format_string_allocated_too_shor_2[] = "Format string allocated too short.";
 static PyObject *__pyx_kp_s_Alignment_lengths_must_be_the_sa;
@@ -1378,7 +1378,7 @@ static PyObject *__pyx_n_s_cj;
 static PyObject *__pyx_n_s_col_idx;
 static PyObject *__pyx_n_s_col_max;
 static PyObject *__pyx_n_s_col_ord;
-static PyObject *__pyx_n_s_coral_analysis__sequencing_calig;
+static PyObject *__pyx_n_s_coral_alignment_calign;
 static PyObject *__pyx_n_s_diag_score;
 static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_empty;
@@ -1444,10 +1444,10 @@ static PyObject *__pyx_n_s_unravel_index;
 static PyObject *__pyx_n_s_up_score;
 static PyObject *__pyx_kp_s_wtf_pointer_i;
 static PyObject *__pyx_n_s_zeros;
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_matrix); /* proto */
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_array); /* proto */
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v__seqj, PyObject *__pyx_v__seqi, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_open, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_extend, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_double, PyObject *__pyx_v_method, PyObject *__pyx_v_matrix); /* proto */
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignment(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_a, PyObject *__pyx_v_b, int __pyx_v_gap_open, int __pyx_v_gap_extend, PyObject *__pyx_v_matrix); /* proto */
+static PyObject *__pyx_pf_5coral_9alignment_6calign_as_ord_matrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_matrix); /* proto */
+static PyObject *__pyx_pf_5coral_9alignment_6calign_2max_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_array); /* proto */
+static PyObject *__pyx_pf_5coral_9alignment_6calign_4aligner(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v__seqj, PyObject *__pyx_v__seqi, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_open, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_extend, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_double, PyObject *__pyx_v_method, PyObject *__pyx_v_matrix); /* proto */
+static PyObject *__pyx_pf_5coral_9alignment_6calign_6score_alignment(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_a, PyObject *__pyx_v_b, int __pyx_v_gap_open, int __pyx_v_gap_extend, PyObject *__pyx_v_matrix); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
 static PyObject *__pyx_int_0;
@@ -1496,7 +1496,7 @@ static PyObject *__pyx_codeobj__39;
 static PyObject *__pyx_codeobj__41;
 static PyObject *__pyx_codeobj__43;
 
-/* "coral/analysis/_sequencing/calign.pyx":21
+/* "coral/alignment/calign.pyx":21
  *
  *
  * cdef inline DTYPE_FLOAT max3(DTYPE_FLOAT a, DTYPE_FLOAT b, DTYPE_FLOAT c):             # <<<<<<<<<<<<<<
@@ -1504,14 +1504,14 @@ static PyObject *__pyx_codeobj__43;
  *
  */
 
-static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_f_5coral_8analysis_11_sequencing_6calign_max3(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_a, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_b, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_c) {
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_r;
+static CYTHON_INLINE __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_f_5coral_9alignment_6calign_max3(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_a, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_b, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_c) {
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_2;
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_t_2;
   __Pyx_RefNannySetupContext("max3", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":32
+  /* "coral/alignment/calign.pyx":32
  *
  *     '''
  *     if c > b:             # <<<<<<<<<<<<<<
@@ -1521,7 +1521,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   __pyx_t_1 = ((__pyx_v_c > __pyx_v_b) != 0);
   if (__pyx_t_1) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":33
+    /* "coral/alignment/calign.pyx":33
  *     '''
  *     if c > b:
  *         return c if c > a else a             # <<<<<<<<<<<<<<
@@ -1536,7 +1536,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
     __pyx_r = __pyx_t_2;
     goto __pyx_L0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":32
+    /* "coral/alignment/calign.pyx":32
  *
  *     '''
  *     if c > b:             # <<<<<<<<<<<<<<
@@ -1545,7 +1545,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
  */
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":34
+  /* "coral/alignment/calign.pyx":34
  *     if c > b:
  *         return c if c > a else a
  *     return b if b > a else a             # <<<<<<<<<<<<<<
@@ -1560,7 +1560,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   __pyx_r = __pyx_t_2;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":21
+  /* "coral/alignment/calign.pyx":21
  *
  *
  * cdef inline DTYPE_FLOAT max3(DTYPE_FLOAT a, DTYPE_FLOAT b, DTYPE_FLOAT c):             # <<<<<<<<<<<<<<
@@ -1574,7 +1574,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":37
+/* "coral/alignment/calign.pyx":37
  *
  *
  * cdef inline DTYPE_FLOAT max2(DTYPE_FLOAT a, DTYPE_FLOAT b):             # <<<<<<<<<<<<<<
@@ -1582,13 +1582,13 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
  *
  */
 
-static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_f_5coral_8analysis_11_sequencing_6calign_max2(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_a, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_b) {
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_r;
+static CYTHON_INLINE __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_f_5coral_9alignment_6calign_max2(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_a, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_b) {
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_r;
   __Pyx_RefNannyDeclarations
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_1;
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_t_1;
   __Pyx_RefNannySetupContext("max2", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":46
+  /* "coral/alignment/calign.pyx":46
  *
  *     '''
  *     return b if b > a else a             # <<<<<<<<<<<<<<
@@ -1603,7 +1603,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   __pyx_r = __pyx_t_1;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":37
+  /* "coral/alignment/calign.pyx":37
  *
  *
  * cdef inline DTYPE_FLOAT max2(DTYPE_FLOAT a, DTYPE_FLOAT b):             # <<<<<<<<<<<<<<
@@ -1617,7 +1617,7 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":49
+/* "coral/alignment/calign.pyx":49
  *
  *
  * def as_ord_matrix(matrix):             # <<<<<<<<<<<<<<
@@ -1626,21 +1626,21 @@ static CYTHON_INLINE __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix(PyObject *__pyx_self, PyObject *__pyx_v_matrix); /*proto*/
-static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_as_ord_matrix[] = "Given the SubstitutionMatrix input, generate an equivalent matrix that\n    is indexed by the ASCII number of each residue (e.g. A -> 65).";
-static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix = {"as_ord_matrix", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix, METH_O, __pyx_doc_5coral_8analysis_11_sequencing_6calign_as_ord_matrix};
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix(PyObject *__pyx_self, PyObject *__pyx_v_matrix) {
+static PyObject *__pyx_pw_5coral_9alignment_6calign_1as_ord_matrix(PyObject *__pyx_self, PyObject *__pyx_v_matrix); /*proto*/
+static char __pyx_doc_5coral_9alignment_6calign_as_ord_matrix[] = "Given the SubstitutionMatrix input, generate an equivalent matrix that\n    is indexed by the ASCII number of each residue (e.g. A -> 65).";
+static PyMethodDef __pyx_mdef_5coral_9alignment_6calign_1as_ord_matrix = {"as_ord_matrix", (PyCFunction)__pyx_pw_5coral_9alignment_6calign_1as_ord_matrix, METH_O, __pyx_doc_5coral_9alignment_6calign_as_ord_matrix};
+static PyObject *__pyx_pw_5coral_9alignment_6calign_1as_ord_matrix(PyObject *__pyx_self, PyObject *__pyx_v_matrix) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("as_ord_matrix (wrapper)", 0);
-  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(__pyx_self, ((PyObject *)__pyx_v_matrix));
+  __pyx_r = __pyx_pf_5coral_9alignment_6calign_as_ord_matrix(__pyx_self, ((PyObject *)__pyx_v_matrix));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_matrix) {
+static PyObject *__pyx_pf_5coral_9alignment_6calign_as_ord_matrix(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_matrix) {
   PyObject *__pyx_v_ords = NULL;
   PyObject *__pyx_v_ord_matrix = NULL;
   PyObject *__pyx_v_i = NULL;
@@ -1665,7 +1665,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("as_ord_matrix", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":52
+  /* "coral/alignment/calign.pyx":52
  *     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
  *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
  *     ords = [ord(c) for c in matrix.alphabet]             # <<<<<<<<<<<<<<
@@ -1728,7 +1728,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
   __pyx_v_ords = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":53
+  /* "coral/alignment/calign.pyx":53
  *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
  *     ords = [ord(c) for c in matrix.alphabet]
  *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)             # <<<<<<<<<<<<<<
@@ -1792,7 +1792,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
   __pyx_v_ord_matrix = __pyx_t_8;
   __pyx_t_8 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":54
+  /* "coral/alignment/calign.pyx":54
  *     ords = [ord(c) for c in matrix.alphabet]
  *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
  *     for i, row_ord in enumerate(ords):             # <<<<<<<<<<<<<<
@@ -1820,7 +1820,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
     __pyx_t_8 = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":55
+    /* "coral/alignment/calign.pyx":55
  *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
  *     for i, row_ord in enumerate(ords):
  *         for j, col_ord in enumerate(ords):             # <<<<<<<<<<<<<<
@@ -1848,7 +1848,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
       __pyx_t_2 = __pyx_t_1;
       __pyx_t_1 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":56
+      /* "coral/alignment/calign.pyx":56
  *     for i, row_ord in enumerate(ords):
  *         for j, col_ord in enumerate(ords):
  *             ord_matrix[row_ord, col_ord] = matrix[i, j]             # <<<<<<<<<<<<<<
@@ -1878,7 +1878,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":55
+      /* "coral/alignment/calign.pyx":55
  *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
  *     for i, row_ord in enumerate(ords):
  *         for j, col_ord in enumerate(ords):             # <<<<<<<<<<<<<<
@@ -1889,7 +1889,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":54
+    /* "coral/alignment/calign.pyx":54
  *     ords = [ord(c) for c in matrix.alphabet]
  *     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
  *     for i, row_ord in enumerate(ords):             # <<<<<<<<<<<<<<
@@ -1900,7 +1900,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":58
+  /* "coral/alignment/calign.pyx":58
  *             ord_matrix[row_ord, col_ord] = matrix[i, j]
  *
  *     return ord_matrix             # <<<<<<<<<<<<<<
@@ -1912,7 +1912,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
   __pyx_r = __pyx_v_ord_matrix;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":49
+  /* "coral/alignment/calign.pyx":49
  *
  *
  * def as_ord_matrix(matrix):             # <<<<<<<<<<<<<<
@@ -1928,7 +1928,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("coral.analysis._sequencing.calign.as_ord_matrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("coral.alignment.calign.as_ord_matrix", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_ords);
@@ -1943,7 +1943,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":61
+/* "coral/alignment/calign.pyx":61
  *
  *
  * def max_index(array):             # <<<<<<<<<<<<<<
@@ -1952,21 +1952,21 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_as_ord_matrix(C
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3max_index(PyObject *__pyx_self, PyObject *__pyx_v_array); /*proto*/
-static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_2max_index[] = "Locate the index of the largest value in the array. If there are\n    multiple, finds the earliest one in the row-flattened array.\n\n    :param array: Any array.\n    :type array: numpy.array\n\n    ";
-static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_3max_index = {"max_index", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_3max_index, METH_O, __pyx_doc_5coral_8analysis_11_sequencing_6calign_2max_index};
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_3max_index(PyObject *__pyx_self, PyObject *__pyx_v_array) {
+static PyObject *__pyx_pw_5coral_9alignment_6calign_3max_index(PyObject *__pyx_self, PyObject *__pyx_v_array); /*proto*/
+static char __pyx_doc_5coral_9alignment_6calign_2max_index[] = "Locate the index of the largest value in the array. If there are\n    multiple, finds the earliest one in the row-flattened array.\n\n    :param array: Any array.\n    :type array: numpy.array\n\n    ";
+static PyMethodDef __pyx_mdef_5coral_9alignment_6calign_3max_index = {"max_index", (PyCFunction)__pyx_pw_5coral_9alignment_6calign_3max_index, METH_O, __pyx_doc_5coral_9alignment_6calign_2max_index};
+static PyObject *__pyx_pw_5coral_9alignment_6calign_3max_index(PyObject *__pyx_self, PyObject *__pyx_v_array) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("max_index (wrapper)", 0);
-  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(__pyx_self, ((PyObject *)__pyx_v_array));
+  __pyx_r = __pyx_pf_5coral_9alignment_6calign_2max_index(__pyx_self, ((PyObject *)__pyx_v_array));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_array) {
+static PyObject *__pyx_pf_5coral_9alignment_6calign_2max_index(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_array) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1981,7 +1981,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTH
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("max_index", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":69
+  /* "coral/alignment/calign.pyx":69
  *
  *     '''
  *     return np.unravel_index(array.argmax(), array.shape)             # <<<<<<<<<<<<<<
@@ -2047,7 +2047,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTH
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":61
+  /* "coral/alignment/calign.pyx":61
  *
  *
  * def max_index(array):             # <<<<<<<<<<<<<<
@@ -2063,7 +2063,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTH
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("coral.analysis._sequencing.calign.max_index", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("coral.alignment.calign.max_index", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2071,7 +2071,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTH
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":72
+/* "coral/alignment/calign.pyx":72
  *
  *
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,             # <<<<<<<<<<<<<<
@@ -2080,15 +2080,15 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_2max_index(CYTH
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5aligner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_4aligner[] = "Calculates the alignment of two sequences. The global method uses\n    a global Needleman-Wunsh algorithm, local does a a local\n    Smith-Waterman alignment, global_cfe does a global alignment with\n    cost-free ends and glocal does an alignment which is global only with\n    respect to the shorter sequence, also known as a semi-global\n    alignment. Returns the aligned (sub)sequences as character arrays.\n\n    Gotoh, O. (1982). J. Mol. Biol. 162, 705-708.\n    Needleman, S. & Wunsch, C. (1970). J. Mol. Biol. 48(3), 443-53.\n    Smith, T.F. & Waterman M.S. (1981). J. Mol. Biol. 147, 195-197.\n\n    :param seqj: First sequence.\n    :type seqj: str\n    :param seqi: Second sequence.\n    :type seqi: str\n    :param method: Type of alignment: 'global', 'global_cfe', 'local', or\n                   'glocal'.\n    :type method: str\n    :param gap_open: The cost of opening a gap (negative number).\n    :type gap_open: float\n    :param gap_extend: The cost of extending an open gap (negative number).\n    :type gap_extend: float\n    :param gap_double: The gap-opening cost if a gap is already open in the\n                       other sequence (negative number).\n    :type gap_double: float\n    :param matrix: A score matrix dictionary name. Examples can be found in\n                   the substitution_matrices module.\n    :type matrix: SubstitutionMatrix\n\n    ";
-static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_5aligner = {"aligner", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_5aligner, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5coral_8analysis_11_sequencing_6calign_4aligner};
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5aligner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5coral_9alignment_6calign_5aligner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5coral_9alignment_6calign_4aligner[] = "Calculates the alignment of two sequences. The global method uses\n    a global Needleman-Wunsh algorithm, local does a a local\n    Smith-Waterman alignment, global_cfe does a global alignment with\n    cost-free ends and glocal does an alignment which is global only with\n    respect to the shorter sequence, also known as a semi-global\n    alignment. Returns the aligned (sub)sequences as character arrays.\n\n    Gotoh, O. (1982). J. Mol. Biol. 162, 705-708.\n    Needleman, S. & Wunsch, C. (1970). J. Mol. Biol. 48(3), 443-53.\n    Smith, T.F. & Waterman M.S. (1981). J. Mol. Biol. 147, 195-197.\n\n    :param seqj: First sequence.\n    :type seqj: str\n    :param seqi: Second sequence.\n    :type seqi: str\n    :param method: Type of alignment: 'global', 'global_cfe', 'local', or\n                   'glocal'.\n    :type method: str\n    :param gap_open: The cost of opening a gap (negative number).\n    :type gap_open: float\n    :param gap_extend: The cost of extending an open gap (negative number).\n    :type gap_extend: float\n    :param gap_double: The gap-opening cost if a gap is already open in the\n                       other sequence (negative number).\n    :type gap_double: float\n    :param matrix: A score matrix dictionary name. Examples can be found in\n                   the substitution_matrices module.\n    :type matrix: SubstitutionMatrix\n\n    ";
+static PyMethodDef __pyx_mdef_5coral_9alignment_6calign_5aligner = {"aligner", (PyCFunction)__pyx_pw_5coral_9alignment_6calign_5aligner, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5coral_9alignment_6calign_4aligner};
+static PyObject *__pyx_pw_5coral_9alignment_6calign_5aligner(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v__seqj = 0;
   PyObject *__pyx_v__seqi = 0;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_open;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_extend;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_double;
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_open;
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_extend;
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_double;
   PyObject *__pyx_v_method = 0;
   PyObject *__pyx_v_matrix = 0;
   int __pyx_lineno = 0;
@@ -2173,17 +2173,17 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5aligner(PyObje
     if (values[2]) {
       __pyx_v_gap_open = __pyx_PyFloat_AsFloat(values[2]); if (unlikely((__pyx_v_gap_open == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
-      __pyx_v_gap_open = ((__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT)-7.0);
+      __pyx_v_gap_open = ((__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT)-7.0);
     }
     if (values[3]) {
       __pyx_v_gap_extend = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_gap_extend == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
-      __pyx_v_gap_extend = ((__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT)-7.0);
+      __pyx_v_gap_extend = ((__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT)-7.0);
     }
     if (values[4]) {
       __pyx_v_gap_double = __pyx_PyFloat_AsFloat(values[4]); if (unlikely((__pyx_v_gap_double == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 73; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
     } else {
-      __pyx_v_gap_double = ((__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT)-7.0);
+      __pyx_v_gap_double = ((__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT)-7.0);
     }
     __pyx_v_method = values[5];
     __pyx_v_matrix = values[6];
@@ -2192,18 +2192,18 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_5aligner(PyObje
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("aligner", 0, 2, 7, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
-  __Pyx_AddTraceback("coral.analysis._sequencing.calign.aligner", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("coral.alignment.calign.aligner", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(__pyx_self, __pyx_v__seqj, __pyx_v__seqi, __pyx_v_gap_open, __pyx_v_gap_extend, __pyx_v_gap_double, __pyx_v_method, __pyx_v_matrix);
+  __pyx_r = __pyx_pf_5coral_9alignment_6calign_4aligner(__pyx_self, __pyx_v__seqj, __pyx_v__seqi, __pyx_v_gap_open, __pyx_v_gap_extend, __pyx_v_gap_double, __pyx_v_method, __pyx_v_matrix);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v__seqj, PyObject *__pyx_v__seqi, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_open, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_extend, __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_v_gap_double, PyObject *__pyx_v_method, PyObject *__pyx_v_matrix) {
+static PyObject *__pyx_pf_5coral_9alignment_6calign_4aligner(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v__seqj, PyObject *__pyx_v__seqi, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_open, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_extend, __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_v_gap_double, PyObject *__pyx_v_method, PyObject *__pyx_v_matrix) {
   int __pyx_v_NONE;
   int __pyx_v_LEFT;
   int __pyx_v_UP;
@@ -2298,9 +2298,9 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   Py_ssize_t __pyx_t_46;
   Py_ssize_t __pyx_t_47;
   Py_ssize_t __pyx_t_48;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_49;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_50;
-  __pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT __pyx_t_51;
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_t_49;
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_t_50;
+  __pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT __pyx_t_51;
   Py_ssize_t __pyx_t_52;
   Py_ssize_t __pyx_t_53;
   Py_ssize_t __pyx_t_54;
@@ -2339,7 +2339,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_pybuffernd_amatrix.data = NULL;
   __pyx_pybuffernd_amatrix.rcbuffer = &__pyx_pybuffer_amatrix;
 
-  /* "coral/analysis/_sequencing/calign.pyx":105
+  /* "coral/alignment/calign.pyx":105
  *
  *     '''
  *     cdef int NONE = 0,  LEFT = 1, UP = 2,  DIAG = 3             # <<<<<<<<<<<<<<
@@ -2351,7 +2351,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_v_UP = 2;
   __pyx_v_DIAG = 3;
 
-  /* "coral/analysis/_sequencing/calign.pyx":106
+  /* "coral/alignment/calign.pyx":106
  *     '''
  *     cdef int NONE = 0,  LEFT = 1, UP = 2,  DIAG = 3
  *     cdef bint flip = 0             # <<<<<<<<<<<<<<
@@ -2360,7 +2360,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_flip = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":107
+  /* "coral/alignment/calign.pyx":107
  *     cdef int NONE = 0,  LEFT = 1, UP = 2,  DIAG = 3
  *     cdef bint flip = 0
  *     cdef char* seqj = _seqj             # <<<<<<<<<<<<<<
@@ -2370,7 +2370,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v__seqj); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 107; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_seqj = __pyx_t_1;
 
-  /* "coral/analysis/_sequencing/calign.pyx":108
+  /* "coral/alignment/calign.pyx":108
  *     cdef bint flip = 0
  *     cdef char* seqj = _seqj
  *     cdef char* seqi = _seqi             # <<<<<<<<<<<<<<
@@ -2380,7 +2380,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v__seqi); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 108; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_seqi = __pyx_t_1;
 
-  /* "coral/analysis/_sequencing/calign.pyx":109
+  /* "coral/alignment/calign.pyx":109
  *     cdef char* seqj = _seqj
  *     cdef char* seqi = _seqi
  *     cdef size_t align_counter = 0             # <<<<<<<<<<<<<<
@@ -2389,7 +2389,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_align_counter = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":113
+  /* "coral/alignment/calign.pyx":113
  *     cdef int imethod
  *
  *     if method == 'global':             # <<<<<<<<<<<<<<
@@ -2399,7 +2399,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_global, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 113; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_2) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":114
+    /* "coral/alignment/calign.pyx":114
  *
  *     if method == 'global':
  *         imethod = 0             # <<<<<<<<<<<<<<
@@ -2408,7 +2408,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     __pyx_v_imethod = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":113
+    /* "coral/alignment/calign.pyx":113
  *     cdef int imethod
  *
  *     if method == 'global':             # <<<<<<<<<<<<<<
@@ -2418,7 +2418,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     goto __pyx_L3;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":115
+  /* "coral/alignment/calign.pyx":115
  *     if method == 'global':
  *         imethod = 0
  *     elif method == 'local':             # <<<<<<<<<<<<<<
@@ -2428,7 +2428,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_local, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 115; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_2) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":116
+    /* "coral/alignment/calign.pyx":116
  *         imethod = 0
  *     elif method == 'local':
  *         imethod = 1             # <<<<<<<<<<<<<<
@@ -2437,7 +2437,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     __pyx_v_imethod = 1;
 
-    /* "coral/analysis/_sequencing/calign.pyx":115
+    /* "coral/alignment/calign.pyx":115
  *     if method == 'global':
  *         imethod = 0
  *     elif method == 'local':             # <<<<<<<<<<<<<<
@@ -2447,7 +2447,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     goto __pyx_L3;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":117
+  /* "coral/alignment/calign.pyx":117
  *     elif method == 'local':
  *         imethod = 1
  *     elif method == 'glocal':             # <<<<<<<<<<<<<<
@@ -2457,7 +2457,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_glocal, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 117; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_2) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":118
+    /* "coral/alignment/calign.pyx":118
  *         imethod = 1
  *     elif method == 'glocal':
  *         imethod = 2             # <<<<<<<<<<<<<<
@@ -2466,7 +2466,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     __pyx_v_imethod = 2;
 
-    /* "coral/analysis/_sequencing/calign.pyx":117
+    /* "coral/alignment/calign.pyx":117
  *     elif method == 'local':
  *         imethod = 1
  *     elif method == 'glocal':             # <<<<<<<<<<<<<<
@@ -2476,7 +2476,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     goto __pyx_L3;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":119
+  /* "coral/alignment/calign.pyx":119
  *     elif method == 'glocal':
  *         imethod = 2
  *     elif method == 'global_cfe':             # <<<<<<<<<<<<<<
@@ -2486,7 +2486,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_2 = (__Pyx_PyString_Equals(__pyx_v_method, __pyx_n_s_global_cfe, Py_EQ)); if (unlikely(__pyx_t_2 < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 119; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   if (__pyx_t_2) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":120
+    /* "coral/alignment/calign.pyx":120
  *         imethod = 2
  *     elif method == 'global_cfe':
  *         imethod = 3             # <<<<<<<<<<<<<<
@@ -2495,7 +2495,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     __pyx_v_imethod = 3;
 
-    /* "coral/analysis/_sequencing/calign.pyx":119
+    /* "coral/alignment/calign.pyx":119
  *     elif method == 'glocal':
  *         imethod = 2
  *     elif method == 'global_cfe':             # <<<<<<<<<<<<<<
@@ -2505,7 +2505,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   }
   __pyx_L3:;
 
-  /* "coral/analysis/_sequencing/calign.pyx":122
+  /* "coral/alignment/calign.pyx":122
  *         imethod = 3
  *
  *     cdef size_t max_j = strlen(seqj)             # <<<<<<<<<<<<<<
@@ -2514,7 +2514,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_max_j = strlen(__pyx_v_seqj);
 
-  /* "coral/analysis/_sequencing/calign.pyx":123
+  /* "coral/alignment/calign.pyx":123
  *
  *     cdef size_t max_j = strlen(seqj)
  *     cdef size_t max_i = strlen(seqi)             # <<<<<<<<<<<<<<
@@ -2523,7 +2523,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_max_i = strlen(__pyx_v_seqi);
 
-  /* "coral/analysis/_sequencing/calign.pyx":124
+  /* "coral/alignment/calign.pyx":124
  *     cdef size_t max_j = strlen(seqj)
  *     cdef size_t max_i = strlen(seqi)
  *     if max_i == max_j == 0:             # <<<<<<<<<<<<<<
@@ -2537,7 +2537,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_3 = (__pyx_t_2 != 0);
   if (__pyx_t_3) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":125
+    /* "coral/alignment/calign.pyx":125
  *     cdef size_t max_i = strlen(seqi)
  *     if max_i == max_j == 0:
  *         return '', ''             # <<<<<<<<<<<<<<
@@ -2549,7 +2549,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __pyx_r = __pyx_tuple__3;
     goto __pyx_L0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":124
+    /* "coral/alignment/calign.pyx":124
  *     cdef size_t max_j = strlen(seqj)
  *     cdef size_t max_i = strlen(seqi)
  *     if max_i == max_j == 0:             # <<<<<<<<<<<<<<
@@ -2558,7 +2558,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":127
+  /* "coral/alignment/calign.pyx":127
  *         return '', ''
  *
  *     if max_j > max_i:             # <<<<<<<<<<<<<<
@@ -2568,7 +2568,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_3 = ((__pyx_v_max_j > __pyx_v_max_i) != 0);
   if (__pyx_t_3) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":128
+    /* "coral/alignment/calign.pyx":128
  *
  *     if max_j > max_i:
  *         flip = 1             # <<<<<<<<<<<<<<
@@ -2577,7 +2577,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     __pyx_v_flip = 1;
 
-    /* "coral/analysis/_sequencing/calign.pyx":129
+    /* "coral/alignment/calign.pyx":129
  *     if max_j > max_i:
  *         flip = 1
  *         seqi, seqj = seqj, seqi             # <<<<<<<<<<<<<<
@@ -2589,7 +2589,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __pyx_v_seqi = __pyx_t_1;
     __pyx_v_seqj = __pyx_t_4;
 
-    /* "coral/analysis/_sequencing/calign.pyx":130
+    /* "coral/alignment/calign.pyx":130
  *         flip = 1
  *         seqi, seqj = seqj, seqi
  *         max_i, max_j = max_j, max_i             # <<<<<<<<<<<<<<
@@ -2601,7 +2601,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __pyx_v_max_i = __pyx_t_5;
     __pyx_v_max_j = __pyx_t_6;
 
-    /* "coral/analysis/_sequencing/calign.pyx":127
+    /* "coral/alignment/calign.pyx":127
  *         return '', ''
  *
  *     if max_j > max_i:             # <<<<<<<<<<<<<<
@@ -2610,7 +2610,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":137
+  /* "coral/alignment/calign.pyx":137
  *     cdef PyObject *ai, *aj
  *
  *     assert gap_extend <= 0, 'gap_extend penalty must be <= 0'             # <<<<<<<<<<<<<<
@@ -2626,7 +2626,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   }
   #endif
 
-  /* "coral/analysis/_sequencing/calign.pyx":138
+  /* "coral/alignment/calign.pyx":138
  *
  *     assert gap_extend <= 0, 'gap_extend penalty must be <= 0'
  *     assert gap_open <= 0, 'gap_open must be <= 0'             # <<<<<<<<<<<<<<
@@ -2642,7 +2642,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   }
   #endif
 
-  /* "coral/analysis/_sequencing/calign.pyx":140
+  /* "coral/alignment/calign.pyx":140
  *     assert gap_open <= 0, 'gap_open must be <= 0'
  *
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_i = np.empty((max_i + 1, max_j + 1), dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -2689,7 +2689,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_12 = ((PyArrayObject *)__pyx_t_11);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_agap_i.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_agap_i.rcbuffer->pybuffer, (PyObject*)__pyx_t_12, &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_agap_i = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf = NULL;
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 140; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_agap_i.diminfo[0].strides = __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_agap_i.diminfo[0].shape = __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_agap_i.diminfo[1].strides = __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_agap_i.diminfo[1].shape = __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.shape[1];
@@ -2699,7 +2699,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_v_agap_i = ((PyArrayObject *)__pyx_t_11);
   __pyx_t_11 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":141
+  /* "coral/alignment/calign.pyx":141
  *
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_i = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_j = np.empty((max_i + 1, max_j + 1), dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -2746,7 +2746,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_13 = ((PyArrayObject *)__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_agap_j.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_agap_j.rcbuffer->pybuffer, (PyObject*)__pyx_t_13, &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_agap_j = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf = NULL;
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 141; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_agap_j.diminfo[0].strides = __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_agap_j.diminfo[0].shape = __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_agap_j.diminfo[1].strides = __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_agap_j.diminfo[1].shape = __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.shape[1];
@@ -2756,7 +2756,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_v_agap_j = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":142
+  /* "coral/alignment/calign.pyx":142
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_i = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_j = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     agap_i.fill(-np.inf)             # <<<<<<<<<<<<<<
@@ -2801,7 +2801,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":143
+  /* "coral/alignment/calign.pyx":143
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] agap_j = np.empty((max_i + 1, max_j + 1), dtype=np.float32)
  *     agap_i.fill(-np.inf)
  *     agap_j.fill(-np.inf)             # <<<<<<<<<<<<<<
@@ -2846,7 +2846,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":145
+  /* "coral/alignment/calign.pyx":145
  *     agap_j.fill(-np.inf)
  *
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] score = np.zeros((max_i + 1, max_j + 1), dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -2893,7 +2893,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_14 = ((PyArrayObject *)__pyx_t_9);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_score.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_score.rcbuffer->pybuffer, (PyObject*)__pyx_t_14, &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_score = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_score.rcbuffer->pybuffer.buf = NULL;
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 145; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_score.diminfo[0].strides = __pyx_pybuffernd_score.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_score.diminfo[0].shape = __pyx_pybuffernd_score.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_score.diminfo[1].strides = __pyx_pybuffernd_score.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_score.diminfo[1].shape = __pyx_pybuffernd_score.rcbuffer->pybuffer.shape[1];
@@ -2903,7 +2903,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_v_score = ((PyArrayObject *)__pyx_t_9);
   __pyx_t_9 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":147
+  /* "coral/alignment/calign.pyx":147
  *     cdef np.ndarray[DTYPE_FLOAT, ndim=2] score = np.zeros((max_i + 1, max_j + 1), dtype=np.float32)
  *
  *     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)             # <<<<<<<<<<<<<<
@@ -2950,7 +2950,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_15 = ((PyArrayObject *)__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_pointer.rcbuffer->pybuffer, (PyObject*)__pyx_t_15, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_pointer.rcbuffer->pybuffer, (PyObject*)__pyx_t_15, &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_UINT, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_pointer = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf = NULL;
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 147; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_pointer.diminfo[0].strides = __pyx_pybuffernd_pointer.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_pointer.diminfo[0].shape = __pyx_pybuffernd_pointer.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_pointer.diminfo[1].strides = __pyx_pybuffernd_pointer.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_pointer.diminfo[1].shape = __pyx_pybuffernd_pointer.rcbuffer->pybuffer.shape[1];
@@ -2960,7 +2960,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_v_pointer = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":148
+  /* "coral/alignment/calign.pyx":148
  *
  *     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)
  *     cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = matrix             # <<<<<<<<<<<<<<
@@ -2972,7 +2972,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __Pyx_INCREF(__pyx_t_7);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_7), &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_7), &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
       __pyx_v_amatrix = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.buf = NULL;
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 148; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     } else {__pyx_pybuffernd_amatrix.diminfo[0].strides = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_amatrix.diminfo[0].shape = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.shape[0]; __pyx_pybuffernd_amatrix.diminfo[1].strides = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.strides[1]; __pyx_pybuffernd_amatrix.diminfo[1].shape = __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.shape[1];
@@ -2981,7 +2981,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_v_amatrix = ((PyArrayObject *)__pyx_t_7);
   __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":149
+  /* "coral/alignment/calign.pyx":149
  *     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)
  *     cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = matrix
  *     amatrix = as_ord_matrix(matrix)             # <<<<<<<<<<<<<<
@@ -3020,10 +3020,10 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer);
-    __pyx_t_17 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)__pyx_t_16, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
+    __pyx_t_17 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)__pyx_t_16, &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
     if (unlikely(__pyx_t_17 < 0)) {
       PyErr_Fetch(&__pyx_t_18, &__pyx_t_19, &__pyx_t_20);
-      if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)__pyx_v_amatrix, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+      if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_amatrix.rcbuffer->pybuffer, (PyObject*)__pyx_v_amatrix, &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
         Py_XDECREF(__pyx_t_18); Py_XDECREF(__pyx_t_19); Py_XDECREF(__pyx_t_20);
         __Pyx_RaiseBufferFallbackError();
       } else {
@@ -3037,7 +3037,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __Pyx_DECREF_SET(__pyx_v_amatrix, ((PyArrayObject *)__pyx_t_7));
   __pyx_t_7 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":152
+  /* "coral/alignment/calign.pyx":152
  *
  *     # START HERE:
  *     if imethod == 0:             # <<<<<<<<<<<<<<
@@ -3047,7 +3047,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   switch (__pyx_v_imethod) {
     case 0:
 
-    /* "coral/analysis/_sequencing/calign.pyx":153
+    /* "coral/alignment/calign.pyx":153
  *     # START HERE:
  *     if imethod == 0:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
@@ -3059,7 +3059,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__5, __pyx_t_7) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 153; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":154
+    /* "coral/alignment/calign.pyx":154
  *     if imethod == 0:
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP             # <<<<<<<<<<<<<<
@@ -3071,7 +3071,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__7, __pyx_t_7) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 154; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":155
+    /* "coral/alignment/calign.pyx":155
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -3122,7 +3122,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__9, __pyx_t_22) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 155; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_22); __pyx_t_22 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":156
+    /* "coral/alignment/calign.pyx":156
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -3173,7 +3173,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__11, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 156; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":152
+    /* "coral/alignment/calign.pyx":152
  *
  *     # START HERE:
  *     if imethod == 0:             # <<<<<<<<<<<<<<
@@ -3182,7 +3182,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":157
+    /* "coral/alignment/calign.pyx":157
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:             # <<<<<<<<<<<<<<
@@ -3191,7 +3191,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     case 3:
 
-    /* "coral/analysis/_sequencing/calign.pyx":158
+    /* "coral/alignment/calign.pyx":158
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
@@ -3203,7 +3203,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__13, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 158; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":159
+    /* "coral/alignment/calign.pyx":159
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP             # <<<<<<<<<<<<<<
@@ -3215,7 +3215,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__15, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 159; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":157
+    /* "coral/alignment/calign.pyx":157
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:             # <<<<<<<<<<<<<<
@@ -3224,7 +3224,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":160
+    /* "coral/alignment/calign.pyx":160
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:             # <<<<<<<<<<<<<<
@@ -3233,7 +3233,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     case 2:
 
-    /* "coral/analysis/_sequencing/calign.pyx":161
+    /* "coral/alignment/calign.pyx":161
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
@@ -3245,7 +3245,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_pointer), __pyx_tuple__17, __pyx_t_21) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 161; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":162
+    /* "coral/alignment/calign.pyx":162
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -3296,7 +3296,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     if (unlikely(PyObject_SetItem(((PyObject *)__pyx_v_score), __pyx_tuple__19, __pyx_t_10) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 162; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":160
+    /* "coral/alignment/calign.pyx":160
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:             # <<<<<<<<<<<<<<
@@ -3307,7 +3307,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     default: break;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":164
+  /* "coral/alignment/calign.pyx":164
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *
  *     for i in range(1, max_i + 1):             # <<<<<<<<<<<<<<
@@ -3318,7 +3318,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   for (__pyx_t_17 = 1; __pyx_t_17 < __pyx_t_6; __pyx_t_17+=1) {
     __pyx_v_i = __pyx_t_17;
 
-    /* "coral/analysis/_sequencing/calign.pyx":165
+    /* "coral/alignment/calign.pyx":165
  *
  *     for i in range(1, max_i + 1):
  *         ci = seqi[i - 1]             # <<<<<<<<<<<<<<
@@ -3327,7 +3327,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     __pyx_v_ci = (__pyx_v_seqi[(__pyx_v_i - 1)]);
 
-    /* "coral/analysis/_sequencing/calign.pyx":166
+    /* "coral/alignment/calign.pyx":166
  *     for i in range(1, max_i + 1):
  *         ci = seqi[i - 1]
  *         for j in range(1, max_j + 1):             # <<<<<<<<<<<<<<
@@ -3338,7 +3338,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     for (__pyx_t_23 = 1; __pyx_t_23 < __pyx_t_5; __pyx_t_23+=1) {
       __pyx_v_j = __pyx_t_23;
 
-      /* "coral/analysis/_sequencing/calign.pyx":167
+      /* "coral/alignment/calign.pyx":167
  *         ci = seqi[i - 1]
  *         for j in range(1, max_j + 1):
  *             cj = seqj[j - 1]             # <<<<<<<<<<<<<<
@@ -3347,7 +3347,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       __pyx_v_cj = (__pyx_v_seqj[(__pyx_v_j - 1)]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":170
+      /* "coral/alignment/calign.pyx":170
  *             # agap_i
  *             agap_i[i,j] = max3(
  *                          score[i, j - 1] + gap_open,             # <<<<<<<<<<<<<<
@@ -3370,7 +3370,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 170; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":171
+      /* "coral/alignment/calign.pyx":171
  *             agap_i[i,j] = max3(
  *                          score[i, j - 1] + gap_open,
  *                          agap_i[i, j - 1] + gap_extend,             # <<<<<<<<<<<<<<
@@ -3393,7 +3393,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 171; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":172
+      /* "coral/alignment/calign.pyx":172
  *                          score[i, j - 1] + gap_open,
  *                          agap_i[i, j - 1] + gap_extend,
  *                          agap_j[i, j - 1] + gap_double)             # <<<<<<<<<<<<<<
@@ -3416,7 +3416,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 172; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":169
+      /* "coral/alignment/calign.pyx":169
  *             cj = seqj[j - 1]
  *             # agap_i
  *             agap_i[i,j] = max3(             # <<<<<<<<<<<<<<
@@ -3438,9 +3438,9 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         __Pyx_RaiseBufferIndexError(__pyx_t_26);
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 169; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_agap_i.diminfo[1].strides) = __pyx_f_5coral_8analysis_11_sequencing_6calign_max3(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_score.diminfo[1].strides)) + __pyx_v_gap_open), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_agap_i.diminfo[1].strides)) + __pyx_v_gap_extend), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_agap_j.diminfo[1].strides)) + __pyx_v_gap_double));
+      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_31, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_32, __pyx_pybuffernd_agap_i.diminfo[1].strides) = __pyx_f_5coral_9alignment_6calign_max3(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_24, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_25, __pyx_pybuffernd_score.diminfo[1].strides)) + __pyx_v_gap_open), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_27, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_28, __pyx_pybuffernd_agap_i.diminfo[1].strides)) + __pyx_v_gap_extend), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_29, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_30, __pyx_pybuffernd_agap_j.diminfo[1].strides)) + __pyx_v_gap_double));
 
-      /* "coral/analysis/_sequencing/calign.pyx":175
+      /* "coral/alignment/calign.pyx":175
  *             # agap_j
  *             agap_j[i,j] = max3(
  *                          score[i - 1, j] + gap_open,             # <<<<<<<<<<<<<<
@@ -3463,7 +3463,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 175; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":176
+      /* "coral/alignment/calign.pyx":176
  *             agap_j[i,j] = max3(
  *                          score[i - 1, j] + gap_open,
  *                          agap_j[i - 1, j] + gap_extend,             # <<<<<<<<<<<<<<
@@ -3486,7 +3486,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 176; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":177
+      /* "coral/alignment/calign.pyx":177
  *                          score[i - 1, j] + gap_open,
  *                          agap_j[i - 1, j] + gap_extend,
  *                          agap_i[i - 1, j] + gap_double)             # <<<<<<<<<<<<<<
@@ -3509,7 +3509,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 177; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":174
+      /* "coral/alignment/calign.pyx":174
  *                          agap_j[i, j - 1] + gap_double)
  *             # agap_j
  *             agap_j[i,j] = max3(             # <<<<<<<<<<<<<<
@@ -3531,9 +3531,9 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         __Pyx_RaiseBufferIndexError(__pyx_t_26);
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 174; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_39, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_40, __pyx_pybuffernd_agap_j.diminfo[1].strides) = __pyx_f_5coral_8analysis_11_sequencing_6calign_max3(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_score.diminfo[1].strides)) + __pyx_v_gap_open), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_agap_j.diminfo[1].strides)) + __pyx_v_gap_extend), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_37, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_38, __pyx_pybuffernd_agap_i.diminfo[1].strides)) + __pyx_v_gap_double));
+      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_39, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_40, __pyx_pybuffernd_agap_j.diminfo[1].strides) = __pyx_f_5coral_9alignment_6calign_max3(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_33, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_34, __pyx_pybuffernd_score.diminfo[1].strides)) + __pyx_v_gap_open), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_35, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_36, __pyx_pybuffernd_agap_j.diminfo[1].strides)) + __pyx_v_gap_extend), ((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_37, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_38, __pyx_pybuffernd_agap_i.diminfo[1].strides)) + __pyx_v_gap_double));
 
-      /* "coral/analysis/_sequencing/calign.pyx":179
+      /* "coral/alignment/calign.pyx":179
  *                          agap_i[i - 1, j] + gap_double)
  *             # score
  *             diag_score = score[i - 1, j - 1] + amatrix[ci, cj]             # <<<<<<<<<<<<<<
@@ -3570,12 +3570,12 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         __Pyx_RaiseBufferIndexError(__pyx_t_26);
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_10 = PyFloat_FromDouble(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_41, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_42, __pyx_pybuffernd_score.diminfo[1].strides)) + (*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT *, __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.buf, __pyx_t_43, __pyx_pybuffernd_amatrix.diminfo[0].strides, __pyx_t_44, __pyx_pybuffernd_amatrix.diminfo[1].strides)))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyFloat_FromDouble(((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_41, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_42, __pyx_pybuffernd_score.diminfo[1].strides)) + (*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_INT *, __pyx_pybuffernd_amatrix.rcbuffer->pybuffer.buf, __pyx_t_43, __pyx_pybuffernd_amatrix.diminfo[0].strides, __pyx_t_44, __pyx_pybuffernd_amatrix.diminfo[1].strides)))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 179; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_XDECREF_SET(__pyx_v_diag_score, __pyx_t_10);
       __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":180
+      /* "coral/alignment/calign.pyx":180
  *             # score
  *             diag_score = score[i - 1, j - 1] + amatrix[ci, cj]
  *             left_score = agap_i[i, j]             # <<<<<<<<<<<<<<
@@ -3597,12 +3597,12 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         __Pyx_RaiseBufferIndexError(__pyx_t_26);
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_10 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_45, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_46, __pyx_pybuffernd_agap_i.diminfo[1].strides))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_i.rcbuffer->pybuffer.buf, __pyx_t_45, __pyx_pybuffernd_agap_i.diminfo[0].strides, __pyx_t_46, __pyx_pybuffernd_agap_i.diminfo[1].strides))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 180; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_XDECREF_SET(__pyx_v_left_score, __pyx_t_10);
       __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":181
+      /* "coral/alignment/calign.pyx":181
  *             diag_score = score[i - 1, j - 1] + amatrix[ci, cj]
  *             left_score = agap_i[i, j]
  *             up_score   = agap_j[i, j]             # <<<<<<<<<<<<<<
@@ -3624,12 +3624,12 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         __Pyx_RaiseBufferIndexError(__pyx_t_26);
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_t_10 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_47, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_48, __pyx_pybuffernd_agap_j.diminfo[1].strides))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyFloat_FromDouble((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_agap_j.rcbuffer->pybuffer.buf, __pyx_t_47, __pyx_pybuffernd_agap_j.diminfo[0].strides, __pyx_t_48, __pyx_pybuffernd_agap_j.diminfo[1].strides))); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 181; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_XDECREF_SET(__pyx_v_up_score, __pyx_t_10);
       __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":182
+      /* "coral/alignment/calign.pyx":182
  *             left_score = agap_i[i, j]
  *             up_score   = agap_j[i, j]
  *             max_score = max3(diag_score, up_score, left_score)             # <<<<<<<<<<<<<<
@@ -3639,12 +3639,12 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       __pyx_t_49 = __pyx_PyFloat_AsFloat(__pyx_v_diag_score); if (unlikely((__pyx_t_49 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_t_50 = __pyx_PyFloat_AsFloat(__pyx_v_up_score); if (unlikely((__pyx_t_50 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __pyx_t_51 = __pyx_PyFloat_AsFloat(__pyx_v_left_score); if (unlikely((__pyx_t_51 == (npy_float32)-1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-      __pyx_t_10 = PyFloat_FromDouble(__pyx_f_5coral_8analysis_11_sequencing_6calign_max3(__pyx_t_49, __pyx_t_50, __pyx_t_51)); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+      __pyx_t_10 = PyFloat_FromDouble(__pyx_f_5coral_9alignment_6calign_max3(__pyx_t_49, __pyx_t_50, __pyx_t_51)); if (unlikely(!__pyx_t_10)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 182; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       __Pyx_GOTREF(__pyx_t_10);
       __Pyx_XDECREF_SET(__pyx_v_max_score, __pyx_t_10);
       __pyx_t_10 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":184
+      /* "coral/alignment/calign.pyx":184
  *             max_score = max3(diag_score, up_score, left_score)
  *
  *             score[i, j] = max_score             # <<<<<<<<<<<<<<
@@ -3667,9 +3667,9 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         __Pyx_RaiseBufferIndexError(__pyx_t_26);
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 184; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_53, __pyx_pybuffernd_score.diminfo[1].strides) = __pyx_t_51;
+      *__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_FLOAT *, __pyx_pybuffernd_score.rcbuffer->pybuffer.buf, __pyx_t_52, __pyx_pybuffernd_score.diminfo[0].strides, __pyx_t_53, __pyx_pybuffernd_score.diminfo[1].strides) = __pyx_t_51;
 
-      /* "coral/analysis/_sequencing/calign.pyx":187
+      /* "coral/alignment/calign.pyx":187
  *
  *             # global
  *             if max_score == up_score:             # <<<<<<<<<<<<<<
@@ -3681,7 +3681,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       if (__pyx_t_3) {
 
-        /* "coral/analysis/_sequencing/calign.pyx":188
+        /* "coral/alignment/calign.pyx":188
  *             # global
  *             if max_score == up_score:
  *                 pointer[i,j] = UP             # <<<<<<<<<<<<<<
@@ -3703,9 +3703,9 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
           __Pyx_RaiseBufferIndexError(__pyx_t_26);
           {__pyx_filename = __pyx_f[0]; __pyx_lineno = 188; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
-        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_54, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_55, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_UP;
+        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_54, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_55, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_UP;
 
-        /* "coral/analysis/_sequencing/calign.pyx":187
+        /* "coral/alignment/calign.pyx":187
  *
  *             # global
  *             if max_score == up_score:             # <<<<<<<<<<<<<<
@@ -3715,7 +3715,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         goto __pyx_L10;
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":189
+      /* "coral/alignment/calign.pyx":189
  *             if max_score == up_score:
  *                 pointer[i,j] = UP
  *             elif max_score == left_score:             # <<<<<<<<<<<<<<
@@ -3727,7 +3727,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
       if (__pyx_t_3) {
 
-        /* "coral/analysis/_sequencing/calign.pyx":190
+        /* "coral/alignment/calign.pyx":190
  *                 pointer[i,j] = UP
  *             elif max_score == left_score:
  *                 pointer[i,j] = LEFT             # <<<<<<<<<<<<<<
@@ -3749,9 +3749,9 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
           __Pyx_RaiseBufferIndexError(__pyx_t_26);
           {__pyx_filename = __pyx_f[0]; __pyx_lineno = 190; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
-        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_56, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_57, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_LEFT;
+        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_56, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_57, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_LEFT;
 
-        /* "coral/analysis/_sequencing/calign.pyx":189
+        /* "coral/alignment/calign.pyx":189
  *             if max_score == up_score:
  *                 pointer[i,j] = UP
  *             elif max_score == left_score:             # <<<<<<<<<<<<<<
@@ -3761,7 +3761,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
         goto __pyx_L10;
       }
 
-      /* "coral/analysis/_sequencing/calign.pyx":192
+      /* "coral/alignment/calign.pyx":192
  *                 pointer[i,j] = LEFT
  *             else:
  *                 pointer[i,j] = DIAG             # <<<<<<<<<<<<<<
@@ -3784,13 +3784,13 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
           __Pyx_RaiseBufferIndexError(__pyx_t_26);
           {__pyx_filename = __pyx_f[0]; __pyx_lineno = 192; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
         }
-        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_58, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_59, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_DIAG;
+        *__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_58, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_59, __pyx_pybuffernd_pointer.diminfo[1].strides) = __pyx_v_DIAG;
       }
       __pyx_L10:;
     }
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":195
+  /* "coral/alignment/calign.pyx":195
  *
  *
  *     if imethod == 0:             # <<<<<<<<<<<<<<
@@ -3800,7 +3800,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   switch (__pyx_v_imethod) {
     case 0:
 
-    /* "coral/analysis/_sequencing/calign.pyx":197
+    /* "coral/alignment/calign.pyx":197
  *     if imethod == 0:
  *         # max anywhere
  *         i, j = max_index(score)             # <<<<<<<<<<<<<<
@@ -3891,7 +3891,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __pyx_v_i = __pyx_t_17;
     __pyx_v_j = __pyx_t_23;
 
-    /* "coral/analysis/_sequencing/calign.pyx":195
+    /* "coral/alignment/calign.pyx":195
  *
  *
  *     if imethod == 0:             # <<<<<<<<<<<<<<
@@ -3900,7 +3900,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":198
+    /* "coral/alignment/calign.pyx":198
  *         # max anywhere
  *         i, j = max_index(score)
  *     elif imethod == 2:             # <<<<<<<<<<<<<<
@@ -3909,7 +3909,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     case 2:
 
-    /* "coral/analysis/_sequencing/calign.pyx":200
+    /* "coral/alignment/calign.pyx":200
  *     elif imethod == 2:
  *         # max in last col
  *         i, j = (score[:,-1].argmax(), max_j)             # <<<<<<<<<<<<<<
@@ -3945,7 +3945,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __pyx_v_i = __pyx_t_23;
     __pyx_v_j = __pyx_t_6;
 
-    /* "coral/analysis/_sequencing/calign.pyx":198
+    /* "coral/alignment/calign.pyx":198
  *         # max anywhere
  *         i, j = max_index(score)
  *     elif imethod == 2:             # <<<<<<<<<<<<<<
@@ -3954,7 +3954,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":201
+    /* "coral/alignment/calign.pyx":201
  *         # max in last col
  *         i, j = (score[:,-1].argmax(), max_j)
  *     elif imethod == 3:             # <<<<<<<<<<<<<<
@@ -3963,7 +3963,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     case 3:
 
-    /* "coral/analysis/_sequencing/calign.pyx":203
+    /* "coral/alignment/calign.pyx":203
  *     elif imethod == 3:
  *         # from i,j to max(max(last row), max(last col)) for free
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()             # <<<<<<<<<<<<<<
@@ -4021,7 +4021,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __pyx_v_col_idx = __pyx_t_7;
     __pyx_t_7 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":204
+    /* "coral/alignment/calign.pyx":204
  *         # from i,j to max(max(last row), max(last col)) for free
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()             # <<<<<<<<<<<<<<
@@ -4079,7 +4079,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __pyx_v_row_idx = __pyx_t_21;
     __pyx_t_21 = 0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":205
+    /* "coral/alignment/calign.pyx":205
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()
  *         if row_max > col_max:             # <<<<<<<<<<<<<<
@@ -4091,7 +4091,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
     if (__pyx_t_3) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":206
+      /* "coral/alignment/calign.pyx":206
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()
  *         if row_max > col_max:
  *             pointer[-1,col_idx+1:] = LEFT             # <<<<<<<<<<<<<<
@@ -4117,7 +4117,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
 
-      /* "coral/analysis/_sequencing/calign.pyx":205
+      /* "coral/alignment/calign.pyx":205
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()
  *         if row_max > col_max:             # <<<<<<<<<<<<<<
@@ -4127,7 +4127,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       goto __pyx_L13;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":208
+    /* "coral/alignment/calign.pyx":208
  *             pointer[-1,col_idx+1:] = LEFT
  *         else:
  *             pointer[row_idx+1:,-1] = UP             # <<<<<<<<<<<<<<
@@ -4156,7 +4156,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     }
     __pyx_L13:;
 
-    /* "coral/analysis/_sequencing/calign.pyx":201
+    /* "coral/alignment/calign.pyx":201
  *         # max in last col
  *         i, j = (score[:,-1].argmax(), max_j)
  *     elif imethod == 3:             # <<<<<<<<<<<<<<
@@ -4167,7 +4167,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     default: break;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":210
+  /* "coral/alignment/calign.pyx":210
  *             pointer[row_idx+1:,-1] = UP
  *
  *     seqlen = max_i + max_j             # <<<<<<<<<<<<<<
@@ -4176,7 +4176,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_seqlen = (__pyx_v_max_i + __pyx_v_max_j);
 
-  /* "coral/analysis/_sequencing/calign.pyx":211
+  /* "coral/alignment/calign.pyx":211
  *
  *     seqlen = max_i + max_j
  *     ai = PyString_FromStringAndSize(NULL, seqlen)             # <<<<<<<<<<<<<<
@@ -4185,7 +4185,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_ai = PyString_FromStringAndSize(NULL, __pyx_v_seqlen);
 
-  /* "coral/analysis/_sequencing/calign.pyx":212
+  /* "coral/alignment/calign.pyx":212
  *     seqlen = max_i + max_j
  *     ai = PyString_FromStringAndSize(NULL, seqlen)
  *     aj = PyString_FromStringAndSize(NULL, seqlen)             # <<<<<<<<<<<<<<
@@ -4194,7 +4194,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_aj = PyString_FromStringAndSize(NULL, __pyx_v_seqlen);
 
-  /* "coral/analysis/_sequencing/calign.pyx":215
+  /* "coral/alignment/calign.pyx":215
  *
  *     # use this and PyObject instead of assigning directly...
  *     align_j = PyString_AS_STRING(aj)             # <<<<<<<<<<<<<<
@@ -4203,7 +4203,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_align_j = PyString_AS_STRING(__pyx_v_aj);
 
-  /* "coral/analysis/_sequencing/calign.pyx":216
+  /* "coral/alignment/calign.pyx":216
  *     # use this and PyObject instead of assigning directly...
  *     align_j = PyString_AS_STRING(aj)
  *     align_i = PyString_AS_STRING(ai)             # <<<<<<<<<<<<<<
@@ -4212,7 +4212,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   __pyx_v_align_i = PyString_AS_STRING(__pyx_v_ai);
 
-  /* "coral/analysis/_sequencing/calign.pyx":218
+  /* "coral/alignment/calign.pyx":218
  *     align_i = PyString_AS_STRING(ai)
  *
  *     p = pointer[i, j]             # <<<<<<<<<<<<<<
@@ -4234,12 +4234,12 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __Pyx_RaiseBufferIndexError(__pyx_t_23);
     {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
-  __pyx_t_21 = __Pyx_PyInt_From_npy_ulong((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_61, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_62, __pyx_pybuffernd_pointer.diminfo[1].strides))); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_21 = __Pyx_PyInt_From_npy_ulong((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_61, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_62, __pyx_pybuffernd_pointer.diminfo[1].strides))); if (unlikely(!__pyx_t_21)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_21);
   __pyx_v_p = __pyx_t_21;
   __pyx_t_21 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":219
+  /* "coral/alignment/calign.pyx":219
  *
  *     p = pointer[i, j]
  *     while p != NONE:             # <<<<<<<<<<<<<<
@@ -4255,7 +4255,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (!__pyx_t_3) break;
 
-    /* "coral/analysis/_sequencing/calign.pyx":220
+    /* "coral/alignment/calign.pyx":220
  *     p = pointer[i, j]
  *     while p != NONE:
  *         if p == DIAG:             # <<<<<<<<<<<<<<
@@ -4270,7 +4270,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
     if (__pyx_t_3) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":221
+      /* "coral/alignment/calign.pyx":221
  *     while p != NONE:
  *         if p == DIAG:
  *             i -= 1             # <<<<<<<<<<<<<<
@@ -4279,7 +4279,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       __pyx_v_i = (__pyx_v_i - 1);
 
-      /* "coral/analysis/_sequencing/calign.pyx":222
+      /* "coral/alignment/calign.pyx":222
  *         if p == DIAG:
  *             i -= 1
  *             j -= 1             # <<<<<<<<<<<<<<
@@ -4288,7 +4288,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       __pyx_v_j = (__pyx_v_j - 1);
 
-      /* "coral/analysis/_sequencing/calign.pyx":223
+      /* "coral/alignment/calign.pyx":223
  *             i -= 1
  *             j -= 1
  *             align_j[align_counter] = seqj[j]             # <<<<<<<<<<<<<<
@@ -4297,7 +4297,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       (__pyx_v_align_j[__pyx_v_align_counter]) = (__pyx_v_seqj[__pyx_v_j]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":224
+      /* "coral/alignment/calign.pyx":224
  *             j -= 1
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = seqi[i]             # <<<<<<<<<<<<<<
@@ -4306,7 +4306,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       (__pyx_v_align_i[__pyx_v_align_counter]) = (__pyx_v_seqi[__pyx_v_i]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":220
+      /* "coral/alignment/calign.pyx":220
  *     p = pointer[i, j]
  *     while p != NONE:
  *         if p == DIAG:             # <<<<<<<<<<<<<<
@@ -4316,7 +4316,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       goto __pyx_L16;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":225
+    /* "coral/alignment/calign.pyx":225
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = seqi[i]
  *         elif p == LEFT:             # <<<<<<<<<<<<<<
@@ -4331,7 +4331,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (__pyx_t_3) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":226
+      /* "coral/alignment/calign.pyx":226
  *             align_i[align_counter] = seqi[i]
  *         elif p == LEFT:
  *             j -= 1             # <<<<<<<<<<<<<<
@@ -4340,7 +4340,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       __pyx_v_j = (__pyx_v_j - 1);
 
-      /* "coral/analysis/_sequencing/calign.pyx":227
+      /* "coral/alignment/calign.pyx":227
  *         elif p == LEFT:
  *             j -= 1
  *             align_j[align_counter] = seqj[j]             # <<<<<<<<<<<<<<
@@ -4349,7 +4349,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       (__pyx_v_align_j[__pyx_v_align_counter]) = (__pyx_v_seqj[__pyx_v_j]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":228
+      /* "coral/alignment/calign.pyx":228
  *             j -= 1
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = c'-'             # <<<<<<<<<<<<<<
@@ -4358,7 +4358,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       (__pyx_v_align_i[__pyx_v_align_counter]) = '-';
 
-      /* "coral/analysis/_sequencing/calign.pyx":225
+      /* "coral/alignment/calign.pyx":225
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = seqi[i]
  *         elif p == LEFT:             # <<<<<<<<<<<<<<
@@ -4368,7 +4368,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       goto __pyx_L16;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":229
+    /* "coral/alignment/calign.pyx":229
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = c'-'
  *         elif p == UP:             # <<<<<<<<<<<<<<
@@ -4383,7 +4383,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __Pyx_DECREF(__pyx_t_21); __pyx_t_21 = 0;
     if (__pyx_t_3) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":230
+      /* "coral/alignment/calign.pyx":230
  *             align_i[align_counter] = c'-'
  *         elif p == UP:
  *             i -= 1             # <<<<<<<<<<<<<<
@@ -4392,7 +4392,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       __pyx_v_i = (__pyx_v_i - 1);
 
-      /* "coral/analysis/_sequencing/calign.pyx":231
+      /* "coral/alignment/calign.pyx":231
  *         elif p == UP:
  *             i -= 1
  *             align_j[align_counter] = c'-'             # <<<<<<<<<<<<<<
@@ -4401,7 +4401,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       (__pyx_v_align_j[__pyx_v_align_counter]) = '-';
 
-      /* "coral/analysis/_sequencing/calign.pyx":232
+      /* "coral/alignment/calign.pyx":232
  *             i -= 1
  *             align_j[align_counter] = c'-'
  *             align_i[align_counter] = seqi[i]             # <<<<<<<<<<<<<<
@@ -4410,7 +4410,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
       (__pyx_v_align_i[__pyx_v_align_counter]) = (__pyx_v_seqi[__pyx_v_i]);
 
-      /* "coral/analysis/_sequencing/calign.pyx":229
+      /* "coral/alignment/calign.pyx":229
  *             align_j[align_counter] = seqj[j]
  *             align_i[align_counter] = c'-'
  *         elif p == UP:             # <<<<<<<<<<<<<<
@@ -4420,7 +4420,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       goto __pyx_L16;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":234
+    /* "coral/alignment/calign.pyx":234
  *             align_i[align_counter] = seqi[i]
  *         else:
  *             raise Exception('wtf!:pointer: %i', p)             # <<<<<<<<<<<<<<
@@ -4445,7 +4445,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     }
     __pyx_L16:;
 
-    /* "coral/analysis/_sequencing/calign.pyx":235
+    /* "coral/alignment/calign.pyx":235
  *         else:
  *             raise Exception('wtf!:pointer: %i', p)
  *         align_counter += 1             # <<<<<<<<<<<<<<
@@ -4454,7 +4454,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
     __pyx_v_align_counter = (__pyx_v_align_counter + 1);
 
-    /* "coral/analysis/_sequencing/calign.pyx":236
+    /* "coral/alignment/calign.pyx":236
  *             raise Exception('wtf!:pointer: %i', p)
  *         align_counter += 1
  *         p = pointer[i, j]             # <<<<<<<<<<<<<<
@@ -4476,13 +4476,13 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
       __Pyx_RaiseBufferIndexError(__pyx_t_23);
       {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
-    __pyx_t_7 = __Pyx_PyInt_From_npy_ulong((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_63, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_64, __pyx_pybuffernd_pointer.diminfo[1].strides))); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    __pyx_t_7 = __Pyx_PyInt_From_npy_ulong((*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_UINT *, __pyx_pybuffernd_pointer.rcbuffer->pybuffer.buf, __pyx_t_63, __pyx_pybuffernd_pointer.diminfo[0].strides, __pyx_t_64, __pyx_pybuffernd_pointer.diminfo[1].strides))); if (unlikely(!__pyx_t_7)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 236; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF_SET(__pyx_v_p, __pyx_t_7);
     __pyx_t_7 = 0;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":238
+  /* "coral/alignment/calign.pyx":238
  *         p = pointer[i, j]
  *
  *     _PyString_Resize(&aj, align_counter)             # <<<<<<<<<<<<<<
@@ -4491,7 +4491,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   _PyString_Resize((&__pyx_v_aj), __pyx_v_align_counter);
 
-  /* "coral/analysis/_sequencing/calign.pyx":239
+  /* "coral/alignment/calign.pyx":239
  *
  *     _PyString_Resize(&aj, align_counter)
  *     _PyString_Resize(&ai, align_counter)             # <<<<<<<<<<<<<<
@@ -4500,7 +4500,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   _PyString_Resize((&__pyx_v_ai), __pyx_v_align_counter);
 
-  /* "coral/analysis/_sequencing/calign.pyx":241
+  /* "coral/alignment/calign.pyx":241
  *     _PyString_Resize(&ai, align_counter)
  *
  *     if flip:             # <<<<<<<<<<<<<<
@@ -4510,7 +4510,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   __pyx_t_3 = (__pyx_v_flip != 0);
   if (__pyx_t_3) {
 
-    /* "coral/analysis/_sequencing/calign.pyx":242
+    /* "coral/alignment/calign.pyx":242
  *
  *     if flip:
  *         return (<object>ai)[::-1], (<object>aj)[::-1]             # <<<<<<<<<<<<<<
@@ -4534,7 +4534,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __pyx_t_22 = 0;
     goto __pyx_L0;
 
-    /* "coral/analysis/_sequencing/calign.pyx":241
+    /* "coral/alignment/calign.pyx":241
  *     _PyString_Resize(&ai, align_counter)
  *
  *     if flip:             # <<<<<<<<<<<<<<
@@ -4543,7 +4543,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":244
+  /* "coral/alignment/calign.pyx":244
  *         return (<object>ai)[::-1], (<object>aj)[::-1]
  *     else:
  *         return (<object>aj)[::-1], (<object>ai)[::-1]             # <<<<<<<<<<<<<<
@@ -4569,7 +4569,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     goto __pyx_L0;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":72
+  /* "coral/alignment/calign.pyx":72
  *
  *
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,             # <<<<<<<<<<<<<<
@@ -4594,7 +4594,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_pointer.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_score.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("coral.analysis._sequencing.calign.aligner", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("coral.alignment.calign.aligner", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4623,7 +4623,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
   return __pyx_r;
 }
 
-/* "coral/analysis/_sequencing/calign.pyx":247
+/* "coral/alignment/calign.pyx":247
  *
  *
  * def score_alignment(a, b, int gap_open, int gap_extend, matrix):             # <<<<<<<<<<<<<<
@@ -4632,10 +4632,10 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_4aligner(CYTHON
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_7score_alignment(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_5coral_8analysis_11_sequencing_6calign_6score_alignment[] = "Calculate the alignment score from two aligned sequences.\n\n    :param a: The first aligned sequence.\n    :type a: str\n    :param b: The second aligned sequence.\n    :type b: str\n    :param gap_open: The cost of opening a gap (negative number).\n    :type gap_open: int\n    :param gap_extend: The cost of extending an open gap (negative number).\n    :type gap_extend: int.\n    :param matrix: A score matrix dictionary name. Examples can be found in\n                   the substitution_matrices module.\n    :type matrix: SubstitutionMatrix\n\n    ";
-static PyMethodDef __pyx_mdef_5coral_8analysis_11_sequencing_6calign_7score_alignment = {"score_alignment", (PyCFunction)__pyx_pw_5coral_8analysis_11_sequencing_6calign_7score_alignment, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5coral_8analysis_11_sequencing_6calign_6score_alignment};
-static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_7score_alignment(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_5coral_9alignment_6calign_7score_alignment(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_5coral_9alignment_6calign_6score_alignment[] = "Calculate the alignment score from two aligned sequences.\n\n    :param a: The first aligned sequence.\n    :type a: str\n    :param b: The second aligned sequence.\n    :type b: str\n    :param gap_open: The cost of opening a gap (negative number).\n    :type gap_open: int\n    :param gap_extend: The cost of extending an open gap (negative number).\n    :type gap_extend: int.\n    :param matrix: A score matrix dictionary name. Examples can be found in\n                   the substitution_matrices module.\n    :type matrix: SubstitutionMatrix\n\n    ";
+static PyMethodDef __pyx_mdef_5coral_9alignment_6calign_7score_alignment = {"score_alignment", (PyCFunction)__pyx_pw_5coral_9alignment_6calign_7score_alignment, METH_VARARGS|METH_KEYWORDS, __pyx_doc_5coral_9alignment_6calign_6score_alignment};
+static PyObject *__pyx_pw_5coral_9alignment_6calign_7score_alignment(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_a = 0;
   PyObject *__pyx_v_b = 0;
   int __pyx_v_gap_open;
@@ -4710,18 +4710,18 @@ static PyObject *__pyx_pw_5coral_8analysis_11_sequencing_6calign_7score_alignmen
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("score_alignment", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L3_error;}
   __pyx_L3_error:;
-  __Pyx_AddTraceback("coral.analysis._sequencing.calign.score_alignment", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("coral.alignment.calign.score_alignment", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignment(__pyx_self, __pyx_v_a, __pyx_v_b, __pyx_v_gap_open, __pyx_v_gap_extend, __pyx_v_matrix);
+  __pyx_r = __pyx_pf_5coral_9alignment_6calign_6score_alignment(__pyx_self, __pyx_v_a, __pyx_v_b, __pyx_v_gap_open, __pyx_v_gap_extend, __pyx_v_matrix);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignment(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_a, PyObject *__pyx_v_b, int __pyx_v_gap_open, int __pyx_v_gap_extend, PyObject *__pyx_v_matrix) {
+static PyObject *__pyx_pf_5coral_9alignment_6calign_6score_alignment(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_a, PyObject *__pyx_v_b, int __pyx_v_gap_open, int __pyx_v_gap_extend, PyObject *__pyx_v_matrix) {
   char *__pyx_v_al;
   char *__pyx_v_bl;
   size_t __pyx_v_l;
@@ -4758,7 +4758,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   __pyx_pybuffernd_mat.data = NULL;
   __pyx_pybuffernd_mat.rcbuffer = &__pyx_pybuffer_mat;
 
-  /* "coral/analysis/_sequencing/calign.pyx":263
+  /* "coral/alignment/calign.pyx":263
  *
  *     '''
  *     cdef char *al = a             # <<<<<<<<<<<<<<
@@ -4768,7 +4768,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_a); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 263; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_al = __pyx_t_1;
 
-  /* "coral/analysis/_sequencing/calign.pyx":264
+  /* "coral/alignment/calign.pyx":264
  *     '''
  *     cdef char *al = a
  *     cdef char *bl = b             # <<<<<<<<<<<<<<
@@ -4778,7 +4778,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   __pyx_t_1 = __Pyx_PyObject_AsString(__pyx_v_b); if (unlikely((!__pyx_t_1) && PyErr_Occurred())) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 264; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __pyx_v_bl = __pyx_t_1;
 
-  /* "coral/analysis/_sequencing/calign.pyx":265
+  /* "coral/alignment/calign.pyx":265
  *     cdef char *al = a
  *     cdef char *bl = b
  *     cdef size_t l = strlen(al), i             # <<<<<<<<<<<<<<
@@ -4787,7 +4787,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
  */
   __pyx_v_l = strlen(__pyx_v_al);
 
-  /* "coral/analysis/_sequencing/calign.pyx":266
+  /* "coral/alignment/calign.pyx":266
  *     cdef char *bl = b
  *     cdef size_t l = strlen(al), i
  *     cdef int score = 0, this_score             # <<<<<<<<<<<<<<
@@ -4796,7 +4796,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
  */
   __pyx_v_score = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":267
+  /* "coral/alignment/calign.pyx":267
  *     cdef size_t l = strlen(al), i
  *     cdef int score = 0, this_score
  *     assert strlen(bl) == l, 'Alignment lengths must be the same'             # <<<<<<<<<<<<<<
@@ -4812,7 +4812,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   }
   #endif
 
-  /* "coral/analysis/_sequencing/calign.pyx":269
+  /* "coral/alignment/calign.pyx":269
  *     assert strlen(bl) == l, 'Alignment lengths must be the same'
  *     cdef np.ndarray[DTYPE_INT, ndim=2] mat
  *     mat = as_ord_matrix(matrix)             # <<<<<<<<<<<<<<
@@ -4851,10 +4851,10 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat.rcbuffer->pybuffer);
-    __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
+    __pyx_t_7 = __Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_t_6, &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack);
     if (unlikely(__pyx_t_7 < 0)) {
       PyErr_Fetch(&__pyx_t_8, &__pyx_t_9, &__pyx_t_10);
-      if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_v_mat, &__Pyx_TypeInfo_nn___pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
+      if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_mat.rcbuffer->pybuffer, (PyObject*)__pyx_v_mat, &__Pyx_TypeInfo_nn___pyx_t_5coral_9alignment_6calign_DTYPE_INT, PyBUF_FORMAT| PyBUF_STRIDES, 2, 0, __pyx_stack) == -1)) {
         Py_XDECREF(__pyx_t_8); Py_XDECREF(__pyx_t_9); Py_XDECREF(__pyx_t_10);
         __Pyx_RaiseBufferFallbackError();
       } else {
@@ -4868,7 +4868,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   __pyx_v_mat = ((PyArrayObject *)__pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":271
+  /* "coral/alignment/calign.pyx":271
  *     mat = as_ord_matrix(matrix)
  *
  *     cdef bint gap_started = 0             # <<<<<<<<<<<<<<
@@ -4877,7 +4877,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
  */
   __pyx_v_gap_started = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":273
+  /* "coral/alignment/calign.pyx":273
  *     cdef bint gap_started = 0
  *
  *     for i in range(l):             # <<<<<<<<<<<<<<
@@ -4888,7 +4888,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   for (__pyx_t_12 = 0; __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
     __pyx_v_i = __pyx_t_12;
 
-    /* "coral/analysis/_sequencing/calign.pyx":274
+    /* "coral/alignment/calign.pyx":274
  *
  *     for i in range(l):
  *         if al[i] == c'-' or bl[i] == c'-':             # <<<<<<<<<<<<<<
@@ -4906,7 +4906,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_13) {
 
-      /* "coral/analysis/_sequencing/calign.pyx":275
+      /* "coral/alignment/calign.pyx":275
  *     for i in range(l):
  *         if al[i] == c'-' or bl[i] == c'-':
  *             score += gap_extend if gap_started else gap_open             # <<<<<<<<<<<<<<
@@ -4920,7 +4920,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
       }
       __pyx_v_score = (__pyx_v_score + __pyx_t_7);
 
-      /* "coral/analysis/_sequencing/calign.pyx":276
+      /* "coral/alignment/calign.pyx":276
  *         if al[i] == c'-' or bl[i] == c'-':
  *             score += gap_extend if gap_started else gap_open
  *             gap_started = 1             # <<<<<<<<<<<<<<
@@ -4929,7 +4929,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
  */
       __pyx_v_gap_started = 1;
 
-      /* "coral/analysis/_sequencing/calign.pyx":274
+      /* "coral/alignment/calign.pyx":274
  *
  *     for i in range(l):
  *         if al[i] == c'-' or bl[i] == c'-':             # <<<<<<<<<<<<<<
@@ -4939,7 +4939,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
       goto __pyx_L5;
     }
 
-    /* "coral/analysis/_sequencing/calign.pyx":278
+    /* "coral/alignment/calign.pyx":278
  *             gap_started = 1
  *         else:
  *             score += mat[al[i], bl[i]]             # <<<<<<<<<<<<<<
@@ -4962,9 +4962,9 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
         __Pyx_RaiseBufferIndexError(__pyx_t_7);
         {__pyx_filename = __pyx_f[0]; __pyx_lineno = 278; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
       }
-      __pyx_v_score = (__pyx_v_score + (*__Pyx_BufPtrStrided2d(__pyx_t_5coral_8analysis_11_sequencing_6calign_DTYPE_INT *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[1].strides)));
+      __pyx_v_score = (__pyx_v_score + (*__Pyx_BufPtrStrided2d(__pyx_t_5coral_9alignment_6calign_DTYPE_INT *, __pyx_pybuffernd_mat.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_mat.diminfo[0].strides, __pyx_t_16, __pyx_pybuffernd_mat.diminfo[1].strides)));
 
-      /* "coral/analysis/_sequencing/calign.pyx":279
+      /* "coral/alignment/calign.pyx":279
  *         else:
  *             score += mat[al[i], bl[i]]
  *             gap_started = 0             # <<<<<<<<<<<<<<
@@ -4975,7 +4975,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
     __pyx_L5:;
   }
 
-  /* "coral/analysis/_sequencing/calign.pyx":280
+  /* "coral/alignment/calign.pyx":280
  *             score += mat[al[i], bl[i]]
  *             gap_started = 0
  *     return score             # <<<<<<<<<<<<<<
@@ -4987,7 +4987,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":247
+  /* "coral/alignment/calign.pyx":247
  *
  *
  * def score_alignment(a, b, int gap_open, int gap_extend, matrix):             # <<<<<<<<<<<<<<
@@ -5005,7 +5005,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_mat.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("coral.analysis._sequencing.calign.score_alignment", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("coral.alignment.calign.score_alignment", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -5017,7 +5017,7 @@ static PyObject *__pyx_pf_5coral_8analysis_11_sequencing_6calign_6score_alignmen
   return __pyx_r;
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":197
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":197
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -5067,7 +5067,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_GIVEREF(__pyx_v_info->obj);
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":203
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":203
  *             # of flags
  *
  *             if info == NULL: return             # <<<<<<<<<<<<<<
@@ -5080,7 +5080,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L0;
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":206
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":206
  *
  *             cdef int copy_shape, i, ndim
  *             cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -5089,7 +5089,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":207
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":207
  *             cdef int copy_shape, i, ndim
  *             cdef int endian_detector = 1
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -5098,7 +5098,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":209
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":209
  *             cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)
  *
  *             ndim = PyArray_NDIM(self)             # <<<<<<<<<<<<<<
@@ -5107,7 +5107,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_ndim = PyArray_NDIM(__pyx_v_self);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":211
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":211
  *             ndim = PyArray_NDIM(self)
  *
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5117,7 +5117,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":212
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":212
  *
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):
  *                 copy_shape = 1             # <<<<<<<<<<<<<<
@@ -5126,7 +5126,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_copy_shape = 1;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":211
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":211
  *             ndim = PyArray_NDIM(self)
  *
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5136,7 +5136,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L4;
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":214
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":214
  *                 copy_shape = 1
  *             else:
  *                 copy_shape = 0             # <<<<<<<<<<<<<<
@@ -5148,7 +5148,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L4:;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":216
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":216
  *                 copy_shape = 0
  *
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5162,7 +5162,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L6_bool_binop_done;
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":217
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":217
  *
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -5173,7 +5173,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = __pyx_t_2;
   __pyx_L6_bool_binop_done:;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":216
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":216
  *                 copy_shape = 0
  *
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5182,7 +5182,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":218
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":218
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -5195,7 +5195,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     {__pyx_filename = __pyx_f[1]; __pyx_lineno = 218; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":216
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":216
  *                 copy_shape = 0
  *
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5204,7 +5204,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":220
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":220
  *                 raise ValueError(u"ndarray is not C contiguous")
  *
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5218,7 +5218,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L9_bool_binop_done;
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":221
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":221
  *
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):             # <<<<<<<<<<<<<<
@@ -5229,7 +5229,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = __pyx_t_2;
   __pyx_L9_bool_binop_done:;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":220
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":220
  *                 raise ValueError(u"ndarray is not C contiguous")
  *
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5238,7 +5238,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":222
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":222
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -5251,7 +5251,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     {__pyx_filename = __pyx_f[1]; __pyx_lineno = 222; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":220
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":220
  *                 raise ValueError(u"ndarray is not C contiguous")
  *
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)             # <<<<<<<<<<<<<<
@@ -5260,7 +5260,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":224
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":224
  *                 raise ValueError(u"ndarray is not Fortran contiguous")
  *
  *             info.buf = PyArray_DATA(self)             # <<<<<<<<<<<<<<
@@ -5269,7 +5269,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->buf = PyArray_DATA(__pyx_v_self);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":225
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":225
  *
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim             # <<<<<<<<<<<<<<
@@ -5278,7 +5278,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->ndim = __pyx_v_ndim;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":226
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":226
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim
  *             if copy_shape:             # <<<<<<<<<<<<<<
@@ -5288,7 +5288,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = (__pyx_v_copy_shape != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":229
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":229
  *                 # Allocate new buffer for strides and shape info.
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)             # <<<<<<<<<<<<<<
@@ -5297,7 +5297,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->strides = ((Py_ssize_t *)malloc((((sizeof(Py_ssize_t)) * ((size_t)__pyx_v_ndim)) * 2)));
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":230
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":230
  *                 # This is allocated as one block, strides first.
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)
  *                 info.shape = info.strides + ndim             # <<<<<<<<<<<<<<
@@ -5306,7 +5306,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->shape = (__pyx_v_info->strides + __pyx_v_ndim);
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":231
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":231
  *                 info.strides = <Py_ssize_t*>stdlib.malloc(sizeof(Py_ssize_t) * <size_t>ndim * 2)
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):             # <<<<<<<<<<<<<<
@@ -5317,7 +5317,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
       __pyx_v_i = __pyx_t_5;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":232
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":232
  *                 info.shape = info.strides + ndim
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]             # <<<<<<<<<<<<<<
@@ -5326,7 +5326,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
       (__pyx_v_info->strides[__pyx_v_i]) = (PyArray_STRIDES(__pyx_v_self)[__pyx_v_i]);
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":233
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":233
  *                 for i in range(ndim):
  *                     info.strides[i] = PyArray_STRIDES(self)[i]
  *                     info.shape[i] = PyArray_DIMS(self)[i]             # <<<<<<<<<<<<<<
@@ -5336,7 +5336,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       (__pyx_v_info->shape[__pyx_v_i]) = (PyArray_DIMS(__pyx_v_self)[__pyx_v_i]);
     }
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":226
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":226
  *             info.buf = PyArray_DATA(self)
  *             info.ndim = ndim
  *             if copy_shape:             # <<<<<<<<<<<<<<
@@ -5346,7 +5346,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L11;
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":235
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":235
  *                     info.shape[i] = PyArray_DIMS(self)[i]
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)             # <<<<<<<<<<<<<<
@@ -5356,7 +5356,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   /*else*/ {
     __pyx_v_info->strides = ((Py_ssize_t *)PyArray_STRIDES(__pyx_v_self));
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":236
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":236
  *             else:
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)             # <<<<<<<<<<<<<<
@@ -5367,7 +5367,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L11:;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":237
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":237
  *                 info.strides = <Py_ssize_t*>PyArray_STRIDES(self)
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL             # <<<<<<<<<<<<<<
@@ -5376,7 +5376,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->suboffsets = NULL;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":238
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":238
  *                 info.shape = <Py_ssize_t*>PyArray_DIMS(self)
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)             # <<<<<<<<<<<<<<
@@ -5385,7 +5385,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->itemsize = PyArray_ITEMSIZE(__pyx_v_self);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":239
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":239
  *             info.suboffsets = NULL
  *             info.itemsize = PyArray_ITEMSIZE(self)
  *             info.readonly = not PyArray_ISWRITEABLE(self)             # <<<<<<<<<<<<<<
@@ -5394,7 +5394,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_info->readonly = (!(PyArray_ISWRITEABLE(__pyx_v_self) != 0));
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":242
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":242
  *
  *             cdef int t
  *             cdef char* f = NULL             # <<<<<<<<<<<<<<
@@ -5403,7 +5403,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_f = NULL;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":243
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":243
  *             cdef int t
  *             cdef char* f = NULL
  *             cdef dtype descr = self.descr             # <<<<<<<<<<<<<<
@@ -5415,7 +5415,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_v_descr = ((PyArray_Descr *)__pyx_t_3);
   __pyx_t_3 = 0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":246
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":246
  *             cdef int offset
  *
  *             cdef bint hasfields = PyDataType_HASFIELDS(descr)             # <<<<<<<<<<<<<<
@@ -5424,7 +5424,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   __pyx_v_hasfields = PyDataType_HASFIELDS(__pyx_v_descr);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":248
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":248
  *             cdef bint hasfields = PyDataType_HASFIELDS(descr)
  *
  *             if not hasfields and not copy_shape:             # <<<<<<<<<<<<<<
@@ -5442,7 +5442,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_L15_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":250
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":250
  *             if not hasfields and not copy_shape:
  *                 # do not call releasebuffer
  *                 info.obj = None             # <<<<<<<<<<<<<<
@@ -5455,7 +5455,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __Pyx_DECREF(__pyx_v_info->obj);
     __pyx_v_info->obj = Py_None;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":248
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":248
  *             cdef bint hasfields = PyDataType_HASFIELDS(descr)
  *
  *             if not hasfields and not copy_shape:             # <<<<<<<<<<<<<<
@@ -5465,7 +5465,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     goto __pyx_L14;
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":253
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":253
  *             else:
  *                 # need to call releasebuffer
  *                 info.obj = self             # <<<<<<<<<<<<<<
@@ -5481,7 +5481,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   }
   __pyx_L14:;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":255
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":255
  *                 info.obj = self
  *
  *             if not hasfields:             # <<<<<<<<<<<<<<
@@ -5491,7 +5491,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   __pyx_t_1 = ((!(__pyx_v_hasfields != 0)) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":256
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":256
  *
  *             if not hasfields:
  *                 t = descr.type_num             # <<<<<<<<<<<<<<
@@ -5501,7 +5501,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_4 = __pyx_v_descr->type_num;
     __pyx_v_t = __pyx_t_4;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":257
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":257
  *             if not hasfields:
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -5521,7 +5521,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     }
     __pyx_L20_next_or:;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":258
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":258
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -5538,7 +5538,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_1 = __pyx_t_2;
     __pyx_L19_bool_binop_done:;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":257
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":257
  *             if not hasfields:
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -5547,7 +5547,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     if (__pyx_t_1) {
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":259
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":259
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -5560,7 +5560,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 259; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":257
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":257
  *             if not hasfields:
  *                 t = descr.type_num
  *                 if ((descr.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -5569,7 +5569,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     }
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":260
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":260
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"             # <<<<<<<<<<<<<<
@@ -5581,7 +5581,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_b;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":261
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":261
  *                     raise ValueError(u"Non-native byte order not supported")
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"             # <<<<<<<<<<<<<<
@@ -5592,7 +5592,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_B;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":262
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":262
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"             # <<<<<<<<<<<<<<
@@ -5603,7 +5603,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_h;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":263
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":263
  *                 elif t == NPY_UBYTE:       f = "B"
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"             # <<<<<<<<<<<<<<
@@ -5614,7 +5614,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_H;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":264
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":264
  *                 elif t == NPY_SHORT:       f = "h"
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"             # <<<<<<<<<<<<<<
@@ -5625,7 +5625,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_i;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":265
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":265
  *                 elif t == NPY_USHORT:      f = "H"
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"             # <<<<<<<<<<<<<<
@@ -5636,7 +5636,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_I;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":266
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":266
  *                 elif t == NPY_INT:         f = "i"
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"             # <<<<<<<<<<<<<<
@@ -5647,7 +5647,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_l;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":267
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":267
  *                 elif t == NPY_UINT:        f = "I"
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"             # <<<<<<<<<<<<<<
@@ -5658,7 +5658,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_L;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":268
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":268
  *                 elif t == NPY_LONG:        f = "l"
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"             # <<<<<<<<<<<<<<
@@ -5669,7 +5669,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_q;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":269
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":269
  *                 elif t == NPY_ULONG:       f = "L"
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"             # <<<<<<<<<<<<<<
@@ -5680,7 +5680,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Q;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":270
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":270
  *                 elif t == NPY_LONGLONG:    f = "q"
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"             # <<<<<<<<<<<<<<
@@ -5691,7 +5691,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_f;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":271
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":271
  *                 elif t == NPY_ULONGLONG:   f = "Q"
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"             # <<<<<<<<<<<<<<
@@ -5702,7 +5702,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_d;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":272
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":272
  *                 elif t == NPY_FLOAT:       f = "f"
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"             # <<<<<<<<<<<<<<
@@ -5713,7 +5713,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_g;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":273
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":273
  *                 elif t == NPY_DOUBLE:      f = "d"
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"             # <<<<<<<<<<<<<<
@@ -5724,7 +5724,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zf;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":274
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":274
  *                 elif t == NPY_LONGDOUBLE:  f = "g"
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"             # <<<<<<<<<<<<<<
@@ -5735,7 +5735,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zd;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":275
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":275
  *                 elif t == NPY_CFLOAT:      f = "Zf"
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"             # <<<<<<<<<<<<<<
@@ -5746,7 +5746,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       __pyx_v_f = __pyx_k_Zg;
       break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":276
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":276
  *                 elif t == NPY_CDOUBLE:     f = "Zd"
  *                 elif t == NPY_CLONGDOUBLE: f = "Zg"
  *                 elif t == NPY_OBJECT:      f = "O"             # <<<<<<<<<<<<<<
@@ -5758,7 +5758,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
       default:
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":278
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":278
  *                 elif t == NPY_OBJECT:      f = "O"
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -5784,7 +5784,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
       break;
     }
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":279
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":279
  *                 else:
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f             # <<<<<<<<<<<<<<
@@ -5793,7 +5793,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_info->format = __pyx_v_f;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":280
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":280
  *                     raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *                 info.format = f
  *                 return             # <<<<<<<<<<<<<<
@@ -5803,7 +5803,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_r = 0;
     goto __pyx_L0;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":255
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":255
  *                 info.obj = self
  *
  *             if not hasfields:             # <<<<<<<<<<<<<<
@@ -5812,7 +5812,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":282
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":282
  *                 return
  *             else:
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)             # <<<<<<<<<<<<<<
@@ -5822,7 +5822,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   /*else*/ {
     __pyx_v_info->format = ((char *)malloc(0xFF));
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":283
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":283
  *             else:
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment             # <<<<<<<<<<<<<<
@@ -5831,7 +5831,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     (__pyx_v_info->format[0]) = '^';
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":284
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":284
  *                 info.format = <char*>stdlib.malloc(_buffer_format_string_len)
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0             # <<<<<<<<<<<<<<
@@ -5840,7 +5840,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  */
     __pyx_v_offset = 0;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":285
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":285
  *                 info.format[0] = c'^' # Native data types, manual alignment
  *                 offset = 0
  *                 f = _util_dtypestring(descr, info.format + 1,             # <<<<<<<<<<<<<<
@@ -5850,7 +5850,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     __pyx_t_7 = __pyx_f_5numpy__util_dtypestring(__pyx_v_descr, (__pyx_v_info->format + 1), (__pyx_v_info->format + 0xFF), (&__pyx_v_offset)); if (unlikely(__pyx_t_7 == NULL)) {__pyx_filename = __pyx_f[1]; __pyx_lineno = 285; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     __pyx_v_f = __pyx_t_7;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":288
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":288
  *                                       info.format + _buffer_format_string_len,
  *                                       &offset)
  *                 f[0] = c'\0' # Terminate format string             # <<<<<<<<<<<<<<
@@ -5860,7 +5860,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
     (__pyx_v_f[0]) = '\x00';
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":197
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":197
  *         # experimental exception made for __getbuffer__ and __releasebuffer__
  *         # -- the details of this may change.
  *         def __getbuffer__(ndarray self, Py_buffer* info, int flags):             # <<<<<<<<<<<<<<
@@ -5892,7 +5892,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
   return __pyx_r;
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":290
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":290
  *                 f[0] = c'\0' # Terminate format string
  *
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -5916,7 +5916,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("__releasebuffer__", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":291
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":291
  *
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):             # <<<<<<<<<<<<<<
@@ -5926,7 +5926,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (PyArray_HASFIELDS(__pyx_v_self) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":292
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":292
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):
  *                 stdlib.free(info.format)             # <<<<<<<<<<<<<<
@@ -5935,7 +5935,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
     free(__pyx_v_info->format);
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":291
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":291
  *
  *         def __releasebuffer__(ndarray self, Py_buffer* info):
  *             if PyArray_HASFIELDS(self):             # <<<<<<<<<<<<<<
@@ -5944,7 +5944,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":293
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":293
  *             if PyArray_HASFIELDS(self):
  *                 stdlib.free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5954,7 +5954,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __pyx_t_1 = (((sizeof(npy_intp)) != (sizeof(Py_ssize_t))) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":294
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":294
  *                 stdlib.free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):
  *                 stdlib.free(info.strides)             # <<<<<<<<<<<<<<
@@ -5963,7 +5963,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
     free(__pyx_v_info->strides);
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":293
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":293
  *             if PyArray_HASFIELDS(self):
  *                 stdlib.free(info.format)
  *             if sizeof(npy_intp) != sizeof(Py_ssize_t):             # <<<<<<<<<<<<<<
@@ -5972,7 +5972,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
  */
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":290
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":290
  *                 f[0] = c'\0' # Terminate format string
  *
  *         def __releasebuffer__(ndarray self, Py_buffer* info):             # <<<<<<<<<<<<<<
@@ -5984,7 +5984,7 @@ static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_s
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":770
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":770
  * ctypedef npy_cdouble     complex_t
  *
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -6001,7 +6001,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew1", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":771
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":771
  *
  * cdef inline object PyArray_MultiIterNew1(a):
  *     return PyArray_MultiIterNew(1, <void*>a)             # <<<<<<<<<<<<<<
@@ -6015,7 +6015,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":770
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":770
  * ctypedef npy_cdouble     complex_t
  *
  * cdef inline object PyArray_MultiIterNew1(a):             # <<<<<<<<<<<<<<
@@ -6034,7 +6034,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew1(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":773
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":773
  *     return PyArray_MultiIterNew(1, <void*>a)
  *
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -6051,7 +6051,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew2", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":774
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":774
  *
  * cdef inline object PyArray_MultiIterNew2(a, b):
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)             # <<<<<<<<<<<<<<
@@ -6065,7 +6065,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":773
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":773
  *     return PyArray_MultiIterNew(1, <void*>a)
  *
  * cdef inline object PyArray_MultiIterNew2(a, b):             # <<<<<<<<<<<<<<
@@ -6084,7 +6084,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew2(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":776
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":776
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  *
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -6101,7 +6101,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew3", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":777
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":777
  *
  * cdef inline object PyArray_MultiIterNew3(a, b, c):
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)             # <<<<<<<<<<<<<<
@@ -6115,7 +6115,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":776
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":776
  *     return PyArray_MultiIterNew(2, <void*>a, <void*>b)
  *
  * cdef inline object PyArray_MultiIterNew3(a, b, c):             # <<<<<<<<<<<<<<
@@ -6134,7 +6134,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew3(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":779
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":779
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  *
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -6151,7 +6151,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew4", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":780
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":780
  *
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)             # <<<<<<<<<<<<<<
@@ -6165,7 +6165,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":779
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":779
  *     return PyArray_MultiIterNew(3, <void*>a, <void*>b, <void*> c)
  *
  * cdef inline object PyArray_MultiIterNew4(a, b, c, d):             # <<<<<<<<<<<<<<
@@ -6184,7 +6184,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew4(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":782
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":782
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  *
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -6201,7 +6201,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("PyArray_MultiIterNew5", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":783
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":783
  *
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)             # <<<<<<<<<<<<<<
@@ -6215,7 +6215,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":782
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":782
  *     return PyArray_MultiIterNew(4, <void*>a, <void*>b, <void*>c, <void*> d)
  *
  * cdef inline object PyArray_MultiIterNew5(a, b, c, d, e):             # <<<<<<<<<<<<<<
@@ -6234,7 +6234,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_PyArray_MultiIterNew5(PyObject *__
   return __pyx_r;
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":785
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":785
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  *
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -6266,7 +6266,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_util_dtypestring", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":790
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":790
  *
  *     cdef dtype child
  *     cdef int endian_detector = 1             # <<<<<<<<<<<<<<
@@ -6275,7 +6275,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_endian_detector = 1;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":791
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":791
  *     cdef dtype child
  *     cdef int endian_detector = 1
  *     cdef bint little_endian = ((<char*>&endian_detector)[0] != 0)             # <<<<<<<<<<<<<<
@@ -6284,7 +6284,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
   __pyx_v_little_endian = ((((char *)(&__pyx_v_endian_detector))[0]) != 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":794
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":794
  *     cdef tuple fields
  *
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -6307,7 +6307,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_childname, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":795
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":795
  *
  *     for childname in descr.names:
  *         fields = descr.fields[childname]             # <<<<<<<<<<<<<<
@@ -6324,7 +6324,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_fields, ((PyObject*)__pyx_t_3));
     __pyx_t_3 = 0;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":796
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":796
  *     for childname in descr.names:
  *         fields = descr.fields[childname]
  *         child, new_offset = fields             # <<<<<<<<<<<<<<
@@ -6363,7 +6363,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __Pyx_XDECREF_SET(__pyx_v_new_offset, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":798
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":798
  *         child, new_offset = fields
  *
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:             # <<<<<<<<<<<<<<
@@ -6380,7 +6380,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((((__pyx_v_end - __pyx_v_f) - ((int)__pyx_t_5)) < 15) != 0);
     if (__pyx_t_6) {
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":799
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":799
  *
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -6393,7 +6393,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 799; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":798
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":798
  *         child, new_offset = fields
  *
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:             # <<<<<<<<<<<<<<
@@ -6402,7 +6402,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     }
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":801
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":801
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  *
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -6422,7 +6422,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L8_next_or:;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":802
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":802
  *
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):             # <<<<<<<<<<<<<<
@@ -6439,7 +6439,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = __pyx_t_7;
     __pyx_L7_bool_binop_done:;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":801
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":801
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  *
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -6448,7 +6448,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     if (__pyx_t_6) {
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":803
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":803
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):
  *             raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -6461,7 +6461,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       {__pyx_filename = __pyx_f[1]; __pyx_lineno = 803; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":801
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":801
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")
  *
  *         if ((child.byteorder == c'>' and little_endian) or             # <<<<<<<<<<<<<<
@@ -6470,7 +6470,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
     }
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":813
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":813
  *
  *         # Output padding bytes
  *         while offset[0] < new_offset:             # <<<<<<<<<<<<<<
@@ -6486,7 +6486,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (!__pyx_t_6) break;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":814
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":814
  *         # Output padding bytes
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte             # <<<<<<<<<<<<<<
@@ -6495,7 +6495,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       (__pyx_v_f[0]) = 0x78;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":815
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":815
  *         while offset[0] < new_offset:
  *             f[0] = 120 # "x"; pad byte
  *             f += 1             # <<<<<<<<<<<<<<
@@ -6504,7 +6504,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       __pyx_v_f = (__pyx_v_f + 1);
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":816
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":816
  *             f[0] = 120 # "x"; pad byte
  *             f += 1
  *             offset[0] += 1             # <<<<<<<<<<<<<<
@@ -6515,7 +6515,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + 1);
     }
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":818
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":818
  *             offset[0] += 1
  *
  *         offset[0] += child.itemsize             # <<<<<<<<<<<<<<
@@ -6525,7 +6525,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_8 = 0;
     (__pyx_v_offset[__pyx_t_8]) = ((__pyx_v_offset[__pyx_t_8]) + __pyx_v_child->elsize);
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":820
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":820
  *         offset[0] += child.itemsize
  *
  *         if not PyDataType_HASFIELDS(child):             # <<<<<<<<<<<<<<
@@ -6535,7 +6535,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     __pyx_t_6 = ((!(PyDataType_HASFIELDS(__pyx_v_child) != 0)) != 0);
     if (__pyx_t_6) {
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":821
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":821
  *
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num             # <<<<<<<<<<<<<<
@@ -6547,7 +6547,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __Pyx_XDECREF_SET(__pyx_v_t, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":822
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":822
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num
  *             if end - f < 5:             # <<<<<<<<<<<<<<
@@ -6557,7 +6557,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       __pyx_t_6 = (((__pyx_v_end - __pyx_v_f) < 5) != 0);
       if (__pyx_t_6) {
 
-        /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":823
+        /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":823
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -6570,7 +6570,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
         {__pyx_filename = __pyx_f[1]; __pyx_lineno = 823; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-        /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":822
+        /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":822
  *         if not PyDataType_HASFIELDS(child):
  *             t = child.type_num
  *             if end - f < 5:             # <<<<<<<<<<<<<<
@@ -6579,7 +6579,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":826
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":826
  *
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"             # <<<<<<<<<<<<<<
@@ -6597,7 +6597,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":827
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":827
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"             # <<<<<<<<<<<<<<
@@ -6615,7 +6615,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":828
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":828
  *             if   t == NPY_BYTE:        f[0] =  98 #"b"
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"             # <<<<<<<<<<<<<<
@@ -6633,7 +6633,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":829
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":829
  *             elif t == NPY_UBYTE:       f[0] =  66 #"B"
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"             # <<<<<<<<<<<<<<
@@ -6651,7 +6651,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":830
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":830
  *             elif t == NPY_SHORT:       f[0] = 104 #"h"
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"             # <<<<<<<<<<<<<<
@@ -6669,7 +6669,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":831
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":831
  *             elif t == NPY_USHORT:      f[0] =  72 #"H"
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"             # <<<<<<<<<<<<<<
@@ -6687,7 +6687,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":832
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":832
  *             elif t == NPY_INT:         f[0] = 105 #"i"
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"             # <<<<<<<<<<<<<<
@@ -6705,7 +6705,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":833
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":833
  *             elif t == NPY_UINT:        f[0] =  73 #"I"
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"             # <<<<<<<<<<<<<<
@@ -6723,7 +6723,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":834
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":834
  *             elif t == NPY_LONG:        f[0] = 108 #"l"
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"             # <<<<<<<<<<<<<<
@@ -6741,7 +6741,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":835
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":835
  *             elif t == NPY_ULONG:       f[0] = 76  #"L"
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"             # <<<<<<<<<<<<<<
@@ -6759,7 +6759,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":836
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":836
  *             elif t == NPY_LONGLONG:    f[0] = 113 #"q"
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"             # <<<<<<<<<<<<<<
@@ -6777,7 +6777,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":837
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":837
  *             elif t == NPY_ULONGLONG:   f[0] = 81  #"Q"
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"             # <<<<<<<<<<<<<<
@@ -6795,7 +6795,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":838
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":838
  *             elif t == NPY_FLOAT:       f[0] = 102 #"f"
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"             # <<<<<<<<<<<<<<
@@ -6813,7 +6813,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":839
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":839
  *             elif t == NPY_DOUBLE:      f[0] = 100 #"d"
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf             # <<<<<<<<<<<<<<
@@ -6833,7 +6833,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":840
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":840
  *             elif t == NPY_LONGDOUBLE:  f[0] = 103 #"g"
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd             # <<<<<<<<<<<<<<
@@ -6853,7 +6853,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":841
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":841
  *             elif t == NPY_CFLOAT:      f[0] = 90; f[1] = 102; f += 1 # Zf
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg             # <<<<<<<<<<<<<<
@@ -6873,7 +6873,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":842
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":842
  *             elif t == NPY_CDOUBLE:     f[0] = 90; f[1] = 100; f += 1 # Zd
  *             elif t == NPY_CLONGDOUBLE: f[0] = 90; f[1] = 103; f += 1 # Zg
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"             # <<<<<<<<<<<<<<
@@ -6891,7 +6891,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
         goto __pyx_L15;
       }
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":844
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":844
  *             elif t == NPY_OBJECT:      f[0] = 79 #"O"
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)             # <<<<<<<<<<<<<<
@@ -6915,7 +6915,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       }
       __pyx_L15:;
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":845
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":845
  *             else:
  *                 raise ValueError(u"unknown dtype code in numpy.pxd (%d)" % t)
  *             f += 1             # <<<<<<<<<<<<<<
@@ -6924,7 +6924,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  */
       __pyx_v_f = (__pyx_v_f + 1);
 
-      /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":820
+      /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":820
  *         offset[0] += child.itemsize
  *
  *         if not PyDataType_HASFIELDS(child):             # <<<<<<<<<<<<<<
@@ -6934,7 +6934,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
       goto __pyx_L13;
     }
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":849
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":849
  *             # Cython ignores struct boundary information ("T{...}"),
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)             # <<<<<<<<<<<<<<
@@ -6947,7 +6947,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
     }
     __pyx_L13:;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":794
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":794
  *     cdef tuple fields
  *
  *     for childname in descr.names:             # <<<<<<<<<<<<<<
@@ -6957,7 +6957,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":850
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":850
  *             # so don't output it
  *             f = _util_dtypestring(child, f, end, offset)
  *     return f             # <<<<<<<<<<<<<<
@@ -6967,7 +6967,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   __pyx_r = __pyx_v_f;
   goto __pyx_L0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":785
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":785
  *     return PyArray_MultiIterNew(5, <void*>a, <void*>b, <void*>c, <void*> d, <void*> e)
  *
  * cdef inline char* _util_dtypestring(dtype descr, char* f, char* end, int* offset) except NULL:             # <<<<<<<<<<<<<<
@@ -6992,7 +6992,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
   return __pyx_r;
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":966
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":966
  *
  *
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -7007,7 +7007,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   int __pyx_t_2;
   __Pyx_RefNannySetupContext("set_array_base", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":968
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":968
  * cdef inline void set_array_base(ndarray arr, object base):
  *      cdef PyObject* baseptr
  *      if base is None:             # <<<<<<<<<<<<<<
@@ -7018,7 +7018,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":969
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":969
  *      cdef PyObject* baseptr
  *      if base is None:
  *          baseptr = NULL             # <<<<<<<<<<<<<<
@@ -7027,7 +7027,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
     __pyx_v_baseptr = NULL;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":968
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":968
  * cdef inline void set_array_base(ndarray arr, object base):
  *      cdef PyObject* baseptr
  *      if base is None:             # <<<<<<<<<<<<<<
@@ -7037,7 +7037,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
     goto __pyx_L3;
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":971
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":971
  *          baseptr = NULL
  *      else:
  *          Py_INCREF(base) # important to do this before decref below!             # <<<<<<<<<<<<<<
@@ -7047,7 +7047,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   /*else*/ {
     Py_INCREF(__pyx_v_base);
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":972
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":972
  *      else:
  *          Py_INCREF(base) # important to do this before decref below!
  *          baseptr = <PyObject*>base             # <<<<<<<<<<<<<<
@@ -7058,7 +7058,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   }
   __pyx_L3:;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":973
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":973
  *          Py_INCREF(base) # important to do this before decref below!
  *          baseptr = <PyObject*>base
  *      Py_XDECREF(arr.base)             # <<<<<<<<<<<<<<
@@ -7067,7 +7067,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   Py_XDECREF(__pyx_v_arr->base);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":974
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":974
  *          baseptr = <PyObject*>base
  *      Py_XDECREF(arr.base)
  *      arr.base = baseptr             # <<<<<<<<<<<<<<
@@ -7076,7 +7076,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
  */
   __pyx_v_arr->base = __pyx_v_baseptr;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":966
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":966
  *
  *
  * cdef inline void set_array_base(ndarray arr, object base):             # <<<<<<<<<<<<<<
@@ -7088,7 +7088,7 @@ static CYTHON_INLINE void __pyx_f_5numpy_set_array_base(PyArrayObject *__pyx_v_a
   __Pyx_RefNannyFinishContext();
 }
 
-/* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":976
+/* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":976
  *      arr.base = baseptr
  *
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -7102,7 +7102,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   int __pyx_t_1;
   __Pyx_RefNannySetupContext("get_array_base", 0);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":977
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":977
  *
  * cdef inline object get_array_base(ndarray arr):
  *     if arr.base is NULL:             # <<<<<<<<<<<<<<
@@ -7112,7 +7112,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
   __pyx_t_1 = ((__pyx_v_arr->base == NULL) != 0);
   if (__pyx_t_1) {
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":978
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":978
  * cdef inline object get_array_base(ndarray arr):
  *     if arr.base is NULL:
  *         return None             # <<<<<<<<<<<<<<
@@ -7124,7 +7124,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
     __pyx_r = Py_None;
     goto __pyx_L0;
 
-    /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":977
+    /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":977
  *
  * cdef inline object get_array_base(ndarray arr):
  *     if arr.base is NULL:             # <<<<<<<<<<<<<<
@@ -7133,7 +7133,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
  */
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":980
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":980
  *         return None
  *     else:
  *         return <object>arr.base             # <<<<<<<<<<<<<<
@@ -7145,7 +7145,7 @@ static CYTHON_INLINE PyObject *__pyx_f_5numpy_get_array_base(PyArrayObject *__py
     goto __pyx_L0;
   }
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":976
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":976
  *      arr.base = baseptr
  *
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -7220,7 +7220,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_col_idx, __pyx_k_col_idx, sizeof(__pyx_k_col_idx), 0, 0, 1, 1},
   {&__pyx_n_s_col_max, __pyx_k_col_max, sizeof(__pyx_k_col_max), 0, 0, 1, 1},
   {&__pyx_n_s_col_ord, __pyx_k_col_ord, sizeof(__pyx_k_col_ord), 0, 0, 1, 1},
-  {&__pyx_n_s_coral_analysis__sequencing_calig, __pyx_k_coral_analysis__sequencing_calig, sizeof(__pyx_k_coral_analysis__sequencing_calig), 0, 0, 1, 1},
+  {&__pyx_n_s_coral_alignment_calign, __pyx_k_coral_alignment_calign, sizeof(__pyx_k_coral_alignment_calign), 0, 0, 1, 1},
   {&__pyx_n_s_diag_score, __pyx_k_diag_score, sizeof(__pyx_k_diag_score), 0, 0, 1, 1},
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
   {&__pyx_n_s_empty, __pyx_k_empty, sizeof(__pyx_k_empty), 0, 0, 1, 1},
@@ -7304,7 +7304,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "coral/analysis/_sequencing/calign.pyx":125
+  /* "coral/alignment/calign.pyx":125
  *     cdef size_t max_i = strlen(seqi)
  *     if max_i == max_j == 0:
  *         return '', ''             # <<<<<<<<<<<<<<
@@ -7315,7 +7315,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "coral/analysis/_sequencing/calign.pyx":153
+  /* "coral/alignment/calign.pyx":153
  *     # START HERE:
  *     if imethod == 0:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
@@ -7329,7 +7329,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "coral/analysis/_sequencing/calign.pyx":154
+  /* "coral/alignment/calign.pyx":154
  *     if imethod == 0:
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP             # <<<<<<<<<<<<<<
@@ -7343,7 +7343,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "coral/analysis/_sequencing/calign.pyx":155
+  /* "coral/alignment/calign.pyx":155
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -7357,7 +7357,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "coral/analysis/_sequencing/calign.pyx":156
+  /* "coral/alignment/calign.pyx":156
  *         pointer[1:, 0] = UP
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -7371,7 +7371,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "coral/analysis/_sequencing/calign.pyx":158
+  /* "coral/alignment/calign.pyx":158
  *         score[1:, 0] = gap_open + gap_extend * np.arange(0, max_i, dtype=np.float32)
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
@@ -7385,7 +7385,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 
-  /* "coral/analysis/_sequencing/calign.pyx":159
+  /* "coral/alignment/calign.pyx":159
  *     elif imethod == 3:
  *         pointer[0, 1:] = LEFT
  *         pointer[1:, 0] = UP             # <<<<<<<<<<<<<<
@@ -7399,7 +7399,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__15);
   __Pyx_GIVEREF(__pyx_tuple__15);
 
-  /* "coral/analysis/_sequencing/calign.pyx":161
+  /* "coral/alignment/calign.pyx":161
  *         pointer[1:, 0] = UP
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT             # <<<<<<<<<<<<<<
@@ -7413,7 +7413,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__17);
   __Pyx_GIVEREF(__pyx_tuple__17);
 
-  /* "coral/analysis/_sequencing/calign.pyx":162
+  /* "coral/alignment/calign.pyx":162
  *     elif imethod == 2:
  *         pointer[0, 1:] = LEFT
  *         score[0, 1:] = gap_open + gap_extend * np.arange(0, max_j, dtype=np.float32)             # <<<<<<<<<<<<<<
@@ -7427,7 +7427,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__19);
   __Pyx_GIVEREF(__pyx_tuple__19);
 
-  /* "coral/analysis/_sequencing/calign.pyx":200
+  /* "coral/alignment/calign.pyx":200
  *     elif imethod == 2:
  *         # max in last col
  *         i, j = (score[:,-1].argmax(), max_j)             # <<<<<<<<<<<<<<
@@ -7441,7 +7441,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__21);
   __Pyx_GIVEREF(__pyx_tuple__21);
 
-  /* "coral/analysis/_sequencing/calign.pyx":204
+  /* "coral/alignment/calign.pyx":204
  *         # from i,j to max(max(last row), max(last col)) for free
  *         row_max, col_idx = score[-1].max(), score[-1].argmax()
  *         col_max, row_idx = score[:, -1].max(), score[:, -1].argmax()             # <<<<<<<<<<<<<<
@@ -7461,7 +7461,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
 
-  /* "coral/analysis/_sequencing/calign.pyx":242
+  /* "coral/alignment/calign.pyx":242
  *
  *     if flip:
  *         return (<object>ai)[::-1], (<object>aj)[::-1]             # <<<<<<<<<<<<<<
@@ -7475,7 +7475,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice__27);
   __Pyx_GIVEREF(__pyx_slice__27);
 
-  /* "coral/analysis/_sequencing/calign.pyx":244
+  /* "coral/alignment/calign.pyx":244
  *         return (<object>ai)[::-1], (<object>aj)[::-1]
  *     else:
  *         return (<object>aj)[::-1], (<object>ai)[::-1]             # <<<<<<<<<<<<<<
@@ -7489,7 +7489,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_slice__29);
   __Pyx_GIVEREF(__pyx_slice__29);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":218
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":218
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_C_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not C contiguous")             # <<<<<<<<<<<<<<
@@ -7500,7 +7500,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__30);
   __Pyx_GIVEREF(__pyx_tuple__30);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":222
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":222
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  *                 and not PyArray_CHKFLAGS(self, NPY_F_CONTIGUOUS)):
  *                 raise ValueError(u"ndarray is not Fortran contiguous")             # <<<<<<<<<<<<<<
@@ -7511,7 +7511,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__31);
   __Pyx_GIVEREF(__pyx_tuple__31);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":259
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":259
  *                 if ((descr.byteorder == c'>' and little_endian) or
  *                     (descr.byteorder == c'<' and not little_endian)):
  *                     raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -7522,7 +7522,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__32);
   __Pyx_GIVEREF(__pyx_tuple__32);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":799
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":799
  *
  *         if (end - f) - <int>(new_offset - offset[0]) < 15:
  *             raise RuntimeError(u"Format string allocated too short, see comment in numpy.pxd")             # <<<<<<<<<<<<<<
@@ -7533,7 +7533,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__33);
   __Pyx_GIVEREF(__pyx_tuple__33);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":803
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":803
  *         if ((child.byteorder == c'>' and little_endian) or
  *             (child.byteorder == c'<' and not little_endian)):
  *             raise ValueError(u"Non-native byte order not supported")             # <<<<<<<<<<<<<<
@@ -7544,7 +7544,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__34);
   __Pyx_GIVEREF(__pyx_tuple__34);
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":823
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":823
  *             t = child.type_num
  *             if end - f < 5:
  *                 raise RuntimeError(u"Format string allocated too short.")             # <<<<<<<<<<<<<<
@@ -7555,7 +7555,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__35);
   __Pyx_GIVEREF(__pyx_tuple__35);
 
-  /* "coral/analysis/_sequencing/calign.pyx":49
+  /* "coral/alignment/calign.pyx":49
  *
  *
  * def as_ord_matrix(matrix):             # <<<<<<<<<<<<<<
@@ -7567,7 +7567,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__36);
   __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(1, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_as_ord_matrix, 49, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "coral/analysis/_sequencing/calign.pyx":61
+  /* "coral/alignment/calign.pyx":61
  *
  *
  * def max_index(array):             # <<<<<<<<<<<<<<
@@ -7579,7 +7579,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__38);
   __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_max_index, 61, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "coral/analysis/_sequencing/calign.pyx":72
+  /* "coral/alignment/calign.pyx":72
  *
  *
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,             # <<<<<<<<<<<<<<
@@ -7591,7 +7591,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__40);
   __pyx_codeobj__41 = (PyObject*)__Pyx_PyCode_New(7, 0, 41, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__40, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_home_nick_projects_coral_coral, __pyx_n_s_aligner, 72, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__41)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
 
-  /* "coral/analysis/_sequencing/calign.pyx":247
+  /* "coral/alignment/calign.pyx":247
  *
  *
  * def score_alignment(a, b, int gap_open, int gap_extend, matrix):             # <<<<<<<<<<<<<<
@@ -7687,14 +7687,14 @@ PyMODINIT_FUNC PyInit_calign(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
-  if (__pyx_module_is_main_coral__analysis___sequencing__calign) {
+  if (__pyx_module_is_main_coral__alignment__calign) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
-    if (!PyDict_GetItemString(modules, "coral.analysis._sequencing.calign")) {
-      if (unlikely(PyDict_SetItemString(modules, "coral.analysis._sequencing.calign", __pyx_m) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+    if (!PyDict_GetItemString(modules, "coral.alignment.calign")) {
+      if (unlikely(PyDict_SetItemString(modules, "coral.alignment.calign", __pyx_m) < 0)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
     }
   }
   #endif
@@ -7726,7 +7726,7 @@ PyMODINIT_FUNC PyInit_calign(void)
   if (__Pyx_patch_abc() < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   #endif
 
-  /* "coral/analysis/_sequencing/calign.pyx":1
+  /* "coral/alignment/calign.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * from . import substitution_matrices as submat
@@ -7736,7 +7736,7 @@ PyMODINIT_FUNC PyInit_calign(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":3
+  /* "coral/alignment/calign.pyx":3
  * import numpy as np
  * cimport numpy as np
  * from . import substitution_matrices as submat             # <<<<<<<<<<<<<<
@@ -7757,31 +7757,31 @@ PyMODINIT_FUNC PyInit_calign(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":49
+  /* "coral/alignment/calign.pyx":49
  *
  *
  * def as_ord_matrix(matrix):             # <<<<<<<<<<<<<<
  *     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
  *     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_1as_ord_matrix, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5coral_9alignment_6calign_1as_ord_matrix, NULL, __pyx_n_s_coral_alignment_calign); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_as_ord_matrix, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 49; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":61
+  /* "coral/alignment/calign.pyx":61
  *
  *
  * def max_index(array):             # <<<<<<<<<<<<<<
  *     '''Locate the index of the largest value in the array. If there are
  *     multiple, finds the earliest one in the row-flattened array.
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_3max_index, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_5coral_9alignment_6calign_3max_index, NULL, __pyx_n_s_coral_alignment_calign); if (unlikely(!__pyx_t_2)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_max_index, __pyx_t_2) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 61; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":74
+  /* "coral/alignment/calign.pyx":74
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
  *             DTYPE_FLOAT gap_double=-7, method='global',
  *             matrix=submat.DNA_SIMPLE):             # <<<<<<<<<<<<<<
@@ -7797,31 +7797,31 @@ PyMODINIT_FUNC PyInit_calign(void)
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":72
+  /* "coral/alignment/calign.pyx":72
  *
  *
  * def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,             # <<<<<<<<<<<<<<
  *             DTYPE_FLOAT gap_double=-7, method='global',
  *             matrix=submat.DNA_SIMPLE):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_5aligner, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5coral_9alignment_6calign_5aligner, NULL, __pyx_n_s_coral_alignment_calign); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_aligner, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 72; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":247
+  /* "coral/alignment/calign.pyx":247
  *
  *
  * def score_alignment(a, b, int gap_open, int gap_extend, matrix):             # <<<<<<<<<<<<<<
  *     '''Calculate the alignment score from two aligned sequences.
  *
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5coral_8analysis_11_sequencing_6calign_7score_alignment, NULL, __pyx_n_s_coral_analysis__sequencing_calig); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5coral_9alignment_6calign_7score_alignment, NULL, __pyx_n_s_coral_alignment_calign); if (unlikely(!__pyx_t_1)) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_score_alignment, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 247; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "coral/analysis/_sequencing/calign.pyx":1
+  /* "coral/alignment/calign.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as np
  * from . import substitution_matrices as submat
@@ -7831,7 +7831,7 @@ PyMODINIT_FUNC PyInit_calign(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) {__pyx_filename = __pyx_f[0]; __pyx_lineno = 1; __pyx_clineno = __LINE__; goto __pyx_L1_error;}
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "../../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":976
+  /* "../../../../../../../usr/lib/python2.7/dist-packages/Cython/Includes/numpy/__init__.pxd":976
  *      arr.base = baseptr
  *
  * cdef inline object get_array_base(ndarray arr):             # <<<<<<<<<<<<<<
@@ -7847,11 +7847,11 @@ PyMODINIT_FUNC PyInit_calign(void)
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init coral.analysis._sequencing.calign", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init coral.alignment.calign", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init coral.analysis._sequencing.calign");
+    PyErr_SetString(PyExc_ImportError, "init coral.alignment.calign");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
