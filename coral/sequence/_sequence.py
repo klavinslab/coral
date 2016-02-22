@@ -64,6 +64,8 @@ class Sequence(object):
         seq = self.seq
 
         pattern = str(pattern).upper()
+        # Handle 'any-char' situation:
+        pattern = pattern.replace(self.any_char, '.')
         re_pattern = '(?=' + pattern + ')'
         matches = [index.start() % len(self) for index in
                    re.finditer(re_pattern, seq)]

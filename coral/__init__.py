@@ -4,6 +4,7 @@ from . import alignment
 from . import analysis
 from . import cloning
 from . import constants
+from . import crispr
 from . import database
 from . import io
 from . import random
