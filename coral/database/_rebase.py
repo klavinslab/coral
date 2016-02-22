@@ -2,11 +2,13 @@
 import shutil
 import tempfile
 import urllib2
-import coral
+import coral as cr
+from ._restriction_sites import fallback_enzymes
 
 
 class Rebase(object):
     '''Retrieve restriction enzymes from rebase database.'''
+
     def __init__(self):
         self._tmpdir = None
         self.update()
@@ -29,11 +31,11 @@ class Rebase(object):
         except urllib2.HTTPError, e:
             print 'HTTP Error: {} {}'.format(e.code, url)
             print 'Falling back on default enzyme list'
-            self._enzyme_dict = coral.constants.fallback_enzymes
+            self._enzyme_dict = fallback_enzymes
         except urllib2.URLError, e:
             print 'URL Error: {} {}'.format(e.reason, url)
             print 'Falling back on default enzyme list'
-            self._enzyme_dict = coral.constants.fallback_enzymes
+            self._enzyme_dict = fallback_enzymes
         # Process into RestrictionSite objects? (depends on speed)
         print 'Processing into RestrictionSite instances.'
         self.restriction_sites = {}
@@ -41,7 +43,7 @@ class Rebase(object):
         for key, (site, cuts) in self._enzyme_dict.iteritems():
             # Make a site
             try:
-                r = coral.RestrictionSite(coral.DNA(site), cuts, name=key)
+                r = cr.RestrictionSite(cr.DNA(site), cuts, name=key)
                 # Add it to dict with name as key
                 self.restriction_sites[key] = r
             except ValueError:

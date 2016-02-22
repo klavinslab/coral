@@ -8,18 +8,18 @@ from coral import analysis, DNA
 
 
 def test_needle():
-    ref_seq = DNA("ATGCGATACGATA")
+    ref_seq = DNA('ATGCGATACGATA')
 
-    res_seq0 = DNA("ATGCGATA---TA")  # Gapped
-    res_seq1 = DNA("ATGCGATAATGCGATA")  # Insertion
-    res_seq2 = DNA("ATGCGATATA")  # Deletion
-    res_seq3 = DNA("ATGCGATAAGATA")  # Mismatch
+    res_seq0 = DNA('ATGCGATA---TA')  # Gapped
+    res_seq1 = DNA('ATGCGATAATGCGATA')  # Insertion
+    res_seq2 = DNA('ATGCGATATA')  # Deletion
+    res_seq3 = DNA('ATGCGATAAGATA')  # Mismatch
     results = [res_seq0, res_seq1, res_seq2, res_seq3]
 
-    exp_seq0 = (DNA("ATGCGATACGATA"), DNA("ATGCGATA---TA"), 9)
-    exp_seq1 = (DNA("ATGCGATA---CGATA"), DNA("ATGCGATAATGCGATA"), 12)
-    exp_seq2 = (DNA("ATGCGATACGATA"), DNA("ATGCGATA---TA"), 9)
-    exp_seq3 = (DNA("ATGCGATACGATA"), DNA("ATGCGATAAGATA"), 11)
+    exp_seq0 = (DNA('ATGCGATACGATA'), DNA('ATGCGATA---TA'), 9)
+    exp_seq1 = (DNA('ATGCGATA---CGATA'), DNA('ATGCGATAATGCGATA'), 12)
+    exp_seq2 = (DNA('ATGCGATACGATA'), DNA('ATGCGATA---TA'), 9)
+    exp_seq3 = (DNA('ATGCGATACGATA'), DNA('ATGCGATAAGATA'), 11)
 
     expected = [exp_seq0, exp_seq1, exp_seq2, exp_seq3]
 

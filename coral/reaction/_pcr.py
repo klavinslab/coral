@@ -1,5 +1,5 @@
 '''PCR reaction(s).'''
-import coral
+import coral as cr
 
 
 class PrimingError(Exception):
@@ -31,10 +31,10 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_primer_len=14):
 
     '''
     # Find match in top or bottom strands for each primer
-    p1_matches = coral.analysis.anneal(template, primer1, min_tm=min_tm,
-                                       min_len=min_primer_len)
-    p2_matches = coral.analysis.anneal(template, primer2, min_tm=min_tm,
-                                       min_len=min_primer_len)
+    p1_matches = cr.analysis.anneal(template, primer1, min_tm=min_tm,
+                                    min_len=min_primer_len)
+    p2_matches = cr.analysis.anneal(template, primer2, min_tm=min_tm,
+                                    min_len=min_primer_len)
     p1_binding_locations = [m[0] for strand in p1_matches for m in strand]
     p2_binding_locations = [m[0] for strand in p2_matches for m in strand]
 
@@ -95,8 +95,8 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_primer_len=14):
         rev_5_top = rev_5_top - len(template)
 
     # overhangs
-    fwd_overhang = fwd.primer()[:-fwd_len].to_ds()
-    rev_overhang = rev.primer()[:-rev_len].to_ds()
+    fwd_overhang = fwd.primer()[:-fwd_len]
+    rev_overhang = rev.primer()[:-rev_len]
 
     # TODO: what about searching substrings over circulate templates?
     # Cases:
@@ -111,7 +111,7 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_primer_len=14):
     #       b) Primers overlap
     #           -> Extract whole sequence as linear fragment, tack on rest of
     #              'bottom' primer. May disrupt features.
-    if template.topology == 'circular':
+    if template.circular:
         # Circular template - primers always point towards one another
         if rev_3_top > fwd_3:
             # Inter-primer region doesn't go over the origin (index 0)
@@ -143,7 +143,7 @@ def pcr(template, primer1, primer2, min_tm=50.0, min_primer_len=14):
         else:
             # Inter-primer region goes over the origin (index 0)
             preamplicon_len = len(template) - fwd_5 + rev_5_top
-            preamplicon = template.rotate(fwd_5)[:preamplicon_len]
+            preamplicon = template.rotate(-fwd_5)[:preamplicon_len]
     else:
         # Linear template
         if rev_3_top < fwd_5 or fwd_3 > rev_5_top:

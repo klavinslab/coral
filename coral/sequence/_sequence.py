@@ -1,18 +1,18 @@
 '''Base sequence classes.'''
 import re
-from coral.constants.genbank import TO_CORAL
-from coral.constants.molecular_bio import ALPHABETS, COMPLEMENTS
+from .genbank import featurenames
+from .alphabets import AlphabetError
 
 
 class Sequence(object):
     '''Abstract representation of single chain of molecular sequences, e.g.
        a single DNA or RNA strand or Peptide.'''
-    def __init__(self, sequence, material, run_checks=True, any_char='N'):
+
+    def __init__(self, sequence, alphabet, run_checks=True,
+                 any_char='N', name=None):
         '''
         :param sequence: Input sequence.
         :type sequence: str
-        :param material: Material type (dna, rna, peptide)
-        :type material: str
         :param run_checks: Check inputs / formats (disabling increases speed):
                            alphabet check
                            case
@@ -22,13 +22,22 @@ class Sequence(object):
         :returns: coral.sequence.Sequence instance.
 
         '''
+        self.alphabet = alphabet
+        self.any_char = any_char
+
         if run_checks:
-            self.seq = process_seq(sequence, material)
+            self.seq = sequence.upper()
+            pattern = '[^' + self.alphabet + self.alphabet.lower() + ']'
+            if re.search(pattern, self.seq):
+                msg = 'Sequence doesn\'t match {}'.format(self.alphabet)
+                raise AlphabetError(msg)
         else:
             self.seq = sequence
 
-        self.material = material
-        self.any_char = any_char
+        if name is None:
+            self.name = ''
+        else:
+            self.name = name
 
     def copy(self):
         '''Create a copy of the current instance.
@@ -37,7 +46,8 @@ class Sequence(object):
 
         '''
         # Significant performance improvements by skipping alphabet check
-        return type(self)(self.seq, self.material, run_checks=False)
+        return type(self)(self.seq, alphabet=self.alphabet,
+                          any_char=self.any_char, run_checks=False)
 
     def locate(self, pattern):
         '''Find sequences matching a pattern.
@@ -49,13 +59,18 @@ class Sequence(object):
 
         '''
         if len(pattern) > len(self):
-            raise ValueError('Pattern too long.')
+            raise ValueError('Search pattern longer than searchable ' +
+                             'sequence.')
+        seq = self.seq
+
         pattern = str(pattern).upper()
         # Handle 'any-char' situation:
         pattern = pattern.replace(self.any_char, '.')
         re_pattern = '(?=' + pattern + ')'
-        return [index.start() for index in
-                re.finditer(re_pattern, self.seq)]
+        matches = [index.start() % len(self) for index in
+                   re.finditer(re_pattern, seq)]
+
+        return matches
 
     def __add__(self, other):
         '''Defines addition.
@@ -72,8 +87,9 @@ class Sequence(object):
             except AttributeError:
                 raise TypeError('Cannot add {} to {}'.format(self, other))
 
-        return type(self)(self.seq + other.seq, self.material,
-                          run_checks=False)
+        copy = self.copy()
+        copy.seq += other.seq
+        return copy
 
     def __contains__(self, query):
         '''`x in y`.
@@ -133,7 +149,9 @@ class Sequence(object):
                 raise IndexError()
             return self.copy()
         new_seq = self.seq[key]
-        return type(self)(new_seq, self.material, run_checks=False)
+        copy = self.copy()
+        copy.seq = new_seq
+        return copy
 
     def __len__(self):
         '''Calculate sequence length.
@@ -215,7 +233,8 @@ class Sequence(object):
 
         '''
         sequence_list = list(self.seq)
-        sequence_list[index] = str(type(self)(new_value, self.material))
+        sequence_list[index] = str(type(self)(new_value,
+                                              alphabet=self.alphabet))
         self.seq = ''.join(sequence_list)
 
     def __str__(self):
@@ -226,30 +245,6 @@ class Sequence(object):
 
         '''
         return self.seq
-
-
-class NucleicAcidSequence(Sequence):
-    '''Abstract sequence container for a single nucleic acid sequence
-       molecule.'''
-    def reverse_complement(self):
-        copy = self.copy()
-        copy.seq = reverse_complement(self.seq, self.material)
-        return copy
-
-    def is_palindrome(self):
-        seq_len = len(self.seq)
-        if seq_len % 2 == 0:
-            # Sequence has even number of bases, can test non-overlapping seqs
-            wing = seq_len / 2
-            l_wing = self[0: wing]
-            r_wing = self[wing:]
-            if l_wing == r_wing.reverse_complement():
-                return True
-            else:
-                return False
-        else:
-            # Sequence has odd number of bases and cannot be a palindrome
-            return False
 
 
 def _decompose(string, n):
@@ -274,15 +269,17 @@ def _decompose(string, n):
 
 
 class Feature(object):
-    '''Represent A DNA feature - annotate and extract sequence by metadata.'''
-    def __init__(self, name, start, stop, feature_type, gene='', locus_tag='',
-                 qualifiers=None, strand=0, gaps=None):
+    '''Represent an annotated feature - track sequence regions with
+    metadata.'''
+
+    def __init__(self, name, start, stop, feature_type='misc_feature', gene='',
+                 locus_tag='', qualifiers=None, strand=0, gaps=None):
         '''
         :param name: Name of the feature. Used during feature extraction.
         :type name: str
-        :param start: Where the feature starts
+        :param start: Where the feature starts (0-indexed)
         :type start: int
-        :param stop: Where the feature stops
+        :param stop: Where the feature stops (1-indexed, like slices)
         :type stop: int
         :param feature_type: The type of the feature. Allowed types:
                                 'coding', 'primer', 'promoter', 'terminator',
@@ -321,13 +318,11 @@ class Feature(object):
         else:
             self.gaps = gaps
 
-        allowed_types = list(sorted(TO_CORAL.keys()))
-
-        if feature_type in allowed_types:
+        if feature_type in featurenames:
             self.feature_type = feature_type
         else:
             msg1 = 'feature_type '
-            msg2 = 'must be one of the following: {}'.format(allowed_types)
+            msg2 = 'must be one of the following: {}'.format(featurenames)
             raise ValueError(msg1 + msg2)
 
     def move(self, bases):
@@ -390,85 +385,3 @@ class Feature(object):
             return True
         else:
             return False
-
-
-def reverse_complement(sequence, material):
-    '''Reverse complement a sequence.
-
-    :param sequence: Sequence to reverse complement
-    :type sequence: str
-    :param material: dna, rna, or peptide.
-    :type material: str
-    '''
-    code = dict(COMPLEMENTS[material])
-    reverse_sequence = sequence[::-1]
-    return ''.join([code[str(base)] for base in reverse_sequence])
-
-
-def check_alphabet(seq, material):
-    '''Verify that a given string is valid DNA, RNA, or peptide characters.
-
-    :param seq: DNA, RNA, or peptide sequence.
-    :type seq: str
-    :param material: Input material - 'dna', 'rna', or 'pepide'.
-    :type sequence: str
-    :returns: Whether the `seq` is a valid string of `material`.
-    :rtype: bool
-    :raises: ValueError if `material` isn't \'dna\', \'rna\', or \'peptide\'.
-             ValueError if `seq` contains invalid characters for its
-             material type.
-
-    '''
-    errs = {'dna': 'DNA', 'rna': 'RNA', 'peptide': 'peptide'}
-    if material == 'dna' or material == 'rna' or material == 'peptide':
-        alphabet = ALPHABETS[material]
-        err_msg = errs[material]
-    else:
-        msg = 'Input material must be \'dna\', \'rna\', or \'peptide\'.'
-        raise ValueError(msg)
-    # This is a bottleneck when modifying sequence - hence the run_checks
-    # optional parameter in sequence objects..
-    # First attempt with cython was slower. Could also try pypy.
-    if re.search('[^' + alphabet + ']', seq):
-        raise ValueError('Encountered a non-%s character' % err_msg)
-
-
-def process_seq(seq, material):
-    '''Validate and process sequence inputs.
-
-    :param seq: input sequence
-    :type seq: str
-    :param material: DNA, RNA, or peptide
-    :type: str
-    :returns: Uppercase version of `seq` with the alphabet checked by
-              check_alphabet().
-    :rtype: str
-
-    '''
-    check_alphabet(seq, material)
-    seq = seq.upper()
-    return seq
-
-
-def palindrome(seq):
-    '''Test whether a sequence is palindrome.
-
-    :param seq: Sequence to analyze (DNA or RNA).
-    :type seq: coral.DNA or coral.RNA
-    :returns: Whether a sequence is a palindrome.
-    :rtype: bool
-
-    '''
-    seq_len = len(seq)
-    if seq_len % 2 == 0:
-        # Sequence has even number of bases, can test non-overlapping seqs
-        wing = seq_len / 2
-        l_wing = seq[0: wing]
-        r_wing = seq[wing:]
-        if l_wing == r_wing.reverse_complement():
-            return True
-        else:
-            return False
-    else:
-        # Sequence has odd number of bases and cannot be a palindrome
-        return False

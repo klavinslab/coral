@@ -1,7 +1,7 @@
 '''Gibson reaction simulation.'''
 import logging
 import warnings
-import coral.analysis
+import coral as cr
 
 
 logger = logging.getLogger(__name__)
@@ -42,7 +42,7 @@ def gibson(seq_list, linear=False, homology=10, tm=63.0):
     # Remove any redundant (identical) sequences
     seq_list = list(set(seq_list))
     for seq in seq_list:
-        if seq.topology == 'circular':
+        if seq.circular:
             raise ValueError('Input sequences must be linear.')
 
     # Copy input list
@@ -236,9 +236,9 @@ def homology_report(seq1, seq2, strand1, strand2, cutoff=0, min_tm=63.0,
 
     def gen_chunks(s1, s2):
         chunks1 = [seq1_str[-(i + 1):] for i in range(min(len(seq1_str),
-                                                      max_size))]
+                                                          max_size))]
         chunks2 = [seq2_str[:(i + 1)] for i in range(min(len(seq2_str),
-                                                     max_size))]
+                                                         max_size))]
         return chunks1, chunks2
 
     seq1_chunks, seq2_chunks = gen_chunks(seq1_str, seq2_str)
@@ -254,7 +254,7 @@ def homology_report(seq1, seq2, strand1, strand2, cutoff=0, min_tm=63.0,
         if s1 == s2:
             logger.debug('Found Match: {}'.format(str(s1)))
             if s1len >= cutoff:
-                tm = coral.analysis.tm(seq1[-(i + 1):])
+                tm = cr.thermo.tm(seq1[-(i + 1):])
                 logger.debug('Match tm: {} C'.format(tm))
                 if tm >= min_tm:
                     target_matches.append(s1len)
