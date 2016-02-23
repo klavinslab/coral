@@ -1,41 +1,56 @@
 '''DNA object classes.'''
-import collections
 import os
 import shutil
 import subprocess
 import tempfile
-import coral.analysis
-import coral.reaction
-import coral.seqio
-from ._sequence import NucleicAcidSequence
+import coral as cr
+from . import alphabets
+from ._sequence import Feature
+from ._nucleicacid import NucleicAcid
 
 
 class IPythonDisplayImportError(ImportError):
     '''Failed to import IPython display modules - display requires IPython'''
 
 
+class ssDNA(NucleicAcid):
+    '''ssDNA sequence.'''
+
+    def __init__(self, sequence, alphabet=alphabets.dna, circular=False,
+                 run_checks=True):
+        super(ssDNA, self).__init__(sequence, 'dna', alphabet=alphabet,
+                                    circular=circular, run_checks=run_checks,
+                                    any_char='N')
+
+    def copy(self):
+        return type(self)(self.seq, alphabet=self.alphabet,
+                          circular=self.circular, run_checks=False)
+
+    def to_ds(self):
+        return DNA(self.seq, alphabet=self.alphabet, circular=self.circular,
+                   run_checks=False)
+
+
 class DNA(object):
-    '''DNA sequence.'''
-    def __init__(self, dna, bottom=None, circular=False, ds=True,
-                 features=None, run_checks=True, id=None, name=''):
+    '''dsDNA sequence.'''
+
+    def __init__(self, dna, alphabet=alphabets.dna, circular=False,
+                 features=None, run_checks=True, bottom=None, name=None):
         '''
         :param dna: Input sequence (DNA).
         :type dna: str
-        :param bottom: Manual input of bottom-strand sequence. Enables both
-                       mismatches and initializing ssDNA.
-        :type bottom: str
         :param circular: The topology of the DNA - True for circular DNA, False
                          for linear DNA.
         :type circular: bool
-        :param ds: The strandedness of the DNA - True for dsDNA, False for
-                   ssDNA.
-        :type ds: bool
         :param features: List of annotated features.
         :type features: list
         :param run_checks: Check inputs / formats (disabling increases speed):
                            alphabet check
                            case
         :type run_checks: bool
+        :param bottom: String for the bottom sequence for manually setting
+                       overhangs, fast copying.
+        :type bottom: str
         :param name: Optional name field for your DNA sequence.
         :type name: str
         :returns: coral.DNA instance.
@@ -48,28 +63,28 @@ class DNA(object):
         '''
         # TODO: accept sequences in general by running str() on it
         self.material = 'dna'
+        self.alphabet = alphabet
         dna = dna.strip()
-        self.top = NucleicAcidSequence(dna, 'dna', run_checks=run_checks)
-
-        if not ds:
-            self.bottom = NucleicAcidSequence('-' * len(self.top), 'dna',
-                                              run_checks=False)
+        self.top = ssDNA(dna, alphabet=self.alphabet, circular=circular,
+                         run_checks=run_checks)
+        if bottom is None:
+            # If bottom isn't auto-generated, expectation is that it will be
+            # added manually
+            self.bottom = self.top.reverse_complement()
         else:
-            if bottom is None:
-                self.bottom = self.top.reverse_complement()
-            else:
-                if len(bottom) != len(self.top):
-                    msg = 'Top and bottom strands are difference lengths.'
-                    raise ValueError(msg)
-                self.bottom = NucleicAcidSequence(bottom, 'dna',
-                                                  run_checks=run_checks)
+            self.bottom = ssDNA(bottom, alphabet=self.alphabet,
+                                circular=circular, run_checks=False)
+
         if features is None:
             self.features = []
         else:
             self.features = features
         self.circular = circular
-        self.ds = ds
-        self.name = name
+        self.ds = True
+        if name is None:
+            self.name = ''
+        else:
+            self.name = name
 
     def ape(self, ape_path=None):
         '''Open in ApE if `ApE` is in your command line path.'''
@@ -91,7 +106,7 @@ class DNA(object):
             filename = os.path.join(tmp, '{}.ape'.format(self.name))
         else:
             filename = os.path.join(tmp, 'tmp.ape')
-        coral.seqio.write_dna(self, filename)
+        cr.io.write_dna(self, filename)
         process = subprocess.Popen([cmd, filename])
         # Block until window is closed
         try:
@@ -109,10 +124,11 @@ class DNA(object):
         '''
         # Significant performance improvements by skipping alphabet check
         features_copy = [feature.copy() for feature in self.features]
-        return type(self)(str(self.top), bottom=str(self.bottom),
-                          circular=self.circular, ds=self.ds,
-                          features=features_copy, name=self.name,
+        copy = type(self)(self.top.seq, alphabet=self.alphabet,
+                          circular=self.circular, features=features_copy,
+                          name=self.name, bottom=self.bottom.seq,
                           run_checks=False)
+        return copy
 
     def circularize(self):
         '''Circularize linear DNA.
@@ -128,6 +144,8 @@ class DNA(object):
 
         copy = self.copy()
         copy.circular = True
+        copy.top.circular = True
+        copy.bottom.circular = True
         return copy
 
     def display(self):
@@ -167,10 +185,10 @@ class DNA(object):
         import json
         dna_json = {}
         dna_json['name'] = self.name
-        dna_json['material'] = 'DNA'
+        dna_json['material'] = self.material
         dna_json['circular'] = self.circular
-        dna_json['sequence'] = str(self.top)
-        dna_json['bottom'] = str(self.bottom)
+        dna_json['sequence'] = self.top.seq
+        dna_json['bottom'] = self.bottom.seq
 
         features_json = []
         for feature in self.features:
@@ -236,14 +254,15 @@ class DNA(object):
         '''
         copy = self.copy()
         copy.top, copy.bottom = copy.bottom, copy.top
+        copy.features = [_flip_feature(f, len(self)) for f in copy.features]
         return copy
 
     def gc(self):
-        '''Find the frequency of G and C in the current sequence.'''
+        '''Find the frequency of G and C in the current sequence. Calculates
+        the exact frequency of Gs and Cs in each strand, so overhangs are
+        counted only once.'''
 
-        gc_n = len([base for base in self if str(base) == 'C' or
-                    str(base) == 'G'])
-        return float(gc_n) / len(self)
+        return (self.top.gc() + self.bottom.gc()) / 2
 
     def is_palindrome(self):
         if self.top.is_palindrome() and self.bottom.is_palindrome():
@@ -252,19 +271,12 @@ class DNA(object):
             return False
 
     def is_rotation(self, other):
-        if len(self) != len(other):
+        top_rotation = self.top.is_rotation(other.top)
+        bottom_rotation = self.bottom.is_rotation(other.bottom)
+        if top_rotation and bottom_rotation:
+            return True
+        else:
             return False
-
-        for i in range(len(self)):
-            if self.rotate(i) == other:
-                return True
-
-        # Check reverse complement
-        rc = self.reverse_complement()
-        for i in range(len(self)):
-            if rc.rotate(i) == other:
-                return True
-        return False
 
     def linearize(self, index=0):
         '''Linearize circular DNA at an index.
@@ -283,6 +295,8 @@ class DNA(object):
         if index:
             return copy[index:] + copy[:index]
         copy.circular = False
+        copy.top.circular = False
+        copy.bottom.circular = False
 
         return copy
 
@@ -299,32 +313,8 @@ class DNA(object):
                  sequence (for circular DNA).
 
         '''
-        if self.circular:
-            if len(pattern) >= 2 * len(self):
-                raise ValueError('Search pattern longer than searchable ' +
-                                 'sequence.')
-            top = self.top + self.top[:len(pattern) - 1]
-            bottom = self.bottom + self.bottom[:len(pattern) - 1]
-        else:
-            if len(pattern) > len(self):
-                raise ValueError('Search pattern longer than searchable ' +
-                                 'sequence.')
-            top = self.top
-            bottom = self.bottom
-
-        top_matches = top.locate(pattern)
-        bottom_matches = bottom.locate(pattern)
-
-        # Adjust indices if doing circular search
-        def reindex(location_indices):
-            for index in location_indices:
-                if index > len(self):
-                    index -= len(self)
-            return location_indices
-
-        if self.circular and len(pattern) > 1:
-            top_matches = reindex(top_matches)
-            bottom_matches = reindex(bottom_matches)
+        top_matches = self.top.locate(pattern)
+        bottom_matches = self.bottom.locate(pattern)
 
         return [top_matches, bottom_matches]
 
@@ -335,13 +325,7 @@ class DNA(object):
         :rtype: float
 
         '''
-        bases = str(self.top) + str(self.bottom)
-        counter = collections.Counter(bases.lower())
-        mw_a = counter['a'] * 313.2
-        mw_t = counter['t'] * 304.2
-        mw_g = counter['g'] * 289.2
-        mw_c = counter['c'] * 329.2
-        return mw_a + mw_t + mw_g + mw_c
+        return self.top.mw() + self.bottom.mw()
 
     def rotate(self, n):
         '''Rotate Sequence by n bases.
@@ -357,18 +341,19 @@ class DNA(object):
         if not self.circular and n != 0:
             raise ValueError('Cannot rotate linear DNA')
         else:
-            # Save and restored the features (rotated)
-            rotated = self[-n:] + self[:-n]
-            rotated.features = []
+            copy = self.copy()
+            copy.top = self.top.rotate(n)
+            copy.bottom = self.bottom.rotate(-n)
+            copy.features = []
             for feature in self.features:
                 feature_copy = feature.copy()
                 feature_copy.move(n)
                 # Adjust the start/stop if we move over the origin
                 feature_copy.start = feature_copy.start % len(self)
                 feature_copy.stop = feature_copy.stop % len(self)
-                rotated.features.append(feature_copy)
+                copy.features.append(feature_copy)
 
-            return rotated.circularize()
+            return copy.circularize()
 
     def rotate_to(self, index):
         '''Orient DNA to index (only applies to circular DNA).
@@ -410,18 +395,8 @@ class DNA(object):
         copy.top = self.top.reverse_complement()
         copy.bottom = self.bottom.reverse_complement()
 
-        # Adjust feature locations (invert)
-        for feature in copy.features:
-            # Swap strand
-            if feature.strand == 1:
-                feature.strand = 0
-            else:
-                feature.strand = 1
-            # Swap start and stop
-            feature.start, feature.stop = (feature.stop, feature.start)
-            # Adjust start/stop to feature len
-            feature.start = len(copy) - feature.start
-            feature.stop = len(copy) - feature.stop
+        # Remove all features - the reverse complement isn't flip!
+        copy.features = []
 
         return copy
 
@@ -462,52 +437,25 @@ class DNA(object):
         :type parameters: str
 
         '''
-        return coral.analysis.tm(self, parameters=parameters)
+        return cr.thermo.tm(self, parameters=parameters)
 
-    def to_ss(self):
-        '''Produce single stranded version of the current sequence.
+    def to_feature(self, name=None, feature_type='misc_feature'):
+        '''Create a feature from the current object.
 
-        :returns: The current sequence, converted to ssDNA.
-        :rtype: coral.DNA
-
-        '''
-        copy = self.copy()
-
-        # Do nothing if already single-stranded
-        if not self.ds:
-            return copy
-
-        copy.bottom = NucleicAcidSequence('-' * len(copy), 'dna',
-                                          run_checks=False)
-        for top, bottom in zip(copy.top, reversed(copy.bottom)):
-            if top == bottom == '-':
-                raise ValueError('Coercing to single-stranded would ' +
-                                 'introduce a double stranded break.')
-        copy.ds = False
-
-        return copy
-
-    def to_ds(self):
-        '''Produce double stranded version of the current sequence.
-
-        :returns: The current sequence, converted to dsDNA.
-        :rtype: coral.DNA
+        :param name: Name for the new feature. Must be specified if the DNA
+                     instance has no .name attribute.
+        :type name: str
+        :param feature_type: The type of feature (genbank standard).
+        :type feature_type: str
 
         '''
-        copy = self.copy()
-        # Do nothing if already set
-        if self.ds:
-            return copy
-
-        # Find strand that's all gaps (if ss this should be the case)
-        reverse_seq = self.reverse_complement()
-        if all([char == '-' for char in self.top]):
-            copy.top = reverse_seq.bottom
-        elif all([char == '-' for char in self.bottom]):
-            copy.bottom = reverse_seq.top
-        copy.ds = True
-
-        return copy
+        if name is None:
+            if not self.name:
+                raise ValueError('name attribute missing from DNA instance'
+                                 ' and arguments')
+            name = self.name
+        return Feature(name, start=0, stop=len(self),
+                       feature_type=feature_type)
 
     def transcribe(self):
         '''Transcribe into RNA.
@@ -516,7 +464,7 @@ class DNA(object):
         :rtype: coral.RNA
 
         '''
-        return coral.reaction.transcribe(self)
+        return cr.reaction.transcribe(self)
 
     def __add__(self, other):
         '''Add DNA together.
@@ -548,13 +496,8 @@ class DNA(object):
             msg = 'Concatenated DNA would be discontinuous.'
             raise Exception(msg)
 
-        if self.ds or other.ds:
-            ds = True
-        else:
-            ds = False
-
-        tops = str(self.top + other.top)
-        bottoms = str(other.bottom + self.bottom)
+        tops = self.top.seq + other.top.seq
+        bottoms = other.bottom.seq + self.bottom.seq
 
         self_features = [feature.copy() for feature in self.features]
         other_features = [feature.copy() for feature in other.features]
@@ -562,8 +505,9 @@ class DNA(object):
             feature.move(len(self))
         features = self_features + other_features
 
-        new_instance = DNA(tops, bottom=bottoms, circular=False,
-                           ds=ds, run_checks=False, features=features)
+        new_instance = type(self)(tops, alphabet=self.alphabet, circular=False,
+                                  run_checks=False, bottom=bottoms,
+                                  features=features)
 
         return new_instance
 
@@ -709,9 +653,10 @@ class DNA(object):
         # strategy)
         new_bottom = self.bottom[::-1][key][::-1]
 
-        copy = type(self)(str(new_top), bottom=str(new_bottom),
-                          circular=False, ds=self.ds, features=saved_features,
-                          name=self.name, run_checks=False)
+        copy = type(self)(new_top.seq, alphabet=self.alphabet, circular=False,
+                          features=saved_features, bottom=self.bottom.seq,
+                          run_checks=False)
+        copy.bottom = new_bottom
 
         return copy
 
@@ -725,8 +670,7 @@ class DNA(object):
         '''
         tops_equal = self.top == other.top
         bottoms_equal = self.bottom == other.bottom
-        stranded_equal = self.ds == other.ds
-        if tops_equal and bottoms_equal and stranded_equal:
+        if tops_equal and bottoms_equal:
             return True
         else:
             return False
@@ -739,14 +683,18 @@ class DNA(object):
         return len(self.top)
 
     def __mul__(self, n):
-        new_top = self.top * n
-        new_bottom = self.bottom * n
-        features_copy = [feature.copy() for feature in self.features]
+        copy = self.copy()
+        copy.top = self.top * n
+        copy.bottom = self.bottom * n
+        copy.features = []
+        for i in range(n):
+            for feature in self.features:
+                new_feature = feature.copy()
+                new_feature.start += i * len(self)
+                new_feature.stop += i * len(self)
+                copy.features = []
 
-        return type(self)(str(new_top), str(new_bottom),
-                          circular=self.circular, ds=self.ds,
-                          features=features_copy, name=self.name,
-                          run_checks=False)
+        return copy
 
     def __radd__(self, other):
         if other == 0 or other is None:
@@ -786,11 +734,34 @@ class DNA(object):
         self.bottom = self.bottom[::-1][index][::-1]
 
     def __str__(self):
-        return str(self.top)
+        return self.top.seq
+
+
+def _flip_feature(self, feature, parent_len):
+    '''Adjust a feature's location when flipping DNA.
+
+    :param feature: The feature to flip.
+    :type feature: coral.Feature
+    :param parent_len: The length of the sequence to which the feature belongs.
+    :type parent_len: int
+
+    '''
+    copy = feature.copy()
+    # Put on the other strand
+    if copy.strand == 0:
+        copy.strand = 1
+    else:
+        copy.strand = 0
+    # Adjust locations - guarantee that start is always less than end
+    copy.start = parent_len - copy.start
+    copy.stop = parent_len - copy.stop
+    copy.start, copy.stop = copy.stop, copy.start
+    return copy
 
 
 class RestrictionSite(object):
     '''Recognition site and properties of a restriction endonuclease.'''
+
     def __init__(self, recognition_site, cut_site, name=None):
         '''
         :param recognition_site: Input sequence.
@@ -874,29 +845,47 @@ class RestrictionSite(object):
 
 class Primer(object):
     '''A DNA primer - ssDNA with tm, anneal, and optional overhang.'''
-    def __init__(self, anneal, tm, overhang=None, name='', note=''):
+
+    def __init__(self, anneal, tm=None, tm_method='cloning', overhang=None,
+                 name='', note=''):
         '''
         :param anneal: Annealing sequence
-        :type anneal: coral.DNA
+        :type anneal: coral.ssDNA
         :param overhang: Overhang sequence
-        :type overhang: coral.DNA
-        :param tm: melting temperature
+        :type overhang: coral.ssDNA
+        :param tm: Melting temperature (allow manually setting the melting
+                   temp, auto-calculation won't happen).
         :type tm: float
+        :param tm_method: Method to use when calling cr.thermo.tm.
+        :type tm_method: str
         :param name: Optional name of the primer. Used when writing to csv with
-                     seqio.write_primers.
+                     io.write_primers.
         :type name: str
         :param note: Optional description to associate with the primer. Used
-                     when writing to csv with seqio.write_primers.
+                     when writing to csv with io.write_primers.
         :type note: str
         :returns: coral.Primer instance.
 
         '''
-        self.tm = tm
-        self.anneal = anneal.to_ss()
-        if overhang is not None:
-            self.overhang = overhang.to_ss()
+        if tm is not None:
+            self.tm = tm
         else:
-            self.overhang = DNA('', ds=False)
+            self.tm = anneal.tm()
+
+        # TODO: make into property so tm updates automatically
+        if anneal.ds:
+            self.anneal = anneal.top
+        else:
+            self.anneal = anneal
+
+        if overhang is not None:
+            if overhang.ds:
+                self.overhang = overhang.top
+            else:
+                self.overhang = overhang
+        else:
+            self.overhang = ssDNA('')
+
         self.name = name
         self.note = note
 
@@ -911,25 +900,34 @@ class Primer(object):
                           name=self.name, note=self.note)
 
     def primer(self):
-        '''Produce full (overhang + annealing sequence) primer sequence.
+        '''Produce (ss) DNA of the overhang + anneal sequence.
+
+        :returns: The (ss) DNA sequence of the primer.
+        :rtype: coral.ssDNA
+
+        '''
+        return self.overhang + self.anneal
+
+    def to_ds(self):
+        '''Produces (ds) DNA of the overhang + anneal sequence.
 
         :returns: The DNA sequence of the primer.
         :rtype: coral.DNA
 
         '''
-        return self.overhang + self.anneal
+        return self.primer().to_ds()
 
     def __repr__(self):
         '''Representation of a primer.'''
-        anneal = self.anneal.top.seq.upper()
+        anneal = self.anneal.seq.upper()
         if self.overhang:
-            overhang = self.overhang.top.seq.lower()
+            overhang = self.overhang.seq.lower()
             return 'Primer: {} Tm: {:.2f}'.format(overhang + anneal, self.tm)
         else:
             return 'Primer: {} Tm: {:.2f}'.format(anneal, self.tm)
 
     def __str__(self):
-        '''Coerce DNA object to string.
+        '''Coerce Primer object to string.
 
         :returns: A string of the full primer sequence.
         :rtype: str

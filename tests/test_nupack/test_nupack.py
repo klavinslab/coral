@@ -731,33 +731,86 @@ class TestNUPACK(object):
         pairs_output = self.nupack.concentrations(dnas, 1e-6, pairs=True)
         for expect, out in zip(pairs_expected, pairs_output):
             assert_equal(expect, out['concentration'])
-#
-#        # Test with pairs with complexes as argument
-#        arg_pairs_output = self.nupack.concentrations(dnas, 1e-6, pairs=True,
-#                                                      complexes=complexes)
-#        for expect, out in zip(pairs_expected, arg_pairs_output):
-#            assert_equal(expect, out['concentration'])
-#
-#        # Test with pairs and high cutoff
-#        pairs_ct_expected = [[9.933000e-01],
-#                             [9.868000e-01],
-#                             [9.999984e-01],
-#                             [9.843713e-01],
-#                             [9.932675e-01],
-#                             [9.885687e-01],
-#                             [9.980516e-01],
-#                             [9.922003e-01],
-#                             [9.965996e-01],
-#                             [9.963997e-01],
-#                             [9.999922e-01],
-#                             [9.999922e-01],
-#                             [9.965996e-01],
-#                             [9.978997e-01],
-#                             [9.984999e-01]]
-#        pairs_ct_output = self.nupack.concentrations(dnas, 1e-6, pairs=True,
-#                                                     cutoff=0.9)
-#        for expect, out in zip(pairs_ct_expected, pairs_ct_output):
-#            assert_equal(expect, out['fpairs'])
+
+        # Test with pairs with complexes as argument
+        arg_pairs_output = self.nupack.concentrations(dnas, 1e-6, pairs=True,
+                                                      complexes=complexes)
+        for expect, out in zip(pairs_expected, arg_pairs_output):
+            assert_equal(expect, out['concentration'])
+
+        # Test with pairs and high cutoff
+        pairs_ct_expected = [[9.933000e-01],
+                             [9.868000e-01],
+                             [9.999984e-01],
+                             [9.843713e-01],
+                             [9.932675e-01],
+                             [9.885687e-01],
+                             [9.980516e-01],
+                             [9.922003e-01],
+                             [9.965996e-01],
+                             [9.963997e-01],
+                             [9.999922e-01],
+                             [9.999922e-01],
+                             [9.965996e-01],
+                             [9.978997e-01],
+                             [9.984999e-01]]
+        pairs_ct_output = self.nupack.concentrations(dnas, 1e-6, pairs=True,
+                                                     cutoff=0.9)
+        for expect, out in zip(pairs_ct_expected, pairs_ct_output):
+            assert_equal(expect, out['fpairs'])
+
+        # TODO: sort options
+
+    def test_distributions(self):
+        dnas = self.dnas[:2]
+        # Test with no optional arguments
+        dist_cx_expected = [[0, 1],
+                            [1, 0],
+                            [0, 2],
+                            [1, 1],
+                            [1, 2],
+                            [2, 0],
+                            [3, 0],
+                            [2, 1],
+                            [0, 3],
+                            [4, 0],
+                            [3, 1],
+                            [2, 2],
+                            [1, 3]]
+        dist_evs_expected = [2.000000e+00,
+                             1.000000e+00,
+                             1.223070e-14,
+                             6.288671e-15,
+                             1.170654e-29,
+                             0.000000e+00,
+                             0.000000e+00,
+                             0.000000e+00,
+                             0.000000e+00,
+                             0.000000e+00,
+                             0.000000e+00,
+                             0.000000e+00,
+                             0.000000e+00]
+
+        dist_probcols_expected = [[1.210143e-14, 6.288671e-15, 1.000000e+00],
+                                  [6.217249e-15, 1.000000e+00, 0.000000e+00],
+                                  [1.000000e+00, 1.223070e-14, 0.000000e+00],
+                                  [1.000000e+00, 6.288671e-15, 0.000000e+00],
+                                  [1.000000e+00, 1.170654e-29, 0.000000e+00],
+                                  [1.000000e+00, 0.000000e+00, 0.000000e+00],
+                                  [1.000000e+00, 0.000000e+00, 0.000000e+00],
+                                  [1.000000e+00, 0.000000e+00, 0.000000e+00],
+                                  [1.000000e+00, 0.000000e+00, 0.000000e+00],
+                                  [1.000000e+00, 0.000000e+00, 0.000000e+00],
+                                  [1.000000e+00, 0.000000e+00, 0.000000e+00],
+                                  [1.000000e+00, 0.000000e+00, 0.000000e+00],
+                                  [1.000000e+00, 0.000000e+00, 0.000000e+00]]
+
+        # complexes = self.nupack.complexes(dnas, 4)
+        # output = self.nupack.distributions(complexes, [1, 2], 1e-6)
+        # for i, out in enumerate(output):
+        #     assert_equal(out, {'complex': dist_cx_expected,
+        #                        'ev': dist_evs_expected,
+        #                        'probcols': dist_probcols_expected})
 
     def _process_mfe(self, filename):
         curdir = os.path.dirname(__file__)

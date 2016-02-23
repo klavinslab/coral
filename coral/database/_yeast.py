@@ -1,5 +1,5 @@
 '''Yeast database query functions.'''
-import coral
+import coral as cr
 # TODO: Use httplib instead if we only need to do one requests-style function
 
 
@@ -54,7 +54,7 @@ def fetch_yeast_locus_sequence(locus_name, flanking_size=0):
         # print first_result['flankingRegions.sequence.length']
         # print first_result['flankingRegions.sequence.residues']
 
-        seq = coral.DNA(first_result['flankingRegions.sequence.residues'])
+        seq = cr.DNA(first_result['flankingRegions.sequence.residues'])
         # TODO: add more metadata
 
     elif flanking_size == 0:
@@ -75,10 +75,10 @@ def fetch_yeast_locus_sequence(locus_name, flanking_size=0):
         query.set_logic('(A or B) and (C or D) and E')
 
         first_result = query.rows().next()
-        seq = coral.DNA(first_result['sequence.residues'])
+        seq = cr.DNA(first_result['sequence.residues'])
     else:
         print 'Problem with the flanking region size....'
-        seq = coral.DNA('')
+        seq = cr.DNA('')
 
     return seq
 
@@ -123,7 +123,7 @@ def get_yeast_sequence(chromosome, start, end, reverse_complement=False):
     else:
         sequence = ''
 
-    return coral.DNA(sequence)
+    return cr.DNA(sequence)
 
 
 def get_yeast_gene_location(gene_name):
@@ -252,7 +252,7 @@ def get_yeast_promoter_ypa(gene_name):
     parsed = []
     for record in record_split:
         parts = record.split('\n')
-        sequence = coral.DNA(''.join(parts[1:]))
+        sequence = cr.DNA(''.join(parts[1:]))
         sequence.name = parts[0]
         parsed.append(sequence)
 

@@ -16,8 +16,11 @@ DNA design.
 Coral works with PyPy so long as a PyPy-compatible numpy is installed.
 '''
 
-# Check python versions
+import re
 import sys
+import numpy
+
+# Check python versions
 if sys.version_info.major > 2:
     print('Coral is currently compatible only with Python 2.')
     sys.exit(1)
@@ -27,14 +30,19 @@ try:
 except ImportError:
     from distutils.core import setup, Extension
 
-import numpy  # noqa
+# Get version from package __init__.py
+with open('coral/__init__.py', 'r') as fd:
+    __version__ = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+                            fd.read(), re.MULTILINE).group(1)
+if not __version__:
+    raise RuntimeError('Cannot find version information')
 
 
 doclines = __doc__.split('\n')
 
 config = {
     'name': 'coral',
-    'version': '0.4.3',
+    'version': __version__,
     'description': doclines[0],
     'long_description': '\n'.join(doclines[2:]),
     'author': 'Nick Bolten',
@@ -49,32 +57,32 @@ config = {
                        'yeastdatabases': ['intermine', 'requests'],
                        'documentation': ['sphinx']},
     'packages': ['coral',
+                 'coral.alignment',
                  'coral.analysis',
-                 'coral.analysis._sequence',
-                 'coral.analysis._sequencing',
-                 'coral.analysis._structure',
+                 'coral.cloning',
                  'coral.constants',
                  'coral.database',
-                 'coral.design',
-                 'coral.design._oligo_synthesis',
-                 'coral.design._sequence_generation',
-                 'coral.seqio',
+                 'coral.io',
+                 'coral.random',
                  'coral.reaction',
                  'coral.sequence',
+                 'coral.structure',
+                 'coral.thermo',
                  'coral.utils'],
-    'package_data': {'coral': ['coral/analysis/_sequencing/data/*',
-                               'coral/sequence/d3-plasmid.js']},
+    'package_data': {'coral': ['coral/sequence/d3-plasmid.js']},
     'include_package_data': True,
-    'scripts': [],
     'classifiers': ['Programming Language :: Python',
                     'Programming Language :: Python :: 2.7',
                     'Programming Language :: Python :: 2 :: Only',
                     'Topic :: Scientific/Engineering',
-                    'Topic :: Scientific/Engineering :: Bio-Informatics']
+                    'Topic :: Scientific/Engineering :: Bio-Informatics'],
+    'keywords': ['synthetic biology', 'biology', 'design', 'automation',
+                 'cloning', 'sanger', 'primer', 'dna', 'structure'],
+    'zip_safe': False
 }
 
-seq_extension = Extension('coral.analysis._sequencing.calign',
-                          ['coral/analysis/_sequencing/calign.c'],
+seq_extension = Extension('coral.alignment.calign',
+                          ['coral/alignment/calign.c'],
                           include_dirs=[numpy.get_include()])
 EXTENSIONS = [seq_extension]
 

@@ -1,3 +1,21 @@
+recursive-include coral *.pyx
+recursive-include bin *.py
+
+recursive-include docs *.ipynb *.py *.rst
+recursive-include docs *.ape *.csv *.seq *.text
+recursive-include docs *.png
+recursive-include docs *.bat Makefile
+
+recursive-include tests *.py
+recursive-include tests *.ape *.fasta *.tsv
+recursive-include tests *.epairs *.ppairs *.cx-epairs *.ocx-epairs *.cx-fpairs *.ocx-mfe
+
 include requirements.txt
-include coral/analysis/_sequencing/data/*
+include dev-requirements.txt
 include coral/sequence/d3-plasmid.js
+include COPYING
+include *.md
+include *.sh
+
+prune *.pyc
+prune *.ipynb_checkpoints
