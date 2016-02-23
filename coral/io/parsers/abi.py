@@ -3,65 +3,55 @@
 This is slightly modified from MIT-licensed code from Github user bow:
 https://github.com/bow/abifpy
 '''
-
 import datetime
 import struct
-from os.path import splitext, basename
-
 from sys import version_info
 
-RELEASE = False
-__version_info__ = ('1', '0', )
-__version__ = '.'.join(__version_info__)
-__version__ += '-dev' if not RELEASE else ''
-
-
-__all__ = ['Trace']
 
 # dictionary for deciding which values to extract and contain in self.data
 EXTRACT = {
-            'TUBE1': 'well',
-            'DySN1': 'dye',
-            'GTyp1': 'polymer',
-            'MODL1': 'model',
-            'RUND1': 'run start date',
-            'RUND2': 'run finish date',
-            'RUND3': 'data collection start date',
-            'RUND4': 'data collection finish date',
-            'RUNT1': 'run start time',
-            'RUNT2': 'run finish time',
-            'RUNT3': 'data collection start time',
-            'RUNT4': 'data collection finish time',
-            'DATA1': 'raw1',
-            'DATA2': 'raw2',
-            'DATA3': 'raw3',
-            'DATA4': 'raw4',
-            'PLOC2': 'tracepeaks',
-            'FWO_1': 'baseorder',
-          }
+    'TUBE1': 'well',
+    'DySN1': 'dye',
+    'GTyp1': 'polymer',
+    'MODL1': 'model',
+    'RUND1': 'run start date',
+    'RUND2': 'run finish date',
+    'RUND3': 'data collection start date',
+    'RUND4': 'data collection finish date',
+    'RUNT1': 'run start time',
+    'RUNT2': 'run finish time',
+    'RUNT3': 'data collection start time',
+    'RUNT4': 'data collection finish time',
+    'DATA1': 'raw1',
+    'DATA2': 'raw2',
+    'DATA3': 'raw3',
+    'DATA4': 'raw4',
+    'PLOC2': 'tracepeaks',
+    'FWO_1': 'baseorder',
+}
 
 # dictionary for unpacking tag values
 _BYTEFMT = {
-            1: 'b',      # byte
-            2: 's',      # char
-            3: 'H',      # word
-            4: 'h',      # short
-            5: 'i',      # long
-            6: '2i',     # rational, legacy unsupported
-            7: 'f',      # float
-            8: 'd',      # double
-            10: 'h2B',   # date
-            11: '4B',    # time
-            12: '2i2b',  # thumb
-            13: 'B',     # bool
-            14: '2h',    # point, legacy unsupported
-            15: '4h',    # rect, legacy unsupported
-            16: '2i',    # vPoint, legacy unsupported
-            17: '4i',    # vRect, legacy unsupported
-            18: 's',     # pString
-            19: 's',     # cString
-            20: '2i',    # Tag, legacy unsupported
-           }
+    1: 'b',      # byte
+    2: 's',      # char
+    3: 'H',      # word
+    4: 'h',      # short
+    5: 'i',      # long
+    6: '2i',     # rational, legacy unsupported
+    7: 'f',      # float
+    8: 'd',      # double
+    10: 'h2B',   # date
+    11: '4B',    # time
+    12: '2i2b',  # thumb
+    13: 'B',     # bool
+    14: '2h',    # point, legacy unsupported
+    15: '4h',    # rect, legacy unsupported
+    16: '2i',    # vPoint, legacy unsupported
+    17: '4i',    # vRect, legacy unsupported
+    18: 's',     # pString
+    19: 's',     # cString
+    20: '2i',    # Tag, legacy unsupported
+}
 
 # header structure
 _HEADFMT = '>4sH4sI2H3I'
@@ -71,27 +61,28 @@ _DIRFMT = '>4sI2H4I'
 
 
 # to handle py3 IO
-def py3_get_string(byte):
+def get_string(byte):
     if version_info[0] < 3:
         return byte
     else:
         return byte.decode()
 
 
-def py3_get_byte(string):
+def get_byte(string):
     if version_info[0] < 3:
         return string
     else:
         return string.encode()
 
 
-class Trace(object):
-    '''Class representing trace file.'''
+class ABI(object):
+    '''Class representing an ABI trace file.'''
+
     def __init__(self, in_file, trimming=False):
-        self._handle = open(in_file, 'rb')
+        self._handle = in_file
         try:
             self._handle.seek(0)
-            if not self._handle.read(4) == py3_get_byte('ABIF'):
+            if not self._handle.read(4) == get_byte('ABIF'):
                 raise IOError('Input is not a valid trace file')
         except IOError:
             self._handle = None
@@ -122,7 +113,6 @@ class Trace(object):
                     # e.g. self.data['well'] = 'B6'
                     self.data[EXTRACT[key]] = self.get_data(key)
 
-            self.id = self._get_file_id(in_file)
             self.name = self.get_data('SMPL1')
             self.seq = self.get_data('PBAS2')
             self.qual = ''.join([chr(ord(value) + 33) for value in
@@ -139,15 +129,15 @@ class Trace(object):
         if len(self.seq) > 10:
             seq = '{0}...{1}'.format(self.seq[:5], self.seq[-5:])
             qual_val = '[{0}, ..., {1}]'.format(
-                      repr(self.qual_val[:5])[1:-1],
-                      repr(self.qual_val[-5:])[1:-1])
+                repr(self.qual_val[:5])[1:-1],
+                repr(self.qual_val[-5:])[1:-1])
         else:
             seq = self.seq
             qual_val = self.qual_val
 
         return '{0}({1}, qual_val:{2}, id:{3}, name:{4})'.format(
-                self.__class__.__name__, repr(seq), qual_val,
-                repr(self.id), repr(self.name))
+            self.__class__.__name__, repr(seq), qual_val,
+            repr(self.name))
 
     def _parse_header(self, header):
         '''Generator for directory contents.'''
@@ -168,15 +158,7 @@ class Trace(object):
             read = self._handle.read(struct.calcsize(_DIRFMT))
             dir_entry = struct.unpack(_DIRFMT, read) + (start,)
             index += 1
-            yield _TraceDir(dir_entry, self._handle)
-
-    def _get_file_id(self, in_file):
-        '''Returns filename without extension.'''
-        return splitext(basename(in_file))[0]
-
-    def close(self):
-        '''Closes the Trace file object.'''
-        self._handle.close()
+            yield _ABIDir(dir_entry, self._handle)
 
     def get_data(self, key):
         '''Returns data stored in a tag.'''
@@ -187,47 +169,6 @@ class Trace(object):
         import re
         seq = self.seq
         return re.sub('K|Y|W|M|R|S', 'N', seq)
-
-    def export(self, out_file='', fmt='fasta'):
-        '''Writes the trace file sequence to a fasta file.
-
-        Keyword argument:
-        out_file -- output file name (detault 'tracefile'.fa)
-        fmt -- 'fasta': write fasta file, 'qual': write qual file,
-                        'fastq': write fastq file
-
-        '''
-        if out_file == '':
-            file_name = self.id
-            if fmt == 'fasta':
-                file_name += '.fa'
-            elif fmt == 'qual':
-                file_name += '.qual'
-            elif fmt == 'fastq':
-                file_name += '.fq'
-            else:
-                raise ValueError('Invalid file format: {0}.'.format(fmt))
-        else:
-            file_name = out_file
-
-        if fmt == 'fasta':
-            contents = '>{0} {1}\n{2}\n'.format(
-                        self.id,
-                        self.name,
-                        self.seq)
-        elif fmt == 'qual':
-            contents = '>{0} {1}\n{2}\n'.format(
-                        self.id,
-                        self.name,
-                        ' '.join(map(str, self.qual_val)))
-        elif fmt == 'fastq':
-            contents = '@{0} {1}\n{2}\n+{0} {1}\n{3}\n'.format(
-                        self.id,
-                        self.name,
-                        self.seq, ''.join(self.qual))
-
-        with open(file_name, 'w') as out_file:
-            out_file.writelines(contents)
 
     def trim(self, seq, cutoff=0.05):
         '''Trims the sequence using Richard Mott's modified trimming algorithm.
@@ -255,7 +196,7 @@ class Trace(object):
         else:
             # calculate probability back from formula used
             # to calculate phred qual values
-            score_list = [cutoff - (10 ** (qual/-10.0)) for
+            score_list = [cutoff - (10 ** (qual / -10.0)) for
                           qual in self.qual_val]
 
             # calculate cummulative score_list
@@ -280,10 +221,11 @@ class Trace(object):
             return seq[trim_start:trim_finish]
 
 
-class _TraceDir(object):
+class _ABIDir(object):
     '''Class representing directory content.'''
+
     def __init__(self, tag_entry, handle):
-        self.tag_name = py3_get_string(tag_entry[0])
+        self.tag_name = get_string(tag_entry[0])
         self.tag_num = tag_entry[1]
         self.elem_code = tag_entry[2]
         self.elem_size = tag_entry[3]
@@ -333,7 +275,7 @@ class _TraceDir(object):
 
             # account for different data types
             if self.elem_code == 2:
-                return py3_get_string(data)
+                return get_string(data)
             elif self.elem_code == 10:
                 return datetime.date(*data)
             elif self.elem_code == 11:
@@ -341,9 +283,9 @@ class _TraceDir(object):
             elif self.elem_code == 13:
                 return bool(data)
             elif self.elem_code == 18:
-                return py3_get_string(data[1:])
+                return get_string(data[1:])
             elif self.elem_code == 19:
-                return py3_get_string(data[:-1])
+                return get_string(data[:-1])
             else:
                 return data
         else:

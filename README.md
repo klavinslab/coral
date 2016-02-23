@@ -46,7 +46,6 @@ Docker images available here: https://hub.docker.com/u/coraldesign/
 
 ```
 numpy
-biopython
 ```
 
 optional:

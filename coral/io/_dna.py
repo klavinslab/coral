@@ -29,19 +29,15 @@ def read_dna(path):
     fasta_exts = ['.fasta', '.fa', '.fsa', '.seq']
     abi_exts = ['.abi', '.ab1']
 
-    if ext in genbank_exts:
-        with open(path) as f:
+    with open(path) as f:
+        if ext in genbank_exts:
             return parsers.parse_genbank(f)
-    elif ext in fasta_exts:
-        with open(path) as f:
+        elif ext in fasta_exts:
             return parsers.parse_fasta(f)
-    elif ext in abi_exts:
-        trace = parsers.Trace(path)
-        dna = cr.DNA(trace.seq)
-        trace.close()
-        return dna
-    else:
-        raise ValueError('File format not recognized.')
+        elif ext in abi_exts:
+            return cr.DNA(parsers.ABI(f).seq)
+        else:
+            raise ValueError('File format not recognized.')
 
 
 def read_sequencing(directory):
