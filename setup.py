@@ -52,7 +52,7 @@ config = {
     'url': 'https://github.com/klavinslab/coral',
     'license': 'MIT',
     'download_url': 'https://github.com/klavinslab/coral.git',
-    'install_requires': ['numpy', 'biopython'],
+    'install_requires': ['numpy'],
     'extras_require': {'plotting': ['matplotlib'],
                        'yeastdatabases': ['intermine', 'requests'],
                        'documentation': ['sphinx']},
