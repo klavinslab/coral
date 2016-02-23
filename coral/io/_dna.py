@@ -1,4 +1,5 @@
 '''Read and write DNA sequences.'''
+import coral as cr
 import csv
 import os
 from . import parsers
@@ -26,16 +27,21 @@ def read_dna(path):
 
     genbank_exts = ['.gb', '.ape']
     fasta_exts = ['.fasta', '.fa', '.fsa', '.seq']
+    abi_exts = ['.abi', '.ab1']
 
-    with open(path) as f:
-        if any([ext == extension for extension in genbank_exts]):
-            parser = parsers.parse_genbank
-        elif any([ext == extension for extension in fasta_exts]):
-            parser = parsers.parse_fasta
-        else:
-            raise ValueError('File format not recognized.')
-
-        return parser(f)
+    if ext in genbank_exts:
+        with open(path) as f:
+            return parsers.parse_genbank(f)
+    elif ext in fasta_exts:
+        with open(path) as f:
+            return parsers.parse_fasta(f)
+    elif ext in abi_exts:
+        trace = parsers.Trace(path)
+        dna = cr.DNA(trace.seq)
+        trace.close()
+        return dna
+    else:
+        raise ValueError('File format not recognized.')
 
 
 def read_sequencing(directory):
