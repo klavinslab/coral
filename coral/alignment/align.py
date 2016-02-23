@@ -1,4 +1,11 @@
-'''Numpy implementation of Needlman-Wunsch algorithm'''
+'''Numpy implementation of Needlman-Wunsch algorithm. Runs about 100 times
+slower than the cython implementation.
+
+This module is derived (with modification) from the \'align\' repository of
+Brent Pederson at https://github.com/brentp/align under the MIT license.
+
+'''
+
 import numpy as np
 from . import substitution_matrices as submat
 

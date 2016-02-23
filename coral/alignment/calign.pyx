@@ -1,3 +1,9 @@
+'''Needleman-Wunsch alignment using numpy and cython.
+
+This module is derived (with modification) from the \'align\' repository of
+Brent Pederson at https://github.com/brentp/align under the MIT license.
+
+'''
 import numpy as np
 cimport numpy as np
 from . import substitution_matrices as submat
