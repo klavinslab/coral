@@ -55,7 +55,7 @@ def reverse_transcribe(rna):
     :rtype: coral.DNA
 
     '''
-    return cr.RNA(str(rna).replace('U', 'T'))
+    return cr.DNA(str(rna).replace('U', 'T'))
 
 
 def coding_sequence(sequence):

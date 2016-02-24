@@ -61,10 +61,9 @@ class DNA(object):
                  ValueError if top and bottom strands are not complementary.
 
         '''
-        # TODO: accept sequences in general by running str() on it
         self.material = 'dna'
         self.alphabet = alphabet
-        dna = dna.strip()
+        dna = str(dna).strip()
         self.top = ssDNA(dna, alphabet=self.alphabet, circular=circular,
                          run_checks=run_checks)
         if bottom is None:

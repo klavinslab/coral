@@ -26,8 +26,8 @@ class Sequence(object):
         self.any_char = any_char
 
         if run_checks:
-            self.seq = sequence.upper()
-            pattern = '[^' + self.alphabet + self.alphabet.lower() + ']'
+            self.seq = str(sequence).upper()
+            pattern = '[^' + re.escape(alphabet + alphabet.lower()) + ']'
             if re.search(pattern, self.seq):
                 msg = 'Sequence doesn\'t match {}'.format(self.alphabet)
                 raise AlphabetError(msg)

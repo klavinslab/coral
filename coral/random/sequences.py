@@ -1,6 +1,7 @@
 '''Generate a random DNA sequence.'''
 import random
 import coral as cr
+import coral.sequence.alphabets as alphabets
 
 
 def random_dna(n):
@@ -12,7 +13,8 @@ def random_dna(n):
     :rtype: coral.DNA
 
     '''
-    return cr.DNA(''.join([random.choice('ATGC') for i in range(n)]))
+    residues = [random.choice(alphabets.dna_unambiguous) for i in range(n)]
+    return cr.DNA(''.join(residues))
 
 
 def random_ssdna(n):
@@ -24,7 +26,8 @@ def random_ssdna(n):
     :rtype: coral.ssDNA
 
     '''
-    return cr.ssDNA(''.join([random.choice('ATGC') for i in range(n)]))
+    residues = [random.choice(alphabets.dna_unambiguous) for i in range(n)]
+    return cr.ssDNA(''.join(residues))
 
 
 def random_rna(n):
@@ -36,7 +39,8 @@ def random_rna(n):
     :rtype: coral.RNA
 
     '''
-    return cr.RNA(''.join([random.choice('ATGC') for i in range(n)]))
+    residues = [random.choice(alphabets.rna_unambiguous) for i in range(n)]
+    return cr.RNA(''.join(residues))
 
 
 def random_peptide(n):
@@ -48,4 +52,5 @@ def random_peptide(n):
     :rtype: coral.Peptide
 
     '''
-    return cr.Peptide(''.join([random.choice('ATGC') for i in range(n)]))
+    residues = [random.choice(alphabets.peptide) for i in range(n)]
+    return cr.Peptide(''.join(residues))

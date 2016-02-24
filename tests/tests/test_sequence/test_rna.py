@@ -4,6 +4,7 @@ Tests for the RNA sequence class.
 '''
 
 from coral import RNA
+from coral.sequence.alphabets import AlphabetError
 from nose.tools import assert_equal, assert_false, assert_true, assert_raises
 
 
@@ -83,7 +84,7 @@ class TestRNA(object):
         def radd_800(seq):
             return 800 + seq
 
-        assert_raises(TypeError, radd_800, self.test_rna)
+        assert_raises(AlphabetError, radd_800, self.test_rna)
 
     def test_mul(self):
         assert_equal(str((self.test_rna * 4)), 'AUGCAUGCAUGCAUGC')

@@ -97,9 +97,7 @@ class Peptide(object):
 
     def __repr__(self):
         '''String to print when object is called directly.'''
-        header = 'Peptide:'
-        sequence = self.sequence.__repr__()
-        return ' '.join([header, sequence])
+        return self.sequence.__repr__()
 
     def __setitem__(self, key, value):
         self.sequence.__setitem__(key, value)
