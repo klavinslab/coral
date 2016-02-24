@@ -4,14 +4,11 @@ import csv
 import os
 from . import parsers
 from . import writers
+from .exceptions import UnsupportedFileError
 
 
 class PrimerAnnotationError(ValueError):
-    pass
-
-
-class FeatureNameError(ValueError):
-    pass
+    '''Raise if primer has insufficient annotation to be written to file.'''
 
 
 def read_dna(path):
@@ -37,11 +34,11 @@ def read_dna(path):
         elif ext in abi_exts:
             return cr.DNA(parsers.ABI(f).seq)
         else:
-            raise ValueError('File format not recognized.')
+            raise UnsupportedFileError('File format not recognized.')
 
 
-def read_sequencing(directory):
-    '''Read .seq and .abi/.ab1 results files from a dir.
+def read_dnas(directory):
+    '''Read all DNA sequences files in a directory.
 
     :param directory: Path to directory containing sequencing files.
     :type directory: str
@@ -50,11 +47,13 @@ def read_sequencing(directory):
 
     '''
     dirfiles = os.listdir(directory)
-    seq_exts = ['.seq', '.abi', '.ab1']
-    # Exclude files that aren't sequencing results
-    seq_paths = [x for x in dirfiles if os.path.splitext(x)[1] in seq_exts]
-    paths = [os.path.join(directory, x) for x in seq_paths]
-    sequences = [read_dna(x) for x in paths]
+    sequences = []
+    for dirfile in dirfiles:
+        path = os.path.join(directory, dirfile)
+        try:
+            sequences.append(read_dna(path))
+        except UnsupportedFileError:
+            pass
 
     return sequences
 
