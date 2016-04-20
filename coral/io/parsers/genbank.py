@@ -158,14 +158,24 @@ def process_feature(feature_str):
 
     qualifiers = {}
     for qual_lines in unprocessed_quals:
-        # Newlines in qualifiers are just for document consistency - they
-        # have no semantic value
-        qual_lines = ''.join([l.strip() for l in qual_lines.split('\n')])
-        qual_split = re.search('^\s*/(.*)(?==)=(.*)', qual_lines)
-        qual_key = qual_split.group(1)
-        # Qualifier data is always surrounded by double quotes
-        qual_data = qual_split.group(2).strip('"')
-        qualifiers[qual_key] = qual_data
+        # Newlines within a qualifiers should be removed along with left-pad
+        # whitespace
+        qual_line = ' '.join([l.strip() for l in qual_lines.split('\n')])
+        # Qualifiers have a name (e.g. /name) and optionally a value following
+        # an equals sign (e.g. \name="value"). Values do not need to have
+        # quotes around them and are used inconsistently. Qualifiers with no
+        # values act like boolean flags (e.g. mark as /pseudo for pseudogene).
+
+        # Does the qualifier have a value? This only occurs if there's
+        # a \name= string
+        name_value = re.search('^/(.*)(?==)=(.*)', qual_line)
+        if name_value:
+            qual_name = name_value.group(1)
+            qual_value = name_value.group(2).strip('"')
+        else:
+            qual_name = re.search('^/(.*)', qual_line).group(1)
+            qual_value = True
+        qualifiers[qual_name] = qual_value
 
     # Only save features that have labels (i.e. names)
     if 'label' in qualifiers:
