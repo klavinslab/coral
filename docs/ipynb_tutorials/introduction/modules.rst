@@ -27,6 +27,7 @@ lower\_case with underscores.
 
 
 
+
 .. parsed-literal::
 
     ['DNA',
@@ -41,7 +42,6 @@ lower\_case with underscores.
      '__name__',
      '__package__',
      '__path__',
-     '_sequence',
      'analysis',
      'constants',
      'database',
@@ -49,7 +49,7 @@ lower\_case with underscores.
      'matplotlib',
      'reaction',
      'seqio',
-     'simulation']
+     'sequence']
 
 
 
@@ -73,13 +73,14 @@ specialized classes like Primer).
     pep = cor.Peptide("mlnp")
     print "Peptide: {}".format(pep)
 
+
 .. parsed-literal::
 
     DNA: ATGC
     Palindrome?: False
-
+    
     RNA: AUGC
-
+    
     Peptide: MLNP
 
 
@@ -106,6 +107,7 @@ sequencing analysis).
 
     # Example: finding the Tm of ATGCATGCATGCATGC according to the SantaLucia98 method.
     cor.analysis.tm(dna * 4, parameters="santalucia98")
+
 
 
 
@@ -154,7 +156,4 @@ sequences. The module currently supports reading in individual sequences
 (fasta or genbank) using read\_dna, reading in all the .ab1, .abi, and
 .seq files in a directory using read\_sequencing, and writing DNA
 objects to file (fasta or genbank).
-
-.. code:: python
-
 

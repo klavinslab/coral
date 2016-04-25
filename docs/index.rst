@@ -1,34 +1,31 @@
-.. coral documentation master file, created by
-   sphinx-quickstart on Tue Sep 24 18:33:33 2013.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
-Welcome to coral
+Coral
 =================================
 
-:Author: Nick Bolten
-:Source code: `github.com project <http://github.com/klavinslab/coral>`_
-:Issue Tracker: `github.com issues <http://github.com/klavinslab/coral/issues>`_
-:Generated: |today|
-:License: Academic (UW License, see LICENSE in source)
-:Version: |release|
+.. container:: row pagetop
 
-**Tutorial:**
+    .. container:: col-md-12 col-md-offset-5
 
-.. toctree::
-   :maxdepth: 3
+        .. container:: row logo
 
-   tutorial/index
+            .. image:: coral_256.png
 
-**API Documentation:**
++---------------------+------------------+
+| :ref:`introduction` | :ref:`tutorials` |
++---------------------+------------------+
+| :ref:`learnsynbio`  | :ref:`api`       |
++---------------------+------------------+
 
-.. toctree::
-   api
+.. :ref:`introduction`
+..
+.. :ref:`tutorials`
+..
+.. :ref:`learnsynbio`
+..
+.. :ref:`api`
 
+.. _`introduction`:
 
-Indices and tables
-==================
+Introduction
+------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+etc etc
