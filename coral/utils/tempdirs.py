@@ -1,6 +1,7 @@
 # -*- coding: utf-8
 '''Temporary directory helpers for scripts that call command line
 applications. '''
+from functools import wraps
 import os
 import shutil
 import tempfile
@@ -14,6 +15,7 @@ def tempdir(fun):
     :type fun: instance method
 
     '''
+    @wraps(fun)
     def wrapper(*args, **kwargs):
         self = args[0]
         if os.path.isdir(self._tempdir):

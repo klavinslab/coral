@@ -106,6 +106,7 @@ html_theme = 'bootstrap'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
+    'bootswatch_theme': 'readable',
     'source_link_position': False
 }
 

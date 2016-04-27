@@ -91,7 +91,7 @@ class NUPACK(object):
         # Set up the input file and run the command
         stdout = self._run('pfunc', cmd_args, [str(strand)]).split('\n')
 
-        return (float(stdout[-3]), float(stdout[-2]))
+        return [float(stdout[-3]), float(stdout[-2])]
 
     @tempdirs.tempdir
     def pfunc_multi(self, strands, permutation=None, temp=37.0, pseudo=False,
@@ -147,7 +147,7 @@ class NUPACK(object):
         lines = self._multi_lines(strands, permutation)
         stdout = self._run('pfunc', cmd_args, lines).split('\n')
 
-        return (float(stdout[-3]), float(stdout[-2]))
+        return [float(stdout[-3]), float(stdout[-2])]
 
     @tempdirs.tempdir
     def pairs(self, strand, cutoff=0.001, temp=37.0, pseudo=False,
@@ -902,7 +902,7 @@ class NUPACK(object):
         stdout = self._run('defect', cmd_args, lines).split('\n')
 
         # Return the defect [ensemble defect, ensemble defect]
-        return (float(stdout[-3]), float(stdout[-2]))
+        return [float(stdout[-3]), float(stdout[-2])]
 
     @tempdirs.tempdir
     def defect_multi(self, strands, dotparens, permutation=None, mfe=False,
@@ -970,7 +970,7 @@ class NUPACK(object):
         stdout = self._run('defect', cmd_args, lines).split('\n')
 
         # Return the defect [ensemble defect, ensemble defect]
-        return (float(stdout[-3]), float(stdout[-2]))
+        return [float(stdout[-3]), float(stdout[-2])]
 
     @tempdirs.tempdir
     def complexes(self, strands, max_size, ordered=False, pairs=False,
