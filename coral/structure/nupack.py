@@ -89,7 +89,8 @@ class NUPACK(object):
                                        magnesium, multi=False)
 
         # Set up the input file and run the command
-        stdout = self._run('pfunc', cmd_args, [str(strand)]).split('\n')
+        stdout, stderr = self._run('pfunc', cmd_args, [str(strand)])
+        stdout = stdout.split('\n')
 
         return (float(stdout[-3]), float(stdout[-2]))
 
@@ -145,7 +146,8 @@ class NUPACK(object):
         if permutation is None:
             permutation = range(1, len(strands) + 1)
         lines = self._multi_lines(strands, permutation)
-        stdout = self._run('pfunc', cmd_args, lines).split('\n')
+        stdout, stderr = self._run('pfunc', cmd_args, lines)
+        stdout = stdout.split('\n')
 
         return (float(stdout[-3]), float(stdout[-2]))
 
@@ -566,7 +568,8 @@ class NUPACK(object):
             cmd_args = []
 
         # Set up the input file and run the command
-        stdout = self._run('count', cmd_args, [str(strand)]).split('\n')
+        stdout, stderr = self._run('count', cmd_args, [str(strand)])
+        stdout = stdout.split('\n')
 
         # Return the count
         return int(float(stdout[-2]))
@@ -610,7 +613,8 @@ class NUPACK(object):
         if permutation is None:
             permutation = range(1, len(strands) + 1)
         lines = self._multi_lines(strands, permutation)
-        stdout = self._run('count', cmd_args, lines).split('\n')
+        stdout, stderr = self._run('count', cmd_args, lines)
+        stdout = stdout.split('\n')
 
         return int(float(stdout[-2]))
 
@@ -662,7 +666,8 @@ class NUPACK(object):
 
         # Set up the input file and run the command. Note: no STDOUT
         lines = [str(strand), dotparens]
-        stdout = self._run('energy', cmd_args, lines).split('\n')
+        stdout, stderr = self._run('energy', cmd_args, lines)
+        stdout = stdout.split('\n')
 
         # Return the energy
         return float(stdout[-2])
@@ -724,7 +729,8 @@ class NUPACK(object):
             permutation = range(1, len(strands) + 1)
         lines = self._multi_lines(strands, permutation)
         lines.append(dotparens)
-        stdout = self._run('energy', cmd_args, lines).split('\n')
+        stdout, stderr = self._run('energy', cmd_args, lines)
+        stdout = stdout.split('\n')
 
         return float(stdout[-2])
 
@@ -776,7 +782,8 @@ class NUPACK(object):
 
         # Set up the input file and run the command.
         lines = [str(strand), dotparens]
-        stdout = self._run('prob', cmd_args, lines).split('\n')
+        stdout, stderr = self._run('prob', cmd_args, lines)
+        stdout = stdout.split('\n')
 
         # Return the probabilities
         return float(stdout[-2])
@@ -839,7 +846,8 @@ class NUPACK(object):
             permutation = range(1, len(strands) + 1)
         lines = self._multi_lines(strands, permutation)
         lines.append(dotparens)
-        stdout = self._run('prob', cmd_args, lines).split('\n')
+        stdout, stderr = self._run('prob', cmd_args, lines)
+        stdout = stdout.split('\n')
 
         return float(stdout[-2])
 
@@ -899,7 +907,8 @@ class NUPACK(object):
 
         # Set up the input file and run the command.
         lines = [str(strand), dotparens]
-        stdout = self._run('defect', cmd_args, lines).split('\n')
+        stdout, stderr = self._run('defect', cmd_args, lines)
+        stdout = stdout.split('\n')
 
         # Return the defect [ensemble defect, ensemble defect]
         return (float(stdout[-3]), float(stdout[-2]))
@@ -967,7 +976,8 @@ class NUPACK(object):
             permutation = range(1, len(strands) + 1)
         lines = self._multi_lines(strands, permutation)
         lines.append(dotparens)
-        stdout = self._run('defect', cmd_args, lines).split('\n')
+        stdout, stderr = self._run('defect', cmd_args, lines)
+        stdout = stdout.split('\n')
 
         # Return the defect [ensemble defect, ensemble defect]
         return (float(stdout[-3]), float(stdout[-2]))
@@ -1142,7 +1152,7 @@ class NUPACK(object):
         '''
         cmd_args = ['-quiet', '-timeonly']
         lines = self._multi_lines(strands, [max_size])
-        stdout = self._run('complexes', cmd_args, lines)
+        stdout, stderr = self._run('complexes', cmd_args, lines)
         return float(re.search('calculation\: (.*) seconds', stdout).group(1))
 
     @tempdirs.tempdir
@@ -1178,7 +1188,7 @@ class NUPACK(object):
             if len(concs) != nstrands:
                 raise ValueError('concs argument not same length as strands.')
         except TypeError:
-            concs = [concs for i in range(len(complexes['strands']))]
+            concs = [concs for i in range(len(complexes[0]['strands']))]
 
         # Set up command-line arguments
         cmd_args = ['-quiet']
@@ -1186,19 +1196,20 @@ class NUPACK(object):
             cmd_args.append('-ordered')
 
         # Write .con file
-        with open(os.path.join(self._tempdir, 'concentrations.con')) as f:
-            f.writelines(concs)
+        with open(os.path.join(self._tempdir, 'concentrations.con'), 'w') as f:
+            f.write('\n'.join([str(conc) for conc in concs]))
+#             f.writelines([str(conc) for conc in concs])
 
         # Write .cx or .ocx file
         header = ['%t Number of strands: {}'.format(nstrands),
                   '%\tid\tsequence']
-        for i, strand in enumerate(complexes['strands']):
+        for i, strand in enumerate(complexes[0]['strands']):
             header.append('%\t{}\t{}'.format(i + 1, strand))
         header.append('%\tT = {}'.format(temp))
         body = []
         for i, cx in enumerate(complexes):
-            permutation = '\t'.join(complexes['complex'])
-            line = '{}\t{}\t{}'.format(i + 1, permutation, complexes['energy'])
+            permutation = '\t'.join([str(perm) for perm in cx['complex']])
+            line = '{}\t{}\t{}'.format(i + 1, permutation, cx['energy'])
             body.append(line)
 
         if ordered:
@@ -1206,17 +1217,28 @@ class NUPACK(object):
         else:
             cxfile = os.path.join(self._tempdir, 'concentrations.cx')
 
-        with open(cxfile) as f:
-            f.writelines(header + body)
+        with open(cxfile, 'w') as f:
+            f.write('\n'.join(header + body))
+#             f.writelines(header + body)
+
+        # TODO: remove these test lines
+        # Check the input files - they seem to be wrong?
+        # with open(os.path.join(self._tempdir, 'concentrations.cx')) as f:
+        #     print f.read()
+
+        # with open(os.path.join(self._tempdir, 'concentrations.con')) as f:
+        #     print f.read()
 
         # Run 'concentrations'
-        self._run('concentrations', cmd_args, None)
+        stdout, stderr = self._run('concentrations', cmd_args, None)
 
         # Parse the .eq (concentrations) file
         eq_lines = self._read_tempfile('concentrations.eq').split('\n')
         tsv_lines = [l for l in eq_lines if not l.startswith('%')]
         output = []
         for i, line in enumerate(tsv_lines):
+            if not line:
+                continue
             # It's a TSV
             data = line.split('\t')
             # Column 0 is an index
@@ -1225,7 +1247,7 @@ class NUPACK(object):
             # Column nstrands + 1 is the complex energy
             # Column nstrands + 2 is the equilibrium concentration
             eq = float(data[nstrands + 2])
-            output[i] = {'complex': cx, 'concentration': eq}
+            output.append({'complex': cx, 'concentration': eq})
 
         if pairs:
             # Read the .fpairs file
@@ -1310,7 +1332,7 @@ class NUPACK(object):
             f.writelines(header + body)
 
         # Run 'distributions'
-        stdout = self._run('distributions', cmd_args, None)
+        stdout, stderr = self._run('distributions', cmd_args, None)
 
         # Parse STDOUT
         stdout_lines = stdout.split('\n')
@@ -1473,8 +1495,9 @@ class NUPACK(object):
     def _run(self, command, cmd_args, lines):
         prefix = command
         path = os.path.join(self._tempdir, '{}.in'.format(prefix))
-        with open(path, 'w') as f:
-            f.write('\n'.join(lines))
+        if lines is not None:
+            with open(path, 'w') as f:
+                f.write('\n'.join(lines))
 
         arguments = [os.path.join(self._nupack_home, 'bin', command)]
         arguments += cmd_args
@@ -1483,8 +1506,8 @@ class NUPACK(object):
         arguments = [str(x) for x in arguments]
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT, cwd=self._tempdir)
-        output = process.communicate()[0]
-        return output
+        stdout, stderr = process.communicate()
+        return stdout, stderr
 
 
 def nupack_multi(seqs, material, cmd, arguments, report=True):
