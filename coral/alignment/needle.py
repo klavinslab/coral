@@ -43,7 +43,9 @@ def needle(reference, query, gap_open=-15, gap_extend=0,
     score = score_alignment(aligned_ref, aligned_res, gap_open, gap_extend,
                             matrix)
 
-    return cr.DNA(aligned_ref), cr.DNA(aligned_res), score
+    ref = type(reference)(aligned_ref, alphabet=reference.alphabet)
+    res = type(reference)(aligned_res, alphabet=query.alphabet)
+    return ref, res, score
 
 
 def run_needle(args):
