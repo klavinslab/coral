@@ -1,29 +1,33 @@
-Coral
+Coral: SynBio Programming Library
 =================================
 
-.. container:: row pagetop
+.. container:: row
 
-    .. container:: col-md-12 col-md-offset-5
+    .. container:: col-md-8
 
-        .. container:: row logo
+        .. container:: row jumbo img-rounded
 
-            .. image:: coral_256.png
+            .. image:: _static/brain_coral_blur_small.jpg
 
-:ref:`introduction`
+            .. container:: col-md-6 logo
 
-:ref:`tutorials`
+                .. image:: coral_256.png
 
-:ref:`learnsynbio`
+            .. container:: col-md-6 codeexample
 
-:ref:`api`
+                .. code-block:: python
+
+                    primers = cr.cloning.design_primers(dna)
+                    amplicon = cr.reaction.pcr(dna, primers)
+                    amplicon == dna
 
 .. _`introduction`:
 
 Introduction
 ============
 
-Installation
-============
+Try Coral
+=========
 
 For most people, installing Coral will be as simple as
 
@@ -36,5 +40,5 @@ Windows users may need to install vcpython2.7 first http://aka.ms/vcpython27
 
 For more detailed instructions as well as what optional packages can be
 installed (such as those required to do structural analysis), see
-:ref:`installation_options`.
+:ref:`installation`.
 

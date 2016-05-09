@@ -1,7 +1,10 @@
-.. _installation_options:
+.. _installation:
 
-Installation Options
-====================
+Installation
+============
+
+With pip
+--------
 
 For most people, installing Coral will be as simple as
 
@@ -13,7 +16,7 @@ For most people, installing Coral will be as simple as
 Windows users may need to install vcpython2.7 first http://aka.ms/vcpython27
 
 Optional functionality
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 Coral can be enhanced by installing more Python or system packages.
 

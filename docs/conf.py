@@ -12,10 +12,12 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-from coral import __version__
 import sphinx_bootstrap_theme
 import os
 import sys
+# To enable import of coral as package without installation
+sys.path.insert(0, os.path.abspath('..'))
+from coral import __version__
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

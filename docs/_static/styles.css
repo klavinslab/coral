@@ -3,3 +3,27 @@
     padding: 0px 3px;
     vertical-align: middle;
 }
+
+.jumbo {
+    padding: 1%;
+    position: relative;
+    overflow: hidden;
+/*
+    background-image: url('brain_coral_blur_small.jpg');
+    background-size: cover;
+*/
+}
+
+.jumbo > img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    opacity: 0.6;
+}
+
+.codeexample {
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
