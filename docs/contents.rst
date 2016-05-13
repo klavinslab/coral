@@ -1,11 +1,14 @@
 .. _contents:
+
 coral Documentation Contents
 ============================
 
 .. toctree::
    :maxdepth: 3
 
-   tutorial/index
+   installation
+   documentation
+   learnsynbio
    api
 
 

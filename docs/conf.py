@@ -12,8 +12,9 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sphinx_bootstrap_theme
+from datetime import date
 import os
+import sphinx_bootstrap_theme
 import sys
 # To enable import of coral as package without installation
 sys.path.insert(0, os.path.abspath('..'))
@@ -50,7 +51,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'coral'
-copyright = u'2015, Nick Bolten'
+copyright = u'{}, Nick Bolten'.format(date.today().year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -109,7 +110,12 @@ html_theme = 'bootstrap'
 # documentation.
 html_theme_options = {
     'bootswatch_theme': 'readable',
-    'source_link_position': False
+    'source_link_position': False,
+    'navbar_links': [
+        ('Install', 'installation'),
+        ('Docs', 'documentation'),
+        ('Learn synbio', 'learnsynbio')
+    ]
 }
 
 # Add any paths that contain custom themes here, relative to this directory.

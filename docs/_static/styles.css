@@ -1,29 +1,52 @@
-.navglyph {
-    font-size: 26px;
-    padding: 0px 3px;
+.jumbotron {
+    position: relative;
+    background: none;
+    padding: 0.2em 0.6em;
+    width: 100%;
+    margin: 0;
+    -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
+}
+
+.jumbotron .img {
+    color: #fff;
+    background: url(../_static/brain_coral_blur_small.jpg);
+    background-size: cover;
+    overflow: hidden;
+    opacity: 0.4;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: 1;
+}
+
+.jumbotron .container {
+    z-index: 2;
+    position: relative;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
     vertical-align: middle;
 }
 
-.jumbo {
-    padding: 1%;
-    position: relative;
-    overflow: hidden;
-/*
-    background-image: url('brain_coral_blur_small.jpg');
-    background-size: cover;
-*/
+.logo {
+    vertical-align: middle;
 }
 
-.jumbo > img {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: auto;
-    opacity: 0.6;
+/*
+.logo img {
+    display: block;
+    margin: auto;
+    vertical-align: middle;
 }
+*/
 
 .codeexample {
-    padding-top: 5%;
-    padding-bottom: 5%;
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+    padding: 1em;
 }

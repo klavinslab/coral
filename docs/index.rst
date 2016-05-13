@@ -3,23 +3,38 @@ Coral: SynBio Programming Library
 
 .. container:: row
 
-    .. container:: col-md-8
+    .. container:: jumbocontainer
 
-        .. container:: row jumbo img-rounded
+        .. container:: jumbotron
 
-            .. image:: _static/brain_coral_blur_small.jpg
+            .. raw:: html
 
-            .. container:: col-md-6 logo
+                <div class="img"></div>
+
+            .. container:: col-md-3 logo
+
+                .. raw:: html
+
+                   <span class="helper"></span>
 
                 .. image:: coral_256.png
 
-            .. container:: col-md-6 codeexample
+            .. container:: col-md-9 codeexample
 
                 .. code-block:: python
 
-                    primers = cr.cloning.design_primers(dna)
-                    amplicon = cr.reaction.pcr(dna, primers)
-                    amplicon == dna
+                    >>> # Capture your lab's design workflow in simple Python code
+                    >>> # This creates Golden Gate cloning primers for any gene
+                    >>> # and then verifies the expected PCR product
+                    >>> prefix = cr.ssDNA('CCGGTCTCGATCG')
+                    >>> suffix = cr.ssDNA('CCGGTCTCTAGCA').reverse_complement()
+                    >>> overhangs = [prefix, suffix.reverse_complement()]
+                    >>> primers = cr.design.primers(my_gene,
+                                                    tm=65,
+                                                    overhangs=overhangs)
+                    >>> amplicon = cr.reaction.pcr(my_gene, prefix, suffix)
+                    >>> amplicon === prefix.to_ds() + my_gene + suffix.to_ds()
+                    True
 
 .. _`introduction`:
 
