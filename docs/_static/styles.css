@@ -1,52 +1,43 @@
+.navbar-inverse {
+    background-color: #555ECD;
+    border: 0;
+}
+
+.navbar .navbar-nav li a {
+    color: #FFF;
+    margin-bottom: 0;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #E6E7FF;
+    font-weight: bold;
+}
+
+.navbar-header .navbar-text.navbar-version {
+    color: #A5AAED;
+}
+
 .jumbotron {
-    position: relative;
-    background: none;
-    padding: 0.2em 0.6em;
-    width: 100%;
-    margin: 0;
-    -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
-}
-
-.jumbotron .img {
-    color: #fff;
-    background: url(../_static/brain_coral_blur_small.jpg);
-    background-size: cover;
-    overflow: hidden;
-    opacity: 0.4;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    position: absolute;
-    z-index: 1;
-}
-
-.jumbotron .container {
-    z-index: 2;
-    position: relative;
-}
-
-.helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
+    color: #E6E7FF;
+    background-color: #555ECD;
+    margin-top: 0;
 }
 
 .logo {
     vertical-align: middle;
 }
 
-/*
-.logo img {
-    display: block;
-    margin: auto;
+.codeexample .highlight pre {
     vertical-align: middle;
-}
-*/
+    height: auto;
+};
 
-.codeexample {
-    display: inline-block;
-    vertical-align: middle;
-    float: none;
-    padding: 1em;
+.jumbotron a:link {
+    color: #F39CD1;
+    font-weight: bold;
+}
+
+.jumbotron a:visited {
+    color: #F39CD1;
+    font-weight: bold;
 }

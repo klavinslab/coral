@@ -400,20 +400,22 @@ class DNA(object):
         return copy
 
     def select_features(self, term, by='name', fuzzy=False):
-        '''Select features from the features list based on feature name,
-           gene, or locus tag.
-           :param term: Search term.
-           :type term: str
-           :param by: Feature attribute to search by. Options are 'name',
-                      'gene', and 'locus_tag'.
-           :type by: str
-           :param fuzzy: If True, search becomes case-insensitive and will also
-                         find substrings - e.g. if fuzzy search is enabled, a
-                         search for 'gfp' would return a hit for a feature
-                         named 'GFP_seq'.
-           :type fuzzy: bool
-           :returns: A list of features matched by the search.
-           :rtype: list
+        '''Select features from the features list based on feature name, gene,
+        or locus tag.
+
+        :param term: Search term.
+        :type term: str
+        :param by: Feature attribute to search by. Options are 'name',
+                   'gene', and 'locus_tag'.
+        :type by: str
+        :param fuzzy: If True, search becomes case-insensitive and will also
+                      find substrings - e.g. if fuzzy search is enabled, a
+                      search for 'gfp' would return a hit for a feature
+                      named 'GFP_seq'.
+        :type fuzzy: bool
+        :returns: A list of features matched by the search.
+        :rtype: list
+
         '''
         features = []
         if fuzzy:

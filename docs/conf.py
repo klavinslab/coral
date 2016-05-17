@@ -110,6 +110,7 @@ html_theme = 'bootstrap'
 # documentation.
 html_theme_options = {
     'bootswatch_theme': 'readable',
+    'navbar_class': 'navbar navbar-inverse',
     'source_link_position': False,
     'navbar_links': [
         ('Install', 'installation'),

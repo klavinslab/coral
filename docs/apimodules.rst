@@ -81,7 +81,7 @@
 
 
 :mod:`coral.structure` -- DNA and RNA structural analysis
---------------------------------------------------------
+---------------------------------------------------------
 
 .. automodule:: coral.structure
    :members:
@@ -89,7 +89,7 @@
 
 
 :mod:`coral.thermo` -- Thermodynamics analysis, e.g. melting temperatures
-------------------------------------------------------------------------
+-------------------------------------------------------------------------
 
 .. automodule:: coral.thermo
    :members:
