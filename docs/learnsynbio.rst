@@ -3,5 +3,5 @@
 Learn Synthetic Biology with Coral
 ==================================
 
-#. Entry 1
-#. Entry 2
+Coming soon: an overview of DNA design based on the Klavins Lab synthetic
+biology lab methods course at the University of Washington.

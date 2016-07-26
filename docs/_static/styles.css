@@ -41,3 +41,16 @@
     color: #F39CD1;
     font-weight: bold;
 }
+
+.panel-default > .panel-heading {
+    color: #E6E7FF;
+    background-color: #555ECD;
+}
+
+.panel-heading h4 {
+    display: inline;
+}
+
+.panel-heading i {
+    font-size: 2.0em;
+}
