@@ -1,6 +1,7 @@
 '''Write genbank sequences.'''
 import datetime
 import math
+import os
 import textwrap
 
 
@@ -21,7 +22,10 @@ def write_genbank(sequence, handle):
     # 2. Last digit for number of bp end on position 40.
     locus = []
     locus.append('LOCUS       ')
-    locus.append(str(sequence.name[:16]))
+    if sequence.name.strip():
+        locus.append(str(sequence.name[:16]))
+    else:
+        locus.append(os.path.splitext(os.path.basename(handle.name))[0][:16])
     locus.append(' ' * (39 - (12 + min(len(sequence), 16))))
     locus.append(str(len(sequence)) + ' bp ')
     if sequence.ds:
