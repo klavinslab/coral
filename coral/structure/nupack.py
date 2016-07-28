@@ -1242,8 +1242,8 @@ class NUPACK(object):
             # It's a TSV
             data = line.split('\t')
             # Column 0 is an index
-            # Columns 1-nstrands is the complex
-            cx = [int(c) for c in data[1:nstrands]]
+            # Columns 1-nstrands+1 is the complex
+            cx = [int(c) for c in data[1:nstrands + 1]]
             # Column nstrands + 1 is the complex energy
             # Column nstrands + 2 is the equilibrium concentration
             eq = float(data[nstrands + 2])
@@ -1261,7 +1261,12 @@ class NUPACK(object):
             for i, out in enumerate(output):
                 output[i]['fpairs'] = fpairs_mat
 
-        return output
+        # Reorder by complexes input
+        cx_list = [item['complex'] for item in complexes]
+
+        output = sorted(output, key=lambda x: cx_list.index(x['complex']))
+
+        return list(output)
 
     @tempdirs.tempdir
     def distributions(self, complexes, counts, volume, maxstates=1e7,
