@@ -1504,13 +1504,18 @@ class NUPACK(object):
             with open(path, 'w') as f:
                 f.write('\n'.join(lines))
 
+        # Set up an environment so the NUPACKHOME variable can be inserted
+        my_env = os.environ.copy()
+        my_env['NUPACKHOME'] = self._nupack_home
+
         arguments = [os.path.join(self._nupack_home, 'bin', command)]
         arguments += cmd_args
         arguments.append(prefix)
 
         arguments = [str(x) for x in arguments]
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT, cwd=self._tempdir)
+                                   stderr=subprocess.STDOUT, cwd=self._tempdir,
+                                   env=myenv)
         stdout, stderr = process.communicate()
         return stdout, stderr
 
@@ -1538,7 +1543,7 @@ def nupack_multi(seqs, material, cmd, arguments, report=True):
                  'arguments': arguments} for seq in seqs]
         nupack_iterator = nupack_pool.imap(run_nupack, args)
         total = len(seqs)
-        msg = ' calculations complete.'
+        # msg = ' calculations complete.'
         passed = 4
         while report:
             completed = nupack_iterator._index
