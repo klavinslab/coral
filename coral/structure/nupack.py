@@ -16,21 +16,21 @@ class LambdaError(Exception):
 class NUPACK(object):
     '''Run NUPACK functions on sequences.'''
 
-    def __init__(self, nupack_home=None):
+    def __init__(self, nupackhome=None):
         '''
-        :param nupack_home: NUPACK home dir. If the NUPACK commands aren't in
+        :param nupackhome: NUPACK home dir. If the NUPACK commands aren't in
                             your path and the NUPACKHOME environment variable
                             isn't set, you can manually specify the NUPACK
                             directory here (the directory that contains bin/).
-        :type nupack_home: str
+        :type nupackhome: str
 
         '''
         # Figure out where the NUPACK executables are
-        if nupack_home is not None:
-            self._nupack_home = nupack_home
+        if nupackhome is not None:
+            self._nupackhome = nupackhome
         else:
             try:
-                self._nupack_home = os.environ['NUPACKHOME']
+                self._nupackhome = os.environ['NUPACKHOME']
             except KeyError:
                 pfunc_paths = []
                 for path in os.environ['PATH'].split(os.pathsep):
@@ -1506,16 +1506,16 @@ class NUPACK(object):
 
         # Set up an environment so the NUPACKHOME variable can be inserted
         my_env = os.environ.copy()
-        my_env['NUPACKHOME'] = self._nupack_home
+        my_env['NUPACKHOME'] = self._nupackhome
 
-        arguments = [os.path.join(self._nupack_home, 'bin', command)]
+        arguments = [os.path.join(self._nupackhome, 'bin', command)]
         arguments += cmd_args
         arguments.append(prefix)
 
         arguments = [str(x) for x in arguments]
         process = subprocess.Popen(arguments, stdout=subprocess.PIPE,
                                    stderr=subprocess.STDOUT, cwd=self._tempdir,
-                                   env=myenv)
+                                   env=my_env)
         stdout, stderr = process.communicate()
         return stdout, stderr
 
