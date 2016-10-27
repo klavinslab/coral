@@ -63,9 +63,9 @@ def write_genbank(sequence, handle):
 
     def make_qualifier(key, value):
         indent = ' ' * 21
-        wraplen = 79 - 21
         qualifier = '/{}="{}"'.format(key, value)
-        return [indent + l for l in textwrap.wrap(qualifier, wraplen)]
+        # No wrapping - makes output compatible with JBEI, Teselagen, etc.
+        return [indent + qualifier]
 
     for feature in sequence.features:
         # Make the feature header (feature type + location)
@@ -85,9 +85,16 @@ def write_genbank(sequence, handle):
                               ' ' * (16 - len(feature.feature_type)), loc]))
 
         # Add qualifiers
-        lines += make_qualifier('label', feature.name)
+        # Write \label first
+        # FIXME: need to escape " characters as "" on read/write
+        if 'label' not in feature.qualifiers:
+            # This prevents having two \label lines
+            lines += make_qualifier('label', feature.name)
+        else:
+            lines += make_qualifier('label', feature.qualifiers['label'])
         for key, value in feature.qualifiers.iteritems():
-            lines += make_qualifier(key, value)
+            if key != 'label':
+                lines += make_qualifier(key, value)
 
     # Create ORIGIN keyword - stores the sequence
     lines.append('ORIGIN')
