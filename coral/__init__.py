@@ -12,5 +12,8 @@ from . import reaction
 from . import structure
 from . import thermo
 from . import utils
+from .sequence import alphabets
+from .sequence.alphabets import Alphabet
+from .sequence import Sequence, NucleicAcid
 from .sequence import DNA, RNA, Peptide, Primer, RestrictionSite, ssDNA
 from .sequence import Feature

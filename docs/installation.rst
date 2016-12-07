@@ -8,7 +8,7 @@ With pip
 
 For most people, installing Coral will be as simple as
 
-.. code-block:: none
+.. code-block:: shell
 
    pip install numpy
    pip install coral

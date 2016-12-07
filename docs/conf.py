@@ -50,7 +50,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'coral'
+project = u'Coral'
 copyright = u'{}, Nick Bolten'.format(date.today().year)
 
 # The version info for the project you're documenting, acts as replacement for

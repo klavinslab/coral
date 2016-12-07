@@ -61,10 +61,10 @@ def reverse_transcribe(rna):
 def coding_sequence(sequence):
     '''Extract coding sequence from an RNA or DNA template.
 
-    :param sequence: Sequence from which to extract a coding sequence.
+    :param sequence: Sequence from which to extract a coding sequence. If the
+                     input is not of a recognizable form, it's assumed to be
+                     RNA.
     :type sequence: coral.RNA
-    :param material: Type of sequence ('dna' or 'rna')
-    :type material: str
     :returns: The first coding sequence (start codon -> stop codon) matched
               from 5' to 3'.
     :rtype: coral.RNA
@@ -73,12 +73,10 @@ def coding_sequence(sequence):
              first start codon.
 
     '''
-    if sequence.material == 'rna':
-        rna = sequence
-    elif sequence.material == 'dna':
+    if isinstance(sequence, cr.DNA) or isinstance(sequence, cr.ssDNA):
         rna = transcribe(sequence)
     else:
-        raise ValueError('Sequence must be coral RNA or DNA sequence.')
+        rna = sequence
 
     codons_left = len(rna) // 3
     start_codon = cr.RNA('aug')

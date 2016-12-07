@@ -2,6 +2,7 @@
 import datetime
 import math
 import textwrap
+import coral as cr
 
 
 def write_genbank(sequence, handle):
@@ -28,7 +29,16 @@ def write_genbank(sequence, handle):
         locus.append('ds-')
     else:
         locus.append('ss-')
-    locus.append(sequence.material.upper() + '   ')
+    if isinstance(sequence, cr.DNA) or isinstance(sequence, cr.ssDNA):
+        material = 'DNA'
+    elif isinstance(sequence, cr.RNA):
+        material = 'RNA'
+    elif isinstance(sequence, cr.Peptide):
+        material = 'PEPTIDE'
+    else:
+        material = ''
+
+    locus.append(material + '   ')
     if sequence.circular:
         locus.append('circular')
     else:

@@ -1,26 +1,63 @@
+html, body {
+  font-family: sans-serif;
+}
+
+/* Themed background - blue/purple */
+.navbar-inverse, .navbar .navbar-nav, .navbar .dropdown-menu {
+  background-color: #2f50b2;
+}
+
+/* White text for dark backgrounds - navbar, jumbotron */
+.navbar .navbar-nav li a,
+.navbar-inverse .navbar-brand,
+.navbar-header .navbar-text.navbar-version,
+.jumbotron {
+  color: #fff;
+}
+
 .navbar-inverse {
-    background-color: #555ECD;
     border: 0;
 }
 
 .navbar .navbar-nav li a {
-    color: #FFF;
     margin-bottom: 0;
 }
 
 .navbar-inverse .navbar-brand {
-    color: #E6E7FF;
     font-weight: bold;
 }
 
-.navbar-header .navbar-text.navbar-version {
-    color: #A5AAED;
+.jumbotron {
+    position: relative;
+    margin-top: 0;
+    background: none;
+    overflow: hidden;
+    z-index: 2;
 }
 
-.jumbotron {
-    color: #E6E7FF;
-    background-color: #555ECD;
-    margin-top: 0;
+  .jumbotron:after {
+    content:"";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('images/coral_background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(3px);
+    transform: scale(1.1);
+  }
+
+.jumbotron .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,.7);
 }
 
 .logo {
@@ -32,19 +69,8 @@
     height: auto;
 };
 
-.jumbotron a:link {
-    color: #F39CD1;
-    font-weight: bold;
-}
-
-.jumbotron a:visited {
-    color: #F39CD1;
-    font-weight: bold;
-}
-
 .panel-default > .panel-heading {
     color: #E6E7FF;
-    background-color: #555ECD;
 }
 
 .panel-heading h4 {
@@ -53,4 +79,9 @@
 
 .panel-heading i {
     font-size: 2.0em;
+}
+
+.jumbotron a {
+  color: #85b3fc;
+  font-weight: bold;
 }
