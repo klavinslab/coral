@@ -85,3 +85,22 @@ html, body {
   color: #85b3fc;
   font-weight: bold;
 }
+
+.snippet {
+  display: block;
+}
+
+.snippet .snippet-code {
+  width: 45%;
+  float: left;
+}
+
+.snippet .snippet-image {
+  width: 45%;
+  float: right;
+}
+
+.container .snippet-image img {
+  max-height: 256px;
+  max-width: 100%;
+}

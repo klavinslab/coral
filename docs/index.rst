@@ -1,74 +1,98 @@
 What can I do with Coral?
 =========================
 
-Whether you're an expert in swapping genes or a curious computer scientist,
-Coral provides a basis for all common DNA editing operations.
+Coral provides a powerful toolkit for common DNA editing operations, and is
+aimed at a wide audience:
+
+- laboratory experts who want to automate their tasks
+- curious computer scientists
+- anyone who wants to learn the bread and butter of synthetic biology: DNA
+  editing.
 
 Examples:
 ---------
 
-.. code-block:: python
+.. container:: snippet
 
-    >>> # Concatenate linear DNA
-    >>> a = cr.DNA('ATG')
-    >>> b = cr.DNA('CCC')
-    >>> a + b
-    ATGCCC
-    TACGGG
+    .. container:: snippet-code
 
-.. code-block:: python
+        Concatenate linear DNA
 
-    >>> # Manipulate circular DNA
-    >>> a = cr.DNA('ATG').circularize()
-    >>> a
-    ATG
-    TAC
-    >>> a.rotate(1)
-    GAT
-    CTA
-    >>> a.rotate(2)
-    TGA
-    ACT
-    >>> a.rotate_to(1)
-    TGA
-    ACT
+        .. code-block:: python
 
-.. code-block:: python
+            >>> a = cr.DNA('ATG')
+            >>> b = cr.DNA('CCC')
+            >>> a + b
+            ATGCCC
+            TACGGG
 
-    >>> # Safely work with circular and linear DNA
-    >>> a = cr.DNA('ATG').circularize()
-    >>> b = cr.DNA('CCC')
-    >>> a.rotate(1) + b
-    TopologyError: Can only add linear DNA.
-    >>> a.rotate(1).linearize() + b
-    GATCCC
-    CTAGGG
+    .. container:: snippet-image
 
-.. code-block:: python
+        .. image:: /_static/images/snippet-concatenate.png
 
-    >>> # Flip DNA
-    >>> # (reverse-complement, if double-stranded)
-    >>> a = cr.DNA('ATG')
-    >>> b = cr.DNA('CCC')
-    >>> (a + b).flip()
-    CCCTTT
-    GGGAAA
-    >>> (a + b).reverse_complement()
-    CCCTTT
-    GGGAAA
+.. container:: snippet
 
-.. code-block:: python
+    .. code-block:: python
 
-   >>> # Isolate and manipulate individual strands
-   >>> a = cr.DNA('ATG')
-   >>> a
-   ATG
-   TAC
-   >>> a.top
-   ATG
-   >>> # Note: order appears reversed due to 5' -> 3' rule
-   >>> a.bottom
-   CAT
+        >>> # Manipulate circular DNA
+        >>> a = cr.DNA('ATG').circularize()
+        >>> a
+        ATG
+        TAC
+        >>> a.rotate(1)
+        GAT
+        CTA
+        >>> a.rotate(2)
+        TGA
+        ACT
+        >>> a.rotate_to(1)
+        TGA
+        ACT
+
+.. container:: snippet
+
+    .. code-block:: python
+
+        >>> # Safely work with circular and linear DNA
+        >>> a = cr.DNA('ATG').circularize()
+        >>> b = cr.DNA('CCC')
+        >>> a.rotate(1) + b
+        TopologyError: Can only add linear DNA.
+        >>> a.rotate(1).linearize() + b
+        GATCCC
+        CTAGGG
+
+.. container:: snippet
+
+    .. code-block:: python
+
+       >>> # Isolate and manipulate individual strands
+       >>> a = cr.DNA('ATG')
+       >>> a
+       ATG
+       TAC
+       >>> a.top
+       ATG
+       >>> # Note: order appears reversed due to 5' -> 3'
+       >>> a.bottom
+       CAT
+       >>> a.top[-1] = '-'
+
+.. container:: snippet
+
+    .. code-block:: python
+
+        >>> # Flip DNA
+        >>> # (reverse-complement, if double-stranded)
+        >>> a = cr.DNA('ATG')
+        >>> b = cr.DNA('CCC')
+        >>> (a + b).flip()
+        CCCTTT
+        GGGAAA
+        >>> (a + b).reverse_complement()
+        CCCTTT
+        GGGAAA
+
 
 What is Coral?
 ==============
