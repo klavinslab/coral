@@ -28,70 +28,104 @@ Examples:
 
     .. container:: snippet-image
 
-        .. image:: /_static/images/snippet-concatenate.png
+        .. image:: snippets/snippet-concatenate.png
 
 .. container:: snippet
 
-    .. code-block:: python
+    .. container:: snippet-code
 
-        >>> # Manipulate circular DNA
-        >>> a = cr.DNA('ATG').circularize()
-        >>> a
-        ATG
-        TAC
-        >>> a.rotate(1)
-        GAT
-        CTA
-        >>> a.rotate(2)
-        TGA
-        ACT
-        >>> a.rotate_to(1)
-        TGA
-        ACT
+        Manipulate circular DNA
 
-.. container:: snippet
+        .. code-block:: python
 
-    .. code-block:: python
+            >>> a = cr.DNA('ATG').circularize()
+            >>> a
+            ATG
+            TAC
+            >>> a.rotate(1)
+            GAT
+            CTA
+            >>> a.rotate(2)
+            TGA
+            ACT
+            >>> a.rotate_to(1)
+            TGA
+            ACT
 
-        >>> # Safely work with circular and linear DNA
-        >>> a = cr.DNA('ATG').circularize()
-        >>> b = cr.DNA('CCC')
-        >>> a.rotate(1) + b
-        TopologyError: Can only add linear DNA.
-        >>> a.rotate(1).linearize() + b
-        GATCCC
-        CTAGGG
+    .. container:: snippet-image
+
+        .. image:: snippets/snippet-rotate.png
+
+
 
 .. container:: snippet
 
-    .. code-block:: python
+    .. container:: snippet-code
 
-       >>> # Isolate and manipulate individual strands
-       >>> a = cr.DNA('ATG')
-       >>> a
-       ATG
-       TAC
-       >>> a.top
-       ATG
-       >>> # Note: order appears reversed due to 5' -> 3'
-       >>> a.bottom
-       CAT
-       >>> a.top[-1] = '-'
+        Safely work with circular and linear DNA
+
+        .. code-block:: python
+
+            >>> a = cr.DNA('ATG').circularize()
+            >>> b = cr.DNA('CCC')
+            >>> a.rotate(1) + b
+            TopologyError: Can only add linear DNA.
+            >>> a.rotate(1).linearize() + b
+            GATCCC
+            CTAGGG
+
+    .. container:: snippet-image
+
+        .. image:: snippets/snippet-circ+linear.png
+
+
+
 
 .. container:: snippet
 
-    .. code-block:: python
+    .. container:: snippet-code
 
-        >>> # Flip DNA
-        >>> # (reverse-complement, if double-stranded)
-        >>> a = cr.DNA('ATG')
-        >>> b = cr.DNA('CCC')
-        >>> (a + b).flip()
-        CCCTTT
-        GGGAAA
-        >>> (a + b).reverse_complement()
-        CCCTTT
-        GGGAAA
+        Isolate and manipulate individual strands
+
+        .. code-block:: python
+
+           >>> a = cr.DNA('ATG')
+           >>> a
+           ATG
+           TAC
+           >>> a.top
+           ATG
+           >>> # Note: order appears reversed due to 5' -> 3'
+           >>> a.bottom
+           CAT
+           >>> a.top[-1] = '-'
+
+    .. container:: snippet-image
+
+        .. image:: snippets/snippet-top-bottom.png
+
+
+
+.. container:: snippet
+
+    .. container:: snippet-code
+
+        Flip DNA (reverse-complement, if double-stranded)
+
+        .. code-block:: python
+
+            >>> a = cr.DNA('ATG')
+            >>> b = cr.DNA('CCC')
+            >>> (a + b).flip()
+            CCCTTT
+            GGGAAA
+            >>> (a + b).reverse_complement()
+            CCCTTT
+            GGGAAA
+
+    .. container:: snippet-image
+
+        .. image:: snippets/snippet-flip-revcomp.png
 
 
 What is Coral?

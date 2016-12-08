@@ -88,6 +88,12 @@ html, body {
 
 .snippet {
   display: block;
+  border: 1px solid #cccccc;
+  /* border-radius: 4px; */
+  margin: 10px 0;
+  padding: 10px 0;
+  width: 100%;
+  box-shadow: 0.5px 0.5px 20px rgba(0, 0, 0, 0.1);
 }
 
 .snippet .snippet-code {
