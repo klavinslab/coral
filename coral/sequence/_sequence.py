@@ -63,7 +63,7 @@ class Sequence(object):
         pattern = str(pattern).upper()
 
         # replace 'N' in pattern with regex matching valid bases
-        pattern.replace('N', '[ACGTN]')
+        pattern = pattern.replace('N', '[ACGTN]')
         re_pattern = '(?=' + pattern + ')'
         matches = [index.start() % len(self) for index in
                    re.finditer(re_pattern, seq)]
