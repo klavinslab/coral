@@ -1,7 +1,7 @@
 '''Gibson reaction simulation.'''
 import logging
 import warnings
-import coral.analysis
+import coral as cr
 
 
 logger = logging.getLogger(__name__)
@@ -254,7 +254,7 @@ def homology_report(seq1, seq2, strand1, strand2, cutoff=0, min_tm=63.0,
         if s1 == s2:
             logger.debug('Found Match: {}'.format(str(s1)))
             if s1len >= cutoff:
-                tm = coral.analysis.tm(seq1[-(i + 1):])
+                tm = cr.thermo.tm(seq1[-(i + 1):])
                 logger.debug('Match tm: {} C'.format(tm))
                 if tm >= min_tm:
                     target_matches.append(s1len)

@@ -1,0 +1,11 @@
+{# layout.html #}
+{# Import the theme's layout. #}
+{% extends "!layout.html" %}
+{% block content %}
+  {% if pagename == 'index' %}
+    {% include "jumbotrons/index.html" %}
+  {% endif %}
+  {{ super() }}
+{% endblock %}
+
+{% set bootswatch_css_custom = ['https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css', '_static/styles.css'] %}

@@ -1,8 +1,7 @@
 '''Classes to contain and manipulate DNA, RNA, and protein sequences.'''
-from ._dna import DNA
-from ._dna import ssDNA
-from ._dna import RestrictionSite
-from ._dna import Primer
+from . import alphabets
+from ._dna import DNA, ssDNA, RestrictionSite, Primer
 from ._peptide import Peptide
 from ._rna import RNA
-from ._sequence import Feature
+from ._sequence import Feature, Sequence
+from ._nucleicacid import NucleicAcid

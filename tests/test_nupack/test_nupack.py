@@ -11,33 +11,33 @@ class TestNUPACK(object):
                      cr.DNA('TACGATT'),
                      cr.DNA('GATACG')]
         self.rnas = [s.transcribe() for s in self.dnas]
-        self.nupack = cr.analysis.NUPACK()
+        self.nupack = cr.structure.NUPACK()
 
     def test_pfunc(self):
         '''Test the simplest (partition function) command pfunc with a single
         sequence input.'''
         # test DNA
         output_dna = self.nupack.pfunc(self.dnas[0])
-        assert_equal(output_dna, (-4.92069506e-02, 1.08311357973974e+00))
+        assert_equal(output_dna, [-4.92069506e-02, 1.08311357973974e+00])
         # test RNA with 1995 params
         output_rna = self.nupack.pfunc(self.rnas[0])
-        assert_equal(output_rna, (-9.28516187e-02, 1.16259513934557e+00))
+        assert_equal(output_rna, [-9.28516187e-02, 1.16259513934557e+00])
         # test RNA with 1999 params
         output_rna99 = self.nupack.pfunc(self.rnas[0], material='rna1999')
-        assert_equal(output_rna99, (-7.97413222e-03, 1.01302234408117e+00))
+        assert_equal(output_rna99, [-7.97413222e-03, 1.01302234408117e+00])
 
     def test_pfunc_multi(self):
         '''Test the simplest (partition function) command pfunc with the
         -multi option, which returns an ordered complex partition function.'''
         # test DNA
         output_dna = self.nupack.pfunc_multi(self.dnas)
-        assert_equal(output_dna, (-9.59943928e+00, 5.81176347268940e+06))
+        assert_equal(output_dna, [-9.59943928e+00, 5.81176347268940e+06])
         # test RNA with 1995 params
         output_rna = self.nupack.pfunc_multi(self.rnas)
-        assert_equal(output_rna, (-5.45632785e+00, 6.99579788609535e+03))
+        assert_equal(output_rna, [-5.45632785e+00, 6.99579788609535e+03])
         # test RNA with 1999 params
         output_rna99 = self.nupack.pfunc_multi(self.rnas, material='rna1999')
-        assert_equal(output_rna99, (-5.27740504e+00, 5.23308895793574e+03))
+        assert_equal(output_rna99, [-5.27740504e+00, 5.23308895793574e+03])
 
     def test_pairs(self):
         '''Test the pairs command.'''

@@ -1,5 +1,5 @@
 '''Resection (need a new name!) - exonuclease activity.'''
-import coral
+import coral as cr
 
 
 def five_resect(dna, n_bases):
@@ -56,7 +56,7 @@ def _remove_end_gaps(sequence):
     '''
     # Count terminal blank sequences
     def count_end_gaps(seq):
-        gap = coral.DNA('-')
+        gap = cr.DNA('-')
         count = 0
         for base in seq:
             if base == gap:

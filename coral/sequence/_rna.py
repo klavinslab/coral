@@ -1,28 +1,33 @@
 '''RNA sequences classes.'''
-import coral.reaction
-from coral.sequence._nucleicacid import NucleicAcid
+import coral as cr
+from . import alphabets
+from ._nucleicacid import NucleicAcid
 
 
 class RNA(NucleicAcid):
     '''ssRNA sequence.'''
 
-    def __init__(self, rna, circular=False, run_checks=True):
+    def __init__(self, sequence, alphabet=alphabets.rna, circular=False,
+                 skip_checks=False):
         '''
-        :param rna: Input sequence (RNA).
-        :type rna: str
-        :param run_checks: Check inputs / formats (disabling increases speed):
-                           alphabet check
-                           case
-        :type run_checks: bool
+        :param sequence: Input sequence (RNA).
+        :type sequence: str
+        :param alphabet: Alphabet to use for this RNA sequence (defaults to
+                         \'AUGCN-\').
+        :type alphabet: cr.Alphabet
+        :param skip_checks: Skips input checking (alphabet check), useful for
+                            computationally intense tasks.
+        :type skip_checks: bool
         :returns: coral.RNA instance.
 
         '''
-        super(RNA, self).__init__(rna, 'rna', circular=circular,
-                                  run_checks=run_checks, any_char='N')
-        self.ds = False
+        super(RNA, self).__init__(sequence, alphabet=alphabet,
+                                  circular=circular, skip_checks=skip_checks,
+                                  any_char='N')
 
     def copy(self):
-        return type(self)(self.seq, circular=self.circular, run_checks=False)
+        return type(self)(self.seq, alphabet=self.alphabet,
+                          circular=self.circular, skip_checks=True)
 
     def reverse_transcribe(self):
         '''Reverse transcribe to DNA.
@@ -31,7 +36,7 @@ class RNA(NucleicAcid):
         :rtype: coral.DNA
 
         '''
-        return coral.reaction.reverse_transcribe(self)
+        return cr.reaction.reverse_transcribe(self)
 
     def translate(self):
         '''Translate sequence into a peptide.
@@ -40,4 +45,4 @@ class RNA(NucleicAcid):
         :rtype: coral.Peptide
 
         '''
-        return coral.reaction.translate(self)
+        return cr.reaction.translate(self)

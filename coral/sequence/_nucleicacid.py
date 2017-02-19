@@ -1,42 +1,43 @@
 '''Base sequence classes.'''
 import collections
-import coral
-from coral.sequence._sequence import Sequence
-from coral.constants.molecular_bio import COMPLEMENTS
+import coral as cr
+from ._sequence import Sequence
 
 
 class NucleicAcid(Sequence):
     '''Abstract sequence container for a single nucleic acid sequence
     molecule.'''
 
-    def __init__(self, sequence, material, circular=False, run_checks=True,
-                 any_char='N'):
+    def __init__(self, sequence, alphabet, circular=False,
+                 skip_checks=False, any_char='N'):
         '''
         :param sequence: Input sequence.
         :type sequence: str
-        :param material: Material type (dna, rna)
-        :type material: str
+        :param alphabet: Alphabet container defining this sequence's valid
+                         characters and (optionally) complement mapping (e.g.
+                         A: T).
+        :type alphabet: cr.Alphabet
         :param circular: The topology of the sequence - if the ends connect,
                          (a circular sequence), set to True. Otherwise, set to
                          False. Enables operations like .rotate().
         :type circular: bool
-        :param run_checks: Check inputs / formats (disabling increases speed):
-                           alphabet check
-                           case
+        :param skip_checks: Skips input checking (alphabet check), useful for
+                            computationally intense tasks.
+        :type skip_checks: bool
         :param any_char: Character representing \'any\', e.g. N for DNA.
         :type any_char: str
-        :type run_checks: bool
         :returns: coral.sequence.Sequence instance.
 
         '''
-        super(NucleicAcid, self).__init__(sequence, material,
-                                          run_checks=run_checks,
+        super(NucleicAcid, self).__init__(sequence, alphabet,
+                                          skip_checks=skip_checks,
                                           any_char=any_char)
+        self.ds = False
         self.circular = circular
 
     def copy(self):
-        return type(self)(self.seq, self.material, circular=self.circular,
-                          run_checks=False)
+        return type(self)(self.seq, alphabet=self.alphabet,
+                          circular=self.circular, skip_checks=True)
 
     def circularize(self):
         '''Circularize the sequence, if linear.
@@ -51,8 +52,8 @@ class NucleicAcid(Sequence):
 
     def complement(self):
         copy = self.copy()
-        code = dict(COMPLEMENTS[self.material])
-        copy.seq = ''.join([code[str(base)] for base in copy])
+        copy_list = [self.alphabet.complements[str(base)] for base in copy]
+        copy.seq = ''.join(copy_list)
         return copy
 
     def gc(self):
@@ -144,7 +145,7 @@ class NucleicAcid(Sequence):
         mw_c = counter['c'] * 329.2
         mw_u = counter['u'] * 306.2
 
-        if self.material == 'dna':
+        if self.aterial == 'dna':
             return mw_a + mw_t + mw_g + mw_c + 79.0
         else:
             return mw_a + mw_u + mw_g + mw_c + 159.0
@@ -195,4 +196,4 @@ class NucleicAcid(Sequence):
         :type parameters: str
 
         '''
-        return coral.analysis.tm(self, parameters=parameters)
+        return cr.thermo.tm(self, parameters=parameters)

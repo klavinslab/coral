@@ -1,7 +1,7 @@
 Changelog for Coral
 ===================
 
-0.5.0 (2016-02-20)
+#### v0.5.0 (2016-02-20)
 * Separated `ssDNA` (single-stranded) and `DNA` (implicitly double-stranded)
 classes. Convert between them using `.to_ds()` and `.to_ss()` methods,
 respectively.
@@ -24,11 +24,18 @@ Needleman-Wunsch alignment as well as built-in matrices such as BLOSUM62, DNA,
 and DNA_SIMPLE.
 * dev note: started using zest.releaser to automate releases.
 
+#### v0.4.3 (2016-01-25)
+* Removed coral.DNA.topology references after switching to .circular attribute.
 
-0.4.1-0.4.3
-* Bugfixes to 0.4.0 (brown-bag style bugs, fixed immediately after elease).
 
-0.4.0
+#### v0.4.2 (2016-01-25)
+* Fixed issue where d3-based DNA.display() had switched linear and circular
+DNA display settings.
+
+#### v0.4.1 (2016-01-25)
+* Added utils module to setup.py (fixed distribution bug)
+
+#### v0.4.0 (2016-01-25)
 * Renamed `coral.DNA.rotate()` method to `coral.DNA.rotate_to()`.
 * Created new `coral.DNA.rotate()` method that rotates a sequence
 'counter-clockwise', acting as a deque.
@@ -49,19 +56,22 @@ strings) with boolean-valued `.circular` and `.ds` values, respectively.
 * Fixed an issue where re-running `coral.DNA.display()` in a Jupyter notebook
 resulted in non-updated text labels.
 
-0.3.3
+#### v0.3.4 (2016-01-19)
+* Updated ViennaRNA to be a more pure wrapper for its functions.
+
+#### v0.3.3 (2016-01-17)
 * Added Python 2 version check to prevent installation on Python 3.
 
-0.3.2
+#### v0.3.2 (2016-01-15)
 * Removed cython dependencies entirely to ease installation.
 
-0.3.1
+#### v0.3.1 (2016-01-15)
 * Fixed issues with PCR simulation and annealing, can now handle all cases of
 primer directionality and overlaps, linear and circular templates.
 * Added pyx to package manifest for case where user already has cython
 installed.
 
-0.3.0
+#### v0.3.0 (2016-01-11)
 * Separated out annealing behavior into analysis function (`analysis.anneal`).
 * Functions that use annealing (e.g. `reaction.pcr`) can now accept partial
 annealing + overhang matches due to annealing overhaul.
@@ -74,17 +84,16 @@ behavior (assign by reference vs. value).
 * Fixed an issue where slicing the last N bases of a sequence (e.g.
 `y =x[-4:]`) would modify the feature locations of the parent (`x`).
 
-0.2.1
+#### v0.2.1 (2015-11-29)
 * Added HISTORY.md (this file) changelog.
 * Fixed version bump issue, added javascript to manifest, added
 dev-requirements.txt.
 
-0.2.0
-* plasmid visualizations for iPython notebooks using `coral.DNA.display`.
-* features are now searchable using `coral.DNA.select_features`.
+#### v0.2.0 (2015-11-29)
+* Added Plasmid visualizations for iPython notebooks using `coral.DNA.display`.
+* Features are now searchable using `coral.DNA.select_features`.
 * `seqio.read_dna` now keeps all feature qualifiers when reading genbank files
 (thanks @eyu-bolthreads!).
 
-0.1.0
-
-Initial Release.
+#### v0.1.0 (2015-09-01)
+* Initial release.

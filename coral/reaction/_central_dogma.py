@@ -1,6 +1,5 @@
 '''The central dogma of biology - transcription and translation.'''
-import coral
-from . import utils
+import coral as cr
 
 
 def transcribe(dna):
@@ -12,7 +11,7 @@ def transcribe(dna):
     :rtype: coral.RNA
 
     '''
-    return utils.convert_sequence(dna, 'rna')
+    return cr.RNA(str(dna).replace('T', 'U'))
 
 
 def translate(rna):
@@ -24,7 +23,27 @@ def translate(rna):
     :rtype: coral.Peptide
 
     '''
-    return utils.convert_sequence(rna, 'peptide')
+    # Translate
+    seq_list = list(str(rna))
+    # Convert to peptide until stop codon is found.
+    converted = []
+    while True:
+        if len(seq_list) >= 3:
+            base_1 = seq_list.pop(0)
+            base_2 = seq_list.pop(0)
+            base_3 = seq_list.pop(0)
+            codon = ''.join(base_1 + base_2 + base_3).upper()
+            amino_acid = cr.constants.codons.CODONS[codon]
+            # Stop when stop codon is found
+            if amino_acid == '*':
+                break
+            converted.append(amino_acid)
+        else:
+            break
+    converted = ''.join(converted)
+    converted = cr.Peptide(converted)
+
+    return converted
 
 
 def reverse_transcribe(rna):
@@ -36,16 +55,16 @@ def reverse_transcribe(rna):
     :rtype: coral.DNA
 
     '''
-    return utils.convert_sequence(rna, 'dna')
+    return cr.DNA(str(rna).replace('U', 'T'))
 
 
-def coding_sequence(rna):
-    '''Extract coding sequence from an RNA template.
+def coding_sequence(sequence):
+    '''Extract coding sequence from an RNA or DNA template.
 
-    :param seq: Sequence from which to extract a coding sequence.
-    :type seq: coral.RNA
-    :param material: Type of sequence ('dna' or 'rna')
-    :type material: str
+    :param sequence: Sequence from which to extract a coding sequence. If the
+                     input is not of a recognizable form, it's assumed to be
+                     RNA.
+    :type sequence: coral.RNA
     :returns: The first coding sequence (start codon -> stop codon) matched
               from 5' to 3'.
     :rtype: coral.RNA
@@ -54,11 +73,14 @@ def coding_sequence(rna):
              first start codon.
 
     '''
-    if isinstance(rna, coral.DNA):
-        rna = transcribe(rna)
+    if isinstance(sequence, cr.DNA) or isinstance(sequence, cr.ssDNA):
+        rna = transcribe(sequence)
+    else:
+        rna = sequence
+
     codons_left = len(rna) // 3
-    start_codon = coral.RNA('aug')
-    stop_codons = [coral.RNA('uag'), coral.RNA('uga'), coral.RNA('uaa')]
+    start_codon = cr.RNA('aug')
+    stop_codons = [cr.RNA('uag'), cr.RNA('uga'), cr.RNA('uaa')]
     start = None
     stop = None
     valid = [None, None]

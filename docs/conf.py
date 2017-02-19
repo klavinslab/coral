@@ -12,9 +12,13 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+from datetime import date
 import os
-import re
+import sphinx_bootstrap_theme
 import sys
+# To enable import of coral as package without installation
+sys.path.insert(0, os.path.abspath('..'))
+from coral import __version__
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -46,19 +50,13 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'coral'
-copyright = u'2013, Nick Bolten'
+project = u'Coral'
+copyright = u'{}, Nick Bolten'.format(date.today().year)
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
-
-with open(os.path.join(base_path, '../coral/__init__.py'), 'r') as fd:
-    __version__ = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
-                            fd.read(), re.MULTILINE).group(1)
-if not __version__:
-    raise RuntimeError('Cannot find version information')
 
 # The short X.Y version.
 version = __version__
@@ -105,16 +103,24 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-# html_theme = 'default'
-html_theme = 'pyramid'
+html_theme = 'bootstrap'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-# html_theme_options = {}
+html_theme_options = {
+    'bootswatch_theme': 'readable',
+    'navbar_class': 'navbar navbar-inverse',
+    'source_link_position': False,
+    'navbar_links': [
+        ('Install', 'installation'),
+        ('Docs', 'documentation'),
+        ('Learn synbio', 'learnsynbio')
+    ]
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
-# html_theme_path = []
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
@@ -130,7 +136,7 @@ html_theme = 'pyramid'
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-# html_favicon = None
+html_favicon = 'favicon.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -267,5 +273,5 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
         return Mock()
 
-MOCK_MODULES = ['matplotlib', 'cython', 'numpy', 'biopython']
+MOCK_MODULES = ['matplotlib', 'numpy']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)

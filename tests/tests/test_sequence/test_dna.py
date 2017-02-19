@@ -1,5 +1,6 @@
 '''Tests for the DNA sequence class.'''
 from coral import DNA, Feature, RestrictionSite
+from coral.sequence.alphabets import AlphabetError
 from nose.tools import assert_equal, assert_false, assert_true, assert_raises
 from nose.tools import assert_not_equal
 
@@ -118,7 +119,7 @@ class TestDNA(object):
         def radd_800(seq):
             return 800 + seq
 
-        assert_raises(TypeError, radd_800, self.test_dna)
+        assert_raises(AlphabetError, radd_800, self.test_dna)
 
     def test_mul(self):
         assert_equal(str(self.test_dna * 4), 'ATGCATGCATGCATGC')
@@ -175,7 +176,7 @@ class TestFeatures(object):
                                      'terminator')
         rbs_feature = Feature('RBS Feature', 101, 120, 'RBS')
         origin_feature = Feature('Origin Feature', 121, 140, 'rep_origin')
-        utr3_feature = Feature("3'UTR Feature", 141, 160, "3'UTR")
+        utr3_feature = Feature('3\'UTR Feature', 141, 160, '3\'UTR')
         origin_feature2 = Feature('Origin Feature', 161, 180, 'rep_origin')
 
         input_features = [misc_feature, misc_1_feature, coding_feature,
@@ -197,7 +198,7 @@ class TestFeatures(object):
 
     def test_extract(self):
         test_utr3_feature = [feature for feature in self.dna.features if
-                             feature.name == "3'UTR Feature"][0]
+                             feature.name == '3\'UTR Feature'][0]
         extracted = self.dna.extract(test_utr3_feature)
         assert_equal(str(extracted), 'TGCATGCATGCATGCATGC')
 
