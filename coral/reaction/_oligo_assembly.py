@@ -11,6 +11,7 @@ class AssemblyError(Exception):
 
 def assemble_oligos(dna_list, reference=None):
     '''Given a list of DNA sequences, assemble into a single construct.
+
     :param dna_list: List of DNA sequences - they must be single-stranded.
     :type dna_list: coral.DNA list
     :param reference: Expected sequence - once assembly completed, this will

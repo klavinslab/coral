@@ -4,6 +4,23 @@ import coral as cr
 import coral.sequence.alphabets as alphabets
 
 
+def random_sequence(n, alphabet):
+    '''Generate a random sequence given a custom alphabet of symbols (e.g. A,
+    T, G, C, X for 5-letter DNA code).
+
+    :param n: Number of letters - the length of the output.
+    :type n: int
+    :returns: Random sequence of length n. Note that it will return a Sequence
+              object, not a convenient container like DNA or RNA. It can be
+              used directly by those objects, however - constrained, of course,
+              by its alphabet: cr.DNA(random_sequence(n, myalphabet)).
+    :rtype: coral.Sequence
+
+    '''
+    sequence = ''.join([random.choice(alphabet.symbols) for i in range(n)])
+    return cr.Sequence(sequence, alphabet, skip_checks=True)
+
+
 def random_dna(n):
     '''Generate a random DNA sequence.
 
@@ -13,8 +30,7 @@ def random_dna(n):
     :rtype: coral.DNA
 
     '''
-    residues = [random.choice(alphabets.dna_unambiguous) for i in range(n)]
-    return cr.DNA(''.join(residues))
+    return cr.DNA(random_sequence(n, alphabets.dna_unambiguous))
 
 
 def random_ssdna(n):
@@ -26,8 +42,7 @@ def random_ssdna(n):
     :rtype: coral.ssDNA
 
     '''
-    residues = [random.choice(alphabets.dna_unambiguous) for i in range(n)]
-    return cr.ssDNA(''.join(residues))
+    return cr.ssDNA(random_sequence(n, alphabets.dna_unambiguous))
 
 
 def random_rna(n):
@@ -39,8 +54,7 @@ def random_rna(n):
     :rtype: coral.RNA
 
     '''
-    residues = [random.choice(alphabets.rna_unambiguous) for i in range(n)]
-    return cr.RNA(''.join(residues))
+    return cr.RNA(random_sequence(n, alphabets.rna_unambiguous))
 
 
 def random_peptide(n):
@@ -52,5 +66,4 @@ def random_peptide(n):
     :rtype: coral.Peptide
 
     '''
-    residues = [random.choice(alphabets.peptide) for i in range(n)]
-    return cr.Peptide(''.join(residues))
+    return cr.Peptide(random_sequence(n, alphabets.peptide_unambiguous))

@@ -17,6 +17,7 @@ First, we'll need to analyze our sequencing using the Sanger class
 .. code:: python
 
     import coral as cor
+
 Then use seqio to read in our sequences. The Sanger class expects two
 inputs: a reference, or expected, sequence (``sequence.DNA`` object) and
 a list of the results (``list`` of ``sequence.DNA`` objects). Any way
@@ -39,6 +40,7 @@ objects.
 
     reference = cor.seqio.read_dna('../files_for_tutorial/maps/pMODKan-HO-pACT1GEV.ape')
     results = cor.seqio.read_sequencing('../files_for_tutorial/sequencing_files/')
+
 To compare the results to our expected sequence, we use the ``Sanger``
 class, which does a Needleman-Wunsch alignment and scores any
 discrepancies.
@@ -46,6 +48,7 @@ discrepancies.
 .. code:: python
 
     alignment = cor.analysis.Sanger(reference, results)
+
 
 .. parsed-literal::
 
@@ -68,50 +71,51 @@ of any mismatches, insertions, or deletions.
 
     alignment.report()
 
+
 .. parsed-literal::
 
-
-    Summary:
+    
+    Summary: 
     --------
-
+    
       Mismatches: 3
       Insertions: 1
       Deletions: 0
-
+    
     ## Mismatches
       pMODKan-HO-pACT1GEV_C3-T7-EEV_D11.ab1
-
+    
         Positions 4687 to 4689:
         AGTCCAAAGGACAATTTTACG
         ||||||||||   ||||||||
         ----------CACATTTTACG
-                  ***
-
+                  ***        
+    
       pMODKan-HO-pACT1GEV_C3-M13R_E11.ab1
-
+    
         Positions 5550 to 5551:
         TTAGCTTTGTTCACTCGTGCC
         ||||||||||  |||||||||
         TTAGCTTTGTCA---------
-                  **
-
+                  **         
+    
       pMODKan-HO-pACT1GEV_C3-676_H11.ab1
-
+    
         Positions 5120 to 5121:
         GCACCGTCTTTGAATTATGAG
         ||||||||||  |||||||||
         GCACCGTCTTGA---------
-                  **
-
+                  **         
+    
     ## Insertions
       pMODKan-HO-pACT1GEV_C3-771_C12.ab1
-
+    
         Positions 7805 to 8008:
         GCCCTTTCGT------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ||||||||||
+        ||||||||||                                                                                                                                                                                                            
         GCCCTTTCGTTCGCGCGTTTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCTCCCGGAGACGGTCACAGCTTGTCTGTAAGCGGATGCCGGGAGCAGACAAGCCCGTCAGGGCGCGTCAGCGGGTGTTGGCGGGTGTCGGGGCTGGCTTAACTATGCGGCGTTTAAACTTAGCAGATGCGCGCACCTGCGTTGTTACCACAACTCTTATG
                   ************************************************************************************************************************************************************************************************************
-
+    
 
 
 The report above looks a bit scary - it expects there to be three
@@ -130,6 +134,7 @@ deletions are really there and what kind of sequencing coverage we have.
     alignment.plot()
 
 
+
 .. image:: analysis_sequencing_files/analysis_sequencing_9_0.png
 
 
@@ -139,7 +144,4 @@ really there. In addition, there is another sequencing result showing no
 deletions at every one of those locations - we can reasonably assume
 those deletions are not actually there. If we were worried, however, we
 could investigate the ab1 files directly in another program.
-
-.. code:: python
-
 

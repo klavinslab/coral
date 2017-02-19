@@ -1,0 +1,112 @@
+html, body {
+  font-family: sans-serif;
+}
+
+/* Themed background - blue/purple */
+.navbar-inverse, .navbar .navbar-nav, .navbar .dropdown-menu {
+  background-color: #2f50b2;
+}
+
+/* White text for dark backgrounds - navbar, jumbotron */
+.navbar .navbar-nav li a,
+.navbar-inverse .navbar-brand,
+.navbar-header .navbar-text.navbar-version,
+.jumbotron {
+  color: #fff;
+}
+
+.navbar-inverse {
+    border: 0;
+}
+
+.navbar .navbar-nav li a {
+    margin-bottom: 0;
+}
+
+.navbar-inverse .navbar-brand {
+    font-weight: bold;
+}
+
+.jumbotron {
+    position: relative;
+    margin-top: 0;
+    background: none;
+    overflow: hidden;
+    z-index: 2;
+}
+
+  .jumbotron:after {
+    content:"";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('images/coral_background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(3px);
+    transform: scale(1.1);
+  }
+
+.jumbotron .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,.7);
+}
+
+.logo {
+    vertical-align: middle;
+}
+
+.codeexample .highlight pre {
+    vertical-align: middle;
+    height: auto;
+};
+
+.panel-default > .panel-heading {
+    color: #E6E7FF;
+}
+
+.panel-heading h4 {
+    display: inline;
+}
+
+.panel-heading i {
+    font-size: 2.0em;
+}
+
+.jumbotron a {
+  color: #85b3fc;
+  font-weight: bold;
+}
+
+.snippet {
+  display: block;
+  border: 1px solid #cccccc;
+  /* border-radius: 4px; */
+  margin: 10px 0;
+  padding: 10px 0;
+  width: 100%;
+  box-shadow: 0.5px 0.5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.snippet .snippet-code {
+  width: 45%;
+  float: left;
+}
+
+.snippet .snippet-image {
+  width: 45%;
+  float: right;
+}
+
+.container .snippet-image img {
+  max-height: 256px;
+  max-width: 100%;
+}

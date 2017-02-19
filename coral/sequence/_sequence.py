@@ -8,28 +8,32 @@ class Sequence(object):
     '''Abstract representation of single chain of molecular sequences, e.g.
        a single DNA or RNA strand or Peptide.'''
 
-    def __init__(self, sequence, alphabet, run_checks=True,
-                 any_char='N', name=None):
+    def __init__(self, sequence, alphabet, skip_checks=False, any_char='N',
+                 name=None):
         '''
         :param sequence: Input sequence.
         :type sequence: str
-        :param run_checks: Check inputs / formats (disabling increases speed):
-                           alphabet check
-                           case
+        :param alphabet: Alphabet container defining this sequence's valid
+                         characters and (optionally) complement mapping (e.g.
+                         A: T).
+        :type alphabet: cr.Alphabet
+        :param skip_checks: Skips input checking (alphabet check), useful for
+                            computationally intense tasks.
+        :type skip_checks: bool
         :param any_char: Character representing \'any\', e.g. N for DNA.
         :type any_char: str
-        :type run_checks: bool
         :returns: coral.sequence.Sequence instance.
 
         '''
         self.alphabet = alphabet
         self.any_char = any_char
 
-        if run_checks:
+        if not skip_checks:
             self.seq = str(sequence).upper()
-            pattern = '[^' + re.escape(alphabet + alphabet.lower()) + ']'
+            symbols = alphabet.symbols
+            pattern = '[^' + re.escape(symbols + symbols.lower()) + ']'
             if re.search(pattern, self.seq):
-                msg = 'Sequence doesn\'t match {}'.format(self.alphabet)
+                msg = 'Sequence doesn\'t match {}'.format(symbols)
                 raise AlphabetError(msg)
         else:
             self.seq = sequence
@@ -47,7 +51,7 @@ class Sequence(object):
         '''
         # Significant performance improvements by skipping alphabet check
         return type(self)(self.seq, alphabet=self.alphabet,
-                          any_char=self.any_char, run_checks=False)
+                          any_char=self.any_char, skip_checks=True)
 
     def locate(self, pattern):
         '''Find sequences matching a pattern.

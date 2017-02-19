@@ -1,6 +1,6 @@
 
-Complex DNA sequences
-~~~~~~~~~~~~~~~~~~~~~
+Sequence input/output and complex DNA sequences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 More complex sequences (like plasmids) have many annotated pieces and
 benefit from other methods. ``sequence.DNA`` has many methods for
@@ -13,9 +13,11 @@ transactivator from McIsaac et al. 2011:
 .. code:: python
 
     import coral as cor
+
 .. code:: python
 
     pKL278 = cor.seqio.read_dna('./files_for_tutorial/maps/pMODKan-HO-pACT1GEV.ape')
+
 Sequences have ``.name`` and ``.id`` attributes that are empty string by
 default. By convention, you should fill them with appropriate strings
 for your use case - the name is a human-readable name while id should be
@@ -24,6 +26,7 @@ a unique number or string.
 .. code:: python
 
     pKL278.name  # Raw genbank name field - truncated due to genbank specifications
+
 
 
 
@@ -39,6 +42,7 @@ general idea of which sequence you're manipulating
 .. code:: python
 
     pKL278  # The sequence representation - shows ~40 bases on each side.
+
 
 
 
@@ -61,6 +65,7 @@ subsequences.
 .. code:: python
 
     pKL278.features  # Man that's way too many features
+
 
 
 
@@ -113,6 +118,7 @@ sequence:
 
 
 
+
 .. parsed-literal::
 
     linear dsDNA:
@@ -139,6 +145,7 @@ query, only the top strand is reported.
 
 
 
+
 .. parsed-literal::
 
     [[78, 286, 1380, 2431, 4177, 4315, 7261, 7556], [737, 3718, 3828, 4131, 6939]]
@@ -155,7 +162,4 @@ The ``.ape()`` method will launch ApE with your sequence if it is found
 in your PATH environment variable. This enables some convenient analyses
 that are faster with a GUI like simulating a digest or viewing the
 general layout of annotations.
-
-.. code:: python
-
 

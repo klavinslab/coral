@@ -7,19 +7,18 @@ class Peptide(object):
     '''Peptide sequence.'''
 
     def __init__(self, peptide, alphabet=alphabets.peptide, features=None,
-                 run_checks=True):
+                 skip_checks=False):
         '''
         :param peptide: Input sequence (peptide).
         :type peptide: str
-        :param run_checks: Check inputs / formats (disabling increases speed):
-                           alphabet check
-                           case
-        :type run_checks: bool
+        :param skip_checks: Skips input checking (alphabet check), useful for
+                            computationally intense tasks.
+        :type skip_checks: bool
         :returns: coral.Peptide instance.
 
         '''
         self.sequence = Sequence(peptide, alphabet=alphabet,
-                                 run_checks=run_checks, any_char='X')
+                                 skip_checks=skip_checks, any_char='X')
         self.alphabet = alphabet
         if features is None:
             self.features = []
@@ -34,7 +33,7 @@ class Peptide(object):
 
         '''
         return type(self)(str(self.sequence), alphabet=self.alphabet,
-                          features=self.features, run_checks=False)
+                          features=self.features, skip_checks=True)
 
     @classmethod
     def extract(self, feature, remove_subfeatures=False):
@@ -69,7 +68,7 @@ class Peptide(object):
     def __getitem__(self, key):
         new_instance = type(self)(str(self.sequence[key]),
                                   alphabet=self.alphabet,
-                                  features=self.features, run_checks=False)
+                                  features=self.features, skip_checks=True)
         return new_instance
 
     def __len__(self):
