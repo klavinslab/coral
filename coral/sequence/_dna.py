@@ -1,8 +1,10 @@
 '''DNA object classes.'''
 import os
+import collections
 import shutil
 import subprocess
 import tempfile
+
 import coral as cr
 from . import alphabets
 from ._sequence import Feature
@@ -45,6 +47,23 @@ class ssDNA(NucleicAcid):
     def copy(self):
         return type(self)(self.seq, alphabet=self.alphabet,
                           circular=self.circular, skip_checks=True)
+
+    def mw(self):
+        '''Calculate the molecular weight.
+
+        :returns: The molecular weight of the current sequence in amu.
+        :rtype: float
+
+        '''
+        counter = collections.Counter(self.seq.lower())
+        # TODO: use any_char, not n
+        # TODO: add to constants module
+        mw_a = counter['a'] * 313.2
+        mw_t = counter['t'] * 304.2
+        mw_g = counter['g'] * 289.2
+        mw_c = counter['c'] * 329.2
+        mw_n = counter['n'] * (313.2 + 304.2 + 289.2 + 329.2) / 4
+        return mw_a + mw_t + mw_g + mw_c + mw_n + 79.0
 
     def to_ds(self):
         return DNA(self.seq, alphabet=self.alphabet, circular=self.circular,
