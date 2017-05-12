@@ -22,9 +22,8 @@ def digest(dna, restriction_enzyme):
     pattern_len = len(pattern)
     r_indices = [len(dna) - index - pattern_len for index in
                  located[1]]
-    # If sequence is palindrome, remove redundant results
-    if pattern.is_palindrome():
-        r_indices = [index for index in r_indices if index not in
+    # Remove redundant results on bottom strand
+    r_indices = [index for index in r_indices if index not in
                      located[0]]
     # Flatten cut site indices
     cut_sites = sorted(located[0] + r_indices)
