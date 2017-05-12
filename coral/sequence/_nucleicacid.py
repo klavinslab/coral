@@ -139,16 +139,23 @@ class NucleicAcid(Sequence):
 
         '''
         counter = collections.Counter(self.seq.lower())
-        mw_a = counter['a'] * 313.2
-        mw_t = counter['t'] * 304.2
-        mw_g = counter['g'] * 289.2
-        mw_c = counter['c'] * 329.2
-        mw_u = counter['u'] * 306.2
-
-        if self.aterial == 'dna':
-            return mw_a + mw_t + mw_g + mw_c + 79.0
+        # TODO: use any_char, not n
+        # TODO: add to constants module
+        if self.material == 'dna':
+            mw_a = counter['a'] * 313.2
+            mw_t = counter['t'] * 304.2
+            mw_g = counter['g'] * 289.2
+            mw_c = counter['c'] * 329.2
+            mw_n = counter['n'] * (313.2 + 304.2 + 289.2 + 329.2) / 4
+            return mw_a + mw_t + mw_g + mw_c + mw_n + 79.0
         else:
-            return mw_a + mw_u + mw_g + mw_c + 159.0
+            mw_a = counter['a'] * 326.2
+            mw_g = counter['g'] * 305.2
+            mw_c = counter['c'] * 345.2
+            mw_u = counter['u'] * 306.2
+
+            mw_n = counter['n'] * (313.2 + 289.2 + 329.2 + 306.2) / 5
+            return mw_a + mw_u + mw_g + mw_c + mw_n + 159.0
 
     def rotate(self, n):
         '''Rotate Sequence by n bases.
