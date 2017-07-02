@@ -57,4 +57,4 @@ echo "Running unit tests"
 do_nosetests nosetests || fail nosetests
 
 # If there are whitespace errors, print the offending file names and fail.
-exec git diff-index --check --cached $against --
+exec git diff-index --check --cached $against --relative=coral --
