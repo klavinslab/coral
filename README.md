@@ -1,6 +1,8 @@
 # coral
 <img align="right" height="256" src="docs/coral_256.png">
+
 [![Build Status](https://travis-ci.org/klavinslab/coral.svg?branch=master)](https://travis-ci.org/klavinslab/coral)
+
 [![Documentation Status](https://readthedocs.org/projects/coral/badge/?version=latest)](https://readthedocs.org/projects/coral/?badge=latest)
 
 
