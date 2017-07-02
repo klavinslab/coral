@@ -14,10 +14,9 @@ def assemble_oligos(dna_list, reference=None):
     :param dna_list: List of DNA sequences - they must be single-stranded.
     :type dna_list: coral.DNA list
     :param reference: Expected sequence - once assembly completed, this will
-                      be used to reorient the DNA (assembly could potentially
-                      occur from either side of a linear DNA construct if
-                      oligos are in a random order). If this fails, an
-                      AssemblyError is raised.
+    be used to reorient the DNA (assembly could potentially occur from either
+    side of a linear DNA construct if oligos are in a random order). If this
+    fails, an AssemblyError is raised.
     :type reference: coral.DNA
     :raises: AssemblyError if it can't assemble for any reason.
     :returns: A single assembled DNA sequence

@@ -46,10 +46,10 @@ cdef inline DTYPE_FLOAT max2(DTYPE_FLOAT a, DTYPE_FLOAT b):
     return b if b > a else a
 
 
-def as_ord_matrix(matrix):
+def as_ord_matrix(matrix, alphabet):
     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
-    ords = [ord(c) for c in matrix.alphabet]
+    ords = [ord(c) for c in alphabet]
     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
     for i, row_ord in enumerate(ords):
         for j, col_ord in enumerate(ords):
@@ -71,7 +71,8 @@ def max_index(array):
 
 def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
             DTYPE_FLOAT gap_double=-7, method='global',
-            matrix=submat.DNA_SIMPLE):
+            matrix=submat.DNA_SIMPLE.matrix,
+            alphabet=submat.DNA_SIMPLE.alphabet):
     '''Calculates the alignment of two sequences. The global method uses
     a global Needleman-Wunsh algorithm, local does a a local
     Smith-Waterman alignment, global_cfe does a global alignment with
@@ -88,18 +89,20 @@ def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
     :param seqi: Second sequence.
     :type seqi: str
     :param method: Type of alignment: 'global', 'global_cfe', 'local', or
-                   'glocal'.
+    'glocal'.
     :type method: str
     :param gap_open: The cost of opening a gap (negative number).
     :type gap_open: float
     :param gap_extend: The cost of extending an open gap (negative number).
     :type gap_extend: float
     :param gap_double: The gap-opening cost if a gap is already open in the
-                       other sequence (negative number).
+    other sequence (negative number).
     :type gap_double: float
-    :param matrix: A score matrix dictionary name. Examples can be found in
-                   the substitution_matrices module.
-    :type matrix: SubstitutionMatrix
+    :param matrix: A score matrix. Examples can be found in the substitution
+    matrices module.
+    :type matrix: np.ndarray
+    :param alphabet: The characters corresponding to matrix rows/columns.
+    :type alphabet: str
 
     '''
     cdef int NONE = 0,  LEFT = 1, UP = 2,  DIAG = 3
@@ -146,7 +149,7 @@ def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
 
     cdef np.ndarray[DTYPE_UINT, ndim=2] pointer = np.zeros((max_i + 1, max_j + 1), dtype=np.uint)
     cdef np.ndarray[DTYPE_INT, ndim=2] amatrix = matrix
-    amatrix = as_ord_matrix(matrix)
+    amatrix = as_ord_matrix(matrix, alphabet)
 
     # START HERE:
     if imethod == 0:
@@ -244,7 +247,7 @@ def aligner(_seqj, _seqi, DTYPE_FLOAT gap_open=-7, DTYPE_FLOAT gap_extend=-7,
         return (<object>aj)[::-1], (<object>ai)[::-1]
 
 
-def score_alignment(a, b, int gap_open, int gap_extend, matrix):
+def score_alignment(a, b, int gap_open, int gap_extend, matrix, alphabet):
     '''Calculate the alignment score from two aligned sequences.
 
     :param a: The first aligned sequence.
@@ -258,6 +261,8 @@ def score_alignment(a, b, int gap_open, int gap_extend, matrix):
     :param matrix: A score matrix dictionary name. Examples can be found in
                    the substitution_matrices module.
     :type matrix: SubstitutionMatrix
+    :param alphabet: The characters corresponding to matrix rows/columns.
+    :type alphabet: str
 
     '''
     cdef char *al = a
@@ -266,7 +271,7 @@ def score_alignment(a, b, int gap_open, int gap_extend, matrix):
     cdef int score = 0, this_score
     assert strlen(bl) == l, 'Alignment lengths must be the same'
     cdef np.ndarray[DTYPE_INT, ndim=2] mat
-    mat = as_ord_matrix(matrix)
+    mat = as_ord_matrix(matrix, alphabet)
 
     cdef bint gap_started = 0
 

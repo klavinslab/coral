@@ -3,6 +3,7 @@
 """Uses nbconvert to recursively convert all ipynbs in a directory to .rst."""
 # TODO: catch conversion errors (right now they pass silently)
 # Doesn't even use IPython API (TODO!)
+from __future__ import print_function
 import os
 import subprocess
 import sys
@@ -11,6 +12,7 @@ import sys
 # Build docs
 def ipynb_to_rst(directory, filename):
     """Converts a given file in a directory to an rst in the same directory."""
+    print(filename)
     os.chdir(directory)
     subprocess.Popen(["ipython", "nbconvert", "--to", "rst",
                       filename],
@@ -33,7 +35,7 @@ def convert_ipynbs(directory):
 if __name__ == "__main__":
     # Convert notebooks from ipynb to rst
     if len(sys.argv) != 2:
-        print "\nipy2nb:\n=======\nUsage: ipynb2rst <directory>\n"
+        print("\nipy2nb:\n=======\nUsage: ipynb2rst <directory>\n")
     else:
         directory = sys.argv[1]
         convert_ipynbs(directory)

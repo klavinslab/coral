@@ -3,10 +3,10 @@ import numpy as np
 from . import substitution_matrices as submat
 
 
-def as_ord_matrix(matrix):
+def as_ord_matrix(matrix, alphabet):
     '''Given the SubstitutionMatrix input, generate an equivalent matrix that
     is indexed by the ASCII number of each residue (e.g. A -> 65).'''
-    ords = [ord(c) for c in matrix.alphabet]
+    ords = [ord(c) for c in alphabet]
     ord_matrix = np.zeros((max(ords) + 1, max(ords) + 1), dtype=np.integer)
     for i, row_ord in enumerate(ords):
         for j, col_ord in enumerate(ords):
@@ -27,7 +27,8 @@ def max_index(array):
 
 
 def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
-            gap_double=-7, matrix=submat.DNA_SIMPLE):
+            gap_double=-7, matrix=submat.DNA_SIMPLE.matrix,
+            alphabet=submat.DNA_SIMPLE.alphabet):
     '''Calculates the alignment of two sequences. The global method uses
     a global Needleman-Wunsh algorithm, local does a a local
     Smith-Waterman alignment, global_cfe does a global alignment with
@@ -56,9 +57,11 @@ def aligner(seqj, seqi, method='global', gap_open=-7, gap_extend=-7,
     :param matrix: A score matrix dictionary name. Examples can be found in
                    the substitution_matrices module.
     :type matrix: str
+    :param alphabet: The characters corresponding to matrix rows/columns.
+    :type alphabet: str
 
     '''
-    amatrix = as_ord_matrix(matrix)
+    amatrix = as_ord_matrix(matrix, alphabet)
     NONE, LEFT, UP, DIAG = range(4)  # NONE is 0
     max_j = len(seqj)
     max_i = len(seqi)

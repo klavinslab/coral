@@ -14,9 +14,10 @@ and fast with a short example.
 First, we'll need to analyze our sequencing using the Sanger class
 (``analysis`` module) and read in sequences (``seqio`` module).
 
-.. code:: python
+.. code:: ipython2
 
     import coral as cor
+
 Then use seqio to read in our sequences. The Sanger class expects two
 inputs: a reference, or expected, sequence (``sequence.DNA`` object) and
 a list of the results (``list`` of ``sequence.DNA`` objects). Any way
@@ -35,102 +36,32 @@ plasmid and show that the sequence is accurate. For this, we use
 all sequencing (.seq, .ab1, .abi) files and stores them as a list of DNA
 objects.
 
-.. code:: python
+.. code:: ipython2
 
     reference = cor.seqio.read_dna('../files_for_tutorial/maps/pMODKan-HO-pACT1GEV.ape')
     results = cor.seqio.read_sequencing('../files_for_tutorial/sequencing_files/')
+
 To compare the results to our expected sequence, we use the ``Sanger``
 class, which does a Needleman-Wunsch alignment and scores any
 discrepancies.
 
-.. code:: python
+.. code:: ipython2
 
     alignment = cor.analysis.Sanger(reference, results)
 
-.. parsed-literal::
+The Sanger alignment object contains our aligned sequences and some
+methods for analyzing them.
 
-    (Aligning...)
+Chiefly, it's useful to look at where predicted mismatches or indels are
+predicted, as they may disagree with the consensus.
 
-
-Calling the class as we did above runs the alignments and stores the
-results in an object that we called 'alignment'. In the process of doing
-the alignment, the Sanger class also trimmed the results to disclude any
-'N' results (ambiguous sequences) and attempted to figure out the
-direction of the sequencing ('forward' or 'reverse' along the
-reference).
-
-This objects has several useful attributes (data) and methods
-(functions) attached to it, but we only need two for a basic analysis.
-The first is the ``.report()`` method, which gives a textual description
-of any mismatches, insertions, or deletions.
-
-.. code:: python
-
-    alignment.report()
-
-.. parsed-literal::
-
-
-    Summary:
-    --------
-
-      Mismatches: 3
-      Insertions: 1
-      Deletions: 0
-
-    ## Mismatches
-      pMODKan-HO-pACT1GEV_C3-T7-EEV_D11.ab1
-
-        Positions 4687 to 4689:
-        AGTCCAAAGGACAATTTTACG
-        ||||||||||   ||||||||
-        ----------CACATTTTACG
-                  ***
-
-      pMODKan-HO-pACT1GEV_C3-M13R_E11.ab1
-
-        Positions 5550 to 5551:
-        TTAGCTTTGTTCACTCGTGCC
-        ||||||||||  |||||||||
-        TTAGCTTTGTCA---------
-                  **
-
-      pMODKan-HO-pACT1GEV_C3-676_H11.ab1
-
-        Positions 5120 to 5121:
-        GCACCGTCTTTGAATTATGAG
-        ||||||||||  |||||||||
-        GCACCGTCTTGA---------
-                  **
-
-    ## Insertions
-      pMODKan-HO-pACT1GEV_C3-771_C12.ab1
-
-        Positions 7805 to 8008:
-        GCCCTTTCGT------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        ||||||||||
-        GCCCTTTCGTTCGCGCGTTTCGGTGATGACGGTGAAAACCTCTGACACATGCAGCTCCCGGAGACGGTCACAGCTTGTCTGTAAGCGGATGCCGGGAGCAGACAAGCCCGTCAGGGCGCGTCAGCGGGTGTTGGCGGGTGTCGGGGCTGGCTTAACTATGCGGCGTTTAAACTTAGCAGATGCGCGCACCTGCGTTGTTACCACAACTCTTATG
-                  ************************************************************************************************************************************************************************************************************
-
-
-
-The report above looks a bit scary - it expects there to be three
-deletions and one big insertion. The big insertion is currently a bug
-(which should be fixed soon) and can be ignored. But the three deletions
-are accurately reported - according to the sequencing results, those
-bases are missing.
-
-But sometimes sequencing results lie - especially at the very beginning
-and end, where the quality of data is worse. By plotting the data with
-the ``.plot()`` method we can get a better grasp on whether those
-deletions are really there and what kind of sequencing coverage we have.
-
-.. code:: python
+.. code:: ipython2
 
     alignment.plot()
 
 
-.. image:: analysis_sequencing_files/analysis_sequencing_9_0.png
+
+.. image:: analysis_sequencing_files/analysis_sequencing_7_0.png
 
 
 The plot is a bit ugly right now, but very functional. The deletions are
@@ -139,7 +70,4 @@ really there. In addition, there is another sequencing result showing no
 deletions at every one of those locations - we can reasonably assume
 those deletions are not actually there. If we were worried, however, we
 could investigate the ab1 files directly in another program.
-
-.. code:: python
-
 

@@ -54,7 +54,7 @@ copyright = u'2013, Nick Bolten'
 # built documents.
 #
 
-with open(os.path.join(base_path, '../coral/__init__.py'), 'r') as fd:
+with open(os.path.join(base_path, 'coral/__init__.py'), 'r') as fd:
     __version__ = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
                             fd.read(), re.MULTILINE).group(1)
 if not __version__:
@@ -258,7 +258,7 @@ exinfo_documents = [
 # texinfo_show_urls = 'footnote'
 
 # Mock import modules so readthedocs doesn't attempt to install them
-from mock import Mock as MagicMock
+from mock import Mock as MagicMock  # noqa
 
 
 class Mock(MagicMock):
@@ -267,5 +267,5 @@ class Mock(MagicMock):
     def __getattr__(cls, name):
         return Mock()
 
-MOCK_MODULES = ['matplotlib', 'cython', 'numpy', 'biopython']
+MOCK_MODULES = ['matplotlib', 'cython', 'numpy', 'biopython', 'coral.analysis._sequencing/calign']
 sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)

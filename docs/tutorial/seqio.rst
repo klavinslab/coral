@@ -1,6 +1,6 @@
 
-Complex DNA sequences
-~~~~~~~~~~~~~~~~~~~~~
+Sequence input/output and complex DNA sequences
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 More complex sequences (like plasmids) have many annotated pieces and
 benefit from other methods. ``sequence.DNA`` has many methods for
@@ -10,20 +10,23 @@ The following sequence is a plasmid that integrates at the *S.
 cerevisiae* HO locus via ends-out integration, inserting the GEV
 transactivator from McIsaac et al. 2011:
 
-.. code:: python
+.. code:: ipython2
 
     import coral as cor
-.. code:: python
+
+.. code:: ipython2
 
     pKL278 = cor.seqio.read_dna('./files_for_tutorial/maps/pMODKan-HO-pACT1GEV.ape')
+
 Sequences have ``.name`` and ``.id`` attributes that are empty string by
 default. By convention, you should fill them with appropriate strings
 for your use case - the name is a human-readable name while id should be
 a unique number or string.
 
-.. code:: python
+.. code:: ipython2
 
     pKL278.name  # Raw genbank name field - truncated due to genbank specifications
+
 
 
 
@@ -36,15 +39,15 @@ a unique number or string.
 Large sequences have summary representations, useful for getting a
 general idea of which sequence you're manipulating
 
-.. code:: python
+.. code:: ipython2
 
     pKL278  # The sequence representation - shows ~40 bases on each side.
 
 
 
+
 .. parsed-literal::
 
-    circular dsDNA:
     TCGCGCGTTTCGGTGATGACGGTGAAAACCTCTGACACAT ... TTAACCTATAAAAATAGGCGTATCACGAGGCCCTTTCGTC
     AGCGCGCAAAGCCACTACTGCCACTTTTGGAGACTGTGTA ... AATTGGATATTTTTATCCGCATAGTGCTCCGGGAAAGCAG
 
@@ -58,9 +61,10 @@ selection after transformation, and an expression cassette (promoter,
 gene, terminator). In addition, it has common primer sites and annotated
 subsequences.
 
-.. code:: python
+.. code:: ipython2
 
     pKL278.features  # Man that's way too many features
+
 
 
 
@@ -105,17 +109,18 @@ With all of these features, manual slicing is inconvenient. The
 ``.extract()`` method makes it easy to isolate features from a complex
 sequence:
 
-.. code:: python
+.. code:: ipython2
 
     # The beta-lactamase coding sequence, essential for propagation in *E. coli* on Amp/Carb media.
     # Note that it is transcribed in the direction of the bottom strand (right to left on this sequence)
-    pKL278.extract('bla')
+    bla = [f for f in pKL278.features if f.name == 'bla'][0]
+    pKL278.extract(bla)
+
 
 
 
 .. parsed-literal::
 
-    linear dsDNA:
     TTACCAATGCTTAATCAGTGAGGCACCTATCTCAGCGATC ... AAAAGGGAATAAGGGCGACACGGAAATGTTGAATACTCAT
     AATGGTTACGAATTAGTCACTCCGTGGATAGAGTCGCTAG ... TTTTCCCTTATTCCCGCTGTGCCTTTACAACTTATGAGTA
 
@@ -133,9 +138,10 @@ and bottom strands). In the following case, there are 8 matches for the
 top strand and 5 for the bottom strand. In the case of a palindromic
 query, only the top strand is reported.
 
-.. code:: python
+.. code:: ipython2
 
     pKL278.locate('atgcc')  # All occurrences of the pattern atgcc on the top and bottom strands (both 5'->3')
+
 
 
 
@@ -155,7 +161,3 @@ The ``.ape()`` method will launch ApE with your sequence if it is found
 in your PATH environment variable. This enables some convenient analyses
 that are faster with a GUI like simulating a digest or viewing the
 general layout of annotations.
-
-.. code:: python
-
-

@@ -400,15 +400,15 @@ class DNA(object):
            :param term: Search term.
            :type term: str
            :param by: Feature attribute to search by. Options are 'name',
-                      'gene', and 'locus_tag'.
+           'gene', and 'locus_tag'.
            :type by: str
            :param fuzzy: If True, search becomes case-insensitive and will also
-                         find substrings - e.g. if fuzzy search is enabled, a
-                         search for 'gfp' would return a hit for a feature
-                         named 'GFP_seq'.
+           find substrings - e.g. if fuzzy search is enabled, a search for
+           'gfp' would return a hit for a feature named 'GFP_seq'.
            :type fuzzy: bool
            :returns: A list of features matched by the search.
            :rtype: list
+
         '''
         features = []
         if fuzzy:

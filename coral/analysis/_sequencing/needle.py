@@ -1,4 +1,5 @@
 '''Needleman-Wunsch alignment functions.'''
+from __future__ import print_function
 import coral as cr
 from . import substitution_matrices as submat
 import multiprocessing
@@ -37,11 +38,12 @@ def needle(reference, query, gap_open=-15, gap_extend=0,
                                        gap_open=gap_open,
                                        gap_extend=gap_extend,
                                        method='global_cfe',
-                                       matrix=matrix)
+                                       matrix=matrix.matrix,
+                                       alphabet=matrix.alphabet)
 
     # Score the alignment
     score = score_alignment(aligned_ref, aligned_res, gap_open, gap_extend,
-                            matrix)
+                            matrix.matrix, matrix.alphabet)
 
     return cr.DNA(aligned_ref), cr.DNA(aligned_res), score
 
@@ -65,7 +67,8 @@ def needle_msa(reference, results, gap_open=-15, gap_extend=0,
     alignments = []
     for result in results:
         ref_dna, res_dna, score = needle(reference, result, gap_open=gap_open,
-                                         gap_extend=gap_extend, matrix=matrix)
+                                         gap_extend=gap_extend,
+                                         matrix=matrix)
         alignments.append([str(ref_dna), str(res_dna), score])
 
     def insert_gap(sequence, position):
@@ -136,7 +139,7 @@ def needle_multi(references, queries, gap_open=-15, gap_extend=0,
                      zip(references, queries)]
         aligned = pool.map(run_needle, args_list)
     except KeyboardInterrupt:
-        print 'Caught KeyboardInterrupt, terminating workers'
+        print('Caught KeyboardInterrupt, terminating workers')
         pool.terminate()
         pool.join()
         raise KeyboardInterrupt

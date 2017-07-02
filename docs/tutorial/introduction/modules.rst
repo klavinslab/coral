@@ -20,10 +20,11 @@ the PEP 8 style guidelines on class and function names so that you can
 differentiate between them - classes use CamelCase and functions use
 lower\_case with underscores.
 
-.. code:: python
+.. code:: ipython2
 
     import coral as cor  # alternative you can import each module by itself e.g. from coral import design
     dir(cor)  # dir lists everything in a module/object. Ignore the double underscore items.
+
 
 
 
@@ -41,15 +42,16 @@ lower\_case with underscores.
      '__name__',
      '__package__',
      '__path__',
-     '_sequence',
+     '__version__',
      'analysis',
      'constants',
      'database',
      'design',
-     'matplotlib',
      'reaction',
      'seqio',
-     'simulation']
+     'sequence',
+     'ssDNA',
+     'utils']
 
 
 
@@ -60,7 +62,7 @@ In addition to the core modules, the top-level coral module provides the
 core data structures used in coral - DNA, RNA, and Peptide (as well as
 specialized classes like Primer).
 
-.. code:: python
+.. code:: ipython2
 
     dna = cor.DNA("ATGC")
     print "DNA: {}".format(dna)
@@ -73,13 +75,14 @@ specialized classes like Primer).
     pep = cor.Peptide("mlnp")
     print "Peptide: {}".format(pep)
 
+
 .. parsed-literal::
 
     DNA: ATGC
     Palindrome?: False
-
+    
     RNA: AUGC
-
+    
     Peptide: MLNP
 
 
@@ -102,10 +105,11 @@ the sequence (palindromes, repeats, melting temperatures), structural
 information (Vienna RNA and NUPACK classes), and sequencing (Sanger
 sequencing analysis).
 
-.. code:: python
+.. code:: ipython2
 
     # Example: finding the Tm of ATGCATGCATGCATGC according to the SantaLucia98 method.
     cor.analysis.tm(dna * 4, parameters="santalucia98")
+
 
 
 
@@ -154,7 +158,3 @@ sequences. The module currently supports reading in individual sequences
 (fasta or genbank) using read\_dna, reading in all the .ab1, .abi, and
 .seq files in a directory using read\_sequencing, and writing DNA
 objects to file (fasta or genbank).
-
-.. code:: python
-
-

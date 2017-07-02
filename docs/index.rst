@@ -9,8 +9,11 @@ Welcome to coral
 :Author: Nick Bolten
 :Source code: `github.com project <http://github.com/klavinslab/coral>`_
 :Issue Tracker: `github.com issues <http://github.com/klavinslab/coral/issues>`_
+
 :Generated: |today|
-:License: Academic (UW License, see LICENSE in source)
+
+:License: MIT
+
 :Version: |release|
 
 **Tutorial:**
@@ -30,5 +33,7 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
+
 * :ref:`modindex`
+
 * :ref:`search`

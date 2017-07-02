@@ -2,7 +2,6 @@
 Sequences
 =========
 
-
 ``sequence.DNA``
 ----------------
 
@@ -18,9 +17,10 @@ and methods for converting between them.
 
 To get started with ``coral.DNA``, import ``coral``:
 
-.. code:: python
+.. code:: ipython2
 
     import coral as cor
+
 Your first sequence
 ~~~~~~~~~~~~~~~~~~~
 
@@ -28,19 +28,17 @@ Let's jump right into things. Let's make a sequence that's the first 30
 bases of gfp from *A. victoria*. To initialize a sequence, you feed it a
 string of DNA characters.
 
-.. code:: python
+.. code:: ipython2
 
     example_dna = cor.DNA('atgagtaaaggagaagaacttttcactgga')
-    example_dna
+    display(example_dna)
 
 
 
 .. parsed-literal::
 
-    linear dsDNA:
     ATGAGTAAAGGAGAAGAACTTTTCACTGGA
     TACTCATTTCCTCTTCTTGAAAAGTGACCT
-
 
 
 A few things just happened behind the scenes. First, the input was
@@ -52,74 +50,66 @@ regions of primers) can be delineated using case. If you input a non-DNA
 sequence, a ``ValueError`` is raised.
 
 For the most part, a ``sequence.DNA`` instance acts like a python
-container and many string-like operations work. For example, you can
-reverse a sequence using the .reverse() method, or just use the [::-1]
-slice:
+container and many string-like operations work.
 
-.. code:: python
-
-    # Reverse a sequence
-    print example_dna.reverse()
-    print example_dna[::-1]
-
-.. parsed-literal::
-
-    AGGTCACTTTTCAAGAAGAGGAAATGAGTA
-    AGGTCACTTTTCAAGAAGAGGAAATGAGTA
-
-
-Subsets can be grabbed using standard slices:
-
-.. code:: python
+.. code:: ipython2
 
     # Extract the first three bases
-    example_dna[0:3]
+    display(example_dna[0:3])
 
 
 
 .. parsed-literal::
 
-    linear dsDNA:
     ATG
     TAC
 
 
-
-.. code:: python
+.. code:: ipython2
 
     # Extract the last seven bases
-    example_dna[-7:]
+    display(example_dna[-7:])
 
 
 
 .. parsed-literal::
 
-    linear dsDNA:
     CACTGGA
     GTGACCT
 
 
+.. code:: ipython2
 
-.. code:: python
-
-    # Grab every other base starting at index 0
-    example_dna[::2]
+    # Reverse a sequence
+    display(example_dna[::-1])
 
 
 
 .. parsed-literal::
 
-    linear dsDNA:
+    AGGTCACTTTTCAAGAAGAGGAAATGAGTA
+    TCCAGTGAAAAGTTCTTCTCCTTTACTCAT
+
+
+.. code:: ipython2
+
+    # Grab every other base starting at index 0
+    display(example_dna[::2])
+
+
+
+.. parsed-literal::
+
     AGGAAGGAACTTATG
     TCCTTCCTTGAATAC
 
 
-
-.. code:: python
+.. code:: ipython2
 
     # Is the sequence 'AT' in our sequence? How about 'AC'?
     print "'AT' is in our sequence: {}.".format("AT" in example_dna)
     print "'ATT' is in our sequence: {}.".format("ATT" in example_dna)
+
 
 .. parsed-literal::
 
@@ -140,15 +130,15 @@ In addition to slicing, ``sequence.DNA`` provides methods for common
 molecular manipulations. For example, reverse complementing a sequence
 is a single call:
 
-.. code:: python
+.. code:: ipython2
 
     example_dna.reverse_complement()
 
 
 
+
 .. parsed-literal::
 
-    linear dsDNA:
     TCCAGTGAAAAGTTCTTCTCCTTTACTCAT
     AGGTCACTTTTCAAGAAGAGGAAATGAGTA
 
@@ -168,137 +158,160 @@ result (the first example) while directly accessing example\_dna has
 horrible consequences (the edits build up, as they all modify the same
 piece of data sequentially):
 
-.. code:: python
+.. code:: ipython2
 
-    # Correct way:
-    copy_list = [example_dna.copy() for i, x in enumerate(example_dna)]
-    for i, seq in enumerate(example_dna):
-        copy_list[i][i] = 'a'
-    print [str(x) for x in copy_list]
-    print
+    example_dna.copy()
 
-    # Incorrect way:
-    copy = example_dna.copy()
-    copy_list = [copy for i, x in enumerate(example_dna)]
-    for i, seq in enumerate(example_dna):
-        copy_list[i][i] = 'a'
-    print [str(x) for x in copy_list]
-
-.. parsed-literal::
-
-    ['ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'AAGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATAAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAATAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGAAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAAGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGAAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAAAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAAAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAAATTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACATTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTATTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTATCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTACACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTAACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCAATGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACAGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTAGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGAA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA']
-
-    ['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']
-
-
-An important fact about ``sequence.DNA`` methods and slicing is that
-none of the operations modify the object directly - if we look at
-example\_dna, it has not been reverse-complemented itself. Running
-``example_dna.reverse_complement()`` outputs a new sequence, so if you
-want to save your chance you need to assign a variable:
-
-.. code:: python
-
-    revcomp_dna = example_dna.reverse_complement()
-    print example_dna
-    print
-    print revcomp_dna
-
-.. parsed-literal::
-
-    ATGAGTAAAGGAGAAGAACTTTTCACTGGA
-
-    TCCAGTGAAAAGTTCTTCTCCTTTACTCAT
-
-
-You can also access important attributes of a ``sequence.DNA`` object
-directly. The following are examples of how to get important sequences
-or information about a sequence.
-
-.. code:: python
-
-    example_dna.top()  # The top strand - a simple python string in the 5' -> 3' orientation.
 
 
 
 .. parsed-literal::
 
-    'ATGAGTAAAGGAGAAGAACTTTTCACTGGA'
-
-
-
-.. code:: python
-
-    example_dna.bottom()  # The bottom strand - another python string, also in the 5' -> 3' orientation.
-
-
-
-.. parsed-literal::
-
-    'TCCAGTGAAAAGTTCTTCTCCTTTACTCAT'
-
-
-
-.. code:: python
-
-    # Sequences are double stranded, or 'ds' by default.
-    # This is a directly accessible attribute, not a method, so () is not required.
-    example_dna.stranded
-
-
-
-.. parsed-literal::
-
-    'ds'
-
-
-
-.. code:: python
-
-    # To change the 'strandedness', use the set_stranded method
-    example_dna.set_stranded('ss')
-
-
-
-.. parsed-literal::
-
-    linear ssDNA:
-    ATGAGTAAAGGAGAAGAACTTTTCACTGGA
-    ------------------------------
-
-
-
-.. code:: python
-
-    # To access the topology of the strand, look at the .topology attribute.
-    # Sequences can be either linear or circular.
-    example_dna.topology
-
-
-
-.. parsed-literal::
-
-    'linear'
-
-
-
-.. code:: python
-
-    # You can switch between topologies using the .circularize and .linearize methods
-    circular_dna = example_dna.circularize()
-    circular_dna
-
-
-
-.. parsed-literal::
-
-    circular dsDNA:
     ATGAGTAAAGGAGAAGAACTTTTCACTGGA
     TACTCATTTCCTCTTCTTGAAAAGTGACCT
 
 
 
-.. code:: python
+.. code:: ipython2
+
+    # Incorrect way (editing shared + mutable sequence):
+    example_dna = cor.DNA('atgagtaaaggagaagaacttttcactgga')
+    variant_list = []
+    for i, base in enumerate(example_dna):
+        variant = example_dna
+        variant.top[i] = 'A'
+        variant.bottom[i] = 'T'
+        variant_list.append(variant)
+    print [str(x) for x in variant_list]
+    
+    print
+    
+    # Correct way (copy mutable sequence, then edit):
+    example_dna = cor.DNA('atgagtaaaggagaagaacttttcactgga')
+    variant_list = []
+    for i, base in enumerate(example_dna):
+        variant = example_dna.copy()
+        variant.top[i] = 'A'
+        variant.bottom[i] = 'T'
+        variant_list.append(variant)
+    print [str(x) for x in variant_list]
+
+
+.. parsed-literal::
+
+    ['AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA']
+    
+    ['ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'AAGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATAAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAATAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGAAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAAGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGAAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAAAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAAAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAAATTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACATTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTATTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTATCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTACACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTAACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA', 'ATGAGTAAAGGAGAAGAACTTTTCAATGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACAGGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTAGA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGAA', 'ATGAGTAAAGGAGAAGAACTTTTCACTGGA']
+
+
+An important fact about ``sequence.DNA`` methods and slicing is that
+none of the operations modify the object directly (they don't mutate
+their parent) - if we look at example\_dna, it has not been
+reverse-complemented itself. Running
+``example_dna.reverse_complement()`` outputs a new sequence, so if you
+want to save your chance you need to assign a variable:
+
+.. code:: ipython2
+
+    revcomp_dna = example_dna.reverse_complement()
+    display(example_dna)
+    display(revcomp_dna)
+
+
+
+.. parsed-literal::
+
+    ATGAGTAAAGGAGAAGAACTTTTCACTGGA
+    TACTCATTTCCTCTTCTTGAAAAGTGACCT
+
+
+
+.. parsed-literal::
+
+    TCCAGTGAAAAGTTCTTCTCCTTTACTCAT
+    AGGTCACTTTTCAAGAAGAGGAAATGAGTA
+
+
+You also have direct access important attributes of a ``sequence.DNA``
+object. The following are examples of how to get important sequences or
+information about a sequence.
+
+.. code:: ipython2
+
+    # The top strand - a simple python string in the 5' -> 3' orientation.
+    example_dna.top
+
+
+
+
+.. parsed-literal::
+
+    ATGAGTAAAGGAGAAGAACTTTTCACTGGA
+
+
+
+.. code:: ipython2
+
+    # The bottom strand - another python string, also in the 5' -> 3' orientation.
+    example_dna.bottom
+
+
+
+
+.. parsed-literal::
+
+    TCCAGTGAAAAGTTCTTCTCCTTTACTCAT
+
+
+
+.. code:: ipython2
+
+    # Sequences are double stranded, or 'ds' by default. 
+    # This is a directly accessible attribute, not a method, so () is not required.
+    example_dna.ds
+
+
+
+
+.. parsed-literal::
+
+    True
+
+
+
+.. code:: ipython2
+
+    # DNA can be linear or circular - check the boolean `circular` attribute.
+    example_dna.circular
+
+
+
+
+.. parsed-literal::
+
+    False
+
+
+
+.. code:: ipython2
+
+    # You can switch between topologies using the .circularize and .linearize methods.
+    # Circular DNA has different properties:
+    #  1) it can't be concatenated to
+    #  2) sequence searches using .locate will search over the current origin (e.g. from -10 to +10 for a 20-base sequence).
+    circular_dna = example_dna.circularize()
+    circular_dna.circular
+
+
+
+
+.. parsed-literal::
+
+    True
+
+
+
+.. code:: ipython2
 
     # Linearization is more complex - you can choose the index at which to linearize a circular sequence.
     # This simulates a precise double stranded break at the index of your choosing.
@@ -308,29 +321,26 @@ or information about a sequence.
     print
     print circular_dna.linearize(2)
 
+
 .. parsed-literal::
 
     ATGAGTAAAGGAGAAGAACTTTTCACTGGA
-
+    
     GAGTAAAGGAGAAGAACTTTTCACTGGAAT
 
 
-.. code:: python
+.. code:: ipython2
 
-    # Sometimes you just want to rotate the sequence around - i.e. switch the top and bottom strands.
+    # Sometimes you just want to rotate the sequence around - i.e. switch the top and bottom strands. 
     # For this, use the .flip() method
     example_dna.flip()
 
 
 
+
 .. parsed-literal::
 
-    linear dsDNA:
     TCCAGTGAAAAGTTCTTCTCCTTTACTCAT
     AGGTCACTTTTCAAGAAGAGGAAATGAGTA
-
-
-
-.. code:: python
 
 

@@ -18,18 +18,21 @@ produced.
 
 For this tutorial, let's design primers that will amplify the gene EYFP.
 
-.. code:: python
+.. code:: ipython2
 
     import coral as cor
+
 First we read in a plasmid from Havens et al. 2012 and isolate the EYFP
 sequence.
 
-.. code:: python
+.. code:: ipython2
 
     plasmid = cor.seqio.read_dna("../files_for_tutorial/maps/pGP4G-EYFP.ape")
-    eyfp = plasmid.extract("EYFP")
+    eyfp_f = [f for f in plasmid.features if f.name == 'EYFP'][0]
+    eyfp = plasmid.extract(eyfp_f)
     print len(eyfp)
     eyfp
+
 
 .. parsed-literal::
 
@@ -40,7 +43,6 @@ sequence.
 
 .. parsed-literal::
 
-    linear dsDNA:
     ATGGTGAGCAAGGGCGAGGAGCTGTTCACCGGGGTGGTGC ... CGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAG
     TACCACTCGTTCCCGCTCCTCGACAAGTGGCCCCACCACG ... GCGGCGGCCCTAGTGAGAGCCGTACCTGCTCGACATGTTC
 
@@ -49,7 +51,7 @@ sequence.
 Designing primers is straightforward - you just call
 ``design.design_primer`` with a ``sequence.DNA`` object as the input.
 
-.. code:: python
+.. code:: ipython2
 
     # Forward and reverse, one at a time using design_primer()
     forward = cor.design.primer(eyfp)
@@ -57,18 +59,19 @@ Designing primers is straightforward - you just call
     # Both at once using design_primers()
     forward, reverse = cor.design.primers(eyfp)
     # design_primer has many options, including adding overhangs
-    custom_forward = cor.design.primer(eyfp, tm=65, min_len=12,
-                                       tm_undershoot=1, tm_overshoot=1,
-                                       end_gc=True, tm_parameters="santalucia98",
+    custom_forward = cor.design.primer(eyfp, tm=65, min_len=12, 
+                                       tm_undershoot=1, tm_overshoot=1, 
+                                       end_gc=True, tm_parameters="santalucia98", 
                                        overhang=cor.DNA("GGGGGATCGAT"))
     print forward
     print
     print custom_forward
 
+
 .. parsed-literal::
 
     ATGGTGAGCAAGGGCG
-
+    
     GGGGGATCGATATGGTGAGCAAGGGCGAGGAGCTGTTCAC
 
 
@@ -87,10 +90,11 @@ give a useful message.
 You can check for identical sequences using python's built in ==
 operator.
 
-.. code:: python
+.. code:: ipython2
 
     amplicon = cor.reaction.pcr(plasmid, forward, reverse)
     amplicon == eyfp
+
 
 
 
@@ -104,17 +108,18 @@ Now that we have verified that our primers should at least amplify the
 DNA that we want, let's write out our primers to file so they can be
 submitted to an oligo synthesis company.
 
-.. code:: python
+.. code:: ipython2
 
     # First we give our primers names (the `.name` attribute is empty by default)
     forward.name = "EYFP_forward"
     reverse.name = "EYFP_reverse"
     # Then we write to file - a csv (comma separated value file)
     cor.seqio.write_primers([forward, reverse], "./designed_primers.csv", ["Forward EYFP primer", "Reverse EYFP primer"])
+
 The csv file can then be opened in a spreadsheet application like Excel
 or processed by a downstream program. This is the format of the csv:
 
-.. code:: python
+.. code:: ipython2
 
     import csv
     with open("./designed_primers.csv", "r") as csv_file:
@@ -123,13 +128,10 @@ or processed by a downstream program. This is the format of the csv:
     for line in lines:
         print line
 
+
 .. parsed-literal::
 
     ['name', 'sequence', 'notes']
     ['Forward EYFP primer', 'ATGGTGAGCAAGGGCG', '']
     ['Reverse EYFP primer', 'CTTGTACAGCTCGTCCATGCC', '']
-
-
-.. code:: python
-
 
