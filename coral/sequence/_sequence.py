@@ -213,7 +213,7 @@ class Sequence(object):
                 other = type(self)(other)
             except AttributeError:
                 raise TypeError('Cannot add {} to {}'.format(self, other))
-        return self + other
+        return other + self
 
     def __repr__(self):
         '''String to print when object is called directly.'''
